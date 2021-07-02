@@ -13,14 +13,18 @@ export class NgeDocService implements OnDestroy {
             name: '',
         },
         links: [],
-        pages: [],
         prevLink: undefined,
         nextLink: undefined,
         currLink: undefined,
     });
 
-    private readonly pages: NgeDocLink[] = [];
-    private readonly links: NgeDocLink[] = [];
+    private readonly pages = new Map<string, {
+        meta: NgeDocMeta,
+        links: NgeDocLink[]
+    }>();
+
+    private readonly links:  NgeDocLink[] = [];
+
     private readonly subscriptions: Subscription[] = [];
 
     /** documentation state */
@@ -35,60 +39,76 @@ export class NgeDocService implements OnDestroy {
         private readonly activatedRoute: ActivatedRoute,
     ) {}
 
-    ngOnDestroy() {
-        this.subscriptions.forEach(s => s.unsubscribe());
-        this.subscriptions.splice(0, this.subscriptions.length);
-        this.pages.splice(0, this.pages.length);
-        this.links.splice(0, this.links.length);
+    ngOnDestroy(): void {
+        this.reset();
     }
 
     /**
      * Loads navigation from the router configuration.
      */
     async setup(): Promise<void> {
-        this.ngOnDestroy();
+        this.reset();
 
-        const settings = this.activatedRoute.snapshot.data as NgeDocSettings;
+        const { data } = this.activatedRoute.snapshot;
+        let settings: NgeDocSettings[] = [];
 
-        let meta: NgeDocMeta | undefined;
-        if (typeof settings.meta === 'function') {
-            meta = await settings.meta(this.injector);
+        if ('meta' in data) {
+            settings.push(data as NgeDocSettings);
         } else {
-            meta = settings.meta;
+            settings = Object.values(data) as NgeDocSettings[];
         }
 
-        if (!meta) {
-            throw new Error('[nge-doc]: Missing settings.meta');
-        }
+        for (const setting of settings) {
+            const links: NgeDocLink[] = [];
 
-        for (const page of settings.pages) {
-            let linkOrLinkArray: NgeDocLink | NgeDocLink[] | undefined;
-            let links: NgeDocLink[] = [];
-            if (typeof page === 'function') {
-                linkOrLinkArray = await page(this.injector);
+            let meta: NgeDocMeta | undefined;
+            if (typeof setting.meta === 'function') {
+                meta = await setting.meta(this.injector);
             } else {
-                linkOrLinkArray = page;
+                meta = setting.meta;
             }
 
-            if (Array.isArray(linkOrLinkArray)) {
-                links = links.concat(linkOrLinkArray);
-            } else {
-                links.push(linkOrLinkArray);
+            if (!meta) {
+                console.log(setting, meta)
+                throw new Error('[nge-doc]: Missing setting.meta');
             }
 
-            links.forEach(link => {
-                this.createLinks(meta!, link);
-                this.pages.push(link);
-            });
+            for (const item of setting.pages) {
+                const pages: NgeDocLink[] = [];
+
+                let object: any;
+                if (typeof item === 'function') {
+                    object = await item(this.injector);
+                } else {
+                    object = item;
+                }
+
+                if (Array.isArray(object)) {
+                    pages.push(...object);
+                } else {
+                    pages.push(object);
+                }
+
+                pages.forEach(page => {
+                    links.push(page);
+                    this.resolvePageLinks(meta!, page);
+                });
+
+                this.pages.set(meta.root, {
+                    meta,
+                    links: links
+                });
+            }
         }
+
 
         this.subscriptions.push(
             this.router.events
                 .pipe(filter((e) => e instanceof NavigationEnd))
-                .subscribe(this.onChangeRoute.bind(this, meta))
+                .subscribe(this.onChangeRoute.bind(this))
         );
 
-        this.onChangeRoute(meta);
+        this.onChangeRoute();
     }
 
     /**
@@ -124,7 +144,7 @@ export class NgeDocService implements OnDestroy {
         return a + '/' + b;
     }
 
-    private createLinks(meta: NgeDocMeta, page: NgeDocLink) {
+    private resolvePageLinks(meta: NgeDocMeta, page: NgeDocLink) {
         const createLink = (link: NgeDocLink, parent: string) => {
             link.href = this.join(parent, link.href);
             this.links.push(link);
@@ -135,9 +155,26 @@ export class NgeDocService implements OnDestroy {
         createLink(page, meta.root);
     }
 
-    private async onChangeRoute(meta: NgeDocMeta) {
-        if (!this.pages.length) {
+    private async onChangeRoute() {
+        if (!this.pages.size) {
             return;
+        }
+
+        const path = this.location.path();
+        const pathWithEndSlash = path + '/';
+        let meta: NgeDocMeta | undefined;
+        let links: NgeDocLink[] = [];
+        for (const [k, v] of this.pages) {
+            if (path.startsWith(k) || pathWithEndSlash.startsWith(k)) {
+                meta = v.meta;
+                links = v.links;
+                break;
+            }
+        }
+
+        if (!meta) {
+            console.log(this.pages)
+            throw new Error('[nge-doc]: Unregisted page ' + path);
         }
 
         let {
@@ -146,7 +183,6 @@ export class NgeDocService implements OnDestroy {
             nextLink,
         } = this.state.value;
 
-        const path = this.location.path();
         if (path === currLink?.href) { // ignore same page navigation (fragment navigation)
             return;
         }
@@ -197,13 +233,19 @@ export class NgeDocService implements OnDestroy {
         // notify state change
 
         this.state.next({
-            pages: this.pages,
-            links: this.links,
+            meta,
+            links,
             prevLink,
             currLink,
             nextLink,
-            meta
         });
 
+    }
+
+    private reset(): void {
+        this.subscriptions.forEach(s => s.unsubscribe());
+        this.subscriptions.splice(0, this.subscriptions.length);
+        this.pages.clear()
+        this.links.splice(0, this.links.length);
     }
 }

@@ -133,10 +133,8 @@ export interface NgeDocLink {
 export interface NgeDocState {
     /**  Metadata informations about the documentation. */
     meta: NgeDocMeta;
-    /** List of all links of the site. */
-    links: NgeDocLink[];
     /** Root links of the site. */
-    pages: NgeDocLink[];
+    links: NgeDocLink[];
     /** Current active link. */
     currLink?: NgeDocLink;
     /** Previous link of the current link. */

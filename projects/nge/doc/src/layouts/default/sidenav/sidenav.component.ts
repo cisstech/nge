@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgeDocLink } from '../../../nge-doc';
 import {
     NgeDocService
@@ -8,6 +8,7 @@ import {
     selector: 'nge-doc-sidenav',
     templateUrl: './sidenav.component.html',
     styleUrls: ['./sidenav.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavComponent {
     state$ = this.api.stateChanges;

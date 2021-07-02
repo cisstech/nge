@@ -8,8 +8,8 @@
     </ng-template>
     <h1>{{ state.meta.name }}</h1>
   </header>
-  <nav *ngIf="state.pages.length">
-    <ng-container *ngTemplateOutlet="template; context: { $implicit: state.pages }"></ng-container>
+  <nav *ngIf="state.links.length">
+    <ng-container *ngTemplateOutlet="template; context: { $implicit: state.links }"></ng-container>
   </nav>
 </ng-container>
 <ng-template #template let-links>

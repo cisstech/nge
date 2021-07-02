@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Injector, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Output } from '@angular/core';
 import { NgeDocLinkActionHandler } from '../../../nge-doc';
 import { NgeDocService } from '../../../nge-doc.service';
 
 @Component({
   selector: 'nge-doc-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
     @Output() toggle = new EventEmitter();
