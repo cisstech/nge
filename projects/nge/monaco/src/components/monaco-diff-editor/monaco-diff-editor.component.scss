@@ -1,0 +1,11 @@
+:host {
+  display: block;
+  height: var(--editor-height, 100%);
+  border: 1px solid #F5F5F5;
+  box-sizing: border-box;
+}
+
+.nge-monaco-diff-editor-container {
+  width: 100%;
+  height: 100%;
+}

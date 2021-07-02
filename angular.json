@@ -65,16 +65,9 @@
             "assets": [
               "projects/demo/src/favicon.ico",
               "projects/demo/src/assets",
-              {
-                "glob": "**/*",
-                "input": "./node_modules/monaco-editor/min",
-                "output": "./assets/nge/monaco/min"
-              },
-              {
-                "glob": "**/*",
-                "input": "./node_modules/monaco-editor/min-maps",
-                "output": "./assets/nge/monaco/min-maps"
-              }
+              { "glob": "**/*", "input": "./node_modules/monaco-editor/min", "output": "./assets/nge/monaco/min" },
+              { "glob": "**/*", "input": "./node_modules/monaco-editor/min-maps", "output": "./assets/nge/monaco/min-maps" },
+              { "glob": "**/*", "input": "./projects/nge/monaco/src/themes", "output": "./assets/nge/monaco/themes" }
             ],
             "styles": ["projects/demo/src/styles.scss"],
             "scripts": []

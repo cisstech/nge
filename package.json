@@ -24,9 +24,8 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "rimraf dist && npm-run-all --parallel start:lib start:demo",
     "start:lib": "ng build nge --watch",
-    "start:demo": "wait-on dist/nge/fesm2015 && ng serve",
+    "start:demo": "ng serve",
     "build": "npm run build:lib && npm run build:demo",
     "build:lib": "ng build nge --prod",
     "postbuild:lib": "./scripts/postbuild.sh",
