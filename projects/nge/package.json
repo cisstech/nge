@@ -1,0 +1,38 @@
+{
+  "name": "nge",
+  "version": "1.0.0",
+  "description": "NG Essentials is a collection of libraries for Angular developers.",
+  "keywords": [
+    "angular",
+    "nge",
+    "nge-monaco",
+    "nge-markdown",
+    "nge-doc"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mciissee/nge"
+  },
+  "bugs": {
+    "url": "https://github.com/mciissee/nge/issues"
+  },
+  "homepage": "https://github.com/mciissee/nge",
+  "author": {
+    "name": "Mamadou Cisse",
+    "email": "mciissee@gmail.com"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^9.1.12",
+    "@angular/core": "^9.1.12"
+  },
+  "dependencies": {
+    "tslib": "^1.10.0"
+  },
+  "ngPackage": {
+    "dest": "../../dist/nge",
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  }
+}
