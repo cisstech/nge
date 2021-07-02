@@ -55,7 +55,7 @@ export class CheatSheetComponent implements OnInit {
         }
         record.expanded = true;
         const url =
-            'assets/docs/markdown/cheatsheet/' +
+            'assets/docs/nge-markdown/cheatsheet/' +
             title.toLowerCase().replace(' ', '-') +
             '.md';
 
