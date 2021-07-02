@@ -1,0 +1,10 @@
+{
+  "ngPackage": {
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  },
+  "peerDependencies": {
+    "marked": "^2.1.3"
+  }
+}

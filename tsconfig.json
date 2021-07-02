@@ -19,7 +19,8 @@
     ],
     "paths": {
       "nge": ["dist/nge"],
-      "nge/monaco": ["dist/nge/monaco"]
+      "nge/monaco": ["dist/nge/monaco"],
+      "nge/markdown": ["dist/nge/markdown"]
     }
   },
   "angularCompilerOptions": {

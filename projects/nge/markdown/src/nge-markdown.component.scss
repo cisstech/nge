@@ -1,0 +1,4 @@
+:host.nge-markdown-theme--github::ng-deep {
+  @import './themes/github.scss';
+  @include github-markdown();
+}
