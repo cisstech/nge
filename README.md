@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD033 -->
 
-<h1 align="center"> PLaTon Front</h1>
+<h1 align="center"> NG Essentials</h1>
 
 <p align="center">
 <img src="./projects/demo/src/assets/images/nge.svg" alt="Logo NGE" width="120px" />
