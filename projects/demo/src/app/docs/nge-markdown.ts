@@ -1,4 +1,4 @@
-import { NgeDocLinAction, NgeDocLink, NgeDocSettings } from "nge/doc";
+import { NgeDocLinAction, NgeDocLink, NgeDocSettings } from "@mcisse/nge/doc";
 
 const editInGithubAction = (url: string) => {
     const base = 'https://github.com/mciissee/nge/tree/main/projects/demo/src/assets/docs/nge-markdown/';

@@ -8,7 +8,7 @@ import { NGE_MONACO } from './docs/nge-monaco';
 const routes: Routes = [
     {
         path: 'docs',
-        loadChildren: () => import('nge/doc').then(m => m.NgeDocModule),
+        loadChildren: () => import('@mcisse/nge/doc').then(m => m.NgeDocModule),
         data: [
             NGE_DOC,
             NGE_MONACO,

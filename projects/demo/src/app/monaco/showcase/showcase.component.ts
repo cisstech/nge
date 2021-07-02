@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgeMonacoTheme, NgeMonacoThemeService } from 'nge/monaco';
+import { NgeMonacoTheme, NgeMonacoThemeService } from '@mcisse/nge/monaco';
 import { Subscription } from 'rxjs';
 
 @Component({

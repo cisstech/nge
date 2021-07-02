@@ -1,6 +1,6 @@
 {
-  "name": "nge",
-  "version": "1.0.0",
+  "name": "@mcisse/nge",
+  "version": "0.0.0",
   "description": "NG Essentials is a collection of libraries for Angular developers.",
   "keywords": [
     "angular",
@@ -33,7 +33,7 @@
     "test": "ng test --code-coverage --watch=false --browsers=ChromeHeadless && node coverage-merger.js",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "publish:lib": "npm publish ./dist/nge",
+    "publish:lib": "npm publish ./dist/nge --access public",
     "publish:demo": "angular-cli-ghpages --dir=./dist/demo",
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",

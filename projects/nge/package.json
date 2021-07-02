@@ -1,6 +1,6 @@
 {
-  "name": "nge",
-  "version": "1.0.0",
+  "name": "@mcisse/nge",
+  "version": "0.0.0",
   "description": "NG Essentials is a collection of libraries for Angular developers.",
   "keywords": [
     "angular",

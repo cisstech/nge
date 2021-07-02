@@ -18,10 +18,10 @@
       "dom"
     ],
     "paths": {
-      "nge": ["dist/nge"],
-      "nge/doc": ["dist/nge/doc"],
-      "nge/monaco": ["dist/nge/monaco"],
-      "nge/markdown": ["dist/nge/markdown"]
+      "@mcisse/nge": ["dist/nge"],
+      "@mcisse/nge/doc": ["dist/nge/doc"],
+      "@mcisse/nge/monaco": ["dist/nge/monaco"],
+      "@mcisse/nge/markdown": ["dist/nge/markdown"]
     }
   },
   "angularCompilerOptions": {

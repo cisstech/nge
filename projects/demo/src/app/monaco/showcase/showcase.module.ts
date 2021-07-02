@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShowcaseComponent } from './showcase.component';
-import { NgeMonacoModule } from 'nge/monaco';
+import { NgeMonacoModule } from '@mcisse/nge/monaco';
 
 @NgModule({
   imports: [

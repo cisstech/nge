@@ -1,4 +1,4 @@
-import { NgeDocSettings } from "nge/doc";
+import { NgeDocSettings } from "@mcisse/nge/doc";
 
 export const NGE_DOC: NgeDocSettings = {
     meta: {
