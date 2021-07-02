@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // LIBS
+import { NGE_DOC_RENDERERS } from 'nge/doc';
 import { NgeMonacoColorizerService, NgeMonacoModule, NGE_MONACO_THEMES } from 'nge/monaco';
 import {
     NgeMarkdownModule,
@@ -52,6 +53,14 @@ import { AppComponent } from './app.component';
         NgeMarkdownAdmonitionsProvider,
         NgeMarkdownHighlighterProvider,
         NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
+        {
+            provide: NGE_DOC_RENDERERS,
+            useValue: {
+                markdown: {
+                    component: () => import('nge/markdown').then(m => m.NgeMarkdownComponent),
+                }
+            }
+        }
     ],
     bootstrap: [AppComponent]
 })

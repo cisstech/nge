@@ -1,0 +1,115 @@
+:host {
+  --sidebar-width: 20rem;
+  --footer-height: 100px;
+  --header-height: 64px;
+  display: block;
+  background-color: #FFFFFF;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+main {
+  display: flex;
+  height: calc(100vh - var(--footer-height));
+  overflow: hidden;
+}
+
+/*  SIDEBAR */
+aside.sidebar {
+  display: block;
+  width: 0px;
+  border-right: 1px solid rgba(0, 0, 0, 0.07);
+  background-color: #fafbfc;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.5s;
+  &.opened {
+    opacity: 1;
+    pointer-events: initial;
+    width: var(--sidebar-width);
+  }
+}
+aside.sidebar,
+nge-doc-sidenav {
+  height: calc(100vh - var(--footer-height));
+}
+
+/* CONTENT */
+section {
+  flex: 1;
+  height: calc(100vh - var(--footer-height));
+  margin: 0;
+  padding: 0 2rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+  aside {
+    height: calc(100vh - var(--header-height) - var(--footer-height));
+    position: -webkit-sticky;
+    position: sticky;
+    overflow-x: hidden;
+    top: 0;
+    &::ng-deep {
+      ul {
+        list-style-type: none;
+      }
+      ul {
+        border-left: 1px solid #f5f5f5;
+      }
+      ul,
+      li {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        padding: 0 0 4px 16px;
+        line-height: 1.5;
+      }
+      a {
+        color: currentColor;
+        text-decoration: none;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: block;
+        width: 90%;
+        overflow: hidden;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      li.active {
+        color: black;
+        font-weight: 700;
+        border-left: 2px solid #f50057;
+        box-sizing: border-box;
+      }
+    }
+  }
+  article {
+    position: relative;
+    display: grid;
+    grid-template-columns: 80% auto;
+    padding-bottom: 1rem;
+  }
+}
+
+/* FOOTER */
+nge-doc-footer {
+  height: var(--footer-height);
+  padding: 0 16rem;
+}
+
+// Small devices
+@media (max-width: 959.99px) {
+  section {
+    padding: 0 16px;
+    article {
+      display: block;
+    }
+  }
+  nge-doc-footer {
+    padding: 0 2rem;
+  }
+}

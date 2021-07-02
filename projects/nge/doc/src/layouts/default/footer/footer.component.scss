@@ -1,0 +1,52 @@
+:host {
+  display: block;
+  background-color: #000;
+  color: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+footer {
+  display: block;
+  width: 100%;
+  padding: 1rem 0;
+  box-sizing: border-box;
+}
+
+footer > div {
+  display: flex;
+  align-items: center;
+  padding: 0.2rem 0.4rem;
+}
+
+footer > :first-child {
+  padding: 0.2rem 0rem;
+  font-size: 1.4em;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.icon-button {
+  background-color: transparent;
+  color: currentColor;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  width: auto;
+  padding: .2rem;
+  img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+  }
+}
+
+.powered-by {
+  color: hsla(0, 0%, 100%, 0.7);
+  a {
+    color: white;
+    text-decoration: none;
+  }
+}

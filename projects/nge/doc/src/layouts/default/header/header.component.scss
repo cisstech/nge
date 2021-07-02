@@ -1,0 +1,41 @@
+:host {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 2rem 0;
+  width: 100%;
+  height: var(--header-height);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+
+  .action {
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+    text-rendering: optimizeLegibility;
+    color: #000;
+    text-decoration: none;
+    margin-right: 8px;
+    span {
+      padding: 0 8px;
+    }
+    &:hover {
+      font-weight: 700;
+    }
+  }
+
+  img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+  }
+}
+
+.spacer {
+  flex: 1;
+}

@@ -1,0 +1,31 @@
+<ng-container *ngIf="state$|async as state">
+  <header>
+    <ng-container *ngIf="state.meta.logo; else: nologo">
+      <img [src]="state.meta.logo" alt="Documentation Logo">
+    </ng-container>
+    <ng-template #nologo>
+      <img src="https://icongr.am/octicons/book.svg?size=48&color=34495e">
+    </ng-template>
+    <h1>{{ state.meta.name }}</h1>
+  </header>
+  <nav *ngIf="state.pages.length">
+    <ng-container *ngTemplateOutlet="template; context: { $implicit: state.pages }"></ng-container>
+  </nav>
+</ng-container>
+<ng-template #template let-links>
+  <ul>
+    <ng-container *ngFor="let link of links; trackBy: trackBy">
+      <li [class.caption]="api.isExpandable(link)">
+        <a [routerLink]="link.href" [class.active]="api.isActive(link)">
+          <img *ngIf="link.icon" [src]="link.icon">
+          {{ link.title }}
+        </a>
+      </li>
+      <ng-container *ngIf="api.isExpandable(link)">
+        <ng-container
+          *ngTemplateOutlet="template; context: { $implicit: link.children }">
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ul>
+</ng-template>

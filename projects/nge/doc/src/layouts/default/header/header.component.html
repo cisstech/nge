@@ -1,0 +1,23 @@
+<header *ngIf="state$|async as state">
+  <div class="action" aria-label="Menu" (click)="toggle.emit()">
+    <img src="https://icongr.am/octicons/three-bars.svg?size=24&color=currentColor">
+  </div>
+  <ng-container *ngIf="state.meta.backUrl">
+    <a class="action" aria-label="Back" [routerLink]="state.meta.backUrl">
+      <img src="https://icongr.am/octicons/home.svg?size=24&color=currentColor">
+    </a>
+  </ng-container>
+  <div class="spacer"></div>
+  <ng-container *ngIf="state.currLink?.actions">
+    <ng-container *ngFor="let action of state.currLink.actions">
+      <div class="action" [attr.aria-label]="action.title" [title]="action.tooltip" (click)="invoke(action.run)">
+        <ng-container *ngIf="action.title">
+          <span>{{action.title}}</span>
+        </ng-container>
+        <ng-container *ngIf="action.icon">
+          <img [src]="action.icon">
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+</header>
