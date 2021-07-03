@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
+import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {
     Component,
     ComponentRef,
-    ElementRef,
     Injector,
     OnDestroy,
     OnInit,
@@ -19,12 +19,12 @@ import { RendererService } from './renderer.service';
     selector: 'nge-doc-renderer',
     templateUrl: 'renderer.component.html',
     styleUrls: ['renderer.component.scss'],
-    providers: [RendererService]
+    providers: [RendererService],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NgeDocRendererComponent implements OnInit, OnDestroy {
     private subscription?: Subscription;
     private markdownRenderer?: Type<any>;
-    private observer?: MutationObserver;
 
     @ViewChild('container', { read: ViewContainerRef, static: true })
     container!: ViewContainerRef;
@@ -32,7 +32,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     component?: ComponentRef<any>;
     loading = false;
 
-    get notFound() {
+    get notFound(): boolean {
         return !this.loading && !this.component;
     }
 
@@ -40,21 +40,21 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
         private readonly doc: NgeDocService,
         private readonly injector: Injector,
         private readonly renderer: RendererService,
+        private readonly changeDetectorRef: ChangeDetectorRef,
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.subscription = this.doc.stateChanges.subscribe(
             this.onChangeRoute.bind(this)
         );
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.clearViewContainer();
-        this.observer?.disconnect();
         this.subscription?.unsubscribe();
     }
 
-    private async onChangeRoute(state: NgeDocState) {
+    private async onChangeRoute(state: NgeDocState): Promise<void> {
         this.clearViewContainer();
         try {
             let component: ComponentRef<any> | undefined;
@@ -73,26 +73,17 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
                         break;
                 }
             }
-            if (component) {
-                const cmp = component.injector.get(ElementRef).nativeElement as HTMLElement;
-                this.observer?.disconnect();
-                this.observer = new MutationObserver(() => {
-                    this.observer?.disconnect();
-                    this.component = component;
-                    this.loading = false;
-                });
-                this.observer.observe(cmp, {
-                    childList: true,
-                    subtree: true,
-                });
-            }
+
+            this.component = component;
         } catch (error) {
             console.error(error);
+        } finally {
             this.loading = false;
+            this.changeDetectorRef.markForCheck();
         }
     }
 
-    private async rendererMarkdown(data: string) {
+    private async rendererMarkdown(data: string): Promise<ComponentRef<any>> {
         const renderers = this.injector.get(NGE_DOC_RENDERERS);
         if (!renderers?.markdown) {
             throw new Error(
@@ -139,10 +130,11 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
         });
     }
 
-    private clearViewContainer() {
+    private clearViewContainer(): void {
         this.component?.destroy();
         this.component = undefined;
         this.container.clear();
         this.loading = true;
+        this.changeDetectorRef.markForCheck();
     }
 }

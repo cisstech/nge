@@ -1,11 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Subscription } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'nge-doc-default-layout',
   templateUrl: './default-layout.component.html',
-  styleUrls: ['./default-layout.component.scss']
+  styleUrls: ['./default-layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
     private subscription?: Subscription;
@@ -13,10 +15,11 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     showTableOfContents = true;
 
     constructor(
-        private readonly observer: BreakpointObserver
+        private readonly observer: BreakpointObserver,
+        private readonly changeDetectorRef: ChangeDetectorRef,
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
          this.observer.observe([
             Breakpoints.XSmall,
             Breakpoints.Small,
@@ -27,10 +30,11 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
                 this.sidebarOpened = false;
                 this.showTableOfContents = false;
             }
+            this.changeDetectorRef.markForCheck();
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription?.unsubscribe();
     }
 }

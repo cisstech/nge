@@ -10,7 +10,13 @@ import {
 
 @Directive({ selector: '[ngeDocToc]' })
 export class NgeDocTocDirective implements OnDestroy, OnChanges {
+    private readonly observer = new MutationObserver(() => {
+        this.observer?.disconnect();
+        this.buildToc();
+    });
+
     private intersection?: IntersectionObserver;
+    private anchors: HTMLElement[] = [];
 
     @Input('ngeDocToc')
     component?: ComponentRef<any>;
@@ -18,56 +24,71 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
     constructor(
         private readonly el: ElementRef<HTMLElement>,
         private readonly location: Location
-    ) {}
+    ) { }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.intersection?.disconnect();
     }
 
-    ngOnChanges() {
-        const tocContainer = this.el.nativeElement;
-        tocContainer.innerHTML = '';
-        if (this.component) {
-            this.buildToc(this.component);
-        }
+    ngOnChanges(): void {
+        this.buildToc();
     }
 
-    private buildToc(component: ComponentRef<any>) {
-        const componentContainer = component.injector.get(ElementRef)
-            .nativeElement as HTMLElement;
-        const tocContainer = this.el.nativeElement;
-        tocContainer.innerHTML = '';
-        const nodes = Array.from(componentContainer.children).filter(
-            (node) => node.tagName === 'H2'
-        );
-        if (!nodes.length) {
+    private buildToc(): void {
+        this.clear();
+
+        if (!this.component) {
             return;
         }
-        const anchors: HTMLElement[] = [];
+
+        const componentNode = this.component.injector.get(
+            ElementRef
+        ).nativeElement as HTMLElement;
+
+        const tocContainer = this.el.nativeElement;
+
+        const h2Nodes = Array.from(
+            componentNode.children
+        ).filter((node) => node.tagName === 'H2');
+        if (!h2Nodes.length) {
+            return;
+        }
+
+        this.detectIntersection();
+
         const ul = document.createElement('ul');
-        this.createIntersectionObserver(anchors);
-        nodes.forEach((node) => {
-            const id = this.dashify(node.textContent || '');
+        h2Nodes.forEach((h2) => {
+            const id = this.dashify(h2.textContent || '');
             const target = document.createElement('span');
             target.id = id;
-            node.insertAdjacentElement('afterend', target);
+            h2.insertAdjacentElement('afterend', target);
+
             const li = document.createElement('li');
             const anchor = document.createElement('a');
-            anchor.innerHTML = node.innerHTML;
+            anchor.innerHTML = h2.innerHTML;
             anchor.href = '#';
             anchor.href = this.location.path() + '#' + id;
+
             li.appendChild(anchor);
             ul.appendChild(li);
 
-            node.setAttribute('data-toc-id', id);
+            h2.setAttribute('data-toc-id', id);
             li.setAttribute('data-toc-id', id);
-            anchors.push(li);
-            this.intersection?.observe(node);
+
+            this.anchors.push(li);
+
+            this.intersection?.observe(h2);
         });
+
         tocContainer.appendChild(ul);
+
+        this.observer.observe(componentNode, {
+            childList: true,
+            subtree: true,
+        });
     }
 
-    private dashify(input: string) {
+    private dashify(input: string): string {
         return input
             .trim()
             .replace(/([a-z])([A-Z])/g, '$1-$2')
@@ -77,16 +98,17 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
             .toLowerCase();
     }
 
-    private createIntersectionObserver(anchors: HTMLElement[]) {
+    private detectIntersection(): void {
         const tocContainer = this.el.nativeElement;
         const rect = tocContainer.getBoundingClientRect();
         const bottom = -window.innerHeight + rect.y + 200;
+
         this.intersection?.disconnect();
         this.intersection = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        anchors.forEach((anchor) => {
+                        this.anchors.forEach((anchor) => {
                             anchor.classList.remove('active');
                             const a = anchor.getAttribute('data-toc-id');
                             const b = entry.target.getAttribute('data-toc-id');
@@ -102,5 +124,13 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
                 rootMargin: `0px 0px ${bottom}px 0px`,
             }
         );
+    }
+
+    private clear(): void {
+        const tocContainer = this.el.nativeElement;
+        tocContainer.innerHTML = '';
+        this.observer.disconnect();
+        this.intersection?.disconnect();
+        this.anchors = [];
     }
 }
