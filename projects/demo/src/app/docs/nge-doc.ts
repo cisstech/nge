@@ -5,7 +5,7 @@ export const NGE_DOC: NgeDocSettings = {
         name: 'Nge doc',
         root: '/docs/nge-doc/',
         logo: 'assets/images/nge.svg',
-        backUrl: '/docs/nge-doc/getting-started',
+        backUrl: '/',
         repo: {
             name: 'nge',
             url: 'https://github.com/mciissee/nge',

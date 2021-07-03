@@ -5,7 +5,7 @@ export const NGE_MONACO: NgeDocSettings = {
         name: 'Nge monaco',
         root: '/docs/nge-monaco/',
         logo: 'assets/images/nge.svg',
-        backUrl: '/docs/nge-monaco/getting-started',
+        backUrl: '/',
         repo: {
             name: 'nge',
             url: 'https://github.com/mciissee/nge',

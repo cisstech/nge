@@ -14,7 +14,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
         name: 'Nge markdown',
         root: '/docs/nge-markdown/',
         logo: 'assets/images/nge.svg',
-        backUrl: '/docs/nge-markdown/getting-started',
+        backUrl: '/',
         repo: {
             name: 'nge',
             url: 'https://github.com/mciissee/nge',

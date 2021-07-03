@@ -83,20 +83,10 @@ export class NgeMarkdownService {
             contrib.contribute(transformer);
         }
 
-        // https://stackoverflow.com/a/33635881
-        // https://github.com/microsoft/monaco-editor/issues/1249
-        const w = (window as any);
-        w.__define = w.define;
-        w.__require = w.require;
-        w.define = undefined;
-        w.require = undefined;
         await this.assetLoader.loadAllSync(
             dependencies
         ).toPromise();
-        w.define = w.__define;
-        w.require = w.__require;
-        w.__define = undefined;
-        w.__require = undefined;
+
         return transformer;
     }
 

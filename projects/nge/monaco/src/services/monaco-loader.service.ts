@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken, OnDestroy, Optional } from '@angular/core';
+import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
 import { of, Subject } from 'rxjs';
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../monaco-config';
 import { NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '../contributions/monaco-contribution';
@@ -18,7 +18,7 @@ const WINDOW = (window as any);
 export class NgeMonacoLoaderService implements OnDestroy {
     private readonly load$ = new Subject<typeof monaco>();
 
-    private assetsRoot = MONACO_CDNJS_URL;
+    private baseUrl = MONACO_CDNJS_URL;
     private loadPromise?: Promise<typeof monaco>;
 
     constructor(
@@ -59,39 +59,35 @@ export class NgeMonacoLoaderService implements OnDestroy {
         if (this.loadPromise) {
             return this.loadPromise;
         }
+        return this.loadPromise = new Promise(async (resolve) => {
+             // https://stackoverflow.com/a/33635881
+            // https://github.com/microsoft/monaco-editor/issues/662
+            // https://github.com/microsoft/monaco-editor/issues/1249
 
-        return this.loadPromise = new Promise((resolve) => {
-            const interval = setInterval(() => { // https://github.com/microsoft/monaco-editor/issues/662
-                if (document.readyState !== 'complete') {
-                    return;
-                }
-
-                clearInterval(interval);
-
-                this.assetsRoot = this.config?.assets || MONACO_CDNJS_URL;
-                if (this.assetsRoot.endsWith('/')) {
-                    this.assetsRoot = this.assetsRoot.slice(0, this.assetsRoot.length - 1);
+            setTimeout(()  => {
+                this.baseUrl = this.config?.assets || MONACO_CDNJS_URL;
+                if (this.baseUrl.endsWith('/')) {
+                    this.baseUrl = this.baseUrl.slice(0, this.baseUrl.length - 1);
                 }
 
                 this.addWorkers();
 
                 if (!WINDOW.require) {
                     const script = document.createElement('script');
+                    script.src = `${this.baseUrl}/min/vs/loader.js`
                     script.type = 'text/javascript';
-                    script.src = this.assetsRoot + '/min/vs/loader.js';
                     script.onload = () => this.onLoad(resolve);
-
                     document.body.appendChild(script);
                 } else {
                     this.onLoad(resolve);
                 }
-            }, 30);
+            }, 1000);
         });
     }
 
     private onLoad(resolve: (e: typeof monaco) => void): void {
         WINDOW.require.config({
-            paths: { vs: this.assetsRoot + '/min/vs' }
+            paths: { vs: this.baseUrl + '/min/vs' }
         });
 
         const locale = this.config?.locale || '';
@@ -112,17 +108,17 @@ export class NgeMonacoLoaderService implements OnDestroy {
 
     private addWorkers() {
         // https://github.com/microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md
-        if (!this.assetsRoot.startsWith('http')) {
+        if (!this.baseUrl.startsWith('http')) {
             return;
         }
 
         const proxy = URL.createObjectURL(new Blob([`
-            self.MonacoEnvironment = { baseUrl: '${this.assetsRoot}/min' };
-            importScripts('${this.assetsRoot}/min/vs/base/worker/workerMain.js');
+            self.MonacoEnvironment = { baseUrl: '${this.baseUrl}/min' };
+            importScripts('${this.baseUrl}/min/vs/base/worker/workerMain.js');
         `], { type: 'text/javascript' }));
 
         WINDOW.MonacoEnvironment = {
-            baseUrl: this.assetsRoot + '/min',
+            baseUrl: this.baseUrl + '/min',
             getWorkerUrl: () => proxy,
             globalAPI: true,
         };
@@ -140,5 +136,6 @@ export class NgeMonacoLoaderService implements OnDestroy {
             return Promise.resolve();
         }));
     }
+
 }
 

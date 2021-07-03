@@ -44,7 +44,6 @@ import { AppComponent } from './app.component';
         BrowserAnimationsModule,
     ],
     providers: [
-
         NgeMarkdownKatexProvider,
         NgeMarkdownIconsProvider,
         NgeMarkdownEmojiProvider,
