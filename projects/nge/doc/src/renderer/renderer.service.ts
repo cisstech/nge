@@ -1,11 +1,9 @@
 import {
     Compiler,
-    Component,
     ComponentFactory,
     ComponentFactoryResolver,
     ComponentRef,
     Injectable,
-    NgModule,
     NgModuleRef,
     OnDestroy,
     Type,

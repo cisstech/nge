@@ -11,10 +11,10 @@ import {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavComponent {
-    state$ = this.api.stateChanges;
+    state$ = this.docService.stateChanges;
 
     constructor(
-        readonly api: NgeDocService
+        readonly docService: NgeDocService
     ) {}
 
     trackBy(_: number, item: NgeDocLink) {

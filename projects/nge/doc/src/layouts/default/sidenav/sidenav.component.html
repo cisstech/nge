@@ -15,13 +15,13 @@
 <ng-template #template let-links>
   <ul>
     <ng-container *ngFor="let link of links; trackBy: trackBy">
-      <li [class.caption]="api.isExpandable(link)">
-        <a [routerLink]="link.href" [class.active]="api.isActive(link)">
+      <li [class.caption]="docService.isExpandable(link)">
+        <a [routerLink]="link.href" [class.active]="docService.isActive(link)">
           <img *ngIf="link.icon" [src]="link.icon">
           {{ link.title }}
         </a>
       </li>
-      <ng-container *ngIf="api.isExpandable(link)">
+      <ng-container *ngIf="docService.isExpandable(link)">
         <ng-container
           *ngTemplateOutlet="template; context: { $implicit: link.children }">
         </ng-container>

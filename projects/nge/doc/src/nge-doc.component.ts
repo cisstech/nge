@@ -9,10 +9,10 @@ import { NgeDocService } from './nge-doc.service';
 })
 export class NgeDocComponent implements OnInit {
     constructor(
-        private readonly navigation: NgeDocService,
+        private readonly docService: NgeDocService,
     ) {}
 
     async ngOnInit() {
-        await this.navigation.setup();
+        await this.docService.setup();
     }
 }

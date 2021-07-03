@@ -10,10 +10,11 @@ import { NgeDocService } from '../../../nge-doc.service';
 })
 export class HeaderComponent {
     @Output() toggle = new EventEmitter();
-    state$ = this.api.stateChanges;
+    state$ = this.docService.stateChanges;
+
     constructor(
-        readonly api: NgeDocService,
         readonly injector: Injector,
+        readonly docService: NgeDocService,
     ) {}
 
     async invoke(handler: NgeDocLinkActionHandler) {

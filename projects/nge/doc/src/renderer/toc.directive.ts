@@ -7,12 +7,15 @@ import {
     OnChanges,
     OnDestroy,
 } from '@angular/core';
+import { ActivatedRoute, Router, Scroll } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Directive({ selector: '[ngeDocToc]' })
 export class NgeDocTocDirective implements OnDestroy, OnChanges {
+    private readonly subscriptions: Subscription[] = [];
     private readonly observer = new MutationObserver(() => {
         this.observer?.disconnect();
-        this.buildToc();
+        this.build();
     });
 
     private intersection?: IntersectionObserver;
@@ -22,19 +25,30 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
     component?: ComponentRef<any>;
 
     constructor(
-        private readonly el: ElementRef<HTMLElement>,
-        private readonly location: Location
-    ) { }
+        private readonly router: Router,
+        private readonly location: Location,
+        private readonly elementRef: ElementRef<HTMLElement>,
+        private readonly activatedRoute: ActivatedRoute,
+    ) {
+        this.subscriptions.push(
+            this.router.events.subscribe(event => {
+                if (event instanceof Scroll && event.anchor) {
+                    this.scroll(event.anchor);
+                }
+            })
+        )
+    }
 
     ngOnDestroy(): void {
         this.intersection?.disconnect();
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 
     ngOnChanges(): void {
-        this.buildToc();
+        this.build();
     }
 
-    private buildToc(): void {
+    private build(): void {
         this.clear();
 
         if (!this.component) {
@@ -45,14 +59,13 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
             ElementRef
         ).nativeElement as HTMLElement;
 
-        const tocContainer = this.el.nativeElement;
+        const tocContainer = this.elementRef.nativeElement;
 
         const h2Nodes = Array.from(
             componentNode.children
-        ).filter((node) => node.tagName === 'H2');
-        if (!h2Nodes.length) {
-            return;
-        }
+        ).filter((node) => {
+            return node.tagName === 'H2' && node.parentNode?.isSameNode(componentNode);
+        });
 
         this.detectIntersection();
 
@@ -66,8 +79,8 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
             const li = document.createElement('li');
             const anchor = document.createElement('a');
             anchor.innerHTML = h2.innerHTML;
-            anchor.href = '#';
-            anchor.href = this.location.path() + '#' + id;
+            // .substring(1) will remove the leading / (prevent errors when baseHref is defined in index.html)
+            anchor.href = this.location.path().substring(1) + '#' + id;
 
             li.appendChild(anchor);
             ul.appendChild(li);
@@ -81,6 +94,11 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
         });
 
         tocContainer.appendChild(ul);
+
+        const { fragment } = this.activatedRoute.snapshot;
+        if (fragment) {
+            this.scroll(fragment);
+        }
 
         this.observer.observe(componentNode, {
             childList: true,
@@ -99,7 +117,7 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
     }
 
     private detectIntersection(): void {
-        const tocContainer = this.el.nativeElement;
+        const tocContainer = this.elementRef.nativeElement;
         const rect = tocContainer.getBoundingClientRect();
         const bottom = -window.innerHeight + rect.y + 200;
 
@@ -127,10 +145,29 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
     }
 
     private clear(): void {
-        const tocContainer = this.el.nativeElement;
+        const tocContainer = this.elementRef.nativeElement;
         tocContainer.innerHTML = '';
         this.observer.disconnect();
         this.intersection?.disconnect();
         this.anchors = [];
     }
+
+    private scroll(query: string): void {
+        const targetElement = document.querySelector(`h2[data-toc-id="${query}"]`);
+        if (!targetElement) {
+            window.scrollTo(0, 0);
+        } else if (!this.isInViewport(targetElement)) {
+            targetElement.scrollIntoView();
+        }
+    }
+
+    private isInViewport(elem: any): boolean {
+        const bounding = elem.getBoundingClientRect();
+        return (
+            bounding.top >= 0 &&
+            bounding.left >= 0 &&
+            bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    };
 }

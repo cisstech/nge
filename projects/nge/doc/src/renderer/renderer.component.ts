@@ -23,38 +23,40 @@ import { RendererService } from './renderer.service';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NgeDocRendererComponent implements OnInit, OnDestroy {
-    private subscription?: Subscription;
+    private subscriptions: Subscription[] = [];
     private markdownRenderer?: Type<any>;
 
     @ViewChild('container', { read: ViewContainerRef, static: true })
     container!: ViewContainerRef;
 
-    component?: ComponentRef<any>;
     loading = false;
+    component?: ComponentRef<any>;
 
     get notFound(): boolean {
         return !this.loading && !this.component;
     }
 
     constructor(
-        private readonly doc: NgeDocService,
         private readonly injector: Injector,
-        private readonly renderer: RendererService,
+        private readonly docService: NgeDocService,
+        private readonly rendererService: RendererService,
         private readonly changeDetectorRef: ChangeDetectorRef,
-    ) {}
+    ) { }
 
     ngOnInit(): void {
-        this.subscription = this.doc.stateChanges.subscribe(
-            this.onChangeRoute.bind(this)
+        this.subscriptions.push(
+            this.docService.stateChanges.subscribe(
+                this.onChangeState.bind(this)
+            )
         );
     }
 
     ngOnDestroy(): void {
         this.clearViewContainer();
-        this.subscription?.unsubscribe();
+        this.subscriptions.forEach(s => s.unsubscribe());
     }
 
-    private async onChangeRoute(state: NgeDocState): Promise<void> {
+    private async onChangeState(state: NgeDocState): Promise<void> {
         this.clearViewContainer();
         try {
             let component: ComponentRef<any> | undefined;
@@ -65,7 +67,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
                         component = await this.rendererMarkdown(renderer);
                         break;
                     case 'function':
-                        component = await this.renderer.render({
+                        component = await this.rendererService.render({
                             type: await renderer(),
                             inputs: state.currLink.inputs,
                             container: this.container,
@@ -120,7 +122,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
             this.markdownRenderer = await renderer.component();
         }
 
-        return await this.renderer.render({
+        return await this.rendererService.render({
             inputs: {
                 ...customInputs,
                 ...inputs,
