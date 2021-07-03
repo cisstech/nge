@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgeMarkdownModule,
   NgeMarkdownIconsProvider,
-} from 'nge-markdown';
+} from '@mcisse/nge/markdown';
 
 import { AppComponent } from './app.component';
 
@@ -64,7 +64,6 @@ Result:
 
 @octicons home color=FF0000@
 @fontawesome home color=00FF00@
-
 
 ## With size
 

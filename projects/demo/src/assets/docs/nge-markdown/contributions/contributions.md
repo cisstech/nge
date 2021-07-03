@@ -10,7 +10,7 @@ There is a preconfigured Provider object for all of the default contributions,
 you can directly add them to the `providers` array of your application main module and start using them.
 
 The `NgeMarkdownHighlighterMonacoProvider` provider is a quite special, go to
-[NgeMarkdownHighlighter](/contributions/nge-markdown-highlighter) page to learn more about it.
+[NgeMarkdownHighlighter](/docs/nge-markdown/contributions/highlighter) page to learn more about it.
 
 ```typescript highlights="6-17 26-32 36-43"
 import { HttpClientModule } from '@angular/common/http';
@@ -18,7 +18,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgeMonacoModule, NgeMonacoColorizerService, NGE_THEMES } from 'nge-monaco';
+import { NgeMonacoModule, NgeMonacoColorizerService, NGE_THEMES } from '@mcisse/nge/monaco';
 import {
     NgeMarkdownModule,
     NgeMarkdownTabbedSetProvider,
@@ -29,7 +29,7 @@ import {
     NgeMarkdownIconsProvider,
     NgeMarkdownHighlighterProvider,
     NgeMarkdownHighlighterMonacoProvider,
-} from 'nge-markdown';
+} from '@mcisse/nge/markdown';
 
 import { AppComponent } from './app.component';
 
@@ -41,7 +41,7 @@ import { AppComponent } from './app.component';
         NgeMarkdownModule,
         NgeMonacoModule.forRoot({
             theming: {
-                themes: NGE_THEMES.map(theme => 'assets/themes/' + theme),
+                themes: NGE_THEMES.map(theme => 'assets/nge/monaco/themes/' + theme),
                 default: 'github'
             }
         }),
@@ -97,7 +97,7 @@ import {
     NgeMarkdownTransformer,
     NgeMarkdownContribution,
     NGE_MARKDOWN_CONTRIBUTION,
-} from 'nge-markdown';
+} from '@mcisse/nge/markdown';
 
 @Injectable()
 export class MyMarkdownContribution implements NgeMarkdownContribution {
@@ -137,7 +137,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgeMarkdownModule } from 'nge-markdown';
+import { NgeMarkdownModule } from '@mcisse/nge/markdown';
 
 import { MyMarkdownContributionProvider } from './my-contribution';
 import { AppComponent } from './app.component';

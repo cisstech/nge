@@ -7,6 +7,10 @@ import { NGE_MONACO } from './docs/nge-monaco';
 
 const routes: Routes = [
     {
+        path: '',
+        loadChildren: () => import('./home/home.module').then(m => m.HomeModule)
+    },
+    {
         path: 'docs',
         loadChildren: () => import('@mcisse/nge/doc').then(m => m.NgeDocModule),
         data: [
@@ -15,7 +19,7 @@ const routes: Routes = [
             NGE_MARKDOWN,
         ],
     },
-    { path: '**', redirectTo: 'docs', pathMatch: 'full' }
+    { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
 @NgModule({

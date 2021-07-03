@@ -24,7 +24,7 @@ the dependencies of nge-monaco to the project.
   import { BrowserModule } from '@angular/platform-browser';
   import { NgModule } from '@angular/core';
   import { HttpClientModule } from '@angular/common/http';
-  import { NgeMonacoModule } from 'nge-monaco';
+  import { NgeMonacoModule } from '@mcisse/nge/monaco';
   import { AppComponent } from './app.component';
 
   @NgModule({
@@ -212,7 +212,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { NgeMonacoModule } from 'nge-monaco';
+import { NgeMonacoModule } from '@mcisse/nge/monaco';
 
 @NgModule({
   declarations: [
@@ -233,7 +233,7 @@ import { NgeMonacoModule } from 'nge-monaco';
            'assets/nge-monaco/themes/github.json',
            'assets/nge-monaco/themes/one-dark-pro.json',
          ],
-         // themes: NGE_THEMES.map(theme => 'assets/nge-monaco/themes/' + theme), // register all themes
+         // themes: NGE_THEMES.map(theme => 'assets/nge/monaco/themes/' + theme), // register all themes
          default: 'github' // default theme
        }
     }),
@@ -255,7 +255,7 @@ This library comes with a set of custom themes for monaco editor taken from [htt
   "apps": [
     {
       "assets": [
-        { "glob": "**/*", "input": "./node_modules/nge-monaco/assets/", "output": "./assets/nge-monaco/" }
+        { "glob": "**/*", "input": "./node_modules/@mcisse/nge/assets/monaco/", "output": "./assets/nge/monaco/" }
       ],
       ...
     }
@@ -274,7 +274,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { NgeMonacoModule, NGE_THEMES } from 'nge-monaco';
+import { NgeMonacoModule, NGE_THEMES } from '@mcisse/nge/monaco';
 
 @NgModule({
   declarations: [
@@ -287,12 +287,12 @@ import { NgeMonacoModule, NGE_THEMES } from 'nge-monaco';
        theming: {
          /* // use a subset of themes
          themes: [ // custom themes
-           'assets/nge-monaco/themes/nord.json',
-           'assets/nge-monaco/themes/github.json',
-           'assets/nge-monaco/themes/one-dark-pro.json',
+           'assets/nge/monaco/themes/nord.json',
+           'assets/nge/monaco/themes/github.json',
+           'assets/nge/monaco/themes/one-dark-pro.json',
          ],
          */
-         themes: NGE_THEMES.map(theme => 'assets/nge-monaco/themes/' + theme), // use all themes
+         themes: NGE_THEMES.map(theme => 'assets/nge/monaco/themes/' + theme), // use all themes
          default: 'github' // default theme
        }
     }),
@@ -325,7 +325,7 @@ export class AppModule { }
 // example.component.ts
 
 import { Component } from '@angular/core';
-import { NgeMonacoThemeService } from 'nge-monaco';
+import { NgeMonacoThemeService } from '@mcisse/nge/monaco';
 
 @Component({
     selector: 'app-example',
@@ -359,7 +359,7 @@ import { NgModule, Injectable, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 
-import { NgeMonacoModule, NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from 'nge-monaco';
+import { NgeMonacoModule, NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '@mcisse/nge/monaco';
 
 @Injectable() // use injectable only if you want to use angular dependency injection.
 class MyContribution implements NgeMonacoContribution {
@@ -412,7 +412,7 @@ export class AppModule { }
 
 ## Load Monaco Editor from your own server
 
-By default the library load monaco editor from the cdn <https://cdn.jsdelivr.net/npm/monaco-editor@0.21.2>. Please follow the steps above to load monaco from your own server.
+By default the library load monaco editor from a CDN. Please follow the steps above to load monaco from your own server.
 
 ## Include monaco assets to angular.json
 
@@ -421,7 +421,8 @@ By default the library load monaco editor from the cdn <https://cdn.jsdelivr.net
   "apps": [
     {
       "assets": [
-        { "glob": "**/*", "input": "./node_modules/nge-monaco/assets/", "output": "./assets/nge-monaco/" }
+        { "glob": "**/*", "input": "./node_modules/monaco-editor/min", "output": "./assets/nge/monaco/min" },
+        { "glob": "**/*", "input": "./node_modules/monaco-editor/min-maps", "output": "./assets/nge/monaco/min-maps" },
       ],
       ...
     }
@@ -437,7 +438,7 @@ By default the library load monaco editor from the cdn <https://cdn.jsdelivr.net
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { NgeMonacoModule } from 'nge-monaco';
+import { NgeMonacoModule } from '@mcisse/nge/monaco';
 
 @NgModule({
   declarations: [
@@ -447,7 +448,7 @@ import { NgeMonacoModule } from 'nge-monaco';
     BrowserModule,
     HttpClientModule,
     NgeMonacoModule.forRoot({
-       assets: 'assets/nge-monaco/monaco'
+       assets: 'assets/nge/monaco'
     }),
   ],
   providers: [],

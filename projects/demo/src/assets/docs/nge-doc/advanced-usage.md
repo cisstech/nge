@@ -7,14 +7,12 @@ The full list of properties supported by NgeDoc configuration object can be foun
 ```typescript
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { NgeDocSettings } from 'nge-doc';
-
-import { NgeDocLink, NgeDocSettings } from 'nge-doc';
+import { NgeDocSettings, NgeDocLink, NgeDocSettings } from '@mcisse/nge/doc';
 
 const routes: Routes = [
     {
         path: 'docs',
-        loadChildren: () => import('nge-doc').then(m => m.NgeDocModule),
+        loadChildren: () => import('@mcisse/nge/doc').then(m => m.NgeDocModule),
         data: {
           meta: {
               name: 'Ngedoc',

@@ -1,7 +1,7 @@
 # Getting started
 
-**Ngedoc** is a documentation tool for [Angular](https://angular.io) applications.
-Using Ngedoc, you can create a branded static site from a set from Markdown files or a dynamic Angular components to host the documentation of your projects.
+**nge-doc** is a documentation tool for [Angular](https://angular.io) applications.
+Using nge-doc, you can create a branded static site from a set from Markdown files or a dynamic Angular components to host the documentation of your projects.
 
 ## Features
 
@@ -18,7 +18,7 @@ Using Ngedoc, you can create a branded static site from a set from Markdown file
 
 Contributions are always welcome. <br/>
 
-Please read our [CONTRIBUTING.md](https://github.com/mciissee/nge-doc/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/mciissee/nge-doc/pulls) or as [GitHub issues](https://github.com/mciissee/nge-doc/issues).
+Please read our [CONTRIBUTING.md](https://github.com/mciissee/nge/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/mciissee/nge/pulls) or as [GitHub issues](https://github.com/mciissee/nge/issues).
 
 Please just make sure that ...
 
@@ -30,11 +30,11 @@ Linter passes
 
 ## Support Development
 
-The use of this library is totally free and no donation is required.
+The use of this library is totally free.
 
 As the owner and primary maintainer of this project, I am putting a lot of time and effort beside my job, my family and my private time to bring the best support I can by answering questions, addressing issues and improving the library to provide more and more features over time.
 
-If this project has been useful, that it helped you or your business to save precious time, don't hesitate to give it a star and to consider a donation to support its maintenance and future development.
+If this project has been useful, that it helped you or your business to save precious time, don't hesitate to give it a star to support its maintenance and future development.
 
 ## License
 

@@ -1,8 +1,8 @@
 # Usage
 
-Ngedoc usage is based on Angular router module.
+nge-doc usage is based on Angular router module.
 As for the router module, you define the routes (pages) of your documentation site
-using a configuration object then Ngedoc will handle the navigation between the pages.
+using a configuration object then nge-doc will handle the navigation between the pages.
 
 ## Create one project called my-doc
 
@@ -65,7 +65,7 @@ export class AppRoutingModule {}
 
 ===
 
-## Add Ngedoc dependencies to the project
+## Add nge-doc dependencies to the project
 
 ### Angular Material
 
@@ -79,26 +79,26 @@ npm i @angular/cdk
 ### nge-markdown
 
 As the library is intended to render markdown content you must install a markdown renderer library. Here
-we will install [nge-markdown](https://www.npmjs.com/package/nge-markdown) and we will see later how to integrate
+we will install [nge-markdown](https://mciissee.github.io/nge/docs/nge-markdown/) and we will see later how to integrate
 it to the library and how to use another markdown renderer library if you don't like this one.
 
 ```bash
-npm i nge-markdown marked
+npm i marked
 ```
 
-### nge-doc
+### nge
 
-Now that the dependencies of the Ngedoc are installed, you can install the library itself from npm.
+Now that the dependencies of the nge-doc are installed, you can install the library itself from npm.
 
 ```bash
-npm i nge-doc
+npm i @mcisse/nge
 ```
 
 ## Register the documentation pages
 
-A documentation site in Ngedoc is a collection of links. Each link can refer either to a static page (Markdown file) or a dynamic page (Angular component).
+A documentation site in nge-doc is a collection of links. Each link can refer either to a static page (Markdown file) or a dynamic page (Angular component).
 
-To define the links of the site, you must register new route in the `routes` array of one of the router modules of your application like `app-routing.module.ts`. This route should lazy load `NgeDocModule` from `nge-doc` and use the `data` property of the route to define the links.
+To define the links of the site, you must register new route in the `routes` array of one of the router modules of your application like `app-routing.module.ts`. This route should lazy load `NgeDocModule` from `@mcisse/nge/doc` and use the `data` property of the route to define the links.
 
 === app-routings.module.ts
 
@@ -110,10 +110,10 @@ import { NgeDocSettings } from 'nge-doc';
 const routes: Routes = [
     {
         path: 'docs',
-        loadChildren: () => import('nge-doc').then(m => m.NgeDocModule),
+        loadChildren: () => import('@mcisse/nge/doc').then(m => m.NgeDocModule),
         data: {
           meta: {
-              name: 'Ngedoc',
+              name: 'nge-doc',
               logo: 'assets/images/nge.svg',
               root: '/docs/',
               repo: {
@@ -152,7 +152,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NGE_DOC_RENDERERS } from 'nge-doc';
+import { NGE_DOC_RENDERERS } from '@mcisse/nge/doc';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -167,12 +167,12 @@ import { AppComponent } from './app.component';
     AppRoutingModule
   ],
   providers: [
-     // provide NgeMarkdownComponent as a markdown renderer for nge-doc lib.
+     // provide NgeMarkdownComponent as a markdown renderer for nge-doc.
       {
           provide: NGE_DOC_RENDERERS,
           useValue: {
               markdown: {
-                  component: () => import('nge-markdown').then(m => m.NgeMarkdownComponent),
+                  component: () => import('@mcisse/nge/markdown').then(m => m.NgeMarkdownComponent),
               }
           }
       }
@@ -187,6 +187,8 @@ export class AppModule { }
 In this example, the `renderer` property of the links refers to markdown files placed in assets folder.
 
 Since we want to render markdown files, we must provide a markdown renderer component to the library.
-`NgeMarkdownComponent` from [Nge Markdown](https://www.npmjs.com/package/nge-markdown) library is a component that can render markdown and it's the library used to render the markdown files of this documentation site.
+`NgeMarkdownComponent` from [nge-markdown](https://mciissee.github.io/nge/docs/nge-markdown/) library is a component that can render markdown and it's the library used to render the markdown files of this documentation site.
 
 You are free to use the markdown renderer you want by referencing another component that expose a `file` @Input() to render markdown from an url and a `data` @Input() to render a markdown from a string.
+
+> The `data` property of the `Router` config accepts also an array of `NgeDocSettings`. In such case, item of the array will refers to a page accessible from `item.meta.root` url.

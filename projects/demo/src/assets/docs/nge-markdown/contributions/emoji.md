@@ -23,7 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgeMarkdownModule,
   NgeMarkdownEmojiProvider,
-} from 'nge-markdown';
+} from '@mcisse/nge/markdown';
 
 import { AppComponent } from './app.component';
 
@@ -56,7 +56,7 @@ import {
   NgeMarkdownModule,
   NgeMarkdownEmojiProvider,
   NgeMarkdownEmojiOptionsProvider,
-} from 'nge-markdown';
+} from '@mcisse/nge/markdown';
 
 import { AppComponent } from './app.component';
 
