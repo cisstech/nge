@@ -161,11 +161,12 @@ export class NgeDocService implements OnDestroy {
         }
 
         const path = this.location.path();
-        const pathWithEndSlash = path + '/';
+        const paths = [path, path + '/'];
+
         let meta: NgeDocMeta | undefined;
         let links: NgeDocLink[] = [];
         for (const [k, v] of this.pages) {
-            if (path.startsWith(k) || pathWithEndSlash.startsWith(k)) {
+            if (paths.some(path => path.startsWith(k))) {
                 meta = v.meta;
                 links = v.links;
                 break;
@@ -183,7 +184,8 @@ export class NgeDocService implements OnDestroy {
             nextLink,
         } = this.state.value;
 
-        if (path === currLink?.href) { // ignore same page navigation (fragment navigation)
+        // ignore same page navigation (fragment navigation)
+        if (currLink && paths.includes(currLink.href)) {
             return;
         }
 
@@ -196,7 +198,7 @@ export class NgeDocService implements OnDestroy {
 
         for (let i = 0; i < this.links.length; i++) {
             const link = this.links[i];
-            if (link.href === path) {
+            if (paths.includes(link.href)) {
                 const prevIndex = modulo(i - 1, this.links.length);
                 const nextIndex = modulo(i + 1, this.links.length);
                 currLink = link;
@@ -208,7 +210,7 @@ export class NgeDocService implements OnDestroy {
 
         // navigate to first page if currLink is not defined
         if (!currLink) {
-            this.router.navigateByUrl(this.links[0].href, {
+            this.router.navigateByUrl(links[0].href, {
                 replaceUrl: true
             });
             return;
@@ -225,7 +227,7 @@ export class NgeDocService implements OnDestroy {
         // expand visible links
 
         this.links.forEach(link => {
-            if (path.startsWith(link.href)) {
+            if (paths.some(path => path.startsWith(link.href))) {
                 link.expanded = true;
             }
         });
