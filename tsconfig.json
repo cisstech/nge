@@ -21,6 +21,7 @@
       "@mcisse/nge": ["dist/nge"],
       "@mcisse/nge/doc": ["dist/nge/doc"],
       "@mcisse/nge/monaco": ["dist/nge/monaco"],
+      "@mcisse/nge/services": ["dist/nge/services"],
       "@mcisse/nge/markdown": ["dist/nge/markdown"]
     }
   },

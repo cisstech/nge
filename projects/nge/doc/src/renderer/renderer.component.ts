@@ -13,13 +13,12 @@ import {
 import { Subscription } from 'rxjs';
 import { NgeDocState, NGE_DOC_RENDERERS } from '../nge-doc';
 import { NgeDocService } from '../nge-doc.service';
-import { RendererService } from './renderer.service';
+import { CompilerService } from '@mcisse/nge/services';
 
 @Component({
     selector: 'nge-doc-renderer',
     templateUrl: 'renderer.component.html',
     styleUrls: ['renderer.component.scss'],
-    providers: [RendererService],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NgeDocRendererComponent implements OnInit, OnDestroy {
@@ -39,7 +38,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     constructor(
         private readonly injector: Injector,
         private readonly docService: NgeDocService,
-        private readonly rendererService: RendererService,
+        private readonly compilerService: CompilerService,
         private readonly changeDetectorRef: ChangeDetectorRef,
     ) { }
 
@@ -67,7 +66,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
                         component = await this.rendererMarkdown(renderer);
                         break;
                     case 'function':
-                        component = await this.rendererService.render({
+                        component = await this.compilerService.render({
                             type: await renderer(),
                             inputs: state.currLink.inputs,
                             container: this.container,
@@ -122,7 +121,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
             this.markdownRenderer = await renderer.component();
         }
 
-        return await this.rendererService.render({
+        return await this.compilerService.render({
             inputs: {
                 ...customInputs,
                 ...inputs,
