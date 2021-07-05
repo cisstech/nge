@@ -1,0 +1,12 @@
+:host {
+  display: inline-block;
+  position: relative;
+  width: var(--icon-size, 16px);
+  height: var(--icon-size, 16px);
+  .codicon {
+    position: relative;
+    width: var(--icon-size, 16px);
+    height: var(--icon-size, 16px);
+    font-size: var(--icon-size, 16px);
+  }
+}

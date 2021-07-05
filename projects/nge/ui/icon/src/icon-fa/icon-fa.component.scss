@@ -1,0 +1,10 @@
+:host {
+  display: inline-block;
+  position: relative;
+  width: var(--icon-size, 16px);
+  height: var(--icon-size, 16px);
+  i {
+    font-size: var(--icon-size, 16px);
+    text-align: center;
+  }
+}

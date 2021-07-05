@@ -1,0 +1,10 @@
+:host {
+  --icon-size: 16px;
+  display: inline-block;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  &:ng-deep > * {
+    width: var(--icon-size);
+    height: var(--icon-size);
+  }
+}

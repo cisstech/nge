@@ -1,0 +1,12 @@
+:host {
+  display: inline-block;
+  position: relative;
+  width: var(--icon-size, 16px);
+  height: var(--icon-size, 16px);
+  img {
+    display: block;
+    object-fit: contain;
+    width: var(--icon-size, 16px);
+    height: var(--icon-size, 16px);
+  }
+}
