@@ -18,11 +18,12 @@
       "dom"
     ],
     "paths": {
-      "@mcisse/nge": ["dist/nge"],
-      "@mcisse/nge/doc": ["dist/nge/doc"],
-      "@mcisse/nge/monaco": ["dist/nge/monaco"],
-      "@mcisse/nge/services": ["dist/nge/services"],
-      "@mcisse/nge/markdown": ["dist/nge/markdown"]
+      "@mcisse/nge": ["projects/nge"],
+      "@mcisse/nge/doc": ["projects/nge/doc"],
+      "@mcisse/nge/monaco": ["projects/nge/monaco"],
+      "@mcisse/nge/services": ["projects/nge/services"],
+      "@mcisse/nge/markdown": ["projects/nge/markdown"],
+      "@mcisse/nge/ui/tree": ["projects/nge/ui/tree"]
     }
   },
   "angularCompilerOptions": {

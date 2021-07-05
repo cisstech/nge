@@ -1,0 +1,48 @@
+<ng-container *ngIf="filter.term">
+  <div class="tree-filter" title="Filter">
+    <span class="tree-filter__label">{{ filter.term }}</span>
+    <div class="tree-filter__commands">
+      <span class="command-clear" role="button" title="Clear" (click)="_clearFilter()">&times;</span>
+    </div>
+  </div>
+</ng-container>
+<mat-tree
+  tabindex="0"
+  class="tree-component"
+  [dataSource]="dataSource"
+  [treeControl]="controler"
+  [trackBy]="_trackById">
+  <mat-tree-node
+    *matTreeNodeDef="let node"
+    matTreeNodePadding
+    matTreeNodePaddingIndent="12"
+    class="tree-node tree-node--level-{{ node.level }}"
+    [attr.data-tree-node-id]="node.id"
+    [ngClass]="{
+      focused: isFocused(node),
+      selected: isSelected(node),
+      expanded: isExpanded(node)
+    }">
+      <div class="tree-node__content">
+        <ng-container *ngIf="!isEditing(node); else editingTemplate">
+          <ng-container
+            *ngTemplateOutlet="
+            nodeDirective.templateRef;
+            context: { $implicit: node }
+            ">
+          </ng-container>
+        </ng-container>
+      </div>
+  </mat-tree-node>
+</mat-tree>
+<ng-template #editingTemplate>
+  <span class="tree-input">
+    <input
+      autofocus
+      type="text"
+      placeholder="Press Enter to create ESC to cancel..."
+      [(ngModel)]="editing.text"
+      (keydown)="_onEdit($event)"
+      (blur)="_onEdit($event)"/>
+  </span>
+</ng-template>
