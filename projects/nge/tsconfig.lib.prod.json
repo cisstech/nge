@@ -1,6 +1,20 @@
 {
   "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "paths": {
+      "@mcisse/nge": ["dist/nge"],
+      "@mcisse/nge/doc": ["dist/nge/doc"],
+      "@mcisse/nge/monaco": ["dist/nge/monaco"],
+      "@mcisse/nge/services": ["dist/nge/services"],
+      "@mcisse/nge/markdown": ["dist/nge/markdown"],
+      "@mcisse/nge/ui/tree": ["dist/nge/ui/tree"],
+      "@mcisse/nge/ui/list": ["dist/nge/ui/list"],
+      "@mcisse/nge/ui/icon": ["dist/nge/ui/icon"],
+      "@mcisse/nge/ui/dialog": ["dist/nge/ui/dialog"]
+    }
+  },
   "angularCompilerOptions": {
     "enableIvy": false
   }
 }
+
