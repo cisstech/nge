@@ -30,4 +30,4 @@ import { AutofocusDirective } from './autofocus.directive';
     TreeNodeDirective,
   ]
 })
-export class SharedUiTreeModule { }
+export class NgeUiTreeModule { }
