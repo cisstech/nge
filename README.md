@@ -57,18 +57,10 @@ cd nge
 npm install
 ```
 
-* Build libraries in watch mode
-
-```bash
-npm run start:lib
-```
-
 * Serve demo
 
-> You must run this command only after the successful build of the libraries
-
 ```bash
-npm run start:demo
+npm run start
 ```
 
 Browser would open automatically at <http://localhost:4200/>.
