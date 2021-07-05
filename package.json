@@ -24,8 +24,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start:lib": "ng build nge --watch",
-    "start:demo": "ng serve",
+    "start": "ng serve",
     "build": "npm run build:lib && npm run build:demo",
     "build:lib": "ng build nge --prod",
     "postbuild:lib": "./scripts/postbuild.sh",
