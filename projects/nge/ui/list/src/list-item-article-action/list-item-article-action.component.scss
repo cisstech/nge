@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  align-items: center;
+  color: var(--brand-text-secondary);
+  margin: 0;
+  padding: 0;
+  &:hover {
+    background-color: rgba($color: var(--brand-background-secondary), $alpha: .05);
+    border-radius: .2rem;
+  }
+  &.clickable {
+    cursor: pointer;
+  }
+}
+
+.list-item-article-action-icon {
+  max-height: 18px;
+  &::ng-deep {
+    > * {
+      width: 18px;
+      height: 18px;
+      font-size: 18px;
+      object-fit: contain;
+    }
+  }
+}
+
+.list-item-article-action-title {
+  margin: 0 8px;
+  height: 18px;
+}

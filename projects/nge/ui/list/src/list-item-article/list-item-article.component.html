@@ -1,0 +1,32 @@
+<article class="mat-elevation-z1" [class.bordered]="!articleBannerUrl">
+  <img class="article-banner" [src]="articleBannerUrl" [alt]="articleBannerAlt" *ngIf="articleBannerUrl">
+  <div class="article-content-wrapper">
+    <header class="article-header">
+      <div class="article-image">
+        <ng-container *ngIf="articleIconTemplate; else: noImageTemplate">
+          <ng-container *ngTemplateOutlet="articleIconTemplate"></ng-container>
+        </ng-container>
+        <ng-template #noImageTemplate>
+          <img *ngIf="articleIconUrl" [src]="articleIconUrl" [alt]="articleIconAlt">
+        </ng-template>
+      </div>
+      <h3
+        class="article-title"
+        [routerLink]="articleUrl"
+        (click)="didClickTitle.emit()">
+        {{articleTitle}}
+      </h3>
+    </header>
+    <p class="article-description">
+      {{articleDescription}}
+    </p>
+    <div class="article-tags" [class.clickable]="isTagsCliclable" *ngIf="articleTags">
+      <div class="article-tag" *ngFor="let tag of articleTags" (click)="didClickTag.emit(tag)">
+        {{tag}}
+      </div>
+    </div>
+    <footer class="article-footer">
+      <ng-content></ng-content>
+    </footer>
+  </div>
+</article>

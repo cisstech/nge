@@ -23,7 +23,8 @@
       "@mcisse/nge/monaco": ["projects/nge/monaco"],
       "@mcisse/nge/services": ["projects/nge/services"],
       "@mcisse/nge/markdown": ["projects/nge/markdown"],
-      "@mcisse/nge/ui/tree": ["projects/nge/ui/tree"]
+      "@mcisse/nge/ui/tree": ["projects/nge/ui/tree"],
+      "@mcisse/nge/ui/list": ["projects/nge/ui/list"]
     }
   },
   "angularCompilerOptions": {
