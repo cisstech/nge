@@ -21,6 +21,7 @@
       "@mcisse/nge": ["projects/nge"],
       "@mcisse/nge/doc": ["projects/nge/doc"],
       "@mcisse/nge/monaco": ["projects/nge/monaco"],
+      "@mcisse/nge/pipes": ["projects/nge/pipes"],
       "@mcisse/nge/services": ["projects/nge/services"],
       "@mcisse/nge/markdown": ["projects/nge/markdown"],
       "@mcisse/nge/ui/tree": ["projects/nge/ui/tree"],
