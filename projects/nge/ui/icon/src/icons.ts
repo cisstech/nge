@@ -75,7 +75,7 @@ export class FileIcon implements Icon {
             return new FileIcon(baseUrl + iconName, options);
         }
 
-        return new FileIcon(baseUrl + defaultIcon.name, options);
+        return new FileIcon(baseUrl + defaultIcon.name + '.svg', options);
     }
 
     private static basename(path: string) {

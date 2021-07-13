@@ -46,7 +46,7 @@ export interface FileTheme {
  */
 export const FILE_THEME: FileTheme = {
     defaultIcon: { name: 'file' },
-    baseUrl: 'assets/images/files/',
+    baseUrl: 'assets/vendors/nge/icons/files/',
     icons: [
         { name: 'pl', fileExtensions: ['pl'] },
         { name: 'pltp', fileExtensions: ['pltp'] },

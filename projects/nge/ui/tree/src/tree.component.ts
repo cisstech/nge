@@ -212,7 +212,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         if (node) {
             const holder = this.findHolder(node);
             if (holder) {
-                // holder.focused = true;
                 this.currentFocus = holder;
                 this.select(node);
                 this.scrollInto(holder);
@@ -688,21 +687,20 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
      */
     private render(nodes: T[]): void {
         this.unselectAll();
-        // this.collapseAll();
 
         this.dataSource.data = nodes;
         this.changeDetectorRef.detectChanges();
 
         const { dataNodes } = this.controler;
 
+        // TODO
         // https://github.com/angular/components/issues/11381#issuecomment-393534949
-        const data = this.dataSource.data;
-        this.dataSource.data = [];
-        // deepcode ignore OverwriteAssignment: <please specify a reason of ignoring this>
-        this.dataSource.data = data;
+        // const data = this.dataSource.data;
+        // this.dataSource.data = [];
+        // this.dataSource.data = data;
+        // this.changeDetectorRef.detectChanges();
 
         this.isEmpty = !dataNodes?.length;
-        this.changeDetectorRef.detectChanges();
     }
 
     /**

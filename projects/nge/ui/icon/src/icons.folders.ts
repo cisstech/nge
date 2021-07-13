@@ -46,7 +46,7 @@ export interface FolderTheme {
 export const FOLDER_THEMES: FolderTheme[] = [
     {
         name: 'specific',
-        baseUrl: 'assets/images/files/',
+        baseUrl: 'assets/vendors/nge/icons/files/',
         defaultIcon: { name: 'folder' },
         rootFolder: { name: 'folder-root' },
         icons: [
