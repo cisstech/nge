@@ -244,7 +244,7 @@ export interface ITreeAdapter<T> {
      */
     actions?: ITreeActionMapping<T>;
 
-    /** Should the tree keep the expands state when the nodes change? (default to true)*/
+    /** Should the tree keep the expands state when the nodes change? (default to `true`)*/
     keepStateOnChangeNodes?: boolean;
 }
 
