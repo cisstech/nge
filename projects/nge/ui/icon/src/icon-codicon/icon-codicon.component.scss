@@ -1,10 +1,11 @@
 :host {
-  display: block;
   position: relative;
   width: var(--icon-size, 16px);
   height: var(--icon-size, 16px);
+  display: var(--display, block);
   .codicon {
     position: relative;
+    display: var(--display, block);
     width: var(--icon-size, 16px);
     height: var(--icon-size, 16px);
     font-size: var(--icon-size, 16px);
