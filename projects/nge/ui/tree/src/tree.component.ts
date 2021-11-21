@@ -9,23 +9,19 @@ import {
     Input,
     OnChanges,
     OnDestroy,
-    OnInit,
+    OnInit
 } from '@angular/core';
 import {
     MatTreeFlatDataSource,
-    MatTreeFlattener,
+    MatTreeFlattener
 } from '@angular/material/tree';
 import { Subscription } from 'rxjs';
 import { CURRENT_VISIBLE_TREES } from './internal';
 import { TreeNodeDirective } from './tree-node.directive';
 import {
     ITree,
-    ITreeAdapter,
-    ITreeFilter,
-    ITreeState,
-    TreeFilter,
-    ITreeNodeHolder,
-    ITreeEdition,
+    ITreeAdapter, ITreeEdition, ITreeFilter, ITreeNodeHolder, ITreeState,
+    TreeFilter
 } from './tree.model';
 
 /**
@@ -52,7 +48,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     private readonly flattener: MatTreeFlattener<T, ITreeNodeHolder<T>>;
 
     private isEmpty = false;
-    // private isTreeFocused = false;
     private isShiftKeyPressed = false;
 
     private currentFocus?: ITreeNodeHolder<T>;
@@ -73,7 +68,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     @Input() adapter!: ITreeAdapter<T>;
 
     constructor(
-        private readonly elementRef: ElementRef,
+        private readonly elementRef: ElementRef<HTMLElement>,
         private readonly changeDetectorRef: ChangeDetectorRef
     ) {
         this.controler = new FlatTreeControl<ITreeNodeHolder<T>>(
@@ -135,7 +130,17 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         }
 
         this.adapter.keepStateOnChangeNodes = this.adapter.keepStateOnChangeNodes ?? true;
+
+        let state: ITreeState | undefined;
+        if (this.adapter.keepStateOnChangeNodes) {
+            state = this.saveState();
+        }
+
         this.render(this.nodes);
+
+        if (state) {
+            this.restoreState(state);
+        }
     }
 
     ngOnDestroy(): void {
@@ -354,7 +359,8 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
 
                 this.expandAll();
             }
-        } catch {
+        } catch (error) {
+            console.error(error);
             this.render(this.nodes);
         }
     }
@@ -491,20 +497,19 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         if (!this.isShiftKeyPressed) {
             this.unselectAll();
         }
-
         this.focus(focus);
 
         if (!this.currentFocus && !this.isEmpty) {
             this.focus(this.controler.dataNodes[0]);
         }
 
-        const element = this.currentFocus
-            ? this.domNode(this.currentFocus)
-            : undefined;
-
         if (!(event instanceof KeyboardEvent)) {
             return;
         }
+
+        const element = this.currentFocus
+            ? this.domNode(this.currentFocus)
+            : undefined;
 
         if (element && this.currentFocus) {
             switch (event.key) {
@@ -624,7 +629,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
 
     private isTreeContainsEvent(event: Event): boolean {
         return (this.elementRef.nativeElement.contains(
-            event.target
+            event.target as any
         ));
     }
 
@@ -689,11 +694,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
      * @param nodes The new nodes of the tree.
      */
     private render(nodes: T[]): void {
-        let state: ITreeState | undefined;
-        if (this.adapter.keepStateOnChangeNodes) {
-            state = this.saveState();
-        }
-
         this.unselectAll();
 
         this.dataSource.data = nodes;
@@ -709,10 +709,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         // this.changeDetectorRef.detectChanges();
 
         this.isEmpty = !dataNodes?.length;
-
-        if (state) {
-            this.restoreState(state);
-        }
     }
 
     /**

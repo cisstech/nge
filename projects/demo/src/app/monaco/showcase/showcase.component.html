@@ -1,7 +1,7 @@
 <h1>Showcase</h1>
 
 <label for="theme">Theme: </label>
-<select name="theme" (change)="switchTheme($event.target.value)">
+<select name="theme" (change)="switchTheme($any($event.target).value)">
   <ng-container *ngFor="let item of themes|async" >
     <option [selected]="item === theme?.themeName" [value]="item">{{ item }}</option>
   </ng-container>
@@ -31,12 +31,12 @@ Alt-H2
 
 <nge-monaco-editor
   style="--editor-height: 200px"
-  (ready)="onCreateEditor($event)">
+  (ready)="onCreateEditor($any($event))">
 </nge-monaco-editor>
 
 <h2>NgeMonacoDiffEditor</h2>
 
 <nge-monaco-diff-editor
   style="--editor-height: 200px"
-  (ready)="onCreateDiffEditor($event)">
+  (ready)="onCreateDiffEditor($any($event))">
 </nge-monaco-diff-editor>

@@ -14,16 +14,16 @@
   [trackBy]="_trackById">
   <mat-tree-node
     *matTreeNodeDef="let node"
+    class="tree-node tree-node--level-{{ node.level }}"
     matTreeNodePadding
     [matTreeNodePaddingIndent]="12"
-    class="tree-node tree-node--level-{{ node.level }}"
     [attr.data-tree-node-id]="node.id"
     [ngClass]="{
       focused: isFocused(node),
       selected: isSelected(node),
       expanded: isExpanded(node)
     }">
-      <div class="tree-node__content" [matTooltip]="node.tooltip">
+      <div class="tree-node__content" [matTooltip]="node.data.tooltip">
         <ng-container *ngIf="!isEditing(node); else editingTemplate">
           <ng-container
             *ngTemplateOutlet="

@@ -9,7 +9,7 @@
   </ng-container>
   <div class="spacer"></div>
   <ng-container *ngIf="state.currLink?.actions">
-    <ng-container *ngFor="let action of state.currLink.actions">
+    <ng-container *ngFor="let action of state.currLink?.actions || []">
       <div class="action" [attr.aria-label]="action.title" [title]="action.tooltip" (click)="invoke(action.run)">
         <ng-container *ngIf="action.title">
           <span>{{action.title}}</span>
