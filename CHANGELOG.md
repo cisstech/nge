@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/mciissee/nge/compare/v0.0.9...v0.0.10) (2021-11-21)
+
+
+### Bug Fixes
+
+* **ui:** tree filtering not working ([ee246e7](https://github.com/mciissee/nge/commit/ee246e7a144fc9e491715be280e04b0ada10fd17))
+* missing semicolon in scss file ([560e7d0](https://github.com/mciissee/nge/commit/560e7d09c92509724f98af11dd8851232d707d06))
+
 ### 0.0.9 (2021-11-21)
 
 
