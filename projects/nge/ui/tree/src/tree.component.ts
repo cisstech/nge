@@ -215,13 +215,14 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             this.currentFocus = undefined;
         }
 
-        if (node) {
-            const holder = this.findHolder(node);
-            if (holder) {
-                this.currentFocus = holder;
-                this.select(node);
-                this.scrollInto(holder);
-            }
+        if (!node)
+            return;
+
+        const holder = this.findHolder(node);
+        if (holder) {
+            this.currentFocus = holder;
+            this.select(node);
+            this.scrollInto(holder);
         }
 
         this.changeDetectorRef.detectChanges();
@@ -458,9 +459,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
 
     //#region EVENTS
 
-    @HostListener('document:keyup', ['$event'])
-    keyup($event: KeyboardEvent) {
-        this.isShiftKeyPressed = $event.shiftKey;
+    @HostListener('document:keyup')
+    keyup() {
+        this.isShiftKeyPressed = false;
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -476,12 +477,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         this.changeDetectorRef.detach();
         if (this.isTreeContainsEvent($event)) {
             this.changeDetectorRef.reattach();
-            const node = this.findHolderFromEvent($event);
-            if (!node) {
-                return;
-            }
-
-            this.onMouseDown($event, node);
+            this.onMouseDown($event);
         }
     }
 
@@ -492,19 +488,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         }
     }
 
-    private onKeyDown(event: FocusEvent | KeyboardEvent): void {
-        const focus = this.currentFocus;
-        if (!this.isShiftKeyPressed) {
-            this.unselectAll();
-        }
-        this.focus(focus);
-
-        if (!this.currentFocus && !this.isEmpty) {
+    private onKeyDown(event: KeyboardEvent): void {
+        if (!this.currentFocus && !this.isEmpty && !this.selectedNodes.size) {
             this.focus(this.controler.dataNodes[0]);
-        }
-
-        if (!(event instanceof KeyboardEvent)) {
-            return;
         }
 
         const element = this.currentFocus
@@ -552,9 +538,13 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         }
     }
 
-    private onMouseDown(event: MouseEvent, node: ITreeNodeHolder<T>): void {
+    private onMouseDown(event: MouseEvent): void {
+        const node = this.findHolderFromEvent(event);
+        if (!node) {
+            return;
+        }
+
         if (this.isShiftKeyPressed) {
-            // select all nodes between the focused and the target node.
             if (!this.currentFocus) {
                 this.focus(node);
                 return;
@@ -566,17 +556,17 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
                 return;
             }
 
-            let cursor = domStart;
-            this.unselectAll();
-
             const domEnd = this.domNode(node);
             if (!domEnd) {
                 return;
             }
 
-            // tslint:disable-next-line: no-non-null-assertion
+            // select all nodes between the focused and the target node.
+
+            this.unselectAll();
+
+            let cursor = domStart;
             const y2 = domEnd.getClientRects().item(0)!.top;
-            // tslint:disable-next-line: no-non-null-assertion
             const y1 = domStart.getClientRects().item(0)!.top;
             if (y1 < y2) {
                 // traverse down
@@ -587,15 +577,19 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             } else if (y1 > y2) {
                 // traverse up
                 do {
-                    this.select(domStart);
+                    this.select(cursor);
                     cursor = cursor.previousElementSibling as HTMLElement;
                 } while (cursor && !cursor.isEqualNode(domEnd));
             }
+
             this.select(domEnd);
+            this.focus(node);
         } else {
             this.unselectAll();
             this.toggle(node.data);
+
             this.focus(node);
+
             const { actions } = this.adapter;
             if (actions?.mouse?.click) {
                 actions.mouse.click({
@@ -790,6 +784,8 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
      * @param direction Navigation direction.
      */
     private navigate(currEl: Element, direction: 'up' | 'down'): void {
+        this.unselectAll();
+
         const currNode = this.findHolderFromElement(currEl);
         if (!currNode) {
             return;
