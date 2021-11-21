@@ -1,6 +1,7 @@
 :host {
   --icon-size: 16px;
-  display: inline-block;
+  --display: block
+  display: var(--display);
   width: var(--icon-size);
   height: var(--icon-size);
   &:ng-deep > * {
