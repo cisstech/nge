@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { TreeComponent } from './tree.component';
 import { TreeNodeDirective } from './tree-node.directive';
@@ -24,6 +25,7 @@ import { AutofocusDirective } from './autofocus.directive';
       MatTreeModule,
       MatIconModule,
       MatButtonModule,
+      MatTooltipModule,
   ],
   exports: [
     TreeComponent,

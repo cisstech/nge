@@ -52,7 +52,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     private readonly flattener: MatTreeFlattener<T, ITreeNodeHolder<T>>;
 
     private isEmpty = false;
-    private isTreeFocused = false;
+    // private isTreeFocused = false;
     private isShiftKeyPressed = false;
 
     private currentFocus?: ITreeNodeHolder<T>;
@@ -134,6 +134,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             this.nodes = [];
         }
 
+        this.adapter.keepStateOnChangeNodes = this.adapter.keepStateOnChangeNodes ?? true;
         this.render(this.nodes);
     }
 
@@ -312,6 +313,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         function escape(text: string) {
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         }
+
         try {
             this.filter.term = (filter.term || '').trim();
             let pattern: RegExp | undefined;
@@ -458,7 +460,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     @HostListener('document:keydown', ['$event'])
     keydown($event: KeyboardEvent) {
         this.isShiftKeyPressed = $event.shiftKey;
-        if (this.isTreeFocused) {
+        if (this.isTreeContainsEvent($event)) {
             this.onKeyDown($event);
         }
     }
@@ -489,6 +491,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         if (!this.isShiftKeyPressed) {
             this.unselectAll();
         }
+
         this.focus(focus);
 
         if (!this.currentFocus && !this.isEmpty) {
@@ -620,7 +623,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     }
 
     private isTreeContainsEvent(event: Event): boolean {
-        return (this.isTreeFocused = this.elementRef.nativeElement.contains(
+        return (this.elementRef.nativeElement.contains(
             event.target
         ));
     }
@@ -686,6 +689,11 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
      * @param nodes The new nodes of the tree.
      */
     private render(nodes: T[]): void {
+        let state: ITreeState | undefined;
+        if (this.adapter.keepStateOnChangeNodes) {
+            state = this.saveState();
+        }
+
         this.unselectAll();
 
         this.dataSource.data = nodes;
@@ -701,6 +709,10 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         // this.changeDetectorRef.detectChanges();
 
         this.isEmpty = !dataNodes?.length;
+
+        if (state) {
+            this.restoreState(state);
+        }
     }
 
     /**

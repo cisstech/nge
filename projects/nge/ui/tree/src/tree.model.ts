@@ -3,6 +3,9 @@ export interface ITreeNode {
     /** name of the node */
     name: string;
 
+    /** optional tooltip text */
+    tooltip?: string;
+
     /**
      * An array of the node's children.
      */
@@ -241,6 +244,8 @@ export interface ITreeAdapter<T> {
      */
     actions?: ITreeActionMapping<T>;
 
+    /** Should the tree keep the expands state when the nodes change? (default to true)*/
+    keepStateOnChangeNodes?: boolean;
 }
 
 /** Internal representation of a node */

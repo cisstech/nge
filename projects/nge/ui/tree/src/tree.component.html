@@ -15,7 +15,7 @@
   <mat-tree-node
     *matTreeNodeDef="let node"
     matTreeNodePadding
-    matTreeNodePaddingIndent="12"
+    [matTreeNodePaddingIndent]="12"
     class="tree-node tree-node--level-{{ node.level }}"
     [attr.data-tree-node-id]="node.id"
     [ngClass]="{
@@ -23,7 +23,7 @@
       selected: isSelected(node),
       expanded: isExpanded(node)
     }">
-      <div class="tree-node__content">
+      <div class="tree-node__content" [matTooltip]="node.tooltip">
         <ng-container *ngIf="!isEditing(node); else editingTemplate">
           <ng-container
             *ngTemplateOutlet="
