@@ -5,11 +5,11 @@
   </ng-container>
 </div>
 <div mat-dialog-actions>
-  <button class="ok" mat-button [mat-dialog-close]="true">{{ data?.okTitle }}</button>
   <button class="cancel" mat-button [mat-dialog-close]="false">{{ data?.noTitle }}</button>
   <ng-container *ngIf="data.buttons">
     <ng-container *ngFor="let button of data.buttons">
-        <button mat-button [mat-dialog-close]="button.id">{{ button.title }}</button>
+      <button mat-button [mat-dialog-close]="button.id">{{ button.title }}</button>
     </ng-container>
   </ng-container>
+  <button class="ok" mat-raised-button color="primary" [mat-dialog-close]="true">{{ data?.okTitle }}</button>
 </div>

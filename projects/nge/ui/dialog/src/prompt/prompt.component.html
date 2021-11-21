@@ -4,14 +4,15 @@
     <nge-markdown [data]="data?.message"></nge-markdown>
   </ng-container>
   <form #form="ngForm">
-    <mat-form-field *ngFor="let field of data.fields" appearance="fill">
+    <mat-form-field *ngFor="let field of data.fields; let isFirst=first; let isLast=last;" appearance="fill">
       <mat-label>{{field?.placeholder || ''}}</mat-label>
       <input
         matInput
         name="field.value"
         autocomplete="on"
+        [autofocus]="isFirst"
         [required]="field.required"
-        (keydown.enter)="dialog.close(data)"
+        (keydown.enter)="isLast && dialog.close(data)"
         (keydown.escape)="dialog.close(false)"
         [type]="field.type"
         [(ngModel)]="field.value"
@@ -20,6 +21,6 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button #btnOk mat-button [disabled]="form.invalid" [mat-dialog-close]="data">{{ data.okTitle }}</button>
   <button #btnNo mat-button [mat-dialog-close]="false">{{ data.noTitle }}</button>
+  <button #btnOk mat-raised-button color="primary" [disabled]="form.invalid" [mat-dialog-close]="data">{{ data.okTitle }}</button>
 </div>
