@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12](https://github.com/mciissee/nge/compare/v0.0.11...v0.0.12) (2021-11-21)
+
+
+### Bug Fixes
+
+* **ui:** strange behavior while navigating with keyboard on tree ([eb0e213](https://github.com/mciissee/nge/commit/eb0e21338a45bb3f388811c9fa32ef5fc8fdf74e))
+
 ### [0.0.11](https://github.com/mciissee/nge/compare/v0.0.10...v0.0.11) (2021-11-21)
 
 ### [0.0.10](https://github.com/mciissee/nge/compare/v0.0.9...v0.0.10) (2021-11-21)
