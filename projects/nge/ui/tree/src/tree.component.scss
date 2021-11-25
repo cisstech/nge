@@ -1,3 +1,7 @@
+:host {
+  position: relative;
+}
+
 .tree-component {
   font-size: 14px;
   height: 100%;
@@ -33,7 +37,6 @@
 
 .tree-node__content {
   padding: 0 12px;
-
 }
 
 .tree-input {
@@ -80,8 +83,13 @@
   outline: #00000000 solid 4px;
   transition: width 0.5s;
 
+  &:hover .tree-filter__commands {
+    display: flex;
+  }
+
   .tree-filter__commands {
     display: none;
+    display: flex;
     align-items: center;
     span {
       cursor: pointer;
@@ -90,7 +98,10 @@
     }
   }
 
-  &:hover .tree-filter__commands {
-    display: flex;
+  .command-filter {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
   }
 }

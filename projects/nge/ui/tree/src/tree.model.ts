@@ -25,6 +25,7 @@ export interface ITreeFilter {
 export interface ITreeEdition<T> {
     node: T;
     text: string;
+    creation?: boolean;
 }
 
 /**
@@ -148,9 +149,10 @@ export interface ITree<T> {
     /**
      * Starts editing the given node.
      * @param node A reference to a node or an identifier of a node.
+     * @param creation If true, an input will be displayed after the node to create a new child node.
      * @throws {ReferenceError} if `node` is null.
      */
-    startEdition(node: T | string): void;
+    startEdition(node: T | string, creation?: boolean): void;
 
     /**
      * End the editing of the current node in a editing state.
@@ -188,6 +190,12 @@ export interface ITreeAdapter<T> {
      * by using `TreeService` class.
      */
     id: string;
+
+    /** Tree height (default 300) */
+    treeHeight?: string;
+
+    /** Item height (default 32) */
+    itemHeight?: string;
 
     /**
      * Function called to get the id of a node.

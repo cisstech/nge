@@ -6,35 +6,45 @@
     </div>
   </div>
 </ng-container>
-<mat-tree
-  tabindex="0"
+
+<cdk-virtual-scroll-viewport
   class="tree-component"
-  [dataSource]="dataSource"
-  [treeControl]="controler"
-  [trackBy]="_trackById">
-  <mat-tree-node
-    *matTreeNodeDef="let node"
-    class="tree-node tree-node--level-{{ node.level }}"
-    matTreeNodePadding
-    [matTreeNodePaddingIndent]="12"
-    [attr.data-tree-node-id]="node.id"
-    [ngClass]="{
-      focused: isFocused(node),
-      selected: isSelected(node),
-      expanded: isExpanded(node)
-    }">
-      <div class="tree-node__content" [matTooltip]="node.data.tooltip">
-        <ng-container *ngIf="!isEditing(node); else editingTemplate">
-          <ng-container
-            *ngTemplateOutlet="
-            nodeDirective.templateRef;
-            context: { $implicit: node }
-            ">
+  tabindex="0"
+  [itemSize]="adapter.itemHeight"
+  [style.height]="adapter.treeHeight">
+  <ng-container *cdkVirtualFor="let node of visibleNodes|async; trackBy: _trackById;" >
+    <div
+      class="tree-node tree-node--level-{{ node.level }}"
+      [style.padding-left]="node.level * 12 + 'px'"
+      [attr.data-tree-node-id]="node.id"
+      [ngClass]="{
+        focused: isFocused(node),
+        selected: isSelected(node),
+        expanded: isExpanded(node)
+      }">
+        <div class="tree-node__content" [matTooltip]="node.data.tooltip">
+          <ng-container *ngIf="!_isRenaming(node); else editingTemplate">
+            <ng-container
+              *ngTemplateOutlet="
+              nodeDirective.templateRef;
+              context: { $implicit: node }
+              ">
+            </ng-container>
           </ng-container>
-        </ng-container>
-      </div>
-  </mat-tree-node>
-</mat-tree>
+        </div>
+    </div>
+    <ng-container *ngIf="_isCreatingChildInside(node)">
+      <div
+        class="tree-node tree-node--level-{{ node.level + 1 }}"
+        [style.padding-left]="(node.level) * 12 + 'px'">
+        <div class="tree-node__content">
+          <ng-container *ngTemplateOutlet="editingTemplate"> </ng-container>
+        </div>
+    </div>
+    </ng-container>
+  </ng-container>
+</cdk-virtual-scroll-viewport>
+
 <ng-template #editingTemplate>
   <span class="tree-input">
     <input
