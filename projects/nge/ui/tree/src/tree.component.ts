@@ -22,7 +22,7 @@ import { CURRENT_VISIBLE_TREES } from './internal';
 import { TreeNodeDirective } from './tree-node.directive';
 import {
     ITree,
-    ITreeAdapter, ITreeEdition, ITreeFilter, ITreeNode, ITreeNodeHolder, ITreeState,
+    ITreeAdapter, ITreeEdition, ITreeFilter, ITreeNodeHolder, ITreeState,
     TreeFilter
 } from './tree.model';
 
@@ -42,7 +42,7 @@ declare type Node<T> = T | string | Element | ITreeNodeHolder<T>;
     styleUrls: ['tree.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeComponent<T extends ITreeNode> implements ITree<T>, OnInit, OnChanges, OnDestroy {
+export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy {
     private readonly DATA_TREE_NODE_ID = 'data-tree-node-id';
 
     private readonly flattener: MatTreeFlattener<T, ITreeNodeHolder<T>>;

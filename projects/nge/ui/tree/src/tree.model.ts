@@ -1,17 +1,3 @@
-/** Representation of a tree node */
-export interface ITreeNode {
-    /** name of the node */
-    name: string;
-
-    /** optional tooltip text */
-    tooltip?: string;
-
-    /**
-     * An array of the node's children.
-     */
-    children?: ReadonlyArray<ITreeNode>;
-}
-
 export interface ITreeState {
     active: string;
     filter: ITreeFilter;
