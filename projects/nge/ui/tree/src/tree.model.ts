@@ -177,7 +177,7 @@ export interface ITreeAdapter<T> {
      */
     id: string;
 
-    /** Tree height (default 300) */
+    /** Tree height (default 100%) */
     treeHeight?: string;
 
     /** Item height (default 32) */
