@@ -274,9 +274,13 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             this.editing.node = holder.data;
             this.editing.text = creation ? '' : holder.name;
             this.editing.creation = creation;
+            if (!this.isExpanded(node)) {
+                this.expand(node);
+            } else {
+                this.changeDetectorRef.detectChanges();
+            }
         }
 
-        this.changeDetectorRef.detectChanges();
     }
 
     endEdition(): void {
@@ -380,11 +384,11 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     //#endregion
 
     //#region CALLED FROM TEMPLATE
-    _onEdit(event: FocusEvent | KeyboardEvent) {
+    _onEdit(event: Event): void {
         if (this.adapter.onDidEditName) {
             event.stopPropagation();
 
-            const { node, text } = this.editing;
+            const { node, text, creation } = this.editing;
             if (!node) {
                 throw new Error('There is no focused node.');
             }
@@ -403,16 +407,18 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
                         this.adapter.onDidEditName({
                             node: node,
                             text: name,
+                            creation,
                         });
                     }
                 } finally {
+                    this.focus(node);
                     this.endEdition();
                 }
             }
         }
     }
 
-    _clearFilter() {
+    _clearFilter(): void {
         this.search({ term: '' });
     }
 
@@ -428,7 +434,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         return !this.editing.creation && this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node);
     }
 
-    _isCreatingChildInside(node: Node<T>): boolean {
+    _isCreating(node: Node<T>): boolean {
         if (node == null) {
             throw new ReferenceError('Argument "node" is required.');
         }
@@ -1002,6 +1008,8 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             data: node,
             name: this.adapter.nameProvider(node),
             level: level,
+            paddingLeft: level * 12 + 'px',
+            tooltip: this.adapter.tooltipProvider?.(node),
             children: this.children(node),
             expandable,
         };

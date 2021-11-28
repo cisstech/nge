@@ -204,6 +204,11 @@ export interface ITreeAdapter<T> {
     childrenProvider: (node: T) => T[];
 
     /**
+     * Function called to get the display tooltip of a node.
+     */
+    tooltipProvider?: (node: T) => string;
+
+    /**
      * If enabled, this option will filter the tree
      * each time a keyboard key is pressed while the tree is focused.
      *
@@ -253,14 +258,17 @@ export interface ITreeNodeHolder<T> {
     /** display name of the node */
     name: string;
 
-    /** children of the node */
-    children: T[];
-
     /** Level in the tree (starts from 0). */
     level: number;
 
+    /** children of the node */
+    children: T[];
+
     /** A value indicating whether the node is expandable */
     expandable: boolean;
+
+    tooltip?: string;
+    paddingLeft: string;
 
     /** A value indicating whether the node is focused */
     // focused?: boolean;

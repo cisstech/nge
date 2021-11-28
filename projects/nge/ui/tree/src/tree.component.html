@@ -8,44 +8,55 @@
 </ng-container>
 
 <cdk-virtual-scroll-viewport
-  class="tree-component"
   tabindex="0"
+  class="tree-component"
+  [class.editing]="editing.node != null"
   [itemSize]="adapter.itemHeight"
   [style.height]="adapter.treeHeight">
-  <ng-container *cdkVirtualFor="let node of visibleNodes|async; trackBy: _trackById;" >
-    <div
-      class="tree-node tree-node--level-{{ node.level }}"
-      [style.padding-left]="node.level * 12 + 'px'"
-      [attr.data-tree-node-id]="node.id"
-      [ngClass]="{
-        focused: isFocused(node),
-        selected: isSelected(node),
-        expanded: isExpanded(node)
-      }">
-        <div class="tree-node__content" [matTooltip]="node.data.tooltip">
-          <ng-container *ngIf="!_isRenaming(node); else editingTemplate">
-            <ng-container
-              *ngTemplateOutlet="
-              nodeDirective.templateRef;
-              context: { $implicit: node }
-              ">
-            </ng-container>
-          </ng-container>
-        </div>
-    </div>
-    <ng-container *ngIf="_isCreatingChildInside(node)">
+  <ng-container *cdkVirtualFor="let node of visibleNodes|async; trackBy: _trackById;">
+    <!-- RENAMING -->
+    <ng-container *ngIf="_isRenaming(node); else: nodeTemplate">
       <div
-        class="tree-node tree-node--level-{{ node.level + 1 }}"
-        [style.padding-left]="(node.level) * 12 + 'px'">
+        class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
+        [attr.data-tree-node-id]="node.id"
+        [style.padding-left]="node.paddingLeft">
         <div class="tree-node__content">
-          <ng-container *ngTemplateOutlet="editingTemplate"> </ng-container>
+          <ng-container *ngTemplateOutlet="inputTemplate"> </ng-container>
         </div>
-    </div>
+      </div>
+    </ng-container>
+
+    <!-- NODE -->
+    <ng-template #nodeTemplate>
+      <div
+        class="tree-node tree-node--level-{{ node.level }}"
+        [attr.data-tree-node-id]="node.id"
+        [style.padding-left]="node.paddingLeft"
+        [ngClass]="{
+          focused: isFocused(node),
+          selected: isSelected(node),
+          expanded: isExpanded(node)
+        }">
+          <div class="tree-node__content" [matTooltip]="node.tooltip">
+            <ng-container *ngTemplateOutlet="nodeDirective.templateRef; context: { $implicit: node }"></ng-container>
+          </div>
+      </div>
+    </ng-template>
+
+    <!-- CREATING -->
+    <ng-container *ngIf="_isCreating(node)">
+      <div
+        class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
+        [style.padding-left]="node.paddingLeft">
+        <div class="tree-node__content">
+          <ng-container *ngTemplateOutlet="inputTemplate"> </ng-container>
+        </div>
+      </div>
     </ng-container>
   </ng-container>
 </cdk-virtual-scroll-viewport>
 
-<ng-template #editingTemplate>
+<ng-template #inputTemplate>
   <span class="tree-input">
     <input
       autofocus

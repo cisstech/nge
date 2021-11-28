@@ -3,15 +3,22 @@
 }
 
 .tree-component {
-  font-size: 14px;
   height: 100%;
   background: transparent;
   transition: all 0.3s, border 0s, line-height 0s, box-shadow 0s;
+  font-size: 14px;
   &:focus {
     .tree-node.focused,
     .tree-node.selected {
       background-color: #bae7ff;
     }
+  }
+  &.editing .tree-node {
+    opacity: .4;
+  }
+
+  &.editing .opaque {
+    opacity: 1 !important;
   }
 }
 
