@@ -21,20 +21,12 @@ import { BehaviorSubject } from 'rxjs';
 import { CURRENT_VISIBLE_TREES } from './internal';
 import { TreeNodeDirective } from './tree-node.directive';
 import {
+    INode,
     ITree,
     ITreeAdapter, ITreeEdition, ITreeFilter, ITreeNodeHolder, ITreeState,
     TreeFilter
 } from './tree.model';
 
-
-/**
- * Representation of a node
- * T => data
- * string => id of a node
- * Element => dom element of a node
- * ITreeNodeHolder<T> internal representation
- */
-declare type Node<T> = T | string | Element | ITreeNodeHolder<T>;
 
 @Component({
     selector: 'ui-tree',
@@ -56,7 +48,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     private isEmpty = false;
     private isShiftKeyPressed = false;
     private activeNode?: ITreeNodeHolder<T>;
-    private suspendRendering = false;
 
     readonly filter: ITreeFilter = new TreeFilter();
     readonly editing: Partial<ITreeEdition<T>> = { text: '', node: undefined };
@@ -151,7 +142,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         return this.activeNode?.data;
     }
 
-    isFocused(node: Node<T>): boolean {
+    isFocused(node: INode<T>): boolean {
         if (node == null) {
             throw new ReferenceError('Argument "node" is required.');
         }
@@ -163,7 +154,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         return this.findHolder(node)?.id === this.activeNode.id;
     }
 
-    isExpanded(node: Node<T>): boolean {
+    isExpanded(node: INode<T>): boolean {
         if (node == null) {
             throw new ReferenceError('Argument "node" is required.');
         }
@@ -176,7 +167,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         return this.controler.isExpanded(holder);
     }
 
-    isSelected(node: Node<T>): boolean {
+    isSelected(node: INode<T>): boolean {
         if (node == null) {
             throw new ReferenceError('Argument "node" is required.');
         }
@@ -190,77 +181,97 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     }
 
 
-    focus(node?: Node<T>): void {
-        if (this.activeNode) {
-            this.unselect(this.activeNode);
-            this.activeNode = undefined;
+    focus(node: INode<T>, render = true): void {
+        const holder = this.findHolder(node);
+        if (holder) {
+            if (this.activeNode) {
+                this.unselect(this.activeNode, false);
+            }
+            this.activeNode = holder;
+            this.select(node, false);
+            this.expandAncestors(holder);
+            this.scrollInto(holder);
+            if (render) {
+                this.render();
+            }
         }
+    }
 
+    unfocus(): void {
+        this.activeNode = undefined;
+        this.changeDetectorRef.detectChanges();
+    }
+
+    expand(node: INode<T>, render = true): void {
         if (!node) {
             return;
         }
 
         const holder = this.findHolder(node);
-        if (holder) {
-            this.activeNode = holder;
-            this.select(node);
-            this.scrollInto(holder);
+        if (!holder) {
+            return;
         }
 
-        this.changeDetectorRef.detectChanges();
+        if (holder.expandable && !this.controler.isExpanded(holder)) {
+            this.controler.expand(holder);
+            this.expandAncestors(holder);
+            if (render) {
+                this.render();
+            }
+        }
     }
 
-    expand(node: Node<T>): void {
-        if (!node) {
-            throw new ReferenceError('Argument "node" is required.');
-        }
-
-        const holder = this.findHolder(node);
-        if (holder && holder.expandable) {
-            this.ensureVisible(holder);
+    expandAll(render = true): void {
+        this.controler.expandAll();
+        if (render) {
             this.render();
         }
     }
 
-    expandAll(): void {
-        this.controler.expandAll();
-        this.render();
-    }
-
-    collapse(node: Node<T>): void {
+    collapse(node: INode<T>, render = true): void {
         if (!node) {
-            throw new ReferenceError('Argument "node" is required.');
+            return;
         }
 
         const holder = this.findHolder(node);
-        if (holder && holder.expandable) {
+        if (!holder) {
+            return;
+        }
+
+        if (holder.expandable && this.controler.isExpanded(holder)) {
             this.controler.collapse(holder);
             if (this.adapter.onDidCollapse) {
                 this.adapter.onDidCollapse(holder.data);
             }
+            if (render) {
+                this.render();
+            }
+        }
+    }
+
+    collapseAll(render = true): void {
+        this.controler.collapseAll();
+        if (render) {
             this.render();
         }
-
     }
 
-    collapseAll(): void {
-        this.controler.collapseAll();
-        this.render();
-    }
-
-    toggle(node: Node<T>): void {
+    toggle(node: INode<T>, render = true): void {
         if (!node) {
-            throw new ReferenceError('Argument "node" is required.');
+            return;
         }
 
         const holder = this.findHolder(node);
         if (holder?.expandable) {
-            this.controler.toggle(holder);
-            this.render();
+            if (this.controler.isExpanded(holder)) {
+                this.collapse(node, render);
+            } else {
+                this.expand(node, render);
+            }
         }
     }
 
-    startEdition(node: Node<T>, creation?: boolean): void {
+    startEdition(node: INode<T>, creation?: boolean): void {
         if (!this.adapter.onDidEditName)
             return;
 
@@ -367,9 +378,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         if (filter.term) {
             this.search(filter);
         } else {
-            this.suspendRendering = true;
-            expandedNodes.forEach(this.expand.bind(this));
-            this.suspendRendering = false;
+            expandedNodes.forEach(node => {
+                this.expand(node, false);
+            });
             this.render();
         }
 
@@ -422,7 +433,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         this.search({ term: '' });
     }
 
-    _isRenaming(node: Node<T>): boolean {
+    _isRenaming(node: INode<T>): boolean {
         if (node == null) {
             throw new ReferenceError('Argument "node" is required.');
         }
@@ -434,7 +445,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         return !this.editing.creation && this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node);
     }
 
-    _isCreating(node: Node<T>): boolean {
+    _isCreating(node: INode<T>): boolean {
         if (node == null) {
             throw new ReferenceError('Argument "node" is required.');
         }
@@ -507,14 +518,14 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
                     if (!this.isShiftKeyPressed) {
                         event.preventDefault();
                         event.stopPropagation();
-                        this.collapse(this.activeNode);
+                        this.collapse(this.activeNode, true);
                     }
                     break;
                 case 'ArrowRight':
                     if (!this.isShiftKeyPressed) {
                         event.preventDefault();
                         event.stopPropagation();
-                        this.expand(this.activeNode);
+                        this.expand(this.activeNode, true);
                     }
                     break;
                 default:
@@ -538,12 +549,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             return;
         }
 
-        if (this.isShiftKeyPressed) {
-            if (!this.activeNode) {
-                this.focus(node);
-                return;
-            }
-
+        if (this.isShiftKeyPressed && this.activeNode) {
             const domStart = this.domNode(this.activeNode);
             if (!domStart) {
                 this.select(node);
@@ -577,11 +583,11 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             }
 
             this.select(domEnd, false);
-            this.focus(node);
+            this.focus(node, true);
         } else {
             this.unselectAll(false);
-            this.toggle(node);
-            this.focus(node);
+            this.toggle(node, false);
+            this.focus(node, true);
 
             const { actions } = this.adapter;
             if (actions?.mouse?.click) {
@@ -600,9 +606,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         const node = this.findHolderFromEvent(e);
         if (node) {
             if (!this.isSelected(node)) {
-                this.unselectAll();
+                this.unselectAll(false);
             }
-            this.focus(node);
+            this.focus(node, true);
         }
 
         const { actions } = this.adapter;
@@ -676,9 +682,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
 
     //#region PRIVATE
     private render() {
-        if (this.suspendRendering)
-            return;
-
         const nodes: ITreeNodeHolder<T>[] = [];
         const dataNodes = this.controler.dataNodes || [];
         const expandedNodes = new Set(this.controler.expansionModel.selected.map(node => node.id));
@@ -723,15 +726,23 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         const dataNodes = this.controler.dataNodes || [];
 
         let parents: ITreeNodeHolder<T>[] = [];
-        let lastLevel = -1;
         let topParent: ITreeNodeHolder<T> | undefined;
+        let previousLevel = -1;
+
         dataNodes.forEach(node => {
             this.nodesIndex.set(node.id, node);
-            if (node.level < lastLevel) {
-                for (let i = 0; i < lastLevel - node.level; i++)
-                    parents.pop();
-
-                topParent = parents[parents.length - 1];
+            if (node.level < previousLevel) {
+                /* for (let i = 0; i < previousLevel - node.level; i++)
+                    parents.pop(); */
+                topParent = undefined;
+                let i = parents.length - 1;
+                while (i >= 0) {
+                    if (parents[i].level === node.level - 1) {
+                        topParent = parents[i];
+                        break;
+                    }
+                    i--;
+                }
             }
 
             this.parentsIndex.set(node.id, topParent);
@@ -740,7 +751,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
                 parents.push(topParent = node);
             }
 
-            lastLevel = node.level;
+            previousLevel = node.level;
         });
     }
 
@@ -748,7 +759,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
      * Gets the dom element associated to the given node.
      * @param e A node.
      */
-    private domNode(e: Node<T>): HTMLElement | null {
+    private domNode(e: INode<T>): HTMLElement | null {
         const node = this.findHolder(e);
         if (!node) {
             throw new Error(e + ' is not a registered node');
@@ -762,15 +773,13 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
      * Adds the given node to the selected nodes.
      * @param node The node to select.
      */
-    private select(node: Node<T>, detectChanges: boolean = true): void {
+    private select(node: INode<T>, detectChanges: boolean = true): void {
         const holder = this.findHolder(node);
         if (!holder) {
-            throw new Error(node + ' is not a registered node');
+            return;
         }
 
-        if (!this.selectedNodes.has(holder.id)) {
-            this.selectedNodes.set(holder.id, holder);
-        }
+        this.selectedNodes.set(holder.id, holder);
 
         if (detectChanges) {
             this.changeDetectorRef.detectChanges();
@@ -781,13 +790,17 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
      * Removes the given node to the selected nodes.
      * @param node The node to unselect.
      */
-    private unselect(node: Node<T>, detectChanges: boolean = true): void {
+    private unselect(node: INode<T>, detectChanges: boolean = true): void {
         const holder = this.findHolder(node);
         if (!holder) {
-            throw new Error(node + ' is not a registered node');
+            return;
         }
 
         this.selectedNodes.delete(holder.id);
+
+        if (holder.id === this.activeNode?.id) {
+            this.activeNode = undefined;
+        }
 
         if (detectChanges) {
             this.changeDetectorRef.detectChanges();
@@ -810,33 +823,37 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
      * Expands the given node and all of it's ancestors.
      * @param node A node reference.
      */
-    private ensureVisible(node: ITreeNodeHolder<T>) {
-        if (this.controler.isExpandable(node)) {
-            this.controler.expand(node);
-            if (this.adapter.onDidExpand) {
-                this.adapter.onDidExpand(node.data);
+    private expandAncestors(node: ITreeNodeHolder<T>) {
+        const recursive = (e: ITreeNodeHolder<T>) => {
+            if (this.controler.isExpandable(e)) {
+                this.controler.expand(e);
+                if (this.adapter.onDidExpand) {
+                    this.adapter.onDidExpand(e.data);
+                }
             }
-        }
+
+            const p = this.findParent(e);
+            if (p && p.level >= 0) {
+                recursive(p);
+            }
+        };
 
         const parent = this.findParent(node);
-        if (parent && parent.level >= 0) {
-            this.ensureVisible(parent);
+
+        if (parent) {
+            recursive(parent);
         }
     }
 
     /**
      * Moves the scrollbar to the given node.
-     * @param e The node to show.
+     * @param node The node to show.
      */
-    private scrollInto(e: Node<T>) {
-        const node = this.findHolder(e);
-        if (!node) {
-            throw new Error(e + ' is not a registered node');
-        }
-
-        const element = this.domNode(node);
-        if (element) {
-            element.scrollIntoView({
+    private scrollInto(node: INode<T>) {
+        const holder = this.findHolder(node);
+        if (holder) {
+            const el = this.domNode(holder);
+            el?.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center',
                 inline: 'center',
@@ -889,7 +906,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         this.focus(targNode);
     }
 
-    private findParent(node: Node<T>): ITreeNodeHolder<T> | undefined {
+    private findParent(node: INode<T>): ITreeNodeHolder<T> | undefined {
         const holder = this.findHolder(node)
         if (!holder) {
             return;
@@ -952,7 +969,11 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         return this.nodesIndex.get(id);
     }
 
-    private findHolder(node: Node<T>): ITreeNodeHolder<T> | undefined {
+    private findHolder(node: INode<T>): ITreeNodeHolder<T> | undefined {
+        if (!node) {
+            return undefined;
+        }
+
         if (!this.controler.dataNodes) {
             return undefined;
         }
@@ -975,7 +996,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     }
 
     /*
-    private findParentHolder(node: Node<T>): ITreeNodeHolder<T> | undefined {
+    private findParentHolder(node: INode<T>): ITreeNodeHolder<T> | undefined {
         const holder = this.findHolder(node);
         if (!holder) {
             throw new Error(node + ' is not a registered node');

@@ -1,3 +1,12 @@
+/**
+ * Representation of a node
+ * T => data
+ * string => id of a node
+ * Element => dom element of a node
+ * ITreeNodeHolder<T> internal representation
+ */
+export declare type INode<T> = T | string | Element | ITreeNodeHolder<T>;
+
 export interface ITreeState {
     active: string;
     filter: ITreeFilter;
@@ -49,7 +58,6 @@ export interface ITreeActionMapping<T> {
  * Tree api.
  */
 export interface ITree<T> {
-
     /**
      * Gets the selected nodes.
      */
@@ -62,32 +70,36 @@ export interface ITree<T> {
 
     /**
      * Gets a value indicating whether `node` is selected.
-     * @param node A reference to a node or an identifier of a node.
+     * @param node A reference to a node.
      * @throws {ReferenceError} if node is null.
      */
-    isSelected(node: T | string): boolean;
+    isSelected(node: INode<T>): boolean;
 
     /**
      * Gets a value indicating whether `node` is the current focused node.
-     * @param node A reference to a node or an identifier of a node.
+     * @param node A reference to a node.
      * @throws {ReferenceError} if node is null.
      */
-    isFocused(node: T | string): boolean;
+    isFocused(node: INode<T>): boolean;
 
     /**
      * Gets a value indicating whether `node` is expanded.
-     * @param node A reference to a node or an identifier of a node.
+     * @param node A reference to a node.
      * @throws {ReferenceError} if node is null.
      */
-    isExpanded(node: T | string): boolean;
+    isExpanded(node: INode<T>): boolean;
 
     /**
-     * Sets `node` as the new focused node and scroll into it.
+     * Sets `node` as the new focused node.
      *
-     * Note: if `node` is null then the current focused node will be removed.
-     * @param node the node (nullable).
+     * Note:
+     * The ancestors the of node will be expanded and the tree will scroll into the node.
+     * @param node A reference to a node.
      */
-    focus(node?: T | string): void;
+    focus(node: INode<T>): void;
+
+    /** Unfocus the current focused node */
+    unfocus(): void;
 
     /**
      * Expands the passed `node` with all its parents.
@@ -95,10 +107,10 @@ export interface ITree<T> {
      * Note:
      * This method will not select/focus the node.
      *
-     * @param node A reference to a node or an identifier of a node.
+     * @param node A reference to a node.
      * @throws {ReferenceError} if node is null.
      */
-    expand(node: string | T): void;
+    expand(node: INode<T>): void;
 
     /**
      * Expand the entire tree.
@@ -106,15 +118,15 @@ export interface ITree<T> {
     expandAll(): void;
 
     /**
-     * Collapses the passed `node`.
+     * Collapses the given `node`.
      *
      * Note:
      * This method will not select/focus the node.
      *
-     * @param node A reference to a node or an identifier of a node.
+     * @param node A reference to a node.
      * @throws {ReferenceError} if node is null.
      */
-    collapse(node: string | T): void;
+    collapse(node: INode<T>): void;
 
     /**
      * Collapse the entire tree
@@ -127,18 +139,18 @@ export interface ITree<T> {
      * Note:
      * This method will not select/focus the node.
      *
-     * @param node A reference to a node or an identifier of a node.
+     * @param node A reference to a node.
      * @throws {ReferenceError} if node is null.
      */
-    toggle(node: string | T): void;
+    toggle(node: INode<T>): void;
 
     /**
      * Starts editing the given node.
-     * @param node A reference to a node or an identifier of a node.
+     * @param node A reference to a node.
      * @param creation If true, an input will be displayed after the node to create a new child node.
      * @throws {ReferenceError} if `node` is null.
      */
-    startEdition(node: T | string, creation?: boolean): void;
+    startEdition(node: INode<T>, creation?: boolean): void;
 
     /**
      * End the editing of the current node in a editing state.
