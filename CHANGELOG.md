@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.17](https://github.com/mciissee/nge/compare/v0.0.16...v0.0.17) (2021-11-30)
+
+
+### Bug Fixes
+
+* bugs with rendering algorithm ([b99bce0](https://github.com/mciissee/nge/commit/b99bce0d5093812733d90e65ce866ca98eff9767))
+
 ### [0.0.16](https://github.com/mciissee/nge/compare/v0.0.15...v0.0.16) (2021-11-28)
 
 
