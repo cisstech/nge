@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.18](https://github.com/mciissee/nge/compare/v0.0.17...v0.0.18) (2021-12-04)
+
+
+### Bug Fixes
+
+* Can only have one anonymous define call per script file while loading katex after monaco editor ([67c915e](https://github.com/mciissee/nge/commit/67c915e7d03fc3d49c440732caa7f54b487c7376))
+* virtual scroll not working with tree component ([c6572dc](https://github.com/mciissee/nge/commit/c6572dcfc6c0c809f15b178bfba286f82113419a))
+
 ### [0.0.17](https://github.com/mciissee/nge/compare/v0.0.16...v0.0.17) (2021-11-30)
 
 
