@@ -19,9 +19,7 @@ export interface NgeMarkdownEmojiOptions {
 }
 
 /** Injection token to pass custom options to `NgeMarkdownEmoji` contribution. */
-export const NGE_MARKDOWN_EMOJI_OPTIONS = new InjectionToken<
-    NgeMarkdownEmojiOptions
->('NGE_MARKDOWN_EMOJI_OPTIONS');
+export const NGE_MARKDOWN_EMOJI_OPTIONS = new InjectionToken<NgeMarkdownEmojiOptions>('NGE_MARKDOWN_EMOJI_OPTIONS');
 
 /**
  * Contribution to use emoji in markdown using [emoji-toolkit](https://github.com/joypixels/emoji-toolkit) library.

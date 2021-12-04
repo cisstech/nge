@@ -10,6 +10,8 @@ import { NgeMarkdownConfig, NGE_MARKDOWN_CONFIG } from './nge-markdown-config';
 import { NgeMarkdownTransformer } from './nge-markdown-transformer';
 import { ResourceLoaderService } from '@mcisse/nge/services';
 
+const WINDOW = (window as any);
+
 /**
  * Markdown compiler service.
  */
@@ -83,10 +85,15 @@ export class NgeMarkdownService {
             contrib.contribute(transformer);
         }
 
-        await this.resourceLoader.loadAllSync(
-            dependencies
-        ).toPromise();
-
+        // Try to fix the issues described here by loading monaco editor
+        // after all the other scripts.
+        // https://stackoverflow.com/a/33635881
+        // https://github.com/microsoft/monaco-editor/issues/662
+        // https://github.com/microsoft/monaco-editor/issues/1249
+        const define = WINDOW.define;
+        WINDOW.define = undefined;
+        await this.resourceLoader.loadAllSync(dependencies).toPromise();
+        WINDOW.define = define;
         return transformer;
     }
 

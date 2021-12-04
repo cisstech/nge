@@ -7,7 +7,7 @@ import {
 
 /** Custom options to pass to NgeMarkdownKatex contribution. */
 export interface NgeMarkdownKatexOptions {
-    /** Base url to load katex scripts and styles. (default https://cdn.jsdelivr.net/npm/katex@0.12.0/dist) */
+    /** Base url to load katex scripts and styles. (default https://cdn.jsdelivr.net/npm/katex@0.15.1/dist) */
     baseUrl?: string;
     /** Options to pass to katex render function. https://katex.org/docs/options.html */
     options?: Record<string, any>;
@@ -21,9 +21,7 @@ export interface NgeMarkdownKatexOptions {
 }
 
 /** Custom options to pass to NgeMarkdownKatex contribution. */
-export const NGE_MARKDOWN_KATEX_OPTIONS = new InjectionToken<
-    NgeMarkdownKatexOptions
->('NGE_MARKDOWN_KATEX_OPTIONS');
+export const NGE_MARKDOWN_KATEX_OPTIONS = new InjectionToken<NgeMarkdownKatexOptions>('NGE_MARKDOWN_KATEX_OPTIONS');
 
 /**
  * Contribution to render math expressions in markdown using [Katex](https://katex.org) library.
@@ -42,8 +40,8 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
             }
         };
         this.options.extensions = this.options.extensions || {};
-        this.options.extensions.copyTex = this.options.extensions.copyTex ?? true;
         this.options.extensions.mhchem = this.options.extensions.mhchem ?? true;
+        this.options.extensions.copyTex = this.options.extensions.copyTex ?? true;
     }
 
     dependencies() {
@@ -51,7 +49,7 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
             return [];
         }
 
-        let baseUrl = this.options?.baseUrl || 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/';
+        let baseUrl = this.options?.baseUrl || 'https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/';
         if (!baseUrl.endsWith('/')) {
             baseUrl += '/';
         }
