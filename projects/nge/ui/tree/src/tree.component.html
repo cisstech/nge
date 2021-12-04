@@ -13,7 +13,7 @@
   [class.editing]="editing.node != null"
   [itemSize]="adapter.itemHeight"
   [style.height]="adapter.treeHeight">
-  <ng-container *cdkVirtualFor="let node of visibleNodes|async; trackBy: _trackById;">
+  <div *cdkVirtualFor="let node of visibleNodes|async; trackBy: _trackById;">
     <!-- RENAMING -->
     <ng-container *ngIf="_isRenaming(node); else: nodeTemplate">
       <div
@@ -53,7 +53,7 @@
         </div>
       </div>
     </ng-container>
-  </ng-container>
+  </div>
 </cdk-virtual-scroll-viewport>
 
 <ng-template #inputTemplate>

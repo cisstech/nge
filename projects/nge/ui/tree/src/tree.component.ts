@@ -41,13 +41,14 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     private readonly dataSource: MatTreeFlatDataSource<T, ITreeNodeHolder<T>>;
 
     private readonly nodesIndex = new Map<string, ITreeNodeHolder<T>>();
-    private readonly parentsIndex = new Map<string, ITreeNodeHolder<T> | undefined>();
+    private readonly parentsIndex = new Map<string, string>();
     private readonly hiddenNodes = new Map<string, ITreeNodeHolder<T>>();
     private readonly selectedNodes = new Map<string, ITreeNodeHolder<T>>();
 
     private isEmpty = false;
     private isShiftKeyPressed = false;
     private activeNode?: ITreeNodeHolder<T>;
+    private stateBeforeSearching: ITreeState | undefined;
 
     readonly filter: ITreeFilter = new TreeFilter();
     readonly editing: Partial<ITreeEdition<T>> = { text: '', node: undefined };
@@ -105,7 +106,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             }
         }
 
-        this.adapter.itemHeight = this.adapter.itemHeight || '32px';
+        this.adapter.itemHeight = this.adapter.itemHeight || 32;
         this.adapter.treeHeight = this.adapter.treeHeight || '100%';
         this.adapter.keepStateOnChangeNodes = this.adapter.keepStateOnChangeNodes ?? true;
 
@@ -180,7 +181,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         return this.selectedNodes.has(holder.id);
     }
 
-
     focus(node: INode<T>, render = true): void {
         const holder = this.findHolder(node);
         if (holder) {
@@ -222,7 +222,10 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     }
 
     expandAll(render = true): void {
-        this.controler.expandAll();
+        this.controler.dataNodes?.forEach(node => {
+            this.controler.expand(node);
+        });
+        // this.controler.expandAll(); // https://github.com/vmware/clarity/issues/4850
         if (render) {
             this.render();
         }
@@ -302,51 +305,53 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     }
 
     search(filter: ITreeFilter) {
+        if (!this.filter.term) {
+            this.stateBeforeSearching = this.saveState();
+        }
+
         this.filter.term = (filter.term || '').trim();
 
-        // keep tree state (focus, selections...) and show all nodes if filter is empty
         if (!this.filter.term) {
-            this.hiddenNodes.clear();
-            this.render();
+            if (this.stateBeforeSearching) {
+                this.restoreState(this.stateBeforeSearching);
+                this.stateBeforeSearching = undefined;
+            } else {
+                this.hiddenNodes.clear();
+                this.render();
+            }
             return;
         }
 
-        let pattern: RegExp | undefined;
-        try {
-            if (filter.term) {
-                const escape = (text: string) => {
-                    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-                }
-                pattern = new RegExp(`(${escape(filter.term)})`, 'g');
-            }
-        } catch { }
-
+        const pattern = this.buildSearchPattern();
         if (pattern) {
             this.activeNode = undefined;
             this.hiddenNodes.clear();
             this.selectedNodes.clear();
+            this.collapseAll(false);
 
-            const visibles: string[] = [];
-            const n = this.controler.dataNodes.length;
-            for (let i = n - 1; i >= 0; i--) {
-                const node = this.controler.dataNodes[i];
-                if (node.name.toLowerCase().match(pattern)) {
-                    visibles.push(node.id);
+            const p = pattern;
+            const matches = new Set<string>();
+            const nodes = this.controler.dataNodes || [];
+            const n = nodes.length - 1;
+            for (let i = n; i >= 0; i--) {
+                const node = nodes[i];
+                if (matches.has(node.id))
                     continue;
-                }
 
-                // a node is hidden if it does not match the pattern and it's children are hidden
-                if (!visibles.find((visibleNodeId) => this.findParent(visibleNodeId)?.id === node.id)) {
+                if (node.name.toLowerCase().match(p)) {
+                    matches.add(node.id);
+                    this.iterateAncestors(node, e => {
+                        this.controler.expand(e);
+                        matches.add(e.id);
+                    });
+                } else {
                     this.hiddenNodes.set(node.id, node);
                 }
             }
-
-            this.expandAll();
+            this.render();
         } else {
             this.changeDetectorRef.detectChanges();
         }
-
-        // do nothing if filter is wrong (regexp error)
     }
 
     saveState(): ITreeState {
@@ -373,14 +378,16 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         state.filter = state.filter || new TreeFilter();
         state.expandedNodes = state.expandedNodes || [];
 
+        this.hiddenNodes.clear();
+        this.selectedNodes.clear();
+        this.collapseAll(false);
+
         const { active, filter, expandedNodes } = state;
 
         if (filter.term) {
             this.search(filter);
         } else {
-            expandedNodes.forEach(node => {
-                this.expand(node, false);
-            });
+            expandedNodes.forEach(node => this.expand(node, false));
             this.render();
         }
 
@@ -635,16 +642,11 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         e.preventDefault();
         e.stopPropagation();
 
-        const updateTerm = (val: string) => {
-            this.filter.term = val;
-            this.search(this.filter);
-        };
-
         const { term } = this.filter;
         switch (e.key) {
             case 'Backspace':
                 if (term) {
-                    updateTerm(term.slice(0, -1));
+                    this.search({ term: term.slice(0, -1) });
                 }
                 break;
             case ' ':
@@ -652,7 +654,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
                 break;
             default:
                 if (e.key.length === 1) {
-                    updateTerm(term + e.key);
+                    this.search({ term: term + e.key });
                 }
                 break;
         }
@@ -702,11 +704,13 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             let parent = this.findParent(node);
             while (parent != null) {
                 // hide a node if any of its ancestors is not expanded
-                if (!expandedNodes.has(parent.id))
+                if (!expandedNodes.has(parent.id)) {
                     return;
+                }
 
-                if (parent.level === 0)
+                if (parent.level === 0) {
                     break;
+                }
 
                 parent = this.findParent(parent);
             }
@@ -718,41 +722,27 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     }
 
     private buildIndexes(): void {
-        this.dataSource.data = this.nodes;
-
         this.nodesIndex.clear();
         this.parentsIndex.clear();
-
-        const dataNodes = this.controler.dataNodes || [];
-
-        let parents: ITreeNodeHolder<T>[] = [];
-        let topParent: ITreeNodeHolder<T> | undefined;
-        let previousLevel = -1;
-
-        dataNodes.forEach(node => {
+        this.dataSource.data = this.nodes;
+        this.controler.dataNodes?.forEach(node => {
             this.nodesIndex.set(node.id, node);
-            if (node.level < previousLevel) {
-                /* for (let i = 0; i < previousLevel - node.level; i++)
-                    parents.pop(); */
-                topParent = undefined;
-                let i = parents.length - 1;
-                while (i >= 0) {
-                    if (parents[i].level === node.level - 1) {
-                        topParent = parents[i];
-                        break;
-                    }
-                    i--;
-                }
-            }
-
-            this.parentsIndex.set(node.id, topParent);
-
-            if (node.expandable) {
-                parents.push(topParent = node);
-            }
-
-            previousLevel = node.level;
         });
+    }
+
+    private buildSearchPattern() {
+        let pattern: RegExp | undefined;
+        try {
+            if (this.filter.term) {
+                const escape = (text: string) => {
+                    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+                };
+                pattern = new RegExp(`(${escape(this.filter.term)})`, 'g');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        return pattern;
     }
 
     /**
@@ -820,18 +810,28 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     }
 
     /**
-     * Expands the given node and all of it's ancestors.
+     * Expands the ancestors of the given node.
      * @param node A node reference.
      */
     private expandAncestors(node: ITreeNodeHolder<T>) {
-        const recursive = (e: ITreeNodeHolder<T>) => {
-            if (this.controler.isExpandable(e)) {
+        this.iterateAncestors(node, e => {
+            if (e.expandable && !this.controler.isExpanded(e)) {
                 this.controler.expand(e);
                 if (this.adapter.onDidExpand) {
                     this.adapter.onDidExpand(e.data);
                 }
             }
+        });
+    }
 
+    /**
+     * Call the given `action` for the ancestors of the given node.
+     * @param node A node reference.
+     * @param action A function to call for each ancestor.
+     */
+    private iterateAncestors(node: ITreeNodeHolder<T>, action: (e: ITreeNodeHolder<T>) => void) {
+        const recursive = (e: ITreeNodeHolder<T>) => {
+            action(e);
             const p = this.findParent(e);
             if (p && p.level >= 0) {
                 recursive(p);
@@ -839,7 +839,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         };
 
         const parent = this.findParent(node);
-
         if (parent) {
             recursive(parent);
         }
@@ -862,10 +861,10 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     }
 
     /**
-     * Focus the node before of after `currEl` depending on the given `direction`.
-     * @param currEl Current element
-     * @param direction Navigation direction.
-     */
+ * Focus the node before of after `currEl` depending on the given `direction`.
+ * @param currEl Current element
+ * @param direction Navigation direction.
+ */
     private navigate(currEl: Element, direction: 'up' | 'down'): void {
         this.unselectAll();
 
@@ -911,8 +910,10 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         if (!holder) {
             return;
         }
-
-        return this.parentsIndex.get(holder.id);
+        const parentId = this.parentsIndex.get(holder.id);
+        if (parentId) {
+            return this.nodesIndex.get(parentId);
+        }
     }
 
     private findHolderFromId(id: string): ITreeNodeHolder<T> | undefined {
@@ -995,31 +996,13 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         return this.findHolderFromData(node);
     }
 
-    /*
-    private findParentHolder(node: INode<T>): ITreeNodeHolder<T> | undefined {
-        const holder = this.findHolder(node);
-        if (!holder) {
-            throw new Error(node + ' is not a registered node');
-        }
-
-        if (holder.level < 1) {
-            return undefined;
-        }
-
-        const { dataNodes } = this.controler;
-        const startIndex = dataNodes.indexOf(holder) - 1;
-        let cursor: ITreeNodeHolder<T>;
-        for (let i = startIndex; i >= 0; i--) {
-            cursor = dataNodes[i];
-            if (cursor.level < holder.level) {
-                return cursor;
-            }
-        }
-    }
-    */
-
     private children(node: T): T[] {
-        return this.adapter.childrenProvider(node) || [];
+        const children = this.adapter.childrenProvider(node) || [];
+        const parentId = this.adapter.idProvider(node);
+        children.forEach(child => {
+            this.parentsIndex.set(this.adapter.idProvider(child), parentId);
+        })
+        return children;
     }
 
     private transformer(node: T, level: number): ITreeNodeHolder<T> {
@@ -1031,10 +1014,8 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             level: level,
             paddingLeft: level * 12 + 'px',
             tooltip: this.adapter.tooltipProvider?.(node),
-            children: this.children(node),
             expandable,
         };
     }
-
     //#endregion
 }

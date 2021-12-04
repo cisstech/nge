@@ -193,7 +193,7 @@ export interface ITreeAdapter<T> {
     treeHeight?: string;
 
     /** Item height (default 32) */
-    itemHeight?: string;
+    itemHeight?: number;
 
     /**
      * Function called to get the id of a node.
@@ -273,26 +273,29 @@ export interface ITreeNodeHolder<T> {
     /** Level in the tree (starts from 0). */
     level: number;
 
-    /** children of the node */
-    children: T[];
-
     /** A value indicating whether the node is expandable */
     expandable: boolean;
 
+    /** Optional tooltip to show when the node is hovered */
     tooltip?: string;
+
     paddingLeft: string;
 
+    // TODO precalculate the following properties instead of calling functions inside template.
     /** A value indicating whether the node is focused */
-    // focused?: boolean;
+    //focused?: boolean;
 
     /** A value indicating whether the node is expanded */
-    // expanded?: boolean;
+    //expanded?: boolean;
 
     /** A value indicating whether the node is selected */
-    // selected?: boolean;
+    //selected?: boolean;
 
-    /** A value indicating whether the node is in editing state.  */
-    // editing?: boolean;
+    /** A value indicating whether the node is in creating state.  */
+    //creating?: boolean;
+
+    /** A value indicating whether the node is in renaming state.  */
+    //renaming?: boolean;
 }
 
 
