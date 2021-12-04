@@ -86,7 +86,7 @@ export class ExampleComponent implement OnDestroy {
             })
         );
 
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, (e) => {
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, (e) => {
             console.log('SAVE');
         });
     }
