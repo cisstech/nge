@@ -5,10 +5,10 @@ import { NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '../contributions
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../monaco-config';
 
 /** monaco editor cdn url hosted at cdnjs. */
-export const MONACO_CDNJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.25.2';
+export const MONACO_CDNJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1';
 
 /** monaco editor cdn url hosted at jsdeliver. */
-export const MONACO_JS_DELIVER_URL = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.25.2';
+export const MONACO_JS_DELIVER_URL = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1';
 
 const WINDOW = (window as any);
 

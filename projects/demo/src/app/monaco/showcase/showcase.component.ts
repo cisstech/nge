@@ -52,7 +52,7 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
         );
 
         // tslint:disable-next-line: no-bitwise
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S, (e) => {
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, (e) => {
             console.log('SAVE');
         });
     }

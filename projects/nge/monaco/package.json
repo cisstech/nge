@@ -5,6 +5,6 @@
     }
   },
   "peerDependencies": {
-    "monaco-editor": "^0.25.2"
+    "monaco-editor": "^0.30.1"
   }
 }

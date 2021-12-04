@@ -37,7 +37,7 @@ import { AppComponent } from './app.component';
             theming: {
                 themes: NGE_MONACO_THEMES.map(theme => 'assets/nge/monaco/themes/' + theme),
                 default: 'github'
-            }
+            },
         }),
 
         AppRoutingModule,
