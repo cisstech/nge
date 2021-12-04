@@ -30,6 +30,9 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
     @Input()
     autoLayout = true;
 
+    @Input()
+    options?: monaco.editor.IStandaloneDiffEditorConstructionOptions;
+
     private editor?: monaco.editor.IStandaloneDiffEditor;
     private width = 0;
     private height = 0;
@@ -39,7 +42,7 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
         @Optional()
         @Inject(NGE_MONACO_CONFIG)
         private readonly config: NgeMonacoConfig
-    ) {}
+    ) { }
 
     @HostListener('window:resize')
     onResizeWindow() {
@@ -69,10 +72,10 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
     }
 
     private createEditor() {
-        this.editor = monaco.editor.createDiffEditor(
-            this.container.nativeElement,
-            this.config.options || {}
-        );
+        this.editor = monaco.editor.createDiffEditor(this.container.nativeElement, {
+            ...(this.config.options || {}),
+            ...(this.options || {}),
+        });
         this.ready.emit(this.editor);
     }
 }

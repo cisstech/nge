@@ -29,6 +29,8 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
     ready = new EventEmitter<monaco.editor.IEditor>();
 
     @Input() autoLayout = true;
+    @Input()
+    options?: monaco.editor.IStandaloneEditorConstructionOptions;
 
     private editor?: monaco.editor.IStandaloneCodeEditor;
     private width = 0;
@@ -39,7 +41,7 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
         @Optional()
         @Inject(NGE_MONACO_CONFIG)
         private readonly config: NgeMonacoConfig,
-    ) {}
+    ) { }
 
     @HostListener('window:resize')
     onResizeWindow() {
@@ -53,7 +55,7 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
     }
 
     ngAfterViewChecked() {
-       if (!this.autoLayout) {
+        if (!this.autoLayout) {
             return;
         }
         const { offsetWidth, offsetHeight } = this.container.nativeElement;
@@ -69,10 +71,10 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
     }
 
     private createEditor() {
-        this.editor = monaco.editor.create(
-            this.container.nativeElement,
-            this.config.options || {}
-        );
+        this.editor = monaco.editor.create(this.container.nativeElement, {
+            ...(this.config.options || {}),
+            ...(this.options || {}),
+        });
         this.ready.emit(this.editor);
     }
 }
