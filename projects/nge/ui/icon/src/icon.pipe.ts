@@ -3,7 +3,7 @@ import { Pipe, PipeTransform, Injector } from '@angular/core';
 
 import { IconFaComponent } from './icon-fa/icon-fa.component';
 import { IconFileComponent } from './icon-file/icon-file.component';
-import { IconImgComponent } from './icon-img/icon-icon.component';
+import { IconImgComponent } from './icon-img/icon-img.component';
 import { IconCodIconComponent } from './icon-codicon/icon-codicon.component';
 
 import { Icon, ICON_TOKEN } from './icons';
