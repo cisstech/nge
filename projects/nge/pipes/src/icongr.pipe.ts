@@ -1,5 +1,8 @@
 import { NgModule, Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * https://icongr.am
+ */
 @Pipe({
     name: 'icongr'
 })

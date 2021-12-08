@@ -1,25 +1,27 @@
 import { ComponentPortal } from '@angular/cdk/portal';
-import { Pipe, PipeTransform, Injector } from '@angular/core';
+import { Injector, Pipe, PipeTransform } from '@angular/core';
+import { IconIcongrComponent } from '../..';
+import { IconCodIconComponent } from '../icon-codicon/icon-codicon.component';
+import { IconFaComponent } from '../icon-fa/icon-fa.component';
+import { IconImgComponent } from '../icon-img/icon-img.component';
+import { Icon, ICON_TOKEN } from '../icons';
 
-import { IconFaComponent } from './icon-fa/icon-fa.component';
-import { IconImgComponent } from './icon-img/icon-img.component';
-import { IconCodIconComponent } from './icon-codicon/icon-codicon.component';
-
-import { Icon, ICON_TOKEN } from './icons';
 
 @Pipe({
     name: 'icon'
 })
 export class IconPipe implements PipeTransform {
-    constructor(private readonly injector: Injector) {}
+    constructor(private readonly injector: Injector) { }
     transform(icon?: Icon): ComponentPortal<any> {
         switch (icon?.type) {
-            case 'codicon':
-                return new ComponentPortal(IconCodIconComponent, null, this.createInjector(icon));
             case 'fa':
                 return new ComponentPortal(IconFaComponent, null, this.createInjector(icon));
             case 'img':
                 return new ComponentPortal(IconImgComponent, null, this.createInjector(icon));
+            case 'codicon':
+                return new ComponentPortal(IconCodIconComponent, null, this.createInjector(icon));
+            case 'icongr':
+                return new ComponentPortal(IconIcongrComponent, null, this.createInjector(icon));
             default:
                 throw new TypeError('unknown icon type "' + icon?.type + '"');
         }

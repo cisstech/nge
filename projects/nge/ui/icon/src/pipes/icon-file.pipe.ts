@@ -1,11 +1,11 @@
 import { Inject, Optional, Pipe, PipeTransform } from '@angular/core';
-import { ImgIcon, NgeUiIconConfig, NGE_UI_ICON_CONFIG } from './icons';
-import { FileIconOptions } from './icons';
-import { FILE_THEME } from './icons.files';
-import { FOLDER_THEME } from './icons.folders';
+import { FileIconOptions, ImgIcon, NgeUiIconConfig, NGE_UI_ICON_CONFIG } from '../icons';
+import { FILE_THEME } from '../icons.files';
+import { FOLDER_THEME } from '../icons.folders';
 
-@Pipe({ name: 'fileIcon' })
-export class FileIconPipe implements PipeTransform {
+
+@Pipe({ name: 'iconFile' })
+export class IconFilePipe implements PipeTransform {
     constructor(
         @Optional()
         @Inject(NGE_UI_ICON_CONFIG)
