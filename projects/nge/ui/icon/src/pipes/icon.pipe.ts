@@ -1,8 +1,8 @@
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injector, Pipe, PipeTransform } from '@angular/core';
-import { IconIcongrComponent } from '../..';
 import { IconCodIconComponent } from '../icon-codicon/icon-codicon.component';
 import { IconFaComponent } from '../icon-fa/icon-fa.component';
+import { IconIcongrComponent } from '../icon-icongr/icon-icongr.component';
 import { IconImgComponent } from '../icon-img/icon-img.component';
 import { Icon, ICON_TOKEN } from '../icons';
 
