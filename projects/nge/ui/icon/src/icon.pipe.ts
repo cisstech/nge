@@ -2,7 +2,6 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { Pipe, PipeTransform, Injector } from '@angular/core';
 
 import { IconFaComponent } from './icon-fa/icon-fa.component';
-import { IconFileComponent } from './icon-file/icon-file.component';
 import { IconImgComponent } from './icon-img/icon-img.component';
 import { IconCodIconComponent } from './icon-codicon/icon-codicon.component';
 
@@ -19,8 +18,6 @@ export class IconPipe implements PipeTransform {
                 return new ComponentPortal(IconCodIconComponent, null, this.createInjector(icon));
             case 'fa':
                 return new ComponentPortal(IconFaComponent, null, this.createInjector(icon));
-            case 'file':
-                return new ComponentPortal(IconFileComponent, null, this.createInjector(icon));
             case 'img':
                 return new ComponentPortal(IconImgComponent, null, this.createInjector(icon));
             default:

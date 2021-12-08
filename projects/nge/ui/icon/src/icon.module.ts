@@ -9,15 +9,14 @@ import { FileIconPipe } from './file-icon.pipe';
 
 import { IconComponent } from './icon.component';
 import { IconFaComponent } from './icon-fa/icon-fa.component';
-import { IconFileComponent } from './icon-file/icon-file.component';
 import { IconImgComponent } from './icon-img/icon-img.component';
 import { IconCodIconComponent } from './icon-codicon/icon-codicon.component';
+
 
 const DECLARATIONS = [
     IconComponent,
     IconFaComponent,
     IconImgComponent,
-    IconFileComponent,
     IconCodIconComponent,
 
     IconPipe,

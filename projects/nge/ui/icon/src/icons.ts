@@ -1,6 +1,6 @@
-import { FOLDER_THEMES } from './icons.folders';
-import { FILE_THEME } from './icons.files';
 import { InjectionToken } from '@angular/core';
+import { FileIcon, FILE_THEME } from './icons.files';
+import { FolderIcon, FOLDER_THEME } from './icons.folders';
 
 export interface Icon {
     type: string;
@@ -8,7 +8,6 @@ export interface Icon {
 
 export class FaIcon implements Icon {
     readonly type: string = 'fa';
-
     constructor(readonly name: string) {}
 }
 
@@ -18,7 +17,6 @@ export interface ImgIconOptions {
 
 export class ImgIcon implements Icon {
     readonly type: string = 'img';
-
     constructor(readonly src: string, readonly options?: ImgIconOptions) {
         this.options = options || {};
         this.options.alt = this.options.alt || '';
@@ -32,77 +30,19 @@ export interface FileIconOptions {
     isDirectory?: boolean;
 }
 
-export class FileIcon implements Icon {
-    readonly type: string = 'file';
-
-    private constructor(
-        readonly src: string,
-        readonly options?: FileIconOptions
-    ) {
-        this.options = options || {};
-        this.options.alt = this.options.alt || '';
-    }
-
-    static fromFileName(fileName: string, options: FileIconOptions): FileIcon {
-        const { defaultIcon, baseUrl } = FILE_THEME;
-        let iconName = '';
-        if (fileName) {
-            if (options.isDirectory) {
-                const theme = FOLDER_THEMES[0];
-                iconName = theme.defaultIcon.name;
-                if (options.isRoot) {
-                    iconName = theme.rootFolder?.name || '';
-                } else {
-                    const icon = theme.icons?.find((item) =>
-                        item.folderNames.includes(fileName.toLowerCase())
-                    );
-                    if (icon) {
-                        iconName = icon.name;
-                    }
-                }
-                if (options.expanded) {
-                    iconName += '-open';
-                }
-                iconName += '.svg';
-            } else {
-                const extension = FileIcon.extname(fileName);
-                const file =
-                    FILE_THEME.icons.find((item) => {
-                        return (item.fileExtensions || []).includes(extension);
-                    }) || FILE_THEME.defaultIcon;
-                iconName = file.name + '.svg';
-            }
-            return new FileIcon(baseUrl + iconName, options);
-        }
-
-        return new FileIcon(baseUrl + defaultIcon.name + '.svg', options);
-    }
-
-    private static basename(path: string) {
-        path = path.replace(/\\/g, '/');
-        return path.slice(path.lastIndexOf('/') + 1, path.length);
-    }
-
-    private static extname(path: string) {
-        const base = FileIcon.basename(path);
-        if (!base) {
-            return base;
-        }
-        if (base.startsWith('.')) {
-            return '';
-        }
-        const dotIndex = base.lastIndexOf('.');
-        if (dotIndex === -1) {
-            return '';
-        }
-        return base.substring(dotIndex + 1).toLowerCase();
-    }
-}
-
 export class CodIcon implements Icon {
     readonly type: string = 'codicon';
-
     constructor(readonly name: string) {}
 }
 
+export interface NgeUiIconConfig {
+    /** Base url where file icons are store (default to `assets/vendors/nge/icons/files/`) */
+    fileIconsBaseUrl: string;
+    /** Define extra file icons. (add new icon or override an existing one) */
+    extraFileIcons?: FileIcon[];
+    /** Define extra folder icons. (add new icon or override an existing one)  */
+    extraFolderIcons?: FolderIcon[];
+};
+
 export const ICON_TOKEN = new InjectionToken<Icon>('ICON_TOKEN');
+export const NGE_UI_ICON_CONFIG = new InjectionToken<NgeUiIconConfig>('NGE_UI_ICON_CONFIG');;

@@ -32,9 +32,6 @@ export interface FileTheme {
      * Define the default icon for folders.
      */
     defaultIcon: DefaultIcon;
-
-    /** Icons location */
-    baseUrl: string;
     /**
      * Defines all folder icons.
      */
@@ -46,7 +43,6 @@ export interface FileTheme {
  */
 export const FILE_THEME: FileTheme = {
     defaultIcon: { name: 'file' },
-    baseUrl: 'assets/vendors/nge/icons/files/',
     icons: [
         { name: 'pl', fileExtensions: ['pl'] },
         { name: 'pltp', fileExtensions: ['pltp'] },
