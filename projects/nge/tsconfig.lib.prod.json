@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.lib.json",
   "compilerOptions": {
+    "declarationMap": false,
     "paths": {
       "@mcisse/nge": ["dist/nge"],
       "@mcisse/nge/doc": ["dist/nge/doc"],
