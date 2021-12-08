@@ -17,6 +17,7 @@ import {
     MatTreeFlatDataSource,
     MatTreeFlattener
 } from '@angular/material/tree';
+import { $ } from 'protractor';
 import { BehaviorSubject } from 'rxjs';
 import { CURRENT_VISIBLE_TREES } from './internal';
 import { TreeNodeDirective } from './tree-node.directive';
@@ -57,12 +58,22 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
 
     @Input() nodes: T[] = [];
     @Input() adapter!: ITreeAdapter<T>;
+    @Input() minBuffer = 10;
+    @Input() maxBuffer = 20;
 
     @ContentChild(TreeNodeDirective, { static: true })
     nodeDirective!: TreeNodeDirective<T>;
 
     @ViewChild(CdkVirtualScrollViewport, { static: true })
     viewport!: CdkVirtualScrollViewport;
+
+    get minBufferPx(): string {
+        return ((this.adapter.itemHeight || 32) * this.minBuffer) + 'px';
+    }
+
+    get maxBufferPx(): string {
+        return ((this.adapter.itemHeight || 32) * this.maxBuffer) + 'px';
+    }
 
     constructor(
         private readonly elementRef: ElementRef<HTMLElement>,
@@ -190,10 +201,10 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             this.activeNode = holder;
             this.select(node, false);
             this.expandAncestors(holder);
-            this.scrollInto(holder);
             if (render) {
                 this.render();
             }
+            this.scrollInto(holder);
         }
     }
 
@@ -380,6 +391,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
 
         this.hiddenNodes.clear();
         this.selectedNodes.clear();
+
         this.collapseAll(false);
 
         const { active, filter, expandedNodes } = state;
@@ -851,14 +863,16 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     private scrollInto(node: INode<T>) {
         const holder = this.findHolder(node);
         if (holder) {
-            const el = this.domNode(holder);
-            el?.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-                inline: 'center',
-            });
+            const index = this.visibleNodes.value.indexOf(holder);
+            if (index == -1)
+                return;
+            const range = this.viewport.getRenderedRange();
+            if (index < range.start || index > range.end) {
+                this.viewport.scrollToIndex(index, 'smooth');
+            }
         }
     }
+
 
     /**
  * Focus the node before of after `currEl` depending on the given `direction`.
@@ -1012,7 +1026,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             data: node,
             name: this.adapter.nameProvider(node),
             level: level,
-            paddingLeft: level * 12 + 'px',
+            padding: level * 12 + 'px',
             tooltip: this.adapter.tooltipProvider?.(node),
             expandable,
         };

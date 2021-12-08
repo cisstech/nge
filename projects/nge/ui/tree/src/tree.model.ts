@@ -279,7 +279,7 @@ export interface ITreeNodeHolder<T> {
     /** Optional tooltip to show when the node is hovered */
     tooltip?: string;
 
-    paddingLeft: string;
+    padding: string;
 
     // TODO precalculate the following properties instead of calling functions inside template.
     /** A value indicating whether the node is focused */

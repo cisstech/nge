@@ -12,15 +12,18 @@
   class="tree-component"
   [class.editing]="editing.node != null"
   [itemSize]="adapter.itemHeight"
+  [minBufferPx]="minBufferPx"
+  [maxBufferPx]="maxBufferPx"
   [style.height]="adapter.treeHeight">
-  <div *cdkVirtualFor="let node of visibleNodes|async; trackBy: _trackById;">
+  <ng-container *cdkVirtualFor="let node of visibleNodes|async; trackBy: _trackById;">
     <!-- RENAMING -->
     <ng-container *ngIf="_isRenaming(node); else: nodeTemplate">
       <div
         class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
         [attr.data-tree-node-id]="node.id"
-        [style.padding-left]="node.paddingLeft">
-        <div class="tree-node__content">
+        [style.padding-left]="node.padding"
+        [style.height.px]="adapter.itemHeight">
+        <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
           <ng-container *ngTemplateOutlet="inputTemplate"> </ng-container>
         </div>
       </div>
@@ -31,13 +34,14 @@
       <div
         class="tree-node tree-node--level-{{ node.level }}"
         [attr.data-tree-node-id]="node.id"
-        [style.padding-left]="node.paddingLeft"
+        [style.padding-left]="node.padding"
+        [style.height.px]="adapter.itemHeight"
         [ngClass]="{
           focused: isFocused(node),
           selected: isSelected(node),
           expanded: isExpanded(node)
         }">
-          <div class="tree-node__content" [matTooltip]="node.tooltip">
+          <div class="tree-node__content" [style.height.px]="adapter.itemHeight" [matTooltip]="node.tooltip">
             <ng-container *ngTemplateOutlet="nodeDirective.templateRef; context: { $implicit: node }"></ng-container>
           </div>
       </div>
@@ -47,13 +51,14 @@
     <ng-container *ngIf="_isCreating(node)">
       <div
         class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
-        [style.padding-left]="node.paddingLeft">
-        <div class="tree-node__content">
+        [style.padding-left]="node.padding"
+        [style.height.px]="adapter.itemHeight">
+        <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
           <ng-container *ngTemplateOutlet="inputTemplate"> </ng-container>
         </div>
       </div>
     </ng-container>
-  </div>
+  </ng-container>
 </cdk-virtual-scroll-viewport>
 
 <ng-template #inputTemplate>

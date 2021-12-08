@@ -1,33 +1,36 @@
 :host {
   position: relative;
+  --tree-selection-color: #bae7ff;
 }
 
+/* TREE */
 .tree-component {
   height: 100%;
   background: transparent;
-  transition: all 0.3s, border 0s, line-height 0s, box-shadow 0s;
-  font-size: 14px;
-  &:focus {
-    .tree-node.focused,
-    .tree-node.selected {
-      background-color: #bae7ff;
-    }
-  }
-  &.editing .tree-node {
-    opacity: .4;
-  }
+}
 
-  &.editing .opaque {
-    opacity: 1 !important;
+.tree-component:hover {
+  outline: none;
+  .tree-node.focused,
+  .tree-node.selected {
+    background-color: var(--tree-selection-color);
   }
 }
 
-.tree-node {
-  &:hover,
-  &.focused,
-  &.selected {
-    background-color: rgba(66, 66, 66, 0.04);
+.tree-component.editing {
+  .opaque {
+    opacity: 1 !important;
   }
+  .tree-node {
+    opacity: 0.4;
+  }
+}
+
+/* NODE */
+.tree-node:hover,
+.tree-node.focused,
+.tree-node.selected {
+  background-color: rgba(66, 66, 66, 0.04);
 }
 
 .tree-node,
@@ -35,17 +38,17 @@
   cursor: pointer;
   position: relative;
   width: 100%;
-  min-height: 32px;
-  overflow: hidden;
-  box-sizing: border-box;
   display: flex;
+  overflow: hidden;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .tree-node__content {
   padding: 0 12px;
 }
 
+/* INPUT */
 .tree-input {
   display: flex;
   align-items: center;
@@ -69,6 +72,7 @@
   }
 }
 
+/* FILTER */
 .tree-filter {
   background-color: #efc1ad;
   display: flex;
