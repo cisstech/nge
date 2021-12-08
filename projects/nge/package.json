@@ -1,6 +1,6 @@
 {
   "name": "@mcisse/nge",
-  "version": "0.0.19",
+  "version": "13.0.0",
   "description": "NG Essentials is a collection of libraries for Angular developers.",
   "keywords": [
     "angular",
@@ -23,8 +23,10 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^9.1.12",
-    "@angular/core": "^9.1.12"
+    "@angular/common": "^13.0.3",
+    "@angular/core": "^13.0.3",
+    "@angular/cdk": "^13.0.3",
+    "@angular/material": "^13.0.3"
   },
   "dependencies": {
     "tslib": "^2.0.0"
