@@ -82,6 +82,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         this.controler = new FlatTreeControl<ITreeNodeHolder<T>>(
             (node) => node.level,
             (node) => node.expandable,
+            {
+                trackBy: (node) => node
+            }
         );
 
         this.flattener = new MatTreeFlattener<T, ITreeNodeHolder<T>>(
