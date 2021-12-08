@@ -17,7 +17,6 @@ import {
     MatTreeFlatDataSource,
     MatTreeFlattener
 } from '@angular/material/tree';
-import { $ } from 'protractor';
 import { BehaviorSubject } from 'rxjs';
 import { CURRENT_VISIBLE_TREES } from './internal';
 import { TreeNodeDirective } from './tree-node.directive';
@@ -105,6 +104,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             throw new Error('@Input() adapter.id is required !');
         }
         CURRENT_VISIBLE_TREES.set(this.adapter.id, this);
+        this.viewport.elementRef.nativeElement.onscroll = () => {
+            this.changeDetectorRef.detectChanges(); // fix a bug where the virtual scroll is not updated when the tree is not focused.
+        };
     }
 
     ngOnChanges(): void {
@@ -137,7 +139,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             this.unselectAll(false);
             this.render();
         }
-
         this.viewport.scrollToIndex(0);
     }
 
@@ -867,11 +868,14 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         const holder = this.findHolder(node);
         if (holder) {
             const index = this.visibleNodes.value.indexOf(holder);
-            if (index == -1)
+            if (index == -1) {
                 return;
+            }
             const range = this.viewport.getRenderedRange();
             if (index < range.start || index > range.end) {
                 this.viewport.scrollToIndex(index, 'smooth');
+                this.viewport.checkViewportSize();
+                this.changeDetectorRef.detectChanges();
             }
         }
     }
