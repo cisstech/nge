@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { IDynamicModule } from '@mcisse/nge/services';
 import { NgeMarkdownModule } from '@mcisse/nge/markdown';
 
 import { MatInputModule } from '@angular/material/input';
@@ -24,6 +25,6 @@ import { CheatSheetComponent } from './cheat-sheet.component';
   ],
   declarations: [CheatSheetComponent]
 })
-export class CheatSheetModule {
+export class CheatSheetModule implements IDynamicModule {
     component = CheatSheetComponent;
 }

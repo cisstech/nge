@@ -13,7 +13,7 @@ NG Essentials is a collection of libraries for <a href="https://angular.io">Angu
 [![Tests](https://github.com/mciissee/nge/workflows/Tests/badge.svg)](https://github.com/mciissee/nge/actions/)
 <!-- [![codecov](https://codecov.io/gh/mciissee/nge/branch/main/graph/badge.svg)](https://codecov.io/gh/mciissee/nge) -->
 [![codefactor](https://www.codefactor.io/repository/github/mciissee/nge/badge/main)](https://www.codefactor.io/repository/github/mciissee/nge/overview/main)
-[![GitHub Release Date](https://img.shields.io/github/release-date/mciissee/nge.svg)](https://github.com/mciissee/nge/releases)
+[![GitHub Release Date](https://img.shields.io/github/tag/mciissee/nge.svg)](https://github.com/mciissee/nge/tags)
 [![npm package](https://img.shields.io/npm/v/@mcisse/nge.svg)](https://www.npmjs.org/package/@mcisse/nge)
 [![NPM downloads](http://img.shields.io/npm/dm/@mcisse/nge.svg)](https://npmjs.org/package/@mcisse/nge)
 [![licence](https://img.shields.io/github/license/mciissee/nge)](https://github.com/mciissee/nge/blob/main/LICENSE)

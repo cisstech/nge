@@ -6,7 +6,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.18](https://github.com/mciissee/nge/compare/v0.0.17...v0.0.18) (2021-12-04)
 
-
 ### Bug Fixes
 
 * Can only have one anonymous define call per script file while loading katex after monaco editor ([67c915e](https://github.com/mciissee/nge/commit/67c915e7d03fc3d49c440732caa7f54b487c7376))
@@ -14,13 +13,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.17](https://github.com/mciissee/nge/compare/v0.0.16...v0.0.17) (2021-11-30)
 
-
 ### Bug Fixes
 
 * bugs with rendering algorithm ([b99bce0](https://github.com/mciissee/nge/commit/b99bce0d5093812733d90e65ce866ca98eff9767))
 
 ### [0.0.16](https://github.com/mciissee/nge/compare/v0.0.15...v0.0.16) (2021-11-28)
-
 
 ### Bug Fixes
 
@@ -34,7 +31,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.12](https://github.com/mciissee/nge/compare/v0.0.11...v0.0.12) (2021-11-21)
 
-
 ### Bug Fixes
 
 * **ui:** strange behavior while navigating with keyboard on tree ([eb0e213](https://github.com/mciissee/nge/commit/eb0e21338a45bb3f388811c9fa32ef5fc8fdf74e))
@@ -43,14 +39,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.0.10](https://github.com/mciissee/nge/compare/v0.0.9...v0.0.10) (2021-11-21)
 
-
 ### Bug Fixes
 
 * **ui:** tree filtering not working ([ee246e7](https://github.com/mciissee/nge/commit/ee246e7a144fc9e491715be280e04b0ada10fd17))
 * missing semicolon in scss file ([560e7d0](https://github.com/mciissee/nge/commit/560e7d09c92509724f98af11dd8851232d707d06))
 
 ### 0.0.9 (2021-11-21)
-
 
 ### Features
 
@@ -65,7 +59,6 @@ All notable changes to this project will be documented in this file. See [standa
 * add ui-list lib ([2695751](https://github.com/mciissee/nge/commit/2695751474693e702d0bf5abbc4b393dea6adf4a))
 * add ui-tree lib ([64beceb](https://github.com/mciissee/nge/commit/64beceba0a53a4879af6e6e78d75e7df05d792be))
 * **nge-doc:** support multiple pages ([a0aff22](https://github.com/mciissee/nge/commit/a0aff228afa8e47f76b2e9748086b9f415e8acc4))
-
 
 ### Bug Fixes
 

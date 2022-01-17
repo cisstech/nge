@@ -26,7 +26,8 @@
     "@angular/common": "^13.0.3",
     "@angular/core": "^13.0.3",
     "@angular/cdk": "^13.0.3",
-    "@angular/material": "^13.0.3"
+    "@angular/material": "^13.0.3",
+    "rxjs": "^7.5.2"
   },
   "dependencies": {
     "tslib": "^2.0.0"
