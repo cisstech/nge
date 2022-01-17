@@ -1,21 +1,21 @@
 import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
 import { ResourceLoaderService } from '@mcisse/nge/services';
-import { of, Subject } from 'rxjs';
+import { lastValueFrom, of, Subject } from 'rxjs';
 import { NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '../contributions/monaco-contribution';
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../monaco-config';
 
 /** monaco editor cdn url hosted at cdnjs. */
-export const MONACO_CDNJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1';
+export const MONACO_CDNJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.31.1';
 
 /** monaco editor cdn url hosted at jsdeliver. */
-export const MONACO_JS_DELIVER_URL = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.30.1';
+export const MONACO_JS_DELIVER_URL = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.31.1';
 
 const WINDOW = (window as any);
 
 /**
  * Loads monaco editor using AMD loader.
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class NgeMonacoLoaderService implements OnDestroy {
     private readonly monaco$ = new Subject<typeof monaco>();
 
@@ -79,9 +79,12 @@ export class NgeMonacoLoaderService implements OnDestroy {
                     this.addWorkersIfCrossDomain();
 
                     if (!WINDOW.require) {
-                        this.resourceLoader.loadAllAsync(
-                            [['script', `${this.baseUrl}/min/vs/loader.js`]
-                        ]).toPromise().then(() => this.onLoad(resolve));
+                        lastValueFrom(
+                            this.resourceLoader.loadAllAsync([
+                                ['script', `${this.baseUrl}/min/vs/loader.js`]
+                            ])
+                        )
+                        .then(() => this.onLoad(resolve));
                     } else {
                         this.onLoad(resolve);
                     }

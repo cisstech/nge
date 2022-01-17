@@ -21,6 +21,4 @@ export interface NgeMarkdownContribution {
 }
 
 /** Inject this token to get the list of contributions to nge-markdown api.  */
-export const NGE_MARKDOWN_CONTRIBUTION = new InjectionToken<
-    NgeMarkdownContribution
->('NGE_MARKDOWN_CONTRIBUTION');
+export const NGE_MARKDOWN_CONTRIBUTION = new InjectionToken<NgeMarkdownContribution>('NGE_MARKDOWN_CONTRIBUTION');

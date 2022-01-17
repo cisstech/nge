@@ -10,7 +10,7 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { lastValueFrom, Subscription } from 'rxjs';
 import { NgeDocState, NGE_DOC_RENDERERS } from '../nge-doc';
 import { NgeDocService } from '../nge-doc.service';
 import { CompilerService } from '@mcisse/nge/services';
@@ -106,7 +106,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
             }
 
             inputs = {
-                data: await http.get(data, { responseType: 'text' }).toPromise()
+                data: await lastValueFrom(http.get(data, { responseType: 'text' }))
             };
         }
 

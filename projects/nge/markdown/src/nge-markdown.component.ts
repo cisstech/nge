@@ -12,12 +12,12 @@ import {
     Optional,
     Output,
 } from '@angular/core';
+import { marked } from 'marked';
 import {
     NgeMarkdownContribution,
     NGE_MARKDOWN_CONTRIBUTION,
 } from './nge-markdown-contribution';
 import { NgeMarkdownService } from './nge-markdown.service';
-import { MarkedTokensList } from './marked-types';
 
 @Component({
     selector: 'nge-markdown, [nge-markdown]',
@@ -45,7 +45,7 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
      * An event that emit after each rendering pass
      * with the list of tokens parsed from the input markdown.
      */
-    @Output() render = new EventEmitter<MarkedTokensList>();
+    @Output() render = new EventEmitter<marked.TokensList>();
 
     constructor(
         private readonly el: ElementRef<HTMLElement>,

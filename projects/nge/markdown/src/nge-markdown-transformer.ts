@@ -1,11 +1,11 @@
-import { MarkedTokenizer, MarkedRenderer, MarkedTokensList } from './marked-types';
+import { marked } from 'marked';
 import { NgeMarkdownConfig } from './nge-markdown-config';
 
-declare type AstTransformer = (tokens: MarkedTokensList) => MarkedTokensList;
+declare type AstTransformer = (tokens: marked.TokensList) => marked.TokensList;
 declare type HtmlTransformer = (element: HTMLElement) => void;
 declare type MarkdownTransformer = (markdown: string) => string;
-declare type RendererTransformer = (renderer: MarkedRenderer) => MarkedRenderer;
-declare type TokenizerTransformer = (tokenizer: MarkedTokenizer) => MarkedTokenizer;
+declare type RendererTransformer = (renderer: marked.Renderer) => marked.Renderer;
+declare type TokenizerTransformer = (tokenizer: marked.Tokenizer) => marked.Tokenizer;
 
 /**
  * Nge markdown transformer used by the contributions.
@@ -89,7 +89,7 @@ export class NgeMarkdownTransformer {
      * @param ast the ast to transform.
      * @returns the transformed ast.
      */
-    transformAst(ast: MarkedTokensList): MarkedTokensList {
+    transformAst(ast: marked.TokensList): marked.TokensList {
         if (ast == null) {
             throw new ReferenceError('argument "ast" is required');
         }
@@ -140,7 +140,7 @@ export class NgeMarkdownTransformer {
      * @param renderer the renderer to transform.
      * @returns the transformed renderer.
      */
-    transformRenderer(renderer: MarkedRenderer): MarkedRenderer {
+    transformRenderer(renderer: marked.Renderer): marked.Renderer {
         if (renderer == null) {
             throw new ReferenceError('argument "renderer" is required');
         }
@@ -157,7 +157,7 @@ export class NgeMarkdownTransformer {
      * @param tokenizer the tokenizer to transform.
      * @returns the transformed tokenizer.
      */
-    transformTokenizer(tokenizer: MarkedTokenizer): MarkedTokenizer {
+    transformTokenizer(tokenizer: marked.Tokenizer): marked.Tokenizer {
         if (tokenizer == null) {
             throw new ReferenceError('argument "tokenizer" is required');
         }

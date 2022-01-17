@@ -6,7 +6,6 @@ export * from './src/contributions/nge-markdown-icons';
 export * from './src/contributions/nge-markdown-katex';
 export * from './src/contributions/nge-markdown-link-anchor';
 export * from './src/contributions/nge-markdown-tabbed-set';
-export * from './src/marked-types';
 export * from './src/nge-markdown-transformer';
 export * from './src/nge-markdown-config';
 export * from './src/nge-markdown.component';

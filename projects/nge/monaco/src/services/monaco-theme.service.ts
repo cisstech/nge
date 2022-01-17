@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgeMonacoContribution } from '../contributions/monaco-contribution';
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../monaco-config';
@@ -126,7 +126,7 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
         }
 
         try {
-            const theme = await this.http.get<any>(customThemePath).toPromise();
+            const theme = await lastValueFrom(this.http.get<any>(customThemePath));
             monaco.editor.defineTheme(themeName, {
                 base: theme.base,
                 inherit: theme.inherit,

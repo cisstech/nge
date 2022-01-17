@@ -3,12 +3,12 @@ import {
     Injectable,
     Optional
 } from '@angular/core';
-import * as marked from 'marked';
+import { marked } from 'marked';
 import { NgeMarkdownContribution } from './nge-markdown-contribution';
-import { MarkedRenderer, MarkedTokenizer } from './marked-types';
 import { NgeMarkdownConfig, NGE_MARKDOWN_CONFIG } from './nge-markdown-config';
 import { NgeMarkdownTransformer } from './nge-markdown-transformer';
 import { ResourceLoaderService } from '@mcisse/nge/services';
+import { lastValueFrom } from 'rxjs';
 
 const WINDOW = (window as any);
 
@@ -73,14 +73,11 @@ export class NgeMarkdownService {
 
     private async createTransformer(options: NgeMarkdownCompileOptions) {
         const contributions = [...(options.contributions || [])];
-        const transformer = new NgeMarkdownTransformer(
-            this.config,
-        );
-
-        const dependencies = [];
+        const transformer = new NgeMarkdownTransformer(this.config);
+        const dependencies: any[] = [];
         for (const contrib of contributions) {
             if (contrib.dependencies) {
-                dependencies.push(...(contrib.dependencies() || []));
+                dependencies.push(...contrib.dependencies());
             }
             contrib.contribute(transformer);
         }
@@ -92,21 +89,21 @@ export class NgeMarkdownService {
         // https://github.com/microsoft/monaco-editor/issues/1249
         const define = WINDOW.define;
         WINDOW.define = undefined;
-        await this.resourceLoader.loadAllSync(dependencies).toPromise();
+        await lastValueFrom(this.resourceLoader.loadAllSync(dependencies));
         WINDOW.define = define;
         return transformer;
     }
 
     private renderer(transformer: NgeMarkdownTransformer) {
         const renderer = transformer.transformRenderer(
-            this.config?.renderer || new MarkedRenderer()
+            this.config?.renderer || new marked.Renderer()
         );
         return renderer;
     }
 
     private tokenizer(transformer: NgeMarkdownTransformer) {
         return transformer.transformTokenizer(
-            this.config?.tokenizer || new MarkedTokenizer()
+            this.config?.tokenizer || new marked.Tokenizer()
         );
     }
 

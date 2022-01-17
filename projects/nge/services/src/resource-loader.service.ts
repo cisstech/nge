@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { forkJoin, from, Observable } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
 import { concatMap, shareReplay, take } from 'rxjs/operators';
 
 /**
@@ -9,12 +9,12 @@ import { concatMap, shareReplay, take } from 'rxjs/operators';
  *  - `url` is the url to a style/script to load
  *  - `attributes` is a map of optional attributes to add to the element.
  */
-declare type Asset = [
+declare type ResourceInfo = [
     'style' | 'script', string, Record<string, string>?
 ];
 
-class Request {
-    private request?: Observable<Event>;
+class LoadRequest {
+    private request?: Observable<ResourceInfo>;
     private finished = false;
 
     get isFinished(): boolean {
@@ -22,7 +22,7 @@ class Request {
     }
 
     constructor(
-        private readonly asset: Asset,
+        private readonly asset: ResourceInfo,
         private readonly document: Document,
     ) { }
 
@@ -33,15 +33,15 @@ class Request {
         return this.loadScript();
     }
 
-    private loadStyle(): Observable<Event> {
-        return this.request ?? (this.request = new Observable<Event>((observer) => {
+    private loadStyle(): Observable<ResourceInfo> {
+        return this.request ?? (this.request = new Observable<ResourceInfo>((observer) => {
             const url = this.asset[1];
             const style: HTMLLinkElement = this.document.createElement('link');
             style.href = url;
             style.rel = 'stylesheet';
 
-            style.onload = (event: Event) => {
-                observer.next(event);
+            style.onload = () => {
+                observer.next(this.asset);
                 observer.complete();
                 this.finished = true;
             };
@@ -58,7 +58,6 @@ class Request {
                     }
                 }
             }
-
             this.document.head.appendChild(style);
         }).pipe(
             take(1),
@@ -66,14 +65,14 @@ class Request {
         ));
     }
 
-    private loadScript(): Observable<Event> {
-        return this.request ?? (this.request = new Observable<Event>(observer => {
+    private loadScript(): Observable<ResourceInfo> {
+        return this.request ?? (this.request = new Observable<ResourceInfo>(observer => {
             const url = this.asset[1];
             const script: HTMLScriptElement = this.document.createElement('script');
             script.src = url;
 
-            script.onload = (event: Event) => {
-                observer.next(event);
+            script.onload = () => {
+                observer.next(this.asset);
                 observer.complete();
                 this.finished = true;
             };
@@ -106,7 +105,7 @@ class Request {
     providedIn: 'root',
 })
 export class ResourceLoaderService {
-    private readonly requests = new Map<string, Request>();
+    private readonly requests = new Map<string, LoadRequest>();
 
     constructor(
         @Inject(DOCUMENT)
@@ -131,33 +130,49 @@ export class ResourceLoaderService {
      * Injects styles and scripts from given urls to the head of the DOM.
      * This method loads assets from same url once and the assets are
      * loaded in the same order that given.
-     * @param assets Assets to load.
+     * @param resources Resources to load.
      */
-    loadAllSync(assets: Asset[]): Observable<Event> {
-        const requests = this.createRequests(assets);
-        return (from(requests).pipe(
-            concatMap(e => e)
-        ));
+    loadAllSync(resources: ResourceInfo[]): Observable<ResourceInfo[]> {
+        if (!resources.length) {
+            return of([]);
+        }
+        const requests = this.createRequests(resources);
+        return new Observable<ResourceInfo[]>(observer => {
+            const response: ResourceInfo[] = [];
+            const subs = from(requests).pipe(concatMap(e => e.run())).subscribe(e => {
+                response.push(e);
+                if (response.length === resources.length) {
+                    observer.next(response);
+                    observer.complete();
+                }
+            });
+            return () => {
+                subs?.unsubscribe();
+            };
+        });
     }
 
     /**
      * Injects styles and scripts from given urls to target place in DOM
      * This method loads style and script from same url once.
-     * @param assets Assets to load.
+     * @param resources Resources to load.
      */
-    loadAllAsync(assets: Asset[]): Observable<Event[]> {
-        const loaders = this.createRequests(assets);
-        return forkJoin(loaders);
+    loadAllAsync(resources: ResourceInfo[]): Observable<ResourceInfo[]> {
+        if (!resources.length) {
+            return of([]);
+        }
+        const loaders = this.createRequests(resources);
+        return forkJoin(loaders.map(e => e.run()));
     }
 
-    private createRequests(assets: Asset[]): Observable<Event>[] {
-        return assets.map((asset) => {
+    private createRequests(resources: ResourceInfo[]): LoadRequest[] {
+        return resources.map((asset) => {
             const url = asset[1];
             let request = this.requests.get(url);
             if (!request) {
-                this.requests.set(url, request = new Request(asset, this.document));
+                this.requests.set(url, request = new LoadRequest(asset, this.document));
             }
-            return request.run();
+            return request;
         });
     }
 }

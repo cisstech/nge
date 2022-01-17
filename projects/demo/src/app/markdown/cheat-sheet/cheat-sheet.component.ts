@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-markdown-cheat-sheet',
@@ -37,7 +38,7 @@ export class CheatSheetComponent implements OnInit {
 
     constructor(
         private readonly http: HttpClient
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.titles.forEach((e) => {
@@ -54,14 +55,10 @@ export class CheatSheetComponent implements OnInit {
             return;
         }
         record.expanded = true;
-        const url =
-            'assets/docs/nge-markdown/cheatsheet/' +
-            title.toLowerCase().replace(' ', '-') +
-            '.md';
 
-        this.http
-            .get(url, { responseType: 'text' })
-            .toPromise()
+        const url = 'assets/docs/nge-markdown/cheatsheet/' + title.toLowerCase().replace(' ', '-') + '.md';
+
+        lastValueFrom(this.http.get(url, { responseType: 'text' }) )
             .then((markdown) => {
                 record.markdown = markdown;
             });
