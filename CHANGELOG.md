@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.1.1](https://github.com/mciissee/nge/compare/v13.1.0...v13.1.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* **ui:** tree leaf not editable ([b3cc4b2](https://github.com/mciissee/nge/commit/b3cc4b20d9b3c2d396e4bebd029ed18395c5aa07))
+
 ## 13.1.0 (2022-01-17)
 
 
