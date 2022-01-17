@@ -303,11 +303,10 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
             this.editing.node = holder.data;
             this.editing.text = creation ? '' : holder.name;
             this.editing.creation = creation;
-            if (!this.isExpanded(node)) {
+            if (holder.expandable && !this.isExpanded(holder)) {
                 this.expand(node);
-            } else {
-                this.changeDetectorRef.detectChanges();
             }
+            this.changeDetectorRef.detectChanges();
         }
 
     }
