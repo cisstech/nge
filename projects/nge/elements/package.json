@@ -3,5 +3,8 @@
     "lib": {
       "entryFile": "index.ts"
     }
+  },
+  "peerDependencies": {
+    "@angular/elements": "^13.0.3"
   }
 }
