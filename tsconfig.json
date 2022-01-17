@@ -22,6 +22,7 @@
     "paths": {
       "@mcisse/nge": ["projects/nge"],
       "@mcisse/nge/doc": ["projects/nge/doc"],
+      "@mcisse/nge/elements": ["projects/nge/elements"],
       "@mcisse/nge/monaco": ["projects/nge/monaco"],
       "@mcisse/nge/pipes": ["projects/nge/pipes"],
       "@mcisse/nge/services": ["projects/nge/services"],
