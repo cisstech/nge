@@ -38,7 +38,7 @@ MIT
 @angular/router
 MIT
 
-@mcisse/nge
+@cisstech/nge
 MIT
 
 @webcomponents/webcomponentsjs

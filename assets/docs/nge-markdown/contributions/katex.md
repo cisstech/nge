@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgeMarkdownModule,
   NgeMarkdownKatexProvider,
-} from '@mcisse/nge/markdown';
+} from '@cisstech/nge/markdown';
 
 import { AppComponent } from './app.component';
 
@@ -46,7 +46,7 @@ import {
   NgeMarkdownModule,
   NgeMarkdownKatexProvider,
   NgeMarkdownKatexOptionsProvider
-} from '@mcisse/nge/markdown';
+} from '@cisstech/nge/markdown';
 
 import { AppComponent } from './app.component';
 

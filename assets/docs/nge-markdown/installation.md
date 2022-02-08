@@ -1,5 +1,5 @@
 # Installation
 
 ```bash
-npm i @mcisse/nge marked
+npm i @cisstech/nge marked
 ```

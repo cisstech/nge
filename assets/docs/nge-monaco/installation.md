@@ -1,5 +1,5 @@
 # Installation
 
 ```bash
-npm i @mcisse/nge monaco-editor@0.30.1
+npm i @cisstech/nge monaco-editor@0.30.1
 ```
