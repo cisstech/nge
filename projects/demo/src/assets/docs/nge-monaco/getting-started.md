@@ -18,7 +18,7 @@
 
 Contributions are always welcome. <br/>
 
-Please read our [CONTRIBUTING.md](https://github.com/mciissee/nge-monaco/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/mciissee/nge-monaco/pulls) or as [GitHub issues](https://github.com/mciissee/nge-monaco/issues).
+Please read our [CONTRIBUTING.md](https://github.com/cisstech/nge-monaco/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/cisstech/nge-monaco/pulls) or as [GitHub issues](https://github.com/cisstech/nge-monaco/issues).
 
 Please just make sure that ...
 
@@ -38,4 +38,4 @@ If this project has been useful, that it helped you or your business to save pre
 
 ## License
 
-MIT © [Mamadou Cisse](https://github.com/mciissee)
+MIT © [Mamadou Cisse](https://github.com/cisstech)

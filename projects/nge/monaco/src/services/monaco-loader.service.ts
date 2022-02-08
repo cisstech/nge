@@ -1,5 +1,5 @@
 import { Inject, Injectable, OnDestroy, Optional } from '@angular/core';
-import { ResourceLoaderService } from '@mcisse/nge/services';
+import { ResourceLoaderService } from '@cisstech/nge/services';
 import { lastValueFrom, of, Subject } from 'rxjs';
 import { NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '../contributions/monaco-contribution';
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../monaco-config';

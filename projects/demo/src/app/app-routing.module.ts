@@ -12,7 +12,7 @@ const routes: Routes = [
     },
     {
         path: 'docs',
-        loadChildren: () => import('@mcisse/nge/doc').then(m => m.NgeDocModule),
+        loadChildren: () => import('@cisstech/nge/doc').then(m => m.NgeDocModule),
         data: [
             NGE_DOC,
             NGE_MONACO,

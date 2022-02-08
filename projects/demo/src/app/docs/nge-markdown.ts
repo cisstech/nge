@@ -1,7 +1,7 @@
-import { NgeDocLinAction, NgeDocLink, NgeDocSettings } from "@mcisse/nge/doc";
+import { NgeDocLinAction, NgeDocLink, NgeDocSettings } from "@cisstech/nge/doc";
 
 const editInGithubAction = (url: string) => {
-    const base = 'https://github.com/mciissee/nge/tree/main/projects/demo/src/assets/docs/nge-markdown/';
+    const base = 'https://github.com/cisstech/nge/tree/main/projects/demo/src/assets/docs/nge-markdown/';
     return {
         title: 'Edit on github',
         icon: 'https://icongr.am/octicons/mark-github.svg',
@@ -17,7 +17,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
         backUrl: '/',
         repo: {
             name: 'nge',
-            url: 'https://github.com/mciissee/nge',
+            url: 'https://github.com/cisstech/nge',
         }
     },
     pages: [
@@ -63,7 +63,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
                     .replace(/[A-Z]/gm, (match) => '-' + match.toLowerCase())
                     // remove leading dash
                     .slice(1);
-                const base = 'https://github.com/mciissee/nge/tree/main/projects/nge/nge-markdown/src/contributions/';
+                const base = 'https://github.com/cisstech/nge/tree/main/projects/nge/nge-markdown/src/contributions/';
                 return {
                     title: name,
                     href: snakecase,

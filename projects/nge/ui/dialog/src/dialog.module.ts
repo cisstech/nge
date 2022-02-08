@@ -9,7 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { NgeMarkdownModule } from '@mcisse/nge/markdown';
+import { NgeMarkdownModule } from '@cisstech/nge/markdown';
 
 import { ConfirmComponent } from './confirm/confirm.component';
 import { PromptComponent } from './prompt/prompt.component';

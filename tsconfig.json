@@ -20,17 +20,17 @@
       "dom"
     ],
     "paths": {
-      "@mcisse/nge": ["projects/nge"],
-      "@mcisse/nge/doc": ["projects/nge/doc"],
-      "@mcisse/nge/elements": ["projects/nge/elements"],
-      "@mcisse/nge/monaco": ["projects/nge/monaco"],
-      "@mcisse/nge/pipes": ["projects/nge/pipes"],
-      "@mcisse/nge/services": ["projects/nge/services"],
-      "@mcisse/nge/markdown": ["projects/nge/markdown"],
-      "@mcisse/nge/ui/tree": ["projects/nge/ui/tree"],
-      "@mcisse/nge/ui/list": ["projects/nge/ui/list"],
-      "@mcisse/nge/ui/icon": ["projects/nge/ui/icon"],
-      "@mcisse/nge/ui/dialog": ["projects/nge/ui/dialog"]
+      "@cisstech/nge": ["projects/nge"],
+      "@cisstech/nge/doc": ["projects/nge/doc"],
+      "@cisstech/nge/elements": ["projects/nge/elements"],
+      "@cisstech/nge/monaco": ["projects/nge/monaco"],
+      "@cisstech/nge/pipes": ["projects/nge/pipes"],
+      "@cisstech/nge/services": ["projects/nge/services"],
+      "@cisstech/nge/markdown": ["projects/nge/markdown"],
+      "@cisstech/nge/ui/tree": ["projects/nge/ui/tree"],
+      "@cisstech/nge/ui/list": ["projects/nge/ui/list"],
+      "@cisstech/nge/ui/icon": ["projects/nge/ui/icon"],
+      "@cisstech/nge/ui/dialog": ["projects/nge/ui/dialog"]
     }
   },
   "angularCompilerOptions": {

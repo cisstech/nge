@@ -13,7 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgeMarkdownModule,
   NgeMarkdownTabbetSetProvider,
-} from '@mcisse/nge/markdown';
+} from '@cisstech/nge/markdown';
 
 import { AppComponent } from './app.component';
 

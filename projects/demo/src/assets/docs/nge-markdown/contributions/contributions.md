@@ -18,7 +18,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgeMonacoModule, NgeMonacoColorizerService, NGE_THEMES } from '@mcisse/nge/monaco';
+import { NgeMonacoModule, NgeMonacoColorizerService, NGE_THEMES } from '@cisstech/nge/monaco';
 import {
     NgeMarkdownModule,
     NgeMarkdownTabbedSetProvider,
@@ -29,7 +29,7 @@ import {
     NgeMarkdownIconsProvider,
     NgeMarkdownHighlighterProvider,
     NgeMarkdownHighlighterMonacoProvider,
-} from '@mcisse/nge/markdown';
+} from '@cisstech/nge/markdown';
 
 import { AppComponent } from './app.component';
 
@@ -97,7 +97,7 @@ import {
     NgeMarkdownTransformer,
     NgeMarkdownContribution,
     NGE_MARKDOWN_CONTRIBUTION,
-} from '@mcisse/nge/markdown';
+} from '@cisstech/nge/markdown';
 
 @Injectable()
 export class MyMarkdownContribution implements NgeMarkdownContribution {
@@ -137,7 +137,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgeMarkdownModule } from '@mcisse/nge/markdown';
+import { NgeMarkdownModule } from '@cisstech/nge/markdown';
 
 import { MyMarkdownContributionProvider } from './my-contribution';
 import { AppComponent } from './app.component';

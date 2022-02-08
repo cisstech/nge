@@ -29,7 +29,7 @@
 
 Contributions are always welcome. <br/>
 
-Please read our [CONTRIBUTING.md](https://github.com/mciissee/nge-markdown/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/mciissee/nge-markdown/pulls) or as [GitHub issues](https://github.com/mciissee/nge-markdown/issues).
+Please read our [CONTRIBUTING.md](https://github.com/cisstech/nge-markdown/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/cisstech/nge-markdown/pulls) or as [GitHub issues](https://github.com/cisstech/nge-markdown/issues).
 
 Please just make sure that ...
 
@@ -49,4 +49,4 @@ If this project has been useful, that it helped you or your business to save pre
 
 ## License
 
-MIT © [Mamadou Cisse](https://github.com/mciissee)
+MIT © [Mamadou Cisse](https://github.com/cisstech)

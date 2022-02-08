@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgeMarkdownModule,
   NgeMarkdownIconsProvider,
-} from '@mcisse/nge/markdown';
+} from '@cisstech/nge/markdown';
 
 import { AppComponent } from './app.component';
 

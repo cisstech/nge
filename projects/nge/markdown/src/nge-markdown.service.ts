@@ -7,7 +7,7 @@ import { marked } from 'marked';
 import { NgeMarkdownContribution } from './nge-markdown-contribution';
 import { NgeMarkdownConfig, NGE_MARKDOWN_CONFIG } from './nge-markdown-config';
 import { NgeMarkdownTransformer } from './nge-markdown-transformer';
-import { ResourceLoaderService } from '@mcisse/nge/services';
+import { ResourceLoaderService } from '@cisstech/nge/services';
 import { lastValueFrom } from 'rxjs';
 
 const WINDOW = (window as any);

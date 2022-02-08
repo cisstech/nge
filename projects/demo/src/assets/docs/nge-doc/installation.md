@@ -3,7 +3,7 @@
 Install from npm
 
 ```bash
-npm i @mcisse/nge
+npm i @cisstech/nge
 ```
 
 Install Angular Cdk

@@ -5,8 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // LIBS
-import { NGE_DOC_RENDERERS } from '@mcisse/nge/doc';
-import { NgeMonacoColorizerService, NgeMonacoModule, NGE_MONACO_THEMES } from '@mcisse/nge/monaco';
+import { NGE_DOC_RENDERERS } from '@cisstech/nge/doc';
+import { NgeMonacoColorizerService, NgeMonacoModule, NGE_MONACO_THEMES } from '@cisstech/nge/monaco';
 import {
     NgeMarkdownModule,
     NgeMarkdownTabbedSetProvider,
@@ -17,7 +17,7 @@ import {
     NgeMarkdownIconsProvider,
     NgeMarkdownHighlighterProvider,
     NgeMarkdownHighlighterMonacoProvider,
-} from '@mcisse/nge/markdown';
+} from '@cisstech/nge/markdown';
 
 // MODULE
 import { AppRoutingModule } from './app-routing.module';
@@ -56,7 +56,7 @@ import { AppComponent } from './app.component';
             provide: NGE_DOC_RENDERERS,
             useValue: {
                 markdown: {
-                    component: () => import('@mcisse/nge/markdown').then(m => m.NgeMarkdownComponent),
+                    component: () => import('@cisstech/nge/markdown').then(m => m.NgeMarkdownComponent),
                 }
             }
         }

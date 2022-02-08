@@ -14,7 +14,7 @@ the dependencies of nge-markdown to the project.
 * Add **nge** and **marked** dependencies from npm
 
   ```bash
-  npm i @mcisse/nge marked
+  npm i @cisstech/nge marked
   ```
 
 * Once the project is generated, open the **app.module.ts** file and add **NgeMarkdownModule** to the **imports**
@@ -25,7 +25,7 @@ the dependencies of nge-markdown to the project.
   import { BrowserModule } from '@angular/platform-browser';
   import { NgModule } from '@angular/core';
   import { HttpClientModule } from '@angular/common/http';
-  import { NgeMarkdownModule} from '@mcisse/nge/markdown';
+  import { NgeMarkdownModule} from '@cisstech/nge/markdown';
   import { AppComponent } from './app.component';
 
   @NgModule({
@@ -55,7 +55,7 @@ You can get a hook on render complete using `(render)` output event to get the a
 ```typescript
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MarkedTokensList  } from '@mcisse/nge/markdown';
+import { MarkedTokensList  } from '@cisstech/nge/markdown';
 
 @Component({
     selector: 'app-root',
@@ -136,7 +136,7 @@ Optionally, marked parser can be configured by passing a custom [MarkedOptions](
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { NgeMarkdownModule, NGE_MARKDOWN_CONFIG, NgeMarkdownConfig } from '@mcisse/nge/markdown';
+import { NgeMarkdownModule, NGE_MARKDOWN_CONFIG, NgeMarkdownConfig } from '@cisstech/nge/markdown';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -177,7 +177,7 @@ marked `renderer` and `tokenizer`.
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { NgeMarkdownModule, NGE_MARKDOWN_CONFIG, NgeMarkdownConfig } from '@mcisse/nge/markdown';
+import { NgeMarkdownModule, NGE_MARKDOWN_CONFIG, NgeMarkdownConfig } from '@cisstech/nge/markdown';
 import { AppComponent } from './app.component';
 
 export function markedOptionsFactory(): MarkedOptions {

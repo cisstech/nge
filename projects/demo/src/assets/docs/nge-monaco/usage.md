@@ -24,7 +24,7 @@ the dependencies of nge-monaco to the project.
   import { BrowserModule } from '@angular/platform-browser';
   import { NgModule } from '@angular/core';
   import { HttpClientModule } from '@angular/common/http';
-  import { NgeMonacoModule } from '@mcisse/nge/monaco';
+  import { NgeMonacoModule } from '@cisstech/nge/monaco';
   import { AppComponent } from './app.component';
 
   @NgModule({
@@ -212,7 +212,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { NgeMonacoModule } from '@mcisse/nge/monaco';
+import { NgeMonacoModule } from '@cisstech/nge/monaco';
 
 @NgModule({
   declarations: [
@@ -255,7 +255,7 @@ This library comes with a set of custom themes for monaco editor taken from [htt
   "apps": [
     {
       "assets": [
-        { "glob": "**/*", "input": "./node_modules/@mcisse/nge/assets/monaco/", "output": "./assets/nge/monaco/" }
+        { "glob": "**/*", "input": "./node_modules/@cisstech/nge/assets/monaco/", "output": "./assets/nge/monaco/" }
       ],
       ...
     }
@@ -274,7 +274,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { NgeMonacoModule, NGE_THEMES } from '@mcisse/nge/monaco';
+import { NgeMonacoModule, NGE_THEMES } from '@cisstech/nge/monaco';
 
 @NgModule({
   declarations: [
@@ -325,7 +325,7 @@ export class AppModule { }
 // example.component.ts
 
 import { Component } from '@angular/core';
-import { NgeMonacoThemeService } from '@mcisse/nge/monaco';
+import { NgeMonacoThemeService } from '@cisstech/nge/monaco';
 
 @Component({
     selector: 'app-example',
@@ -359,7 +359,7 @@ import { NgModule, Injectable, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 
-import { NgeMonacoModule, NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '@mcisse/nge/monaco';
+import { NgeMonacoModule, NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '@cisstech/nge/monaco';
 
 @Injectable() // use injectable only if you want to use angular dependency injection.
 class MyContribution implements NgeMonacoContribution {
@@ -438,7 +438,7 @@ By default the library load monaco editor from a CDN. Please follow the steps ab
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { NgeMonacoModule } from '@mcisse/nge/monaco';
+import { NgeMonacoModule } from '@cisstech/nge/monaco';
 
 @NgModule({
   declarations: [

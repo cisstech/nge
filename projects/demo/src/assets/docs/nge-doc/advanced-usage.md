@@ -1,25 +1,25 @@
 # Advanced usage
 
-The full list of properties supported by NgeDoc configuration object can be found [here](https://github.com/mciissee/nge-doc/blob/69e02ae21e37fc75345b5cba537233930d2bd388/projects/nge-doc/src/lib/nge-doc.ts#L13).
+The full list of properties supported by NgeDoc configuration object can be found [here](https://github.com/cisstech/nge-doc/blob/69e02ae21e37fc75345b5cba537233930d2bd388/projects/nge-doc/src/lib/nge-doc.ts#L13).
 
 === app-routing.module.ts
 
 ```typescript
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { NgeDocSettings, NgeDocLink, NgeDocSettings } from '@mcisse/nge/doc';
+import { NgeDocSettings, NgeDocLink, NgeDocSettings } from '@cisstech/nge/doc';
 
 const routes: Routes = [
     {
         path: 'docs',
-        loadChildren: () => import('@mcisse/nge/doc').then(m => m.NgeDocModule),
+        loadChildren: () => import('@cisstech/nge/doc').then(m => m.NgeDocModule),
         data: {
           meta: {
               name: 'Ngedoc',
               root: '/docs/',
               repo: {
                   name: 'nge-doc',
-                  url: 'https://github.com/mciissee/nge-doc',
+                  url: 'https://github.com/cisstech/nge-doc',
               },
           },
           pages: [
@@ -38,7 +38,7 @@ const routes: Routes = [
               href: 'my-component',
               renderer: () => import('./my-component').then(m => m.MyComponent),
               actions: [
-                { title: 'MyActionToOpenAnUrl', run: 'https://github.com/mciissee/nge-doc' }, // action to open an url
+                { title: 'MyActionToOpenAnUrl', run: 'https://github.com/cisstech/nge-doc' }, // action to open an url
                 { title: 'MyDynamicAction', icon: 'https://....', run: injector => alert('My Action Handler') }
               ]
             },

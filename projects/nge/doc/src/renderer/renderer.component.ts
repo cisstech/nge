@@ -13,7 +13,7 @@ import {
 import { lastValueFrom, Subscription } from 'rxjs';
 import { NgeDocState, NGE_DOC_RENDERERS } from '../nge-doc';
 import { NgeDocService } from '../nge-doc.service';
-import { CompilerService } from '@mcisse/nge/services';
+import { CompilerService } from '@cisstech/nge/services';
 
 @Component({
     selector: 'nge-doc-renderer',

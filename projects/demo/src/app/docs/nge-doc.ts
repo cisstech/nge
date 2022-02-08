@@ -1,4 +1,4 @@
-import { NgeDocSettings } from "@mcisse/nge/doc";
+import { NgeDocSettings } from "@cisstech/nge/doc";
 
 export const NGE_DOC: NgeDocSettings = {
     meta: {
@@ -8,7 +8,7 @@ export const NGE_DOC: NgeDocSettings = {
         backUrl: '/',
         repo: {
             name: 'nge',
-            url: 'https://github.com/mciissee/nge',
+            url: 'https://github.com/cisstech/nge',
         }
     },
     pages: [

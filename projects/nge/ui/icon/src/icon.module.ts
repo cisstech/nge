@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { MatBadgeModule } from '@angular/material/badge';
-import { IconGrPipeModule } from '@mcisse/nge/pipes';
+import { IconGrPipeModule } from '@cisstech/nge/pipes';
 
 import { IconPipe } from './pipes/icon.pipe';
 import { IconFilePipe } from './pipes/icon-file.pipe';

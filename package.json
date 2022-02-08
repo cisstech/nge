@@ -1,5 +1,5 @@
 {
-  "name": "@mcisse/nge",
+  "name": "@cisstech/nge",
   "version": "13.1.1",
   "description": "NG Essentials is a collection of libraries for Angular developers.",
   "keywords": [
@@ -11,15 +11,15 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mciissee/nge"
+    "url": "https://github.com/cisstech/nge"
   },
   "bugs": {
-    "url": "https://github.com/mciissee/nge/issues"
+    "url": "https://github.com/cisstech/nge/issues"
   },
-  "homepage": "https://github.com/mciissee/nge",
+  "homepage": "https://github.com/cisstech/nge",
   "author": {
     "name": "Mamadou Cisse",
-    "email": "mciissee@gmail.com"
+    "email": "cisstech@gmail.com"
   },
   "license": "MIT",
   "scripts": {
@@ -28,7 +28,7 @@
     "build": "npm run build:lib && npm run build:demo",
     "build:lib": "ng build nge --configuration production",
     "postbuild:lib": "./scripts/postbuild.sh",
-    "build:demo": "ng build demo --configuration production --base-href='https://mciissee.github.io/nge/'",
+    "build:demo": "ng build demo --configuration production --base-href='https://cisstech.github.io/nge/'",
     "test": "ng test --code-coverage --watch=false --browsers=ChromeHeadless && node coverage-merger.js",
     "lint": "ng lint",
     "e2e": "ng e2e",
