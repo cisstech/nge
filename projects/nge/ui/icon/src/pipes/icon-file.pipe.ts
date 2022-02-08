@@ -23,7 +23,7 @@ export class IconFilePipe implements PipeTransform {
 
     private fromFileName(fileName: string, options: FileIconOptions): ImgIcon {
         const { defaultIcon } = FILE_THEME;
-        const baseUrl = this.config?.fileIconsBaseUrl || 'assets/vendors/nge/icons/files/';
+        const baseUrl = this.config?.fileIconsBaseUrl || 'assets/vendors/nge/ui/icon/icons/files/';
 
         let iconName = '';
         if (fileName) {
