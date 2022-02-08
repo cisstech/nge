@@ -9,6 +9,4 @@ cp -rf ./projects/nge/monaco/src/themes ./dist/nge/assets/monaco/themes
 mkdir -p dist/nge/assets/ui/icon/icons
 mkdir -p dist/nge/assets/ui/icon/fonts
 
-cp -rf ./projects/nge/ui/icon/src/assets/icons ./dist/nge/assets/ui/icon/icons
-cp -rf ./projects/nge/ui/icon/src/assets/fonts ./dist/nge/assets/ui/icon/fonts
-
+cp -rf ./projects/nge/ui/icon/src/assets/ ./dist/nge/assets/ui/icon/
