@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.1.4](https://github.com/cisstech/nge/compare/v13.1.3...v13.1.4) (2022-02-08)
+
 ### [13.1.3](https://github.com/cisstech/nge/compare/v13.1.2...v13.1.3) (2022-02-08)
 
 ### [13.1.2](https://github.com/cisstech/nge/compare/v13.1.1...v13.1.2) (2022-02-08)
