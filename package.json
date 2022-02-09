@@ -27,7 +27,7 @@
     "start": "ng serve",
     "build": "npm run build:lib && npm run build:demo",
     "build:lib": "ng build nge --configuration production",
-    "postbuild:lib": "./scripts/postbuild.sh",
+    "postbuild:lib": "./scripts/postbuild.sh && npm run sync-version",
     "build:demo": "ng build demo --configuration production --base-href='https://cisstech.github.io/nge/'",
     "test": "ng test --code-coverage --watch=false --browsers=ChromeHeadless && node coverage-merger.js",
     "lint": "ng lint",
@@ -36,7 +36,8 @@
     "publish:demo": "angular-cli-ghpages --dir=./dist/demo",
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",
-    "release": "standard-version"
+    "release": "standard-version",
+    "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json"
   },
   "private": false,
   "dependencies": {
@@ -61,7 +62,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.0.4",
+    "@angular-devkit/build-angular": "^13.2.2",
     "@angular/cli": "~13.0.4",
     "@angular/compiler-cli": "~13.0.3",
     "@commitlint/cli": "^16.0.2",
@@ -87,6 +88,7 @@
     "protractor": "~7.0.0",
     "puppeteer": "^10.1.0",
     "standard-version": "^9.3.0",
+    "sync-json": "^1.0.2",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~4.4.4",
