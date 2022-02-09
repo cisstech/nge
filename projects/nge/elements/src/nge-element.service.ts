@@ -3,7 +3,7 @@ import {
     Injector, NgModuleRef, Optional
 } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import { IDynamicModule } from 'dist/nge/services';
+import { IDynamicModule } from '@cisstech/nge/services';
 import { from, Observable } from 'rxjs';
 import { NgeElementDef, NGE_ELEMENTS } from './nge-element';
 
