@@ -28,7 +28,7 @@ export class NgeElementService {
         });
     }
 
-    undefineds() {
+    listUnloadeds() {
         return Array.from(this.registry.keys()).filter(s => !this.defineds.has(s));
     }
 
@@ -51,18 +51,22 @@ export class NgeElementService {
         }
 
         const promise = new Promise<void>(async (resolve, reject) => {
-            const module: NgModuleRef<IDynamicModule> = createNgModuleRef(
-                await definition.module(),
-                this.injector
-            );
+            try {
+                const module: NgModuleRef<IDynamicModule> = createNgModuleRef(
+                    await definition.module(),
+                    this.injector
+                );
 
-            const customElement = createCustomElement(module.instance.component, { injector: this.injector });
-            customElements.define(selector, customElement);
-            await customElements.whenDefined(selector);
+                const customElement = createCustomElement(module.instance.component, { injector: module.injector });
+                customElements.define(selector, customElement);
+                await customElements.whenDefined(selector);
 
-            this.defineds.add(selector);
+                this.defineds.add(selector);
 
-            resolve();
+                resolve();
+            } catch(error) {
+                reject(error);
+            }
         });
 
         this.promises.set(selector, promise);
@@ -78,5 +82,4 @@ export class NgeElementService {
             )
         );
     }
-
 }

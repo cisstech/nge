@@ -17,7 +17,7 @@ export class NgeElementDetectorDirective implements AfterViewInit, OnDestroy {
     ) { }
 
     async ngAfterViewInit(): Promise<void> {
-        let selectors = this.elementService.undefineds();
+        let selectors = this.elementService.listUnloadeds();
         for (const selector of selectors) {
             const tags = document.getElementsByTagName(selector);
             if (tags?.length) {
@@ -38,7 +38,7 @@ export class NgeElementDetectorDirective implements AfterViewInit, OnDestroy {
 
     private addMutationObserver(): void {
         const target = document.body;
-        let unloadedTags = this.elementService.undefineds();
+        let unloadedTags = this.elementService.listUnloadeds();
         this.observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
