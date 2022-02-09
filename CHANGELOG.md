@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.1.5](https://github.com/cisstech/nge/compare/v13.1.4...v13.1.5) (2022-02-09)
+
+
+### Bug Fixes
+
+* **elements:** import from [@cisstech](https://github.com/cisstech) instead of dist ([08a7e19](https://github.com/cisstech/nge/commit/08a7e196cc86dc57dcc0823d6ed9d061fe0c1faa))
+* **elements:** providers defined in root injector not found in custom elements ([f846a98](https://github.com/cisstech/nge/commit/f846a98b03bc65d2c0a752565b506fffa82016fc))
+
 ### [13.1.4](https://github.com/cisstech/nge/compare/v13.1.3...v13.1.4) (2022-02-08)
 
 ### [13.1.3](https://github.com/cisstech/nge/compare/v13.1.2...v13.1.3) (2022-02-08)
