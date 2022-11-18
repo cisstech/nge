@@ -10,170 +10,176 @@ import { concatMap, shareReplay, take } from 'rxjs/operators';
  *  - `attributes` is a map of optional attributes to add to the element.
  */
 declare type ResourceInfo = [
-    'style' | 'script', string, Record<string, string>?
+  'style' | 'script',
+  string,
+  Record<string, string>?
 ];
 
 class LoadRequest {
-    private request?: Observable<ResourceInfo>;
-    private finished = false;
+  private request?: Observable<ResourceInfo>;
+  private finished = false;
 
-    get isFinished(): boolean {
-        return this.finished;
+  get isFinished(): boolean {
+    return this.finished;
+  }
+
+  constructor(
+    private readonly asset: ResourceInfo,
+    private readonly document: Document
+  ) {}
+
+  run() {
+    if (this.asset[0] === 'style') {
+      return this.loadStyle();
     }
+    return this.loadScript();
+  }
 
-    constructor(
-        private readonly asset: ResourceInfo,
-        private readonly document: Document,
-    ) { }
+  private loadStyle(): Observable<ResourceInfo> {
+    return (
+      this.request ??
+      (this.request = new Observable<ResourceInfo>((observer) => {
+        const url = this.asset[1];
+        const style: HTMLLinkElement = this.document.createElement('link');
+        style.href = url;
+        style.rel = 'stylesheet';
 
-    run() {
-        if (this.asset[0] === 'style') {
-            return this.loadStyle();
+        style.onload = () => {
+          observer.next(this.asset);
+          observer.complete();
+          this.finished = true;
+        };
+        style.onerror = (err) => {
+          observer.error(err);
+          this.finished = true;
+        };
+
+        const attributes = this.asset[2];
+        if (attributes) {
+          for (const key in attributes) {
+            if (attributes.hasOwnProperty(key)) {
+              style.setAttribute(key, attributes[key]);
+            }
+          }
         }
-        return this.loadScript();
-    }
+        this.document.head.appendChild(style);
+      }).pipe(take(1), shareReplay(1)))
+    );
+  }
 
-    private loadStyle(): Observable<ResourceInfo> {
-        return this.request ?? (this.request = new Observable<ResourceInfo>((observer) => {
-            const url = this.asset[1];
-            const style: HTMLLinkElement = this.document.createElement('link');
-            style.href = url;
-            style.rel = 'stylesheet';
+  private loadScript(): Observable<ResourceInfo> {
+    return (
+      this.request ??
+      (this.request = new Observable<ResourceInfo>((observer) => {
+        const url = this.asset[1];
+        const script: HTMLScriptElement = this.document.createElement('script');
+        script.src = url;
 
-            style.onload = () => {
-                observer.next(this.asset);
-                observer.complete();
-                this.finished = true;
-            };
-            style.onerror = (err) => {
-                observer.error(err);
-                this.finished = true;
-            };
+        script.onload = () => {
+          observer.next(this.asset);
+          observer.complete();
+          this.finished = true;
+        };
+        script.onerror = (err) => {
+          observer.error(err);
+          this.finished = true;
+        };
 
-            const attributes = this.asset[2];
-            if (attributes) {
-                for (const key in attributes) {
-                    if (attributes.hasOwnProperty(key)) {
-                        style.setAttribute(key, attributes[key]);
-                    }
-                }
+        const attributes = this.asset[2];
+        if (attributes) {
+          for (const key in attributes) {
+            if (attributes.hasOwnProperty(key)) {
+              script.setAttribute(key, attributes[key]);
             }
-            this.document.head.appendChild(style);
-        }).pipe(
-            take(1),
-            shareReplay(1)
-        ));
-    }
+          }
+        }
 
-    private loadScript(): Observable<ResourceInfo> {
-        return this.request ?? (this.request = new Observable<ResourceInfo>(observer => {
-            const url = this.asset[1];
-            const script: HTMLScriptElement = this.document.createElement('script');
-            script.src = url;
-
-            script.onload = () => {
-                observer.next(this.asset);
-                observer.complete();
-                this.finished = true;
-            };
-            script.onerror = (err) => {
-                observer.error(err);
-                this.finished = true;
-            };
-
-            const attributes = this.asset[2];
-            if (attributes) {
-                for (const key in attributes) {
-                    if (attributes.hasOwnProperty(key)) {
-                        script.setAttribute(key, attributes[key]);
-                    }
-                }
-            }
-
-            this.document.head.appendChild(script);
-        }).pipe(
-            take(1),
-            shareReplay(1)
-        ));
-    }
+        this.document.head.appendChild(script);
+      }).pipe(take(1), shareReplay(1)))
+    );
+  }
 }
 
 /**
  * Services that dynamically inject scripts and styles elements to the DOM.
  */
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class ResourceLoaderService {
-    private readonly requests = new Map<string, LoadRequest>();
+  private readonly requests = new Map<string, LoadRequest>();
 
-    constructor(
-        @Inject(DOCUMENT)
-        private document: any
-    ) { }
+  constructor(
+    @Inject(DOCUMENT)
+    private document: any
+  ) {}
 
-    waitForPendings(): Promise<void> {
-        return new Promise<void>((resolve) => {
-            const interval = setInterval(() => {
-                for (const request of this.requests.values()) {
-                    if (!request.isFinished) {
-                        return;
-                    }
-                }
-                clearInterval(interval);
-                resolve();
-            }, 100);
-        });
-    }
-
-    /**
-     * Injects styles and scripts from given urls to the head of the DOM.
-     * This method loads assets from same url once and the assets are
-     * loaded in the same order that given.
-     * @param resources Resources to load.
-     */
-    loadAllSync(resources: ResourceInfo[]): Observable<ResourceInfo[]> {
-        if (!resources.length) {
-            return of([]);
+  waitForPendings(): Promise<void> {
+    return new Promise<void>((resolve) => {
+      const interval = setInterval(() => {
+        for (const request of this.requests.values()) {
+          if (!request.isFinished) {
+            return;
+          }
         }
-        const requests = this.createRequests(resources);
-        return new Observable<ResourceInfo[]>(observer => {
-            const response: ResourceInfo[] = [];
-            const subs = from(requests).pipe(concatMap(e => e.run())).subscribe(e => {
-                response.push(e);
-                if (response.length === resources.length) {
-                    observer.next(response);
-                    observer.complete();
-                }
-            });
-            return () => {
-                subs?.unsubscribe();
-            };
-        });
-    }
+        clearInterval(interval);
+        resolve();
+      }, 100);
+    });
+  }
 
-    /**
-     * Injects styles and scripts from given urls to target place in DOM
-     * This method loads style and script from same url once.
-     * @param resources Resources to load.
-     */
-    loadAllAsync(resources: ResourceInfo[]): Observable<ResourceInfo[]> {
-        if (!resources.length) {
-            return of([]);
-        }
-        const loaders = this.createRequests(resources);
-        return forkJoin(loaders.map(e => e.run()));
+  /**
+   * Injects styles and scripts from given urls to the head of the DOM.
+   * This method loads assets from same url once and the assets are
+   * loaded in the same order that given.
+   * @param resources Resources to load.
+   */
+  loadAllSync(resources: ResourceInfo[]): Observable<ResourceInfo[]> {
+    if (!resources.length) {
+      return of([]);
     }
-
-    private createRequests(resources: ResourceInfo[]): LoadRequest[] {
-        return resources.map((asset) => {
-            const url = asset[1];
-            let request = this.requests.get(url);
-            if (!request) {
-                this.requests.set(url, request = new LoadRequest(asset, this.document));
-            }
-            return request;
+    const requests = this.createRequests(resources);
+    return new Observable<ResourceInfo[]>((observer) => {
+      const response: ResourceInfo[] = [];
+      const subs = from(requests)
+        .pipe(concatMap((e) => e.run()))
+        .subscribe((e) => {
+          response.push(e);
+          if (response.length === resources.length) {
+            observer.next(response);
+            observer.complete();
+          }
         });
+      return () => {
+        subs?.unsubscribe();
+      };
+    });
+  }
+
+  /**
+   * Injects styles and scripts from given urls to target place in DOM
+   * This method loads style and script from same url once.
+   * @param resources Resources to load.
+   */
+  loadAllAsync(resources: ResourceInfo[]): Observable<ResourceInfo[]> {
+    if (!resources.length) {
+      return of([]);
     }
+    const loaders = this.createRequests(resources);
+    return forkJoin(loaders.map((e) => e.run()));
+  }
+
+  private createRequests(resources: ResourceInfo[]): LoadRequest[] {
+    return resources.map((asset) => {
+      const url = asset[1];
+      let request = this.requests.get(url);
+      if (!request) {
+        this.requests.set(
+          url,
+          (request = new LoadRequest(asset, this.document))
+        );
+      }
+      return request;
+    });
+  }
 }
-

@@ -1,4 +1,4 @@
-import { ITree } from "./tree.model";
+import { ITree } from './tree.model';
 
 /**
  * Stores the actual visible trees of the page.

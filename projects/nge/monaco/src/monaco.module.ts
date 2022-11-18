@@ -9,28 +9,37 @@ import { NgeMonacoConfig, NGE_MONACO_CONFIG } from './monaco-config';
 import { NgeMonacoThemeService } from './services/monaco-theme.service';
 
 @NgModule({
-    imports: [
-        CommonModule
-    ],
-    exports: [
-        NgeMonacoEditorComponent,
-        NgeMonacoDiffEditorComponent,
-        NgeMonacoViewerComponent],
-    declarations: [
-        NgeMonacoEditorComponent,
-        NgeMonacoDiffEditorComponent,
-        NgeMonacoViewerComponent
-    ],
+  imports: [CommonModule],
+  exports: [
+    NgeMonacoEditorComponent,
+    NgeMonacoDiffEditorComponent,
+    NgeMonacoViewerComponent,
+  ],
+  declarations: [
+    NgeMonacoEditorComponent,
+    NgeMonacoDiffEditorComponent,
+    NgeMonacoViewerComponent,
+  ],
 })
 export class NgeMonacoModule {
-    static forRoot(config: NgeMonacoConfig): ModuleWithProviders<NgeMonacoModule> {
-        return  {
-            ngModule: NgeMonacoModule,
-            providers: [
-                { provide: NGE_MONACO_CONFIG, useValue: config },
-                { provide: NGE_MONACO_CONTRIBUTION, multi: true, useExisting: NgeMonacoThemeService },
-                { provide: NGE_MONACO_CONTRIBUTION, multi: true, useClass: PreventSymbolDuplication }
-            ]
-        };
-    }
+  static forRoot(
+    config: NgeMonacoConfig
+  ): ModuleWithProviders<NgeMonacoModule> {
+    return {
+      ngModule: NgeMonacoModule,
+      providers: [
+        { provide: NGE_MONACO_CONFIG, useValue: config },
+        {
+          provide: NGE_MONACO_CONTRIBUTION,
+          multi: true,
+          useExisting: NgeMonacoThemeService,
+        },
+        {
+          provide: NGE_MONACO_CONTRIBUTION,
+          multi: true,
+          useClass: PreventSymbolDuplication,
+        },
+      ],
+    };
+  }
 }

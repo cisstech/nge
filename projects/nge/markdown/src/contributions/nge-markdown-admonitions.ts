@@ -1,6 +1,9 @@
 import { Injectable, Provider } from '@angular/core';
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer';
-import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution';
+import {
+  NgeMarkdownContribution,
+  NGE_MARKDOWN_CONTRIBUTION,
+} from '../nge-markdown-contribution';
 
 const OPEN = /^:::(\+?)\s+(\w+)(\s+.+)?/;
 const CLOSE = /^:::\s*$/;
@@ -10,70 +13,71 @@ const CLOSE = /^:::\s*$/;
  */
 @Injectable()
 export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
-    contribute(transformer: NgeMarkdownTransformer) {
-        this.addStyles();
-        this.autoFixAdmonitionsSyntax(transformer);
-        this.createAdmonitions(transformer);
+  contribute(transformer: NgeMarkdownTransformer) {
+    this.addStyles();
+    this.autoFixAdmonitionsSyntax(transformer);
+    this.createAdmonitions(transformer);
+  }
+
+  private addStyles() {
+    const head = document.head;
+    if (head.querySelector('[nge-markdown-admonitions]')) {
+      return;
     }
 
-    private addStyles() {
-        const head = document.head;
-        if (head.querySelector('[nge-markdown-admonitions]')) {
-            return;
-        }
+    const admonitions: Record<string, { border: string; bg: string }> = {
+      note: {
+        bg: 'rgba(68, 138, 255, 0.1)',
+        border: '#448aff',
+      },
+      abstract: {
+        bg: 'rgba(0, 176, 255, 0.1)',
+        border: '#00b0ff',
+      },
+      info: {
+        bg: 'rgba(0, 184, 212, 0.1)',
+        border: '#00b8d4',
+      },
+      tip: {
+        bg: 'rgba(0, 191, 165, 0.1)',
+        border: '#00bfa5',
+      },
+      success: {
+        bg: 'rgba(0, 200, 83, 0.1)',
+        border: '#00c853',
+      },
+      question: {
+        bg: 'rgba(100, 221, 23, 0.1)',
+        border: '#64dd17',
+      },
+      warning: {
+        bg: 'rgba(255, 145, 0, 0.1)',
+        border: '#ff9100',
+      },
+      failure: {
+        bg: 'rgba(255, 82, 82, 0.1)',
+        border: '#ff5252',
+      },
+      danger: {
+        bg: 'rgba(255, 23, 68, 0.1)',
+        border: '#ff1744',
+      },
+      bug: {
+        bg: 'rgba(245, 0, 87, 0.1)',
+        border: '#f50057',
+      },
+      example: {
+        bg: 'rgba(101, 31, 255, 0.1)',
+        border: '#651fff',
+      },
+      quote: {
+        bg: 'rgba(158, 158, 158, 0.1)',
+        border: '#9e9e9e',
+      },
+    };
 
-        const admonitions: Record<string, { border: string; bg: string; }> = {
-            note: {
-                bg: 'rgba(68, 138, 255, 0.1)',
-                border: '#448aff',
-            },
-            abstract: {
-                bg: 'rgba(0, 176, 255, 0.1)',
-                border: '#00b0ff',
-            },
-            info: {
-                bg: 'rgba(0, 184, 212, 0.1)',
-                border: '#00b8d4',
-            },
-            tip: {
-                bg: 'rgba(0, 191, 165, 0.1)',
-                border: '#00bfa5',
-            },
-            success: {
-                bg: 'rgba(0, 200, 83, 0.1)',
-                border: '#00c853',
-            },
-            question: {
-                bg: 'rgba(100, 221, 23, 0.1)',
-                border: '#64dd17',
-            },
-            warning: {
-                bg: 'rgba(255, 145, 0, 0.1)',
-                border: '#ff9100',
-            },
-            failure: {
-                bg: 'rgba(255, 82, 82, 0.1)',
-                border: '#ff5252',
-            },
-            danger: {
-                bg: 'rgba(255, 23, 68, 0.1)',
-                border: '#ff1744',
-            },
-            bug: {
-                bg: 'rgba(245, 0, 87, 0.1)',
-                border: '#f50057',
-            },
-            example: {
-                bg: 'rgba(101, 31, 255, 0.1)',
-                border: '#651fff',
-            },
-            quote: {
-                bg: 'rgba(158, 158, 158, 0.1)',
-                border: '#9e9e9e',
-            },
-        };
-
-        const stylesheet = [`
+    const stylesheet = [
+      `
             /* CONTAINER */
             .nge-md-admonition {
                 margin: 1.5625em 0;
@@ -148,11 +152,12 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
             .nge-md-admonition-content {
                 padding: 0 0.6rem;
             }
-        `];
+        `,
+    ];
 
-        Object.keys(admonitions).forEach(type => {
-            const map = admonitions[type];
-            stylesheet.push(`
+    Object.keys(admonitions).forEach((type) => {
+      const map = admonitions[type];
+      stylesheet.push(`
                 .nge-md-admonition--${type} {
                     border-left: 0.2rem solid ${map.border};
                 }
@@ -174,103 +179,102 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
                     content: "";
                 }
             `);
-        });
-        const style = document.createElement('style');
-        style.setAttribute('nge-markdown-admonitions', '');
-        style.innerHTML = stylesheet.join('\n');
+    });
+    const style = document.createElement('style');
+    style.setAttribute('nge-markdown-admonitions', '');
+    style.innerHTML = stylesheet.join('\n');
 
-        head.appendChild(style);
-    }
+    head.appendChild(style);
+  }
 
-    private createAdmonitions(transformer: NgeMarkdownTransformer) {
-        transformer.addHtmlTransformer((element) => {
-            const paragraphs = element.querySelectorAll('p');
-            paragraphs.forEach((p) => {
-                const text = p.innerHTML;
-                const match = text.match(OPEN);
-                if (match) {
-                    const opener = match[1];
-                    const type = match[2];
-                    const title = (match[3] || '').trim();
+  private createAdmonitions(transformer: NgeMarkdownTransformer) {
+    transformer.addHtmlTransformer((element) => {
+      const paragraphs = element.querySelectorAll('p');
+      paragraphs.forEach((p) => {
+        const text = p.innerHTML;
+        const match = text.match(OPEN);
+        if (match) {
+          const opener = match[1];
+          const type = match[2];
+          const title = (match[3] || '').trim();
 
-                    const admonition = document.createElement('details');
-                    if (opener.endsWith('+')) {
-                        admonition.open = true;
-                    }
-                    admonition.className = 'nge-md-admonition nge-md-admonition--' + type;
+          const admonition = document.createElement('details');
+          if (opener.endsWith('+')) {
+            admonition.open = true;
+          }
+          admonition.className = 'nge-md-admonition nge-md-admonition--' + type;
 
-                    const summary = document.createElement('summary');
-                    summary.className = 'nge-md-admonition-title';
-                    summary.innerHTML = title;
+          const summary = document.createElement('summary');
+          summary.className = 'nge-md-admonition-title';
+          summary.innerHTML = title;
 
-                    const content: HTMLElement[] = [];
-                    admonition.appendChild(summary);
+          const content: HTMLElement[] = [];
+          admonition.appendChild(summary);
 
-                    let node = p.nextElementSibling;
-                    let opened = 1;
-                    while (node) {
-                        const innerHTML = node.innerHTML.trim();
-                        if (innerHTML.match(OPEN)) {
-                            opened++;
-                        } else if (innerHTML.match(CLOSE)) {
-                            opened--;
-                            if (opened === 0) {
-                                node.remove();
-                                break;
-                            }
-                        }
-                        content.push(node as HTMLElement);
-                        node = node.nextElementSibling;
-                    }
-
-                    const div = document.createElement('div');
-                    div.className = 'nge-md-admonition-content';
-                    content.forEach((e) => div.appendChild(e));
-                    admonition.appendChild(div);
-
-                    p.parentElement?.insertBefore(admonition, p);
-                    p.remove();
-                }
-            });
-        });
-    }
-
-    private autoFixAdmonitionsSyntax(transformer: NgeMarkdownTransformer) {
-        transformer.addMarkdownTransformer(markdown => {
-            const lines = markdown.split('\n');
-            const length = lines.length;
-            let insideCodeBlock = false;
-            for (let i = 0; i < length; i++) {
-                const curr = lines[i];
-                if (curr.startsWith('```')) {
-                    insideCodeBlock = !insideCodeBlock;
-                }
-                if (insideCodeBlock) {
-                    continue;
-                }
-                const prev = i > 0 ? lines[i - 1] : undefined;
-                const next = i < length - 1 ? lines[i + 1] : undefined;
-                if (curr.match(OPEN)) {
-                    if (next?.trim()) {
-                        lines[i] = curr + '\n';
-                    }
-                } else if (curr.match(CLOSE)) {
-                    if (prev?.trim()) {
-                        lines[i] = '\n' + curr;
-                    }
-                }
+          let node = p.nextElementSibling;
+          let opened = 1;
+          while (node) {
+            const innerHTML = node.innerHTML.trim();
+            if (innerHTML.match(OPEN)) {
+              opened++;
+            } else if (innerHTML.match(CLOSE)) {
+              opened--;
+              if (opened === 0) {
+                node.remove();
+                break;
+              }
             }
-            return lines.join('\n');
-        });
-    }
+            content.push(node as HTMLElement);
+            node = node.nextElementSibling;
+          }
 
+          const div = document.createElement('div');
+          div.className = 'nge-md-admonition-content';
+          content.forEach((e) => div.appendChild(e));
+          admonition.appendChild(div);
+
+          p.parentElement?.insertBefore(admonition, p);
+          p.remove();
+        }
+      });
+    });
+  }
+
+  private autoFixAdmonitionsSyntax(transformer: NgeMarkdownTransformer) {
+    transformer.addMarkdownTransformer((markdown) => {
+      const lines = markdown.split('\n');
+      const length = lines.length;
+      let insideCodeBlock = false;
+      for (let i = 0; i < length; i++) {
+        const curr = lines[i];
+        if (curr.startsWith('```')) {
+          insideCodeBlock = !insideCodeBlock;
+        }
+        if (insideCodeBlock) {
+          continue;
+        }
+        const prev = i > 0 ? lines[i - 1] : undefined;
+        const next = i < length - 1 ? lines[i + 1] : undefined;
+        if (curr.match(OPEN)) {
+          if (next?.trim()) {
+            lines[i] = curr + '\n';
+          }
+        } else if (curr.match(CLOSE)) {
+          if (prev?.trim()) {
+            lines[i] = '\n' + curr;
+          }
+        }
+      }
+      return lines.join('\n');
+    });
+  }
 }
 
 /**
  * Injection token to register `NgeMarkdownAdmonitions` contribution.
  */
 export const NgeMarkdownAdmonitionsProvider: Provider = {
-    provide: NGE_MARKDOWN_CONTRIBUTION,
-    multi: true,
-    useClass: NgeMarkdownAdmonitions,
+  provide: NGE_MARKDOWN_CONTRIBUTION,
+  multi: true,
+  useClass: NgeMarkdownAdmonitions,
 };

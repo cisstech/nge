@@ -17,33 +17,23 @@ import { IconFaPipe } from './pipes/icon-fa.pipe';
 import { IconIcongrPipe } from './pipes/icon-icongr.pipe';
 import { IconCodiconPipe } from './pipes/icon-codicon.pipe';
 
-
 const DECLARATIONS = [
-    IconComponent,
-    IconFaComponent,
-    IconImgComponent,
-    IconIcongrComponent,
-    IconCodIconComponent,
+  IconComponent,
+  IconFaComponent,
+  IconImgComponent,
+  IconIcongrComponent,
+  IconCodIconComponent,
 
-    IconPipe,
-    IconFaPipe,
-    IconFilePipe,
-    IconIcongrPipe,
-    IconCodiconPipe,
+  IconPipe,
+  IconFaPipe,
+  IconFilePipe,
+  IconIcongrPipe,
+  IconCodiconPipe,
 ];
 
 @NgModule({
-  declarations: [
-    ...DECLARATIONS,
-  ],
-  imports: [
-      MatBadgeModule,
-      CommonModule,
-      PortalModule,
-      IconGrPipeModule,
-  ],
-  exports: [
-    ...DECLARATIONS,
-  ],
+  declarations: [...DECLARATIONS],
+  imports: [MatBadgeModule, CommonModule, PortalModule, IconGrPipeModule],
+  exports: [...DECLARATIONS],
 })
-export class NgeUiIconModule { }
+export class NgeUiIconModule {}

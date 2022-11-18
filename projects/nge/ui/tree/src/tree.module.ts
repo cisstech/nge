@@ -14,24 +14,17 @@ import { TreeNodeDirective } from './tree-node.directive';
 import { AutofocusDirective } from './autofocus.directive';
 
 @NgModule({
-  declarations: [
-    TreeComponent,
-    TreeNodeDirective,
-    AutofocusDirective
-  ],
+  declarations: [TreeComponent, TreeNodeDirective, AutofocusDirective],
   imports: [
-      CommonModule,
-      FormsModule,
+    CommonModule,
+    FormsModule,
 
-      MatTreeModule,
-      MatIconModule,
-      MatButtonModule,
-      MatTooltipModule,
-      ScrollingModule,
+    MatTreeModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    ScrollingModule,
   ],
-  exports: [
-    TreeComponent,
-    TreeNodeDirective,
-  ]
+  exports: [TreeComponent, TreeNodeDirective],
 })
-export class NgeUiTreeModule { }
+export class NgeUiTreeModule {}

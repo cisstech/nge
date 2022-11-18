@@ -8,9 +8,7 @@ import { NgeDocService } from '../../../nge-doc.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent {
-    readonly state$ = this.docService.stateChanges;
+  readonly state$ = this.docService.stateChanges;
 
-    constructor(
-        private readonly docService: NgeDocService
-    ) {}
+  constructor(private readonly docService: NgeDocService) {}
 }

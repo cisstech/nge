@@ -1,4 +1,11 @@
-import { Component, EventEmitter, HostBinding, HostListener, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'ui-list-item-article-action',
@@ -6,8 +13,8 @@ import { Component, EventEmitter, HostBinding, HostListener, Input, Output } fro
   styleUrls: ['./list-item-article-action.component.scss'],
 })
 export class ListItemArticleActionComponent {
-    @Input() actionTitle?: string | number | boolean | null;
-    @Input()
-    @HostBinding('class.clickable')
-    clickable = false;
+  @Input() actionTitle?: string | number | boolean | null;
+  @Input()
+  @HostBinding('class.clickable')
+  clickable = false;
 }

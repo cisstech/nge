@@ -11,7 +11,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 
 import { CheatSheetComponent } from './cheat-sheet.component';
 
-
 @NgModule({
   imports: [
     CommonModule,
@@ -23,8 +22,8 @@ import { CheatSheetComponent } from './cheat-sheet.component';
     MatFormFieldModule,
     MatExpansionModule,
   ],
-  declarations: [CheatSheetComponent]
+  declarations: [CheatSheetComponent],
 })
 export class CheatSheetModule implements IDynamicModule {
-    component = CheatSheetComponent;
+  component = CheatSheetComponent;
 }

@@ -3,14 +3,11 @@ import { NgModule } from '@angular/core';
 import { NgeDocRendererComponent } from './renderer.component';
 import { NgeDocTocDirective } from './toc.directive';
 
-const declarations = [
-    NgeDocRendererComponent,
-    NgeDocTocDirective,
-];
+const declarations = [NgeDocRendererComponent, NgeDocTocDirective];
 
 @NgModule({
-    imports: [CommonModule],
-    exports: declarations,
-    declarations,
+  imports: [CommonModule],
+  exports: declarations,
+  declarations,
 })
-export class NgeDocRendererModule { }
+export class NgeDocRendererModule {}

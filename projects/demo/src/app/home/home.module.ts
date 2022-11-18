@@ -4,15 +4,12 @@ import { RouterModule } from '@angular/router';
 import { NgeMarkdownModule } from '@cisstech/nge/markdown';
 import { HomeComponent } from './home.component';
 
-
 @NgModule({
-    imports: [
-        CommonModule,
-        NgeMarkdownModule,
-        RouterModule.forChild([
-            { path: '', component: HomeComponent }
-        ])
-    ],
-    declarations: [HomeComponent],
+  imports: [
+    CommonModule,
+    NgeMarkdownModule,
+    RouterModule.forChild([{ path: '', component: HomeComponent }]),
+  ],
+  declarations: [HomeComponent],
 })
-export class HomeModule { }
+export class HomeModule {}

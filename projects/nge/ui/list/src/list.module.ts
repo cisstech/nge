@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { ScrollingModule } from '@angular/cdk/scrolling'
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { NgArrayPipesModule } from 'ngx-pipes';
 
@@ -18,19 +18,19 @@ import { ListItemArticleActionComponent } from './list-item-article-action/list-
     FormsModule,
     RouterModule,
     ScrollingModule,
-    NgArrayPipesModule
+    NgArrayPipesModule,
   ],
-    exports: [
-        ListComponent,
-        ListTemplateComponent,
-        ListItemArticleComponent,
-        ListItemArticleActionComponent,
-    ],
-    declarations: [
-        ListComponent,
-        ListTemplateComponent,
-        ListItemArticleComponent,
-        ListItemArticleActionComponent,
-    ],
+  exports: [
+    ListComponent,
+    ListTemplateComponent,
+    ListItemArticleComponent,
+    ListItemArticleActionComponent,
+  ],
+  declarations: [
+    ListComponent,
+    ListTemplateComponent,
+    ListItemArticleComponent,
+    ListItemArticleActionComponent,
+  ],
 })
-export class NgeUiListModule { }
+export class NgeUiListModule {}

@@ -3,8 +3,8 @@ import { NgeMarkdownComponent } from './nge-markdown.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-    imports: [RouterModule],
-    declarations: [NgeMarkdownComponent],
-    exports: [NgeMarkdownComponent],
+  imports: [RouterModule],
+  declarations: [NgeMarkdownComponent],
+  exports: [NgeMarkdownComponent],
 })
 export class NgeMarkdownModule {}

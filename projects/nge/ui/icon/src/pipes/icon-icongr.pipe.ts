@@ -3,7 +3,7 @@ import { IcongrIcon, IcongrOptions } from '../icons';
 
 @Pipe({ name: 'iconIcongr' })
 export class IconIcongrPipe implements PipeTransform {
-    transform(name: string, options?: IcongrOptions): IcongrIcon {
-        return new IcongrIcon(name, options);
-    }
+  transform(name: string, options?: IcongrOptions): IcongrIcon {
+    return new IcongrIcon(name, options);
+  }
 }
