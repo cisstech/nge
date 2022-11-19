@@ -34,7 +34,7 @@ the dependencies of nge-monaco to the project.
     imports: [
       BrowserModule,
       HttpClientModule,
-      NgeMonacoModule.forRoot(), // use forRoot() in main app module only.
+      NgeMonacoModule.forRoot({}), // use forRoot() in main app module only.
     ],
     providers: [],
     bootstrap: [AppComponent]
