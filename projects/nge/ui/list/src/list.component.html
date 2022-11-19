@@ -39,7 +39,7 @@
                 <input
                   class="label__checkbox"
                   type="checkbox"
-                  [(ngModel)]="_selectionStates[item[idField]]"
+                  [(ngModel)]="_selectionStates[$any(item)[idField]]"
                   (ngModelChange)="_toggleSelection(item)"/>
                 <span class="label__text">
                   <span class="label__check">
