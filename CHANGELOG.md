@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.2.0](https://github.com/cisstech/nge/compare/v13.1.5...v13.2.0) (2023-01-22)
+
+
+### Features
+
+* **libs:** add directives sub-entry ([d92dd9e](https://github.com/cisstech/nge/commit/d92dd9e216c7042fe2752a681a0b70afd1f6be89))
+* **libs:** add utils sub-entry ([3e9e281](https://github.com/cisstech/nge/commit/3e9e281febdf3d4e3cf978d1d99dad9a3d2f0e89))
+
+
+### Bug Fixes
+
+* **ui:** tree component rendering [#4](https://github.com/cisstech/nge/issues/4) ([4347601](https://github.com/cisstech/nge/commit/4347601d8548eecc60f13c2c35dd78e2a19b5b2a))
+
 ### [13.1.5](https://github.com/cisstech/nge/compare/v13.1.4...v13.1.5) (2022-02-09)
 
 
