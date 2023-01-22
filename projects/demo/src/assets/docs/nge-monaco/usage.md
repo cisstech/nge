@@ -5,19 +5,19 @@
 First of all, we will create new Angular project using the CLI then we will add
 the dependencies of nge-monaco to the project.
 
-* Generate the project
+- Generate the project
 
   ```bash
   ng new my-project
   ```
 
-* Add **nge-monaco** and **monaco-editor** dependencies from npm
+- Add **nge-monaco** and **monaco-editor** dependencies from npm
 
   ```bash
-  npm i nge-monaco monaco-editor
+  npm i @cisstech/nge monaco-editor@0.31.1
   ```
 
-* Once the project is generated, open the **app.module.ts** file and add **NgeMonacoModule.forRoot()** to the **imports**
+- Once the project is generated, open the **app.module.ts** file and add **NgeMonacoModule.forRoot()** to the **imports**
   array of the module.
 
   ```typescript highlights="4 13-14"
@@ -28,25 +28,23 @@ the dependencies of nge-monaco to the project.
   import { AppComponent } from './app.component';
 
   @NgModule({
-    declarations: [
-      AppComponent,
-    ],
+    declarations: [AppComponent],
     imports: [
       BrowserModule,
       HttpClientModule,
-      NgeMonacoModule.forRoot({}), // use forRoot() in main app module only.
+      NgeMonacoModule.forRoot({}), // use forRoot() in main app module only.
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
   })
-  export class AppModule { }
+  export class AppModule {}
   ```
 
 ## Components
 
 This library is designed in a way that you have a total control of the editor instance so the component
 does not expose a [(ngModel)] input to bind a variable to the editor content, you must attach a TextModel
-to the editor by yourself  by calling `monaco.editor.createModel` by yourself.
+to the editor by yourself by calling `monaco.editor.createModel` by yourself.
 This is a design choice since this component is intended to be as simple as possible.
 
 ### nge-monaco-editor
@@ -77,7 +75,7 @@ export class ExampleComponent implement OnDestroy {
         });
 
         this.model = this.model || monaco.editor.createModel('print("Hello world")', 'python');
-  
+
         editor.setModel(this.model);
 
         this.disposables.push(
@@ -97,10 +95,10 @@ export class ExampleComponent implement OnDestroy {
 === example.component.html
 
 ```html
-
 <nge-monaco-editor
   style="--editor-height: 200px;"
-  (ready)="onCreateEditor($event)">
+  (ready)="onCreateEditor($event)"
+>
 </nge-monaco-editor>
 ```
 
@@ -114,39 +112,42 @@ export class ExampleComponent implement OnDestroy {
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-example',
-    templateUrl: './example.component.html',
-    styleUrls: ['./example.component.scss'],
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrls: ['./example.component.scss'],
 })
 export class ExampleComponent {
-    private originalModel?: monaco.editor.ITextModel;
-    private modifiedModel?: monaco.editor.ITextModel;
+  private originalModel?: monaco.editor.ITextModel;
+  private modifiedModel?: monaco.editor.ITextModel;
 
-    onCreateEditor(editor: monaco.editor.IStandaloneDiffEditor) {
-        editor.updateOptions({
-            renderSideBySide: true
-        });
+  onCreateEditor(editor: monaco.editor.IStandaloneDiffEditor) {
+    editor.updateOptions({
+      renderSideBySide: true,
+    });
 
-        this.originalModel = this.originalModel || monaco.editor.createModel('print("Hello world !!!")', 'python');
+    this.originalModel =
+      this.originalModel ||
+      monaco.editor.createModel('print("Hello world !!!")', 'python');
 
-        this.modifiedModel = this.modifiedModel || monaco.editor.createModel('print("hello world")', 'python');
-  
-        editor.setModel({
-            original: this.originalModel,
-            modified: this.modifiedModel
-        });
-    }
+    this.modifiedModel =
+      this.modifiedModel ||
+      monaco.editor.createModel('print("hello world")', 'python');
 
+    editor.setModel({
+      original: this.originalModel,
+      modified: this.modifiedModel,
+    });
+  }
 }
 ```
 
 === example.component.html
 
 ```html
-
 <nge-monaco-diff-editor
   style="--editor-height: 200px;"
-  (ready)="onCreateEditor($event)">
+  (ready)="onCreateEditor($event)"
+>
 </nge-monaco-diff-editor>
 ```
 
@@ -176,21 +177,14 @@ export class ExampleComponent implement OnDestroy {
 <nge-monaco-viewer [language]="'python'" [code]="code"></nge-monaco-viewer>
 
 <!-- STATIC CODE -->
-<nge-monaco-viewer [language]="'markdown'" [lines]="'1 4-7 10'" [highlights]="'2-5'" ngPreserveWhitespaces>
-# H1
-## H2
-### H3
-#### H4
-##### H5
-###### H6
-
-Alternatively, for H1 and H2, an underline-ish style:
-
-Alt-H1
-======
-
-Alt-H2
-------
+<nge-monaco-viewer
+  [language]="'markdown'"
+  [lines]="'1 4-7 10'"
+  [highlights]="'2-5'"
+  ngPreserveWhitespaces
+>
+  # H1 ## H2 ### H3 #### H4 ##### H5 ###### H6 Alternatively, for H1 and H2, an
+  underline-ish style: Alt-H1 ====== Alt-H2 ------
 </nge-monaco-viewer>
 ```
 
@@ -224,7 +218,7 @@ import { NgeMonacoModule } from '@cisstech/nge/monaco';
     NgeMonacoModule.forRoot({ // use forRoot() in main app module only.
        assets: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0' // base path for monaco editor
        locale: 'fr', // editor ui language
-       options: { // default options passed to monaco editor instances https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
+       options: { // default options passed to monaco editor instances https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IEditorOptions.html
           scrollBeyondLastLine: false
        },
        theming: {
@@ -277,30 +271,28 @@ import { AppComponent } from './app.component';
 import { NgeMonacoModule, NGE_THEMES } from '@cisstech/nge/monaco';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule, // required for the themes to be load.
     NgeMonacoModule.forRoot({
-       theming: {
-         /* // use a subset of themes
+      theming: {
+        /* // use a subset of themes
          themes: [ // custom themes
            'assets/nge/monaco/themes/nord.json',
            'assets/nge/monaco/themes/github.json',
            'assets/nge/monaco/themes/one-dark-pro.json',
          ],
          */
-         themes: NGE_THEMES.map(theme => 'assets/nge/monaco/themes/' + theme), // use all themes
-         default: 'github' // default theme
-       }
+        themes: NGE_THEMES.map((theme) => 'assets/nge/monaco/themes/' + theme), // use all themes
+        default: 'github', // default theme
+      },
     }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 ### Use the API to change the theme
@@ -309,16 +301,16 @@ export class AppModule { }
 <!-- example.component.html -->
 
 <select name="theme" id="theme" (change)="switchTheme($event.target.value)">
-  <ng-container *ngFor="let theme of themes|async" >
+  <ng-container *ngFor="let theme of themes|async">
     <option [value]="theme">{{ theme }}</option>
   </ng-container>
 </select>
 
 <nge-monaco-editor
   style="--editor-height: 200px"
-  (ready)="onCreateEditor($event)">
+  (ready)="onCreateEditor($event)"
+>
 </nge-monaco-editor>
-
 ```
 
 ```typescript
@@ -328,26 +320,25 @@ import { Component } from '@angular/core';
 import { NgeMonacoThemeService } from '@cisstech/nge/monaco';
 
 @Component({
-    selector: 'app-example',
-    templateUrl: './example.component.html',
-    styleUrls: ['./example.component.scss'],
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+  styleUrls: ['./example.component.scss'],
 })
 export class ExampleComponent {
-    themes = this.theming.themesChanges;
+  themes = this.theming.themesChanges;
 
-    constructor(
-        private readonly theming: NgeMonacoThemeService
-    ) {}
+  constructor(private readonly theming: NgeMonacoThemeService) {}
 
-    onCreateEditor(editor: monaco.editor.IStandaloneCodeEditor) {
-        editor.setModel(monaco.editor.createModel('print("Hello world")', 'python'));
-    }
+  onCreateEditor(editor: monaco.editor.IStandaloneCodeEditor) {
+    editor.setModel(
+      monaco.editor.createModel('print("Hello world")', 'python')
+    );
+  }
 
-    async switchTheme(theme: string) {
-        this.theming.setTheme(theme);
-    }
+  async switchTheme(theme: string) {
+    this.theming.setTheme(theme);
+  }
 }
-
 ```
 
 ## Extensions
@@ -359,15 +350,18 @@ import { NgModule, Injectable, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 
-import { NgeMonacoModule, NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '@cisstech/nge/monaco';
+import {
+  NgeMonacoModule,
+  NgeMonacoContribution,
+  NGE_MONACO_CONTRIBUTION,
+} from '@cisstech/nge/monaco';
 
 @Injectable() // use injectable only if you want to use angular dependency injection.
 class MyContribution implements NgeMonacoContribution {
-
   constructor(
-    private readonly injector: Injector,
-    // use angular dependency injector to inject whatever you want.
-  ) {}
+    private readonly injector: Injector
+  ) // use angular dependency injector to inject whatever you want.
+  {}
 
   activate(): void | Promise<void> {
     // use monaco object from window.monaco to extends monaco editor api.
@@ -378,36 +372,29 @@ class MyContribution implements NgeMonacoContribution {
     monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
       tokenizer: {
         root: [
-          [/\[error.*/, "custom-error"],
-          [/\[notice.*/, "custom-notice"],
-          [/\[info.*/, "custom-info"],
-          [/\[[a-zA-Z 0-9:]+\]/, "custom-date"],
-        ]
-      }
+          [/\[error.*/, 'custom-error'],
+          [/\[notice.*/, 'custom-notice'],
+          [/\[info.*/, 'custom-info'],
+          [/\[[a-zA-Z 0-9:]+\]/, 'custom-date'],
+        ],
+      },
     });
   }
 
   deactivate(): void | Promise<void> {
     // free the disposables and subscriptions here
   }
-
 }
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgeMonacoModule.forRoot({}),
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, HttpClientModule, NgeMonacoModule.forRoot({})],
   providers: [
     { provide: NGE_MONACO_CONTRIBUTION, multi: true, useClass: MyContribution },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 ## Load Monaco Editor from your own server
@@ -441,23 +428,21 @@ import { AppComponent } from './app.component';
 import { NgeMonacoModule } from '@cisstech/nge/monaco';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     NgeMonacoModule.forRoot({
-       assets: 'assets/nge/monaco'
+      assets: 'assets/nge/monaco',
     }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
 ## Links
 
 [Monaco Editor](https://github.com/Microsoft/monaco-editor/)<br/>
-[Monaco Editor Options](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html)
+[Monaco Editor Options](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.IEditorOptions.html)

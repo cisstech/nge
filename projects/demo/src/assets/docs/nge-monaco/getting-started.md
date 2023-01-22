@@ -4,15 +4,15 @@
 
 ## Features
 
-* nge-monaco-editor component to display an instance of monaco editor.
-* nge-monaco-diff-editor component to display an instance of monaco diff editor.
-* nge-monaco-viewer to highlight a code block.
-* expose a theming api to easily create new themes and change the editor theme.
-* comes with a set of ready to use themes.
-* contribution system to extends monaco editor api.
-* full control over the monaco editor instances.
-* ability to localize the editor user interface.
-* load from a cdn by default.
+- nge-monaco-editor component to display an instance of monaco editor.
+- nge-monaco-diff-editor component to display an instance of monaco diff editor.
+- nge-monaco-viewer to highlight a code block.
+- expose a theming api to easily create new themes and change the editor theme.
+- comes with a set of ready to use themes.
+- contribution system to extends monaco editor api.
+- full control over the monaco editor instances.
+- ability to localize the editor user interface.
+- load from a cdn by default.
 
 ## Contribution
 
