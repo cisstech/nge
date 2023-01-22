@@ -4,7 +4,7 @@ export function deepCopy<T>(obj: T): T {
   }
   const copy = obj instanceof Array ? [] : {};
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if ((obj as any).hasOwnProperty(key)) {
       (copy as any)[key] = deepCopy(obj[key]);
     }
   }
