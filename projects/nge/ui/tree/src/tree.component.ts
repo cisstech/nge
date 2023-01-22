@@ -745,7 +745,7 @@ export class TreeComponent<T>
     });
 
     this.visibleNodes.next(nodes);
-    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.markForCheck();
   }
 
   private buildIndexes(): void {
