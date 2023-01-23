@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.0.0](https://github.com/cisstech/nge/compare/v13.2.0...v15.0.0) (2023-01-23)
+
+
+### Bug Fixes
+
+* **utils:** fix deepCopy fn ([966693b](https://github.com/cisstech/nge/commit/966693b546670fba912fb33629c3ee2298fd403e))
+
 ## [13.2.0](https://github.com/cisstech/nge/compare/v13.1.5...v13.2.0) (2023-01-22)
 
 
