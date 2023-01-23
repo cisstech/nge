@@ -19,23 +19,14 @@
   "homepage": "https://github.com/cisstech/nge",
   "author": {
     "name": "Mamadou Cisse",
-    "email": "cisstech@gmail.com"
+    "email": "mciissee@gmail.com"
   },
   "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^13.0.3",
-    "@angular/core": "^13.0.3",
-    "@angular/cdk": "^13.0.3",
-    "@angular/material": "^13.0.3",
+    "@angular/common": "^15.1.1",
+    "@angular/core": "^15.1.1",
+    "@angular/cdk": "^15.1.1",
+    "@angular/material": "^15.1.1",
     "rxjs": "^7.5.2"
-  },
-  "dependencies": {
-    "tslib": "^2.0.0"
-  },
-  "ngPackage": {
-    "dest": "../../dist/nge",
-    "lib": {
-      "entryFile": "index.ts"
-    }
   }
 }

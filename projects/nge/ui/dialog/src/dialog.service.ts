@@ -1,11 +1,11 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, NgZone } from '@angular/core';
 import {
-  MatDialog,
-  MatDialogConfig,
-  MatDialogRef,
-} from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogConfig as MatDialogConfig,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
+import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
 import { Subscription } from 'rxjs';
 import { ConfirmOptions } from './confirm/confim';
 import { ConfirmComponent } from './confirm/confirm.component';

@@ -4,11 +4,13 @@
     "declarationMap": false,
     "paths": {
       "@cisstech/nge": ["dist/nge"],
+      "@cisstech/nge/directives": ["dist/nge/directives"],
       "@cisstech/nge/doc": ["dist/nge/doc"],
       "@cisstech/nge/monaco": ["dist/nge/monaco"],
       "@cisstech/nge/pipes": ["dist/nge/pipes"],
       "@cisstech/nge/services": ["dist/nge/services"],
       "@cisstech/nge/markdown": ["dist/nge/markdown"],
+      "@cisstech/nge/utils": ["dist/nge/utils"],
       "@cisstech/nge/ui/tree": ["dist/nge/ui/tree"],
       "@cisstech/nge/ui/list": ["dist/nge/ui/list"],
       "@cisstech/nge/ui/icon": ["dist/nge/ui/icon"],
