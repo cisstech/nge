@@ -14,7 +14,7 @@ the dependencies of nge-monaco to the project.
 - Add **nge-monaco** and **monaco-editor** dependencies from npm
 
   ```bash
-  npm i @cisstech/nge monaco-editor@0.31.1
+  npm i @cisstech/nge monaco-editor@0.34.1
   ```
 
 - Once the project is generated, open the **app.module.ts** file and add **NgeMonacoModule.forRoot()** to the **imports**
