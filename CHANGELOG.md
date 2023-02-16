@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.1.0](https://github.com/cisstech/nge/compare/v15.0.3...v15.1.0) (2023-02-16)
+
+
+### Features
+
+* expose icon service ([0cf3643](https://github.com/cisstech/nge/commit/0cf36435820ab99b61c14cbe81a5f32988d83342))
+
 ### [15.0.3](https://github.com/cisstech/nge/compare/v15.0.2...v15.0.3) (2023-02-16)
 
 ### [15.0.2](https://github.com/cisstech/nge/compare/v15.0.1...v15.0.2) (2023-02-16)
