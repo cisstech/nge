@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.0.1](https://github.com/cisstech/nge/compare/v15.0.0...v15.0.1) (2023-02-16)
+
+
+### Bug Fixes
+
+* angular material breaking changes ([d6c1a8c](https://github.com/cisstech/nge/commit/d6c1a8cedce58a72c3e81bdfbecd5adb6c86663e))
+
 ## [15.0.0](https://github.com/cisstech/nge/compare/v13.2.0...v15.0.0) (2023-01-23)
 
 
