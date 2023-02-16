@@ -425,7 +425,7 @@ export class TreeComponent<T>
   //#endregion
 
   //#region CALLED FROM TEMPLATE
-  _onEdit(event: Event): void {
+  protected _onEdit(event: Event): void {
     if (this.adapter.onDidEditName) {
       event.stopPropagation();
 
@@ -459,11 +459,11 @@ export class TreeComponent<T>
     }
   }
 
-  _clearFilter(): void {
+  protected _clearFilter(): void {
     this.search({ term: '' });
   }
 
-  _isRenaming(node: INode<T>): boolean {
+  protected _isRenaming(node: INode<T>): boolean {
     if (node == null) {
       throw new ReferenceError('Argument "node" is required.');
     }
@@ -478,7 +478,7 @@ export class TreeComponent<T>
     );
   }
 
-  _isCreating(node: INode<T>): boolean {
+  protected _isCreating(node: INode<T>): boolean {
     if (node == null) {
       throw new ReferenceError('Argument "node" is required.');
     }
@@ -493,7 +493,7 @@ export class TreeComponent<T>
     );
   }
 
-  _trackById(_: number, e: ITreeNodeHolder<T>) {
+  protected _trackById(_: number, e: ITreeNodeHolder<T>) {
     return e.id;
   }
   //#endregion
@@ -524,7 +524,9 @@ export class TreeComponent<T>
 
   @HostListener('document:contextmenu', ['$event'])
   contextmenu($event: MouseEvent) {
+    this.changeDetectorRef.detach();
     if (this.isTreeContainsEvent($event)) {
+      this.changeDetectorRef.reattach();
       this.onContextMenu($event);
     }
   }
@@ -708,7 +710,7 @@ export class TreeComponent<T>
   //#endregion
 
   //#region PRIVATE
-  private render() {
+  private render(): void {
     const nodes: ITreeNodeHolder<T>[] = [];
     const dataNodes = this.controler.dataNodes || [];
     const expandedNodes = new Set(
@@ -745,7 +747,7 @@ export class TreeComponent<T>
     });
 
     this.visibleNodes.next(nodes);
-    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   private buildIndexes(): void {
@@ -757,7 +759,7 @@ export class TreeComponent<T>
     });
   }
 
-  private buildSearchPattern() {
+  private buildSearchPattern(): RegExp | undefined {
     let pattern: RegExp | undefined;
     try {
       if (this.filter.term) {
@@ -1022,12 +1024,12 @@ export class TreeComponent<T>
     }
 
     // instanceof ITreeNodeHolder<T>
-    if ('data' in node) {
-      return node;
+    if ('data' in (node as unknown as any)) {
+      return node as ITreeNodeHolder<T>;
     }
 
     // instance of T
-    return this.findHolderFromData(node);
+    return this.findHolderFromData(node as T);
   }
 
   private children(node: T): T[] {

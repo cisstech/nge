@@ -2,7 +2,6 @@ import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { MatBadgeModule } from '@angular/material/badge';
 import { IconGrPipeModule } from '@cisstech/nge/pipes';
 
 import { IconPipe } from './pipes/icon.pipe';
@@ -33,7 +32,7 @@ const DECLARATIONS = [
 
 @NgModule({
   declarations: [...DECLARATIONS],
-  imports: [MatBadgeModule, CommonModule, PortalModule, IconGrPipeModule],
+  imports: [CommonModule, PortalModule, IconGrPipeModule],
   exports: [...DECLARATIONS],
 })
 export class NgeUiIconModule {}

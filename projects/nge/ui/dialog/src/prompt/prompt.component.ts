@@ -1,7 +1,11 @@
 import { Component, Inject } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PrompOptions } from './prompt';
 
+/**
+ * @deprecated Please do not use this component.
+ * It will be removed soon in the feature versions of the lib to break the dependency of nge with any ui libs like @angular/material...
+ */
 @Component({
   selector: 'ui-dialog-prompt',
   templateUrl: './prompt.component.html',

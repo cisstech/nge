@@ -1,17 +1,22 @@
 import { ComponentType } from '@angular/cdk/portal';
 import { Injectable, NgZone } from '@angular/core';
 import {
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogConfig as MatDialogConfig,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef
+} from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { ConfirmOptions } from './confirm/confim';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { PrompOptions } from './prompt/prompt';
 import { PromptComponent } from './prompt/prompt.component';
 
+
+/**
+ * @deprecated Please do not use this component.
+ * It will be removed soon in the feature versions of the lib to break the dependency of nge with any ui libs like @angular/material...
+ */
 @Injectable({
   providedIn: 'root',
 })
@@ -20,7 +25,7 @@ export class DialogService {
     private readonly zone: NgZone,
     private readonly dialog: MatDialog,
     private readonly snackbar: MatSnackBar
-  ) {}
+  ) { }
 
   open(options: IMaterialDialogOptions) {
     return this.dialog.open(options.component, options.config);

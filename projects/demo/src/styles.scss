@@ -1,24 +1,13 @@
-@use '@angular/material' as mat;
+@import './styles//normalize.scss';
+@import './styles/fonts';
+@import './styles/variables';
+@import './styles/material/light.scss';
 
-$my-primary: mat.define-palette(mat.$indigo-palette, 500);
-$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
-
-// The "warn" palette is optional and defaults to red if not specified.
-$my-warn: mat.define-palette(mat.$red-palette);
-
-$my-theme: mat.define-light-theme((
- color: (
-   primary: $my-primary,
-   accent: $my-accent,
-   warn: $my-warn,
- ),
- typography: mat.define-typography-config(),
- density: 0,
-));
-
-body {
-  margin: 0;
+html {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  color: var(--brand-text-primary);
+  background-color: var(--brand-background-color);
+  font-family: var(--brand-font);
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
