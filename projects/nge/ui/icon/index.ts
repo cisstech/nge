@@ -4,6 +4,7 @@ export * from './src/icon-icongr/icon-icongr.component';
 export * from './src/icon-img/icon-img.component';
 export * from './src/icon.component';
 export * from './src/icon.module';
+export * from './src/icon.service';
 export * from './src/icons';
 export * from './src/icons.files';
 export * from './src/icons.folders';
