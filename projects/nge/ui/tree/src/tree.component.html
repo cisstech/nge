@@ -7,17 +7,14 @@
   </div>
 </ng-container>
 
-<cdk-virtual-scroll-viewport
+<div
   tabindex="0"
   class="tree-component"
   [class.editing]="editing.node != null"
-  [itemSize]="adapter.itemHeight"
-  [minBufferPx]="minBufferPx"
-  [maxBufferPx]="maxBufferPx"
   [style.height]="adapter.treeHeight">
-  <ng-container *cdkVirtualFor="let node of visibleNodes|async; trackBy: _trackById;">
+  <ng-container *ngFor="let node of visibleNodes|async; trackBy: _trackById;">
     <!-- RENAMING -->
-    <ng-container *ngIf="_isRenaming(node); else: nodeTemplate">
+    <ng-container *ngIf="node.renaming; else: nodeTemplate">
       <div
         class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
         [attr.data-tree-node-id]="node.id"
@@ -37,18 +34,18 @@
         [style.padding-left]="node.padding"
         [style.height.px]="adapter.itemHeight"
         [ngClass]="{
-          focused: isFocused(node),
-          selected: isSelected(node),
-          expanded: isExpanded(node)
+          focused: node.focused,
+          selected: node.selected,
+          expanded: node.expanded
         }">
-          <div class="tree-node__content" [style.height.px]="adapter.itemHeight" [matTooltip]="node.tooltip">
+          <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
             <ng-container *ngTemplateOutlet="nodeDirective.templateRef; context: { $implicit: node }"></ng-container>
           </div>
       </div>
     </ng-template>
 
     <!-- CREATING -->
-    <ng-container *ngIf="_isCreating(node)">
+    <ng-container *ngIf="node.creating">
       <div
         class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
         [style.padding-left]="node.padding"
@@ -59,7 +56,7 @@
       </div>
     </ng-container>
   </ng-container>
-</cdk-virtual-scroll-viewport>
+</div>
 
 <ng-template #inputTemplate>
   <span class="tree-input">

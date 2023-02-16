@@ -1,4 +1,3 @@
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import {
   ChangeDetectionStrategy,
@@ -10,12 +9,11 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
-  ViewChild,
+  OnInit
 } from '@angular/core';
 import {
   MatTreeFlatDataSource,
-  MatTreeFlattener,
+  MatTreeFlattener
 } from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
 import { CURRENT_VISIBLE_TREES } from './internal';
@@ -28,7 +26,7 @@ import {
   ITreeFilter,
   ITreeNodeHolder,
   ITreeState,
-  TreeFilter,
+  TreeFilter
 } from './tree.model';
 
 @Component({
@@ -38,8 +36,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeComponent<T>
-  implements ITree<T>, OnInit, OnChanges, OnDestroy
-{
+  implements ITree<T>, OnInit, OnChanges, OnDestroy {
   private readonly DATA_TREE_NODE_ID = 'data-tree-node-id';
 
   private readonly flattener: MatTreeFlattener<T, ITreeNodeHolder<T>>;
@@ -62,22 +59,9 @@ export class TreeComponent<T>
 
   @Input() nodes: T[] = [];
   @Input() adapter!: ITreeAdapter<T>;
-  @Input() minBuffer = 10;
-  @Input() maxBuffer = 20;
 
   @ContentChild(TreeNodeDirective, { static: true })
-  nodeDirective!: TreeNodeDirective<T>;
-
-  @ViewChild(CdkVirtualScrollViewport, { static: true })
-  viewport!: CdkVirtualScrollViewport;
-
-  get minBufferPx(): string {
-    return (this.adapter.itemHeight || 32) * this.minBuffer + 'px';
-  }
-
-  get maxBufferPx(): string {
-    return (this.adapter.itemHeight || 32) * this.maxBuffer + 'px';
-  }
+  protected nodeDirective!: TreeNodeDirective<T>;
 
   constructor(
     private readonly elementRef: ElementRef<HTMLElement>,
@@ -106,9 +90,6 @@ export class TreeComponent<T>
       throw new Error('@Input() adapter.id is required !');
     }
     CURRENT_VISIBLE_TREES.set(this.adapter.id, this);
-    this.viewport.elementRef.nativeElement.onscroll = () => {
-      this.changeDetectorRef.detectChanges(); // fix a bug where the virtual scroll is not updated when the tree is not focused.
-    };
   }
 
   ngOnChanges(): void {
@@ -148,7 +129,6 @@ export class TreeComponent<T>
       this.unselectAll(false);
       this.render();
     }
-    this.viewport.scrollToIndex(0);
   }
 
   ngOnDestroy(): void {
@@ -223,7 +203,7 @@ export class TreeComponent<T>
 
   unfocus(): void {
     this.activeNode = undefined;
-    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.markForCheck();
   }
 
   expand(node: INode<T>, render = true): void {
@@ -311,18 +291,20 @@ export class TreeComponent<T>
       this.editing.node = holder.data;
       this.editing.text = creation ? '' : holder.name;
       this.editing.creation = creation;
+      holder.renaming = !creation;
+      holder.creating = creation;
       if (holder.expandable && !this.isExpanded(holder)) {
         this.expand(node);
       }
-      this.changeDetectorRef.detectChanges();
     }
+    this.changeDetectorRef.markForCheck();
   }
 
   endEdition(): void {
     this.editing.text = '';
     this.editing.node = undefined;
     this.editing.creation = false;
-    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.markForCheck();
   }
 
   search(filter: ITreeFilter) {
@@ -370,7 +352,7 @@ export class TreeComponent<T>
       }
       this.render();
     } else {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
     }
   }
 
@@ -724,6 +706,12 @@ export class TreeComponent<T>
         return;
       }
 
+      node.focused = this.isFocused(node);
+      node.expanded = this.isExpanded(node);
+      node.renaming = this._isRenaming(node);
+      node.creating = this._isCreating(node);
+      node.selected = this.isSelected(node);
+
       // root nodes are always visible
       if (node.level === 0) {
         nodes.push(node);
@@ -747,7 +735,8 @@ export class TreeComponent<T>
     });
 
     this.visibleNodes.next(nodes);
-    this.changeDetectorRef.detectChanges();
+
+    this.changeDetectorRef.markForCheck();
   }
 
   private buildIndexes(): void {
@@ -799,7 +788,7 @@ export class TreeComponent<T>
     this.selectedNodes.set(holder.id, holder);
 
     if (detectChanges) {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
     }
   }
 
@@ -820,7 +809,7 @@ export class TreeComponent<T>
     }
 
     if (detectChanges) {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
     }
   }
 
@@ -832,7 +821,7 @@ export class TreeComponent<T>
     this.selectedNodes.clear();
 
     if (detectChanges) {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.markForCheck();
     }
   }
 
@@ -885,12 +874,7 @@ export class TreeComponent<T>
       if (index == -1) {
         return;
       }
-      const range = this.viewport.getRenderedRange();
-      if (index < range.start || index > range.end) {
-        this.viewport.scrollToIndex(index, 'smooth');
-        this.viewport.checkViewportSize();
-        this.changeDetectorRef.detectChanges();
-      }
+      this.domNode(node)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
 

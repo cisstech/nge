@@ -56,7 +56,8 @@
               "projects/demo/src/assets",
               { "glob": "**/*", "input": "./node_modules/monaco-editor/min", "output": "./assets/nge/monaco/min" },
               { "glob": "**/*", "input": "./node_modules/monaco-editor/min-maps", "output": "./assets/nge/monaco/min-maps" },
-              { "glob": "**/*", "input": "./projects/nge/monaco/src/themes", "output": "./assets/nge/monaco/themes" }
+              { "glob": "**/*", "input": "./projects/nge/monaco/src/themes", "output": "./assets/nge/monaco/themes" },
+              { "glob": "**/*", "input": "./projects/nge/ui/icon/src/assets/icons/files", "output": "./assets/vendors/nge/ui/icon/icons/files/" }
             ],
             "styles": ["projects/demo/src/styles.scss"],
             "scripts": [],

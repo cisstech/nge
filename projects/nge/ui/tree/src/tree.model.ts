@@ -282,20 +282,21 @@ export interface ITreeNodeHolder<T> {
   padding: string;
 
   // TODO precalculate the following properties instead of calling functions inside template.
+
   /** A value indicating whether the node is focused */
-  //focused?: boolean;
+  focused?: boolean;
 
   /** A value indicating whether the node is expanded */
-  //expanded?: boolean;
+  expanded?: boolean;
 
   /** A value indicating whether the node is selected */
-  //selected?: boolean;
+  selected?: boolean;
 
   /** A value indicating whether the node is in creating state.  */
-  //creating?: boolean;
+  creating?: boolean;
 
   /** A value indicating whether the node is in renaming state.  */
-  //renaming?: boolean;
+  renaming?: boolean;
 }
 
 export class TreeFilter implements ITreeFilter {
