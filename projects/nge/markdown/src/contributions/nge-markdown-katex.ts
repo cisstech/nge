@@ -58,7 +58,7 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
 
     let baseUrl =
       this.options?.baseUrl ||
-      'https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/';
+      'https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/';
     if (!baseUrl.endsWith('/')) {
       baseUrl += '/';
     }
@@ -71,7 +71,6 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
 
     if (this.options.extensions?.copyTex) {
       deps.push(
-        ['style', `${baseUrl}contrib/copy-tex.min.css`],
         ['script', `${baseUrl}contrib/copy-tex.min.js`]
       );
     }
