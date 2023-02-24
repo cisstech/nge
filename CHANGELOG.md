@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.2.0](https://github.com/cisstech/nge/compare/v15.1.0...v15.2.0) (2023-02-24)
+
+
+### Features
+
+* **utils:** add deepEqual fn ([b07654a](https://github.com/cisstech/nge/commit/b07654a0fdf35185a3141cdc6b8def92300916ad))
+
 ## [15.1.0](https://github.com/cisstech/nge/compare/v15.0.3...v15.1.0) (2023-02-16)
 
 
