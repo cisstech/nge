@@ -1,6 +1,6 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import {
-  ChangeDetectionStrategy,
+  // ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -33,7 +33,7 @@ import {
   selector: 'ui-tree',
   templateUrl: 'tree.component.html',
   styleUrls: ['tree.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeComponent<T>
   implements ITree<T>, OnInit, OnChanges, OnDestroy {
@@ -301,6 +301,12 @@ export class TreeComponent<T>
   }
 
   endEdition(): void {
+    const holder = this.findHolder(this.editing.node!);
+    if (holder) {
+      holder.renaming = false;
+      holder.creating = false;
+    }
+
     this.editing.text = '';
     this.editing.node = undefined;
     this.editing.creation = false;
