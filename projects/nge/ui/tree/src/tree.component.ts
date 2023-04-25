@@ -1,6 +1,6 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import {
-  // ChangeDetectionStrategy,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -33,10 +33,17 @@ import {
   selector: 'ui-tree',
   templateUrl: 'tree.component.html',
   styleUrls: ['tree.component.scss'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeComponent<T>
   implements ITree<T>, OnInit, OnChanges, OnDestroy {
+
+  @Input() nodes: T[] = [];
+  @Input() adapter!: ITreeAdapter<T>;
+
+  @ContentChild(TreeNodeDirective, { static: true })
+  protected nodeDirective!: TreeNodeDirective<T>;
+
   private readonly DATA_TREE_NODE_ID = 'data-tree-node-id';
 
   private readonly flattener: MatTreeFlattener<T, ITreeNodeHolder<T>>;
@@ -52,16 +59,15 @@ export class TreeComponent<T>
   private activeNode?: ITreeNodeHolder<T>;
   private stateBeforeSearching: ITreeState | undefined;
 
+  protected editing: Partial<ITreeEdition<T>> = { text: '', node: undefined };
+  protected readonly visibleNodes = new BehaviorSubject<ITreeNodeHolder<T>[]>([]);
+
   readonly filter: ITreeFilter = new TreeFilter();
-  readonly editing: Partial<ITreeEdition<T>> = { text: '', node: undefined };
   readonly controler: FlatTreeControl<ITreeNodeHolder<T>>;
-  readonly visibleNodes = new BehaviorSubject<ITreeNodeHolder<T>[]>([]);
 
-  @Input() nodes: T[] = [];
-  @Input() adapter!: ITreeAdapter<T>;
-
-  @ContentChild(TreeNodeDirective, { static: true })
-  protected nodeDirective!: TreeNodeDirective<T>;
+  protected get treeHeight(): string {
+    return this.adapter?.itemHeight?.toString() || '100%'
+  }
 
   constructor(
     private readonly elementRef: ElementRef<HTMLElement>,
@@ -203,7 +209,7 @@ export class TreeComponent<T>
 
   unfocus(): void {
     this.activeNode = undefined;
-    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   expand(node: INode<T>, render = true): void {
@@ -297,7 +303,8 @@ export class TreeComponent<T>
         this.expand(node);
       }
     }
-    this.changeDetectorRef.markForCheck();
+
+    this.changeDetectorRef.detectChanges();
   }
 
   endEdition(): void {
@@ -306,11 +313,8 @@ export class TreeComponent<T>
       holder.renaming = false;
       holder.creating = false;
     }
-
-    this.editing.text = '';
-    this.editing.node = undefined;
-    this.editing.creation = false;
-    this.changeDetectorRef.markForCheck();
+    this.editing = { text: '' }
+    this.changeDetectorRef.detectChanges();
   }
 
   search(filter: ITreeFilter) {
@@ -358,7 +362,7 @@ export class TreeComponent<T>
       }
       this.render();
     } else {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -427,6 +431,7 @@ export class TreeComponent<T>
       const isEscape = event instanceof KeyboardEvent && event.key === 'Escape';
 
       if (isEscape) {
+        event.preventDefault();
         this.endEdition();
       } else if (isBlur || isEnter) {
         event.preventDefault();
@@ -742,7 +747,7 @@ export class TreeComponent<T>
 
     this.visibleNodes.next(nodes);
 
-    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   private buildIndexes(): void {
@@ -794,7 +799,7 @@ export class TreeComponent<T>
     this.selectedNodes.set(holder.id, holder);
 
     if (detectChanges) {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -815,7 +820,7 @@ export class TreeComponent<T>
     }
 
     if (detectChanges) {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -827,7 +832,7 @@ export class TreeComponent<T>
     this.selectedNodes.clear();
 
     if (detectChanges) {
-      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
     }
   }
 
@@ -938,6 +943,7 @@ export class TreeComponent<T>
     if (parentId) {
       return this.nodesIndex.get(parentId);
     }
+    return undefined
   }
 
   private findHolderFromId(id: string): ITreeNodeHolder<T> | undefined {

@@ -57,7 +57,7 @@ export class IcongrIcon implements Icon {
   readonly type = 'icongr';
   /**
    * Creates new IcongrIcon
-   * @param name type name size=48&color=FF0000
+   * @param name type name size=48&color=FF0000. Example `material account`
    * @param options extra options
    */
   constructor(readonly name: string, readonly options?: IcongrOptions) {}

@@ -11,7 +11,7 @@
   tabindex="0"
   class="tree-component"
   [class.editing]="editing.node != null"
-  [style.height]="adapter.treeHeight">
+  [style.height]="treeHeight">
   <ng-container *ngFor="let node of visibleNodes|async; trackBy: _trackById;">
     <!-- RENAMING -->
     <ng-container *ngIf="node.renaming; else: nodeTemplate">
@@ -64,8 +64,9 @@
       autofocus
       type="text"
       placeholder="Press Enter to create ESC to cancel..."
+      (click)="$event.preventDefault(); $event.stopPropagation()"
       [(ngModel)]="editing.text"
       (keydown)="_onEdit($event)"
-      (blur)="_onEdit($event)"/>
+      (blur)="_onEdit($event)" />
   </span>
 </ng-template>
