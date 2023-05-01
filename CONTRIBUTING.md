@@ -17,7 +17,7 @@ Open an issue for general support questions.
 ## <a name="issue"></a> Found a Bug?
 
 If you find a bug in the source code, you can help us by
-[submitting an issue](#submit-issue) to our [GitHub Repository][github]. Even better, you can
+[submitting an issue](#submit-issue) to our GitHub Repository. Even better, you can
 [submit a Pull Request](#submit-pr) with a fix.
 
 ## <a name="feature"></a> Missing a Feature?
@@ -167,7 +167,7 @@ fix(module:editor): editor crash when new file is opene #(4645)
 
 ### Revert
 
-If the commit reverts a previous commit, it should begin with `revert: `, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
+If the commit reverts a previous commit, it should begin with `revert:`, followed by the header of the reverted commit. In the body it should say: `This reverts commit <hash>.`, where the hash is the SHA of the commit being reverted.
 
 ### Type
 
@@ -185,7 +185,7 @@ Must be one of the following:
 
 ### Scope
 
-The scope should be the name of the module affected (folder name or other meaningful words), and should prefix with *module:* (as perceived by person reading changelog generated from commit messages.
+The scope should be the name of the module affected (folder name or other meaningful words), and should prefix with *module:* as perceived by person reading changelog generated from commit messages.
 
 Example:
 
