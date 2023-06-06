@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.2.2](https://github.com/cisstech/nge/compare/v15.2.1...v15.2.2) (2023-06-06)
+
+
+### Bug Fixes
+
+* **markdown:** remove * selector on github theme ([28573de](https://github.com/cisstech/nge/commit/28573deb210ad6092cda89484c9b2f30d4711950))
+
 ### [15.2.1](https://github.com/cisstech/nge/compare/v15.2.0...v15.2.1) (2023-04-25)
 
 
