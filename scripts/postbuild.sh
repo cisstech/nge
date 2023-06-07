@@ -12,4 +12,5 @@ mkdir -p dist/nge/assets/ui/icon/fonts
 cp -rf ./projects/nge/ui/icon/src/assets/ ./dist/nge/assets/ui/icon/
 
 # nge-markdown
+mkdir -p dist/nge/assets/markdown
 cp -rf ./projects/nge/markdown/src/themes ./dist/nge/assets/markdown/themes
