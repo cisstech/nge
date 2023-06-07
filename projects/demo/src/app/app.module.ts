@@ -21,6 +21,7 @@ import {
   NgeMarkdownIconsProvider,
   NgeMarkdownHighlighterProvider,
   NgeMarkdownHighlighterMonacoProvider,
+  NgeMarkdownThemeProvider,
 } from '@cisstech/nge/markdown';
 
 // MODULE
@@ -48,6 +49,10 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
   ],
   providers: [
+    NgeMarkdownThemeProvider({
+      name: 'github',
+      styleUrl: 'assets/nge/markdown/themes/github.css',
+    }),
     NgeMarkdownKatexProvider,
     NgeMarkdownIconsProvider,
     NgeMarkdownEmojiProvider,
