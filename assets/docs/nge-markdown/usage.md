@@ -25,7 +25,7 @@ the dependencies of nge-markdown to the project.
   import { BrowserModule } from '@angular/platform-browser';
   import { NgModule } from '@angular/core';
   import { HttpClientModule } from '@angular/common/http';
-  import { NgeMarkdownModule} from '@cisstech/nge/markdown';
+  import { NgeMarkdownModule } from '@cisstech/nge/markdown';
   import { AppComponent } from './app.component';
 
   @NgModule({
@@ -35,7 +35,7 @@ the dependencies of nge-markdown to the project.
     imports: [
       BrowserModule,
       HttpClientModule,
-      NgeMarkdownModule,
+      NgeMarkdownModule
     ],
     providers: [],
     bootstrap: [AppComponent]
@@ -219,3 +219,52 @@ export function markedOptionsFactory(): MarkedOptions {
 })
 export class AppModule { }
 ```
+
+## Theming
+
+This library comes with a set of custom themes that can be added to the library by using `NgeMarkdownThemeProvider` method.
+
+### Add the glob to assets in angular.json
+
+```json
+{
+  "apps": [
+    {
+      "assets": [
+        { "glob": "**/*", "input": "./node_modules/@cisstech/nge/assets/markdown/", "output": "./assets/nge/markdown/" }
+      ],
+      ...
+    }
+    ...
+  ],
+  ...
+}
+```
+
+```typescript highlights="15-18"
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { NgeMarkdownModule, NgeMarkdownThemeProvider } from '@cisstech/nge/markdown';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    NgeMarkdownModule,
+    NgeMarkdownThemeProvider({
+      name: 'github',
+      styleUrl: 'assets/nge/markdown/themes/github.css',
+    }),
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+> Themes can handle dark variants by adding `.dark-theme` class on the body or html element.
