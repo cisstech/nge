@@ -161,14 +161,14 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
                 .nge-md-admonition--${type} {
                     border-left: 0.2rem solid ${map.border};
                 }
-                .nge-md-admonition--${type} .nge-md-admonition-title {
+                .nge-md-admonition-title--${type} {
                     background-color: ${map.bg};
                 }
-                .nge-md-admonition--${type} .nge-md-admonition-title:before,
-                .nge-md-admonition--${type} .nge-md-admonition-title:after {
+                .nge-md-admonition-title--${type}:before,
+                .nge-md-admonition-title--${type}:after {
                     background-color: ${map.border};
                 }
-                .nge-md-admonition--${type} .nge-md-admonition-title:before {
+                .nge-md-admonition-title--${type}:before {
                     position: absolute;
                     left: 0.6rem;
                     width: 1rem;
@@ -205,7 +205,7 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
           admonition.className = 'nge-md-admonition nge-md-admonition--' + type;
 
           const summary = document.createElement('summary');
-          summary.className = 'nge-md-admonition-title';
+          summary.className = 'nge-md-admonition-title nge-md-admonition-title--' + type;
           summary.innerHTML = title;
 
           const content: HTMLElement[] = [];
