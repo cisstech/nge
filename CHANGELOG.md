@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.2.4](https://github.com/cisstech/nge/compare/v15.2.3...v15.2.4) (2023-08-22)
+
+
+### Bug Fixes
+
+* admonitions are now working inside admonitions ([4eeb4fe](https://github.com/cisstech/nge/commit/4eeb4fe082d17745788c572988f16f89612bfa85))
+
 ### [15.2.3](https://github.com/cisstech/nge/compare/v15.2.2...v15.2.3) (2023-06-07)
 
 ### [15.2.2](https://github.com/cisstech/nge/compare/v15.2.1...v15.2.2) (2023-06-06)
