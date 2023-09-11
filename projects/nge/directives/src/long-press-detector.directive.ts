@@ -6,7 +6,7 @@ export class LongPressDetectorDirective {
   @Output() longPress = new EventEmitter<MouseEvent | TouchEvent>();
   @Output() longPressEnd = new EventEmitter<boolean>();
 
-  private timeout?: NodeJS.Timeout;
+  private timeout?: ReturnType<typeof setTimeout>;
   private pressing = false;
 
   @HostListener('mousedown', ['$event'])

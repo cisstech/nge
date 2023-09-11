@@ -21,7 +21,7 @@
         [style.padding-left]="node.padding"
         [style.height.px]="adapter.itemHeight">
         <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
-          <ng-container *ngTemplateOutlet="inputTemplate"> </ng-container>
+          <ng-container *ngTemplateOutlet="inputTemplate" />
         </div>
       </div>
     </ng-container>
@@ -39,7 +39,7 @@
           expanded: node.expanded
         }">
           <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
-            <ng-container *ngTemplateOutlet="nodeDirective.templateRef; context: { $implicit: node }"></ng-container>
+            <ng-container *ngTemplateOutlet="nodeDirective.templateRef; context: { $implicit: node }" />
           </div>
       </div>
     </ng-template>
@@ -51,7 +51,7 @@
         [style.padding-left]="node.padding"
         [style.height.px]="adapter.itemHeight">
         <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
-          <ng-container *ngTemplateOutlet="inputTemplate"> </ng-container>
+          <ng-container *ngTemplateOutlet="inputTemplate" />
         </div>
       </div>
     </ng-container>

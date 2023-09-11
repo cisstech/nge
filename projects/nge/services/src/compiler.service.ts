@@ -22,7 +22,7 @@ export class CompilerService {
       );
     }
 
-    let component = options.type;
+    let component: Type<any> = options.type;
     if ('ɵmod' in options.type) {
       const module = await this.resolveModuleInfo(
         options.type,
@@ -79,7 +79,7 @@ export class CompilerService {
 }
 
 export interface RendererOptions {
-  type: Type<any>;
+  type: Type<any> ;
   inputs?: any;
   container: ViewContainerRef;
 }

@@ -1,7 +1,7 @@
 import { Directive, TemplateRef } from '@angular/core';
 import { ITreeNodeHolder } from './tree.model';
 
-export declare type Context<T> = Readonly<ITreeNodeHolder<T>> & {
+export declare type Context<T> =  {
   $implicit: ITreeNodeHolder<T>;
 };
 
