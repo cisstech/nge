@@ -9,11 +9,11 @@ import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../monaco-config';
 
 /** monaco editor cdn url hosted at cdnjs. */
 export const MONACO_CDNJS_URL =
-  'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1';
+  'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0';
 
 /** monaco editor cdn url hosted at jsdeliver. */
 export const MONACO_JS_DELIVER_URL =
-  'https://cdn.jsdelivr.net/npm/monaco-editor@0.34.1';
+  'https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0';
 
 const WINDOW = window as any;
 
