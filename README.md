@@ -10,8 +10,8 @@
 
 NG Essentials is a collection of libraries for <a href="https://angular.io">Angular</a> developers.
 
-[![Tests](https://github.com/cisstech/nge/workflows/Tests/badge.svg)](https://github.com/cisstech/nge/actions/)
-<!-- [![codecov](https://codecov.io/gh/cisstech/nge/branch/main/graph/badge.svg)](https://codecov.io/gh/cisstech/nge) -->
+[![Tests](https://github.com/cisstech/nge/actions/workflows/tests.yml/badge.svg)](https://github.com/cisstech/nge/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/cisstech/nge/branch/main/graph/badge.svg)](https://codecov.io/gh/cisstech/nge)
 [![codefactor](https://www.codefactor.io/repository/github/cisstech/nge/badge/main)](https://www.codefactor.io/repository/github/cisstech/nge/overview/main)
 [![GitHub Tags](https://img.shields.io/github/tag/cisstech/nge.svg)](https://github.com/cisstech/nge/tags)
 [![npm package](https://img.shields.io/npm/v/@cisstech/nge.svg)](https://www.npmjs.org/package/@cisstech/nge)
