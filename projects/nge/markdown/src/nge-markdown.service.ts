@@ -121,7 +121,7 @@ export class NgeMarkdownService {
         if (isNaN(indentStart)) {
           indentStart = lineIdentStart;
         }
-        return !!lineIdentStart ? line.substring(lineIdentStart) : line;
+        return lineIdentStart ? line.substring(lineIdentStart) : line;
       })
       .join('\n');
   }
