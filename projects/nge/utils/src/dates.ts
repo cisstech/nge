@@ -6,7 +6,7 @@ export function addDays(date: Date, days: number) {
   date = new Date(date.valueOf());
   date.setDate(date.getDate() + days);
   return date;
-};
+}
 
 
 /** Gets current value of unix timestamp */
