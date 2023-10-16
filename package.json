@@ -68,7 +68,7 @@
     "@angular/compiler-cli": "^16.2.4",
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
-    "@types/jasmine": "^4.3.5",
+    "@types/jasmine": "^5.1.0",
     "@types/jasminewd2": "^2.0.10",
     "@types/marked": "^4.0.1",
     "@types/mime-db": "^1.43.1",
