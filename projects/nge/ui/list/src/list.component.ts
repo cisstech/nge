@@ -42,6 +42,9 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   @Input()
   selections: T[] = [];
 
+  @Input()
+  containerClass?: string;
+
   @Output()
   selectionsChange = new EventEmitter<T[]>();
 
@@ -53,6 +56,13 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
 
   get hasSelection() {
     return !!this.selections.length;
+  }
+
+  protected get classes() {
+    if (!this.containerClass) { return {}; }
+    return {
+      [this.containerClass]: true,
+    };
   }
 
   ngOnChanges() {

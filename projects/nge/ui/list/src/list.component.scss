@@ -24,22 +24,18 @@ li {
   }
 }
 
-.list-item {
+.ui-list-item {
   margin-bottom: var(--inner-margin-bottom);
-}
-
-.spacer {
-  flex: 1;
 }
 
 // https://freefrontend.com/css-checkboxes/
 // https://codepen.io/daniandl/pen/OgbXzK
 
-.label__checkbox {
+.ui-list-label__checkbox {
   display: none;
 }
 
-.label__check {
+.ui-list-label__check {
   display: inline-block;
   border-radius: 50%;
   border: 5px solid rgba(0, 0, 0, 0.1);
@@ -67,16 +63,21 @@ li {
   }
 }
 
-.label__checkbox:checked + .label__text .label__check {
+.ui-list-label__checkbox:checked + .ui-list-label__text .ui-list-label__check {
   animation: check 0.5s cubic-bezier(0.895, 0.03, 0.685, 0.22) forwards;
 
-  .label__icon {
+  .ui-list-label__icon {
     opacity: 1;
     transform: scale(0);
     color: white;
     -webkit-text-stroke: 0;
     animation: icon 0.3s cubic-bezier(1, 0.008, 0.565, 1.65) 0.1s 1 forwards;
   }
+}
+
+
+.spacer {
+  flex: 1;
 }
 
 @keyframes icon {

@@ -20,30 +20,30 @@
 <ng-container *ngIf="(filter ? (items | filterBy: filterBy: filter) : items) as filtered">
   <!-- SHOW EMPTY STATE IF NO ITEM ELSE SHOW ROWS -->
   <ng-container *ngIf="filtered.length; else: emptyStateTemplate">
-  <ul>
+  <ul class="ui-list-container" [ngClass]="classes">
     <ng-container *ngFor="let item of filtered; trackBy: _trackBy.bind(this) let index=index; let first=first; let last=last; let even=even; let odd=odd">
       <ng-container *ngIf="{item: item, items: filtered, odd: odd, last: last, even: even, index: index, first: first} as context">
-        <div class="list-item">
+        <div class="ui-list-item">
           <!-- HEADER -->
           <ng-container *ngIf="_template(context, 'header') as header">
-            <li class="list-item-header">
+            <li class="ui-list-item-header">
               <ng-container *ngTemplateOutlet="header; context: context"></ng-container>
             </li>
           </ng-container>
           <!-- ROW -->
           <ng-container *ngIf="_template(context, 'row') as row">
-            <li class="list-item-content" [class.selectable]="selectable">
+            <li class="ui-list-item-content" [class.selectable]="selectable">
               <ng-container *ngTemplateOutlet="row; context: context"></ng-container>
               <!-- CHECKBOX -->
-              <label class="label" *ngIf="selectable">
+              <label class="ui-list-label" *ngIf="selectable">
                 <input
-                  class="label__checkbox"
+                  class="ui-list-label__checkbox"
                   type="checkbox"
                   [(ngModel)]="_selectionStates[$any(item)[idField]]"
                   (ngModelChange)="_toggleSelection(item)"/>
-                <span class="label__text">
-                  <span class="label__check">
-                    <span class="label__icon">✓</span>
+                <span class="ui-list-label__text">
+                  <span class="ui-list-label__check">
+                    <span class="ui-list-label__icon">✓</span>
                   </span>
                 </span>
               </label>
