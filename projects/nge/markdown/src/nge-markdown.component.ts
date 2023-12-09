@@ -60,40 +60,31 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
     this.themes = this.themes || []
   }
 
-  ngOnChanges(): void {
-    if (this.file) {
-      this.renderFromFile(this.file);
-    } else {
-      this.renderFromString(this.data || '');
-    }
-
-    if (this.theme) {
-      const themeInfo = this.themes?.find((theme) => theme.name === this.theme);
-      if (themeInfo) {
-        firstValueFrom(
-          this.resourceLoader.loadAllSync([
-            ['style', themeInfo.styleUrl]
-          ])
-        ).catch()
-      }
-    }
+  async ngOnChanges(): Promise<void> {
+    await this.checkTheme()
+    this.file
+      ? await this.renderFromFile(this.file)
+      : await this.renderFromString(this.data || '');
+    this.el.nativeElement.style.opacity = '1';
   }
 
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
+    await this.checkTheme()
+    this.el.nativeElement.style.opacity = '0';
     if (!this.file && !this.data) {
-      this.renderFromString(this.el.nativeElement.innerHTML, true);
+      await this.renderFromString(this.el.nativeElement.innerHTML, true);
     }
+    this.el.nativeElement.style.opacity = '1';
   }
 
-  private renderFromFile(file: string) {
+  private async renderFromFile(file: string): Promise<void> {
     if (!this.http) {
       throw new Error(
         '[nge-markdown] When using the `file` attribute you *have to* pass the `HttpClient` as a parameter of the `forRoot` method. See README for more information'
       );
     }
-    this.http.get(file, { responseType: 'text' }).subscribe({
-      next: (markdown) => this.renderFromString(markdown),
-    });
+    const markdown = await firstValueFrom(this.http.get(file, { responseType: 'text' }))
+    await this.renderFromString(markdown)
   }
 
   private async renderFromString(markdown: string, isHtmlString = false) {
@@ -103,6 +94,19 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
       isHtmlString,
       contributions: this.contributions,
     });
-    this.render.emit(tokens);
+   this.render.emit(tokens);
+  }
+
+  private async checkTheme(): Promise<void> {
+    if (this.theme) {
+      const themeInfo = this.themes?.find((theme) => theme.name === this.theme);
+      if (themeInfo) {
+        await firstValueFrom(
+          this.resourceLoader.loadAllSync([
+            ['style', themeInfo.styleUrl]
+          ])
+        ).catch()
+      }
+    }
   }
 }
