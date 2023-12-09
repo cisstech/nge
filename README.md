@@ -31,7 +31,7 @@ Project documentation tool.
 
 * [nge-markdown](https://cisstech.github.io/nge/docs/nge-markdown/)
 
-Markdown parser library based on [Marked](https://github.com/markedjs/marked).
+Markdown parser library based on [Marked](https://github.com/markedjs/marked) `(v^11)`.
 
 * [nge-monaco](https://cisstech.github.io/nge/docs/nge-monaco/)
 

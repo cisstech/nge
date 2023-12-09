@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { marked } from 'marked';
+import { MarkedOptions, marked } from 'marked';
 import { NgeMarkdownContribution } from './nge-markdown-contribution';
 import { NgeMarkdownConfig, NGE_MARKDOWN_CONFIG } from './nge-markdown-config';
 import { NgeMarkdownTransformer } from './nge-markdown-transformer';
@@ -40,10 +40,9 @@ export class NgeMarkdownService {
     const renderer = this.renderer(transformer);
     const tokenizer = this.tokenizer(transformer);
 
-    const markedOptions: marked.MarkedOptions = {
+    const markedOptions: MarkedOptions = {
       gfm: true,
       ...this.config,
-      langPrefix: 'language-',
       renderer,
       tokenizer,
     };

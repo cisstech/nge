@@ -23,10 +23,10 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^16.2.4",
-    "@angular/core": "^16.2.4",
-    "@angular/cdk": "^16.2.3",
-    "@angular/material": "^16.2.3",
+    "@angular/common": "^17.0.0",
+    "@angular/core": "^17.0.0",
+    "@angular/cdk": "^17.0.0",
+    "@angular/material": "^17.0.0",
     "rxjs": "^7.5.2"
   }
 }

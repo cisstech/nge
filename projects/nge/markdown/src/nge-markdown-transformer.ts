@@ -1,15 +1,15 @@
-import { marked } from 'marked';
+import type { Renderer, Tokenizer, TokensList, marked } from 'marked';
 import { NgeMarkdownConfig } from './nge-markdown-config';
 
-declare type AstTransformer = (tokens: marked.TokensList) => marked.TokensList;
+declare type AstTransformer = (tokens: TokensList) => TokensList;
 declare type HtmlTransformer = (element: HTMLElement) => void;
 declare type MarkdownTransformer = (markdown: string) => string;
 declare type RendererTransformer = (
-  renderer: marked.Renderer
-) => marked.Renderer;
+  renderer: Renderer
+) => Renderer;
 declare type TokenizerTransformer = (
-  tokenizer: marked.Tokenizer
-) => marked.Tokenizer;
+  tokenizer: Tokenizer
+) => Tokenizer;
 
 /**
  * Nge markdown transformer used by the contributions.
@@ -91,7 +91,7 @@ export class NgeMarkdownTransformer {
    * @param ast the ast to transform.
    * @returns the transformed ast.
    */
-  transformAst(ast: marked.TokensList): marked.TokensList {
+  transformAst(ast: TokensList): TokensList {
     if (ast == null) {
       throw new ReferenceError('argument "ast" is required');
     }
@@ -142,7 +142,7 @@ export class NgeMarkdownTransformer {
    * @param renderer the renderer to transform.
    * @returns the transformed renderer.
    */
-  transformRenderer(renderer: marked.Renderer): marked.Renderer {
+  transformRenderer(renderer: Renderer): Renderer {
     if (renderer == null) {
       throw new ReferenceError('argument "renderer" is required');
     }
@@ -159,7 +159,7 @@ export class NgeMarkdownTransformer {
    * @param tokenizer the tokenizer to transform.
    * @returns the transformed tokenizer.
    */
-  transformTokenizer(tokenizer: marked.Tokenizer): marked.Tokenizer {
+  transformTokenizer(tokenizer: Tokenizer): Tokenizer {
     if (tokenizer == null) {
       throw new ReferenceError('argument "tokenizer" is required');
     }

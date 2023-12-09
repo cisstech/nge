@@ -6,14 +6,13 @@ import {
   ElementRef,
   EventEmitter,
   HostBinding,
-  Inject,
   Input,
   OnChanges,
-  Optional,
-  Output
+  Output,
+  inject
 } from '@angular/core';
 import { ResourceLoaderService } from '@cisstech/nge/services';
-import { marked } from 'marked';
+import type { TokensList } from 'marked';
 import { firstValueFrom } from 'rxjs';
 import { NGE_MARKDOWN_THEMES, NgeMarkdownTheme } from './nge-markdown-config';
 import {
@@ -29,6 +28,14 @@ import { NgeMarkdownService } from './nge-markdown.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
+  private readonly el: ElementRef<HTMLElement> = inject(ElementRef)
+  private readonly http = inject(HttpClient, { optional: true })
+  private readonly markdownService = inject(NgeMarkdownService)
+  private readonly resourceLoader = inject(ResourceLoaderService)
+  private readonly themes = inject(NGE_MARKDOWN_THEMES, { optional: true }) as unknown as NgeMarkdownTheme[]
+  private readonly contributions = inject(NGE_MARKDOWN_CONTRIBUTION, { optional: true }) as unknown  as NgeMarkdownContribution[]
+
+
   /** Link to a markdown file to render. */
   @Input() file?: string;
 
@@ -47,24 +54,9 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
    * An event that emit after each rendering pass
    * with the list of tokens parsed from the input markdown.
    */
-  @Output() render = new EventEmitter<marked.TokensList>();
+  @Output() render = new EventEmitter<TokensList>();
 
-  constructor(
-    private readonly el: ElementRef<HTMLElement>,
-    private readonly api: NgeMarkdownService,
-    private readonly resourceLoader: ResourceLoaderService,
-
-    @Optional()
-    private readonly http: HttpClient,
-
-    @Optional()
-    @Inject(NGE_MARKDOWN_THEMES)
-    private readonly themes: NgeMarkdownTheme[],
-
-    @Optional()
-    @Inject(NGE_MARKDOWN_CONTRIBUTION)
-    private readonly contributions: NgeMarkdownContribution[]
-  ) {
+  constructor() {
     this.themes = this.themes || []
   }
 
@@ -105,7 +97,7 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
   }
 
   private async renderFromString(markdown: string, isHtmlString = false) {
-    const tokens = await this.api.compile({
+    const tokens = await this.markdownService.compile({
       target: this.el.nativeElement,
       markdown,
       isHtmlString,
