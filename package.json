@@ -1,6 +1,6 @@
 {
   "name": "@cisstech/nge",
-  "version": "16.0.1",
+  "version": "17.0.0",
   "description": "NG Essentials is a collection of libraries for Angular developers.",
   "keywords": [
     "angular",
@@ -37,6 +37,9 @@
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",
     "release": "standard-version",
+    "release:major": "standard-version --release-as major",
+    "release:minor": "standard-version --release-as minor",
+    "release:patch": "standard-version --release-as patch",
     "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json"
   },
   "private": false,

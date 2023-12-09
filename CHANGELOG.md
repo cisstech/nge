@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.0.0](https://github.com/cisstech/nge/compare/v16.0.1...v17.0.0) (2023-12-09)
+
+
+### Features
+
+* **ui:** add containerClass input on ui-list-component ([c37a1ef](https://github.com/cisstech/nge/commit/c37a1effbc5bee65e6b821d00ed6866d8e0bc382))
+
 ### [16.0.1](https://github.com/cisstech/nge/compare/v16.0.0...v16.0.1) (2023-09-11)
 
 ## [16.0.0](https://github.com/cisstech/nge/compare/v15.2.4...v16.0.0) (2023-09-11)
