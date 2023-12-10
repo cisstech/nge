@@ -2,8 +2,9 @@
   --sidebar-width: 20rem;
   --footer-height: 100px;
   --header-height: 64px;
+  --nge-doc-primary-color: #f50057;
+  --nge-doc-sidebar-border-color: rgba(0, 0, 0, 0.07);
   display: block;
-  background-color: #FFFFFF;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -19,7 +20,7 @@ main {
 aside.sidebar {
   display: block;
   width: 0px;
-  border-right: 1px solid rgba(0, 0, 0, 0.07);
+  border-right: 1px solid var(--nge-doc-sidebar-border-color);
   background-color: #fafbfc;
   opacity: 0;
   pointer-events: none;
@@ -53,10 +54,9 @@ section {
     &::ng-deep {
       ul {
         list-style-type: none;
-      }
-      ul {
         border-left: 1px solid #f5f5f5;
       }
+
       ul,
       li {
         width: 100%;
@@ -80,9 +80,9 @@ section {
         text-decoration: underline;
       }
       li.active {
-        color: black;
+        color: currentColor;
         font-weight: 700;
-        border-left: 2px solid #f50057;
+        border-left: 2px solid var(--nge-doc-primary-color);;
         box-sizing: border-box;
       }
     }

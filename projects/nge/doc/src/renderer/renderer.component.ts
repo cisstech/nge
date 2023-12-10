@@ -56,6 +56,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private async onChangeState(state: NgeDocState): Promise<void> {
     this.clearViewContainer();
     try {
+      this.changeDetectorRef.markForCheck();
       let component: ComponentRef<any> | undefined;
       if (state.currLink) {
         const renderer = await state.currLink.renderer;

@@ -1,11 +1,11 @@
 <main>
   <aside class="sidebar" [class.opened]="sidebarOpened">
-    <nge-doc-sidenav></nge-doc-sidenav>
+    <nge-doc-sidenav />
   </aside>
   <section>
-    <nge-doc-header (toggle)="sidebarOpened = !sidebarOpened"></nge-doc-header>
+    <nge-doc-header (toggle)="sidebarOpened = !sidebarOpened" />
     <article>
-      <nge-doc-renderer #renderer></nge-doc-renderer>
+      <nge-doc-renderer #renderer />
       <aside
         *ngIf="showTableOfContents"
         [ngeDocToc]="renderer.component">
@@ -13,4 +13,4 @@
     </article>
   </section>
 </main>
-<nge-doc-footer></nge-doc-footer>
+<nge-doc-footer />

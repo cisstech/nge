@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   overflow: auto;
-  color: #364149;
   line-height: 2.3em;
   padding: 1rem;
 }
@@ -44,7 +43,7 @@ a {
   font-size: 1em;
   text-rendering: optimizeLegibility;
   position: relative;
-  color: #000;
+  color: currentColor;
   text-decoration: none;
   &:hover,
   &.active {
@@ -59,7 +58,7 @@ a::before {
   height: 1px;
   bottom: -2px;
   left: 0;
-  background-color: #f50057;
+  background-color: var(--nge-doc-primary-color);
   visibility: hidden;
   transform: scaleX(0);
   transition: all 0.3s ease-in-out 0s;

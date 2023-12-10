@@ -3,7 +3,7 @@ import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { NgeDocSettings, NgeDocLink, NgeDocMeta, NgeDocState } from './nge-doc';
+import { NgeDocLink, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc';
 
 @Injectable()
 export class NgeDocService implements OnDestroy {
@@ -53,13 +53,7 @@ export class NgeDocService implements OnDestroy {
     this.reset();
 
     const { data } = this.activatedRoute.snapshot;
-    let settings: NgeDocSettings[] = [];
-
-    if ('meta' in data) {
-      settings.push(data as NgeDocSettings);
-    } else {
-      settings = Object.values(data) as NgeDocSettings[];
-    }
+    const settings = extractNgeDocSettings(data);
 
     for (const setting of settings) {
       const links: NgeDocLink[] = [];
