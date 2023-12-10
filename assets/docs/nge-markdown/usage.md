@@ -177,12 +177,13 @@ marked `renderer` and `tokenizer`.
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { NgeMarkdownModule, NGE_MARKDOWN_CONFIG, NgeMarkdownConfig } from '@cisstech/nge/markdown';
+import { NgeMarkdownModule, NgeMarkdownConfigProvider, NgeMarkdownConfig } from '@cisstech/nge/markdown';
 import { AppComponent } from './app.component';
+import { MarkedOptions, Renderer, Tokenizer } from 'marked';
 
-export function markedOptionsFactory(): MarkedOptions {
-  const renderer = new MarkedRenderer();
-  const tokenizer = new MarkedTokenizer();
+export function markdownOptions(): NgeMarkdownConfig {
+  const renderer = new Renderer();
+  const tokenizer = new Tokenizer();
 
   renderer.blockquote = (text: string) => {
     return '<blockquote class="blockquote"><p>' + text + '</p></blockquote>';
@@ -195,10 +196,9 @@ export function markedOptionsFactory(): MarkedOptions {
     tokenizer,
     breaks: false,
     pedantic: false,
-    smartLists: true,
-    smartypants: false,
   };
 }
+
 
 @NgModule({
   declarations: [
@@ -210,10 +210,7 @@ export function markedOptionsFactory(): MarkedOptions {
     NgeMarkdownModule,
   ],
   providers: [
-    {
-      provide: NGE_MARKDOWN_CONFIG,
-      useFactory: markedOptionsFactory
-    }
+    NgeMarkdownConfigProvider(markdownOptions),
   ],
   bootstrap: [AppComponent]
 })
@@ -241,7 +238,7 @@ This library comes with a set of custom themes that can be added to the library 
 }
 ```
 
-```typescript highlights="15-18"
+```typescript highlights="15-21"
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -256,6 +253,9 @@ import { AppComponent } from './app.component';
     BrowserModule,
     HttpClientModule,
     NgeMarkdownModule,
+    NgeMarkdownConfigProvider({
+      darkThemeClassName: 'dark-theme',
+    }),
     NgeMarkdownThemeProvider({
       name: 'github',
       styleUrl: 'assets/nge/markdown/themes/github.css',
