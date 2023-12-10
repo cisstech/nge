@@ -23,10 +23,16 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
 
   /** code to highlight */
   @Input() code?: string;
+
   /** show line numbers? */
   @Input() lines?: string | number;
+
+    /** theme to use for the syntax highlighting  */
+  @Input() theme?: string;
+
   /** target language */
   @Input() language?: string;
+
   /** space separated list of line numbers to highlight */
   @Input() highlights?: string | number;
 
@@ -51,10 +57,11 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   private async colorize(code: string) {
     await this.colorizer.colorizeElement({
       code: code || '',
-      element: this.container.nativeElement,
+      theme: this.theme,
       lines: this.lines,
       language: this.language,
       highlights: this.highlights,
+      element: this.container.nativeElement,
     });
   }
 }

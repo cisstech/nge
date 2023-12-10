@@ -39,7 +39,7 @@ export class NgeMonacoColorizerService {
 
     await monaco.editor.colorizeElement(element, {
       mimeType: language || 'plaintext',
-      theme: this.theming.theme?.themeName || 'vs',
+      theme:options.theme|| this.theming.theme?.themeName || 'vs',
     });
 
     this.highlightLines(options);
@@ -153,6 +153,10 @@ export interface NgeMonacoColorizeOptions {
 
   /** Code to highlight */
   code: string;
+
+    /** Theme to use for the syntax highlighting  */
+  theme?: string;
+
 
   /** Target language (default plaintext). */
   language?: string;
