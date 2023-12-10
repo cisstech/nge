@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.1.0](https://github.com/cisstech/nge/compare/v17.0.0...v17.1.0) (2023-12-10)
+
+
+### Features
+
+* **doc:** inherit colors from ancestors ([62cbb2e](https://github.com/cisstech/nge/commit/62cbb2eb2ab32f694698b1e34be64f08b7992035))
+* **markdown:** support dark theme ([abaa169](https://github.com/cisstech/nge/commit/abaa169711440ffad8507682a9930195f438086b))
+* **monaco:** add theme input on viewer ([a658439](https://github.com/cisstech/nge/commit/a658439cade2db650f35a97b7dcb6b29fa46cd10))
+
 ## [17.0.0](https://github.com/cisstech/nge/compare/v16.0.1...v17.0.0) (2023-12-09)
 
 
