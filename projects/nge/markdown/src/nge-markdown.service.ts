@@ -18,7 +18,7 @@ export class NgeMarkdownService {
   constructor(
     @Optional()
     @Inject(NGE_MARKDOWN_CONFIG)
-    private readonly config: NgeMarkdownConfig,
+    readonly config: NgeMarkdownConfig,
     private readonly resourceLoader: ResourceLoaderService
   ) {
     this.config = config || {};

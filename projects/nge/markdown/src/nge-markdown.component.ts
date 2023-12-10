@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -32,9 +33,11 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
   private readonly http = inject(HttpClient, { optional: true })
   private readonly markdownService = inject(NgeMarkdownService)
   private readonly resourceLoader = inject(ResourceLoaderService)
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
   private readonly themes = inject(NGE_MARKDOWN_THEMES, { optional: true }) as unknown as NgeMarkdownTheme[]
   private readonly contributions = inject(NGE_MARKDOWN_CONTRIBUTION, { optional: true }) as unknown  as NgeMarkdownContribution[]
 
+  private isDark = false;
 
   /** Link to a markdown file to render. */
   @Input() file?: string;
@@ -43,11 +46,16 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
   @Input() data?: string;
 
   /** Theme to apply to the markdown content. */
-  @Input() theme: string = 'github'
+  @Input() theme?: string | null = 'github'
 
   @HostBinding('class')
   get klass() {
-    return `nge-markdown-theme--${this.theme}`;
+    if (!this.theme) return ''
+    const classeNames = [`nge-markdown-theme--${this.theme}`]
+    if (this.isDark) {
+      classeNames.push(`nge-markdown-theme--${this.theme}--dark`)
+    }
+    return classeNames.join(' ')
   }
 
   /**
@@ -94,7 +102,8 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
       isHtmlString,
       contributions: this.contributions,
     });
-   this.render.emit(tokens);
+    this.render.emit(tokens);
+    this.changeDetectorRef.markForCheck()
   }
 
   private async checkTheme(): Promise<void> {
@@ -107,6 +116,14 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
           ])
         ).catch()
       }
+    }
+
+    const { darkThemeClassName } = this.markdownService.config;
+    if (darkThemeClassName) {
+      // TODO: support angular universal
+      this.isDark = document.querySelector(
+        darkThemeClassName.startsWith('.') ? darkThemeClassName : `.${darkThemeClassName}`
+      ) != null;
     }
   }
 }
