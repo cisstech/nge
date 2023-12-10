@@ -36,12 +36,19 @@ export const NGE_MARKDOWN_THEMES = new InjectionToken<NgeMarkdownTheme>(
 );
 
 export const NgeMarkdownConfigProvider = (
-  config: NgeMarkdownConfig
-): Provider => ({
+  config: NgeMarkdownConfig | (() =>  NgeMarkdownConfig)
+): Provider => typeof config === 'function'
+ ? ({
   provide: NGE_MARKDOWN_CONFIG,
+
+  useFactory: config,
+}) : ({
+  provide: NGE_MARKDOWN_CONFIG,
+
   useValue: config,
 });
 
+//  darkThemeClassName: 'dark-theme',
 
 export const NgeMarkdownThemeProvider = (
   ...themes: NgeMarkdownTheme[]
