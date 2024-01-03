@@ -4,12 +4,12 @@
   </div>
   <ng-container *ngIf="state.meta.backUrl">
     <a class="action" aria-label="Back" [routerLink]="state.meta.backUrl">
-      <img src="https://icongr.am/octicons/home.svg?size=24&color=currentColor">
+      <img [src]="state.meta.backIconUrl ?? 'https://icongr.am/octicons/home.svg?size=24&color=currentColor'">
     </a>
   </ng-container>
   <ng-container *ngIf="state.meta.backUrlHref">
     <a class="action" aria-label="Back" [href]="state.meta.backUrlHref">
-      <img src="https://icongr.am/octicons/home.svg?size=24&color=currentColor">
+      <img [src]="state.meta.backIconUrl ?? 'https://icongr.am/octicons/home.svg?size=24&color=currentColor'">
     </a>
   </ng-container>
   <div class="spacer"></div>

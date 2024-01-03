@@ -57,6 +57,9 @@ export interface NgeDocMeta {
   /** Optional back url (use of Angular [routerLink]) */
   backUrl?: string;
 
+  /** Optional url for the back button icon */
+  backIconUrl?: string
+
   /** Optional back href */
   backUrlHref?: string
 
