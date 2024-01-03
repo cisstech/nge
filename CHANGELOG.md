@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.2.0](https://github.com/cisstech/nge/compare/v17.1.0...v17.2.0) (2024-01-03)
+
+
+### Features
+
+* **doc:** add backIconUrl config ([26cdcd4](https://github.com/cisstech/nge/commit/26cdcd4489a9177000a51503b37d694811e11f07))
+* **nge-doc:** add backUrlHref config ([4db2cb6](https://github.com/cisstech/nge/commit/4db2cb643509d42a9287981d97c89e8584b389e3))
+* **services:** add useDocumentBaseURI config on resource loader ([f41f0c4](https://github.com/cisstech/nge/commit/f41f0c47a18fc346a7c27fc94a8681ddd5126e65))
+
 ## [17.1.0](https://github.com/cisstech/nge/compare/v17.0.0...v17.1.0) (2023-12-10)
 
 
