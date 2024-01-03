@@ -54,8 +54,12 @@ export interface NgeDocMeta {
   root: string;
   /** Url to the logo to the documentation logo. */
   logo?: string;
-  /** Optional back url */
+  /** Optional back url (use of Angular [routerLink]) */
   backUrl?: string;
+
+  /** Optional back href */
+  backUrlHref?: string
+
   /** Optional informations about a github repository linked to the site */
   repo?: {
     /** Url of the repository */
