@@ -29,7 +29,6 @@ import {
 // MODULE
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ResourceLoaderConfig } from '@cisstech/nge/services';
 
 export function markdownOptions(): NgeMarkdownConfig {
   return {
@@ -58,7 +57,6 @@ export function markdownOptions(): NgeMarkdownConfig {
     BrowserAnimationsModule,
   ],
   providers: [
-    { provide: ResourceLoaderConfig, useValue: { useDocumentBaseURI: true }},
     NgeMarkdownConfigProvider(markdownOptions),
     NgeMarkdownThemeProvider({
       name: 'github',

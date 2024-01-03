@@ -119,7 +119,6 @@ class LoadRequest {
 
     if (!url.startsWith(document.baseURI)) {
       url = url.startsWith('/') ? url.slice(1) : url
-      console.log('BUILD URL', document.baseURI, url)
       return document.baseURI + url
     }
 
@@ -208,3 +207,11 @@ export class ResourceLoaderService {
     });
   }
 }
+
+
+export const ResourceLoaderConfigProvider = (
+  config: typeof ResourceLoaderConfig
+): any => ({
+  provide: ResourceLoaderConfig,
+  useValue: config,
+});
