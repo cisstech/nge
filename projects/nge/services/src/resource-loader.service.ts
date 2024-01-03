@@ -1,7 +1,15 @@
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { forkJoin, from, Observable, of } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, forkJoin, from, of } from 'rxjs';
 import { concatMap, shareReplay, take } from 'rxjs/operators';
+
+export class ResourceLoaderConfig  {
+  /**
+   * If true, the document.baseURI will be used to build the url of the resource to load if the url is relative.
+   */
+  useDocumentBaseURI?: boolean
+}
+
 
 /**
  *  An array of [type, url, attributes] tuple where:
@@ -25,7 +33,8 @@ class LoadRequest {
 
   constructor(
     private readonly asset: ResourceInfo,
-    private readonly document: Document
+    private readonly document: Document,
+    private readonly config?: ResourceLoaderConfig | null
   ) {}
 
   run() {
@@ -39,7 +48,7 @@ class LoadRequest {
     return (
       this.request ??
       (this.request = new Observable<ResourceInfo>((observer) => {
-        const url = this.asset[1];
+        const url = this.buildUrl(this.asset[1]);
         const style: HTMLLinkElement = this.document.createElement('link');
         style.href = url;
         style.rel = 'stylesheet';
@@ -71,7 +80,7 @@ class LoadRequest {
     return (
       this.request ??
       (this.request = new Observable<ResourceInfo>((observer) => {
-        const url = this.asset[1];
+        const url = this.buildUrl(this.asset[1]);
         const script: HTMLScriptElement = this.document.createElement('script');
         script.src = url;
 
@@ -98,6 +107,24 @@ class LoadRequest {
       }).pipe(take(1), shareReplay(1)))
     );
   }
+
+  private buildUrl(url: string) {
+    if (!this.config?.useDocumentBaseURI) {
+      return url
+    }
+
+    if ( url.startsWith('http')) {
+      return url
+    }
+
+    if (!url.startsWith(document.baseURI)) {
+      url = url.startsWith('/') ? url.slice(1) : url
+      console.log('BUILD URL', document.baseURI, url)
+      return document.baseURI + url
+    }
+
+    return url
+  }
 }
 
 /**
@@ -107,12 +134,10 @@ class LoadRequest {
   providedIn: 'root',
 })
 export class ResourceLoaderService {
+  private readonly document = inject(DOCUMENT)
+  private readonly config = inject(ResourceLoaderConfig, { optional: true })
   private readonly requests = new Map<string, LoadRequest>();
 
-  constructor(
-    @Inject(DOCUMENT)
-    private document: any
-  ) {}
 
   waitForPendings(): Promise<void> {
     return new Promise<void>((resolve) => {
@@ -176,7 +201,7 @@ export class ResourceLoaderService {
       if (!request) {
         this.requests.set(
           url,
-          (request = new LoadRequest(asset, this.document))
+          (request = new LoadRequest(asset, this.document, this.config))
         );
       }
       return request;
