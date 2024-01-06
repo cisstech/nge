@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.4.0](https://github.com/cisstech/nge/compare/v17.3.0...v17.4.0) (2024-01-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** dialog module no longer a part of this lib
+
+### Features
+
+* **directives:** add viewport intersection ([2e7022c](https://github.com/cisstech/nge/commit/2e7022ca7a577c23c7ca08809a6704da65389388))
+* standalone pipes and directives ([3af14db](https://github.com/cisstech/nge/commit/3af14dbe8e5f015a79958686fa70b4e6d2381008))
+* **ui:** allow to pass template-ref to ui-list-item-article ([ee922b7](https://github.com/cisstech/nge/commit/ee922b79667512f42b30fe19cd9e9ba900d579a9))
+
+
+### Bug Fixes
+
+* **markdown:** initial opacity ([427b56e](https://github.com/cisstech/nge/commit/427b56ed5a29f6080e58845c9107368d55083172))
+* **services:** resource loader provider type ([4c3ba29](https://github.com/cisstech/nge/commit/4c3ba29145edd8fd9d22e7d810c2b0f7b8df40d3))
+
+
+* **ui:** drop deprecated dialog module ([1ecddf0](https://github.com/cisstech/nge/commit/1ecddf04ec15a5920b4e058bc2811139daa8ac78))
+
 ## [17.3.0](https://github.com/cisstech/nge/compare/v17.2.0...v17.3.0) (2024-01-03)
 
 
