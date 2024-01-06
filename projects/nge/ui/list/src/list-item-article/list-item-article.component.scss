@@ -62,11 +62,12 @@ article {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  gap: 4px;
 }
 
 .article-tag {
-  margin: 4px;
-  background-color: rgba(#5d7092, 1);
+  --article-tag-background-color: #5d7092;
+  background-color: var(--article-tag-background-color);
   color: rgba(0, 0, 0, 0.87);
   color: white;
   transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -75,8 +76,13 @@ article {
   padding: 0.25rem 0.5rem;
   font-weight: 400;
   align-items: center;
+
   &:hover {
-    background-color: rgba(#5d7092, 0.8);
+    opacity: .8;
+  }
+
+  .article-tag-icon {
+    margin-right: 4px;
   }
 }
 

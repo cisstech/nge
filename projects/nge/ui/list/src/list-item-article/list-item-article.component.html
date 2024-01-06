@@ -10,20 +10,51 @@
           <img *ngIf="articleIconUrl" [src]="articleIconUrl" [alt]="articleIconAlt">
         </ng-template>
       </div>
-      <h3
+      @if (articleTitle|istemplate) {
+        <h3
+        class="article-title"
+        [routerLink]="articleUrl"
+        (click)="didClickTitle.emit()">
+        <ng-container *ngTemplateOutlet="articleTitle" />
+      </h3>
+      } @else {
+      <div
         class="article-title"
         [routerLink]="articleUrl"
         (click)="didClickTitle.emit()">
         {{articleTitle}}
-      </h3>
+      </div>
+      }
     </header>
     <p class="article-description">
-      {{articleDescription}}
+      @if (articleDescription|istemplate) {
+        <ng-container *ngTemplateOutlet="articleDescription" />
+      } @else {
+        {{articleDescription}}
+      }
     </p>
-    <div class="article-tags" [class.clickable]="isTagsCliclable" *ngIf="articleTags">
-      <div class="article-tag" *ngFor="let tag of articleTags" (click)="didClickTag.emit(tag)">
-        {{tag}}
-      </div>
+    <div class="article-tags" [class.clickable]="isTagsCliclable" *ngIf="articleTags?.length">
+    @for (tag of articleTags; track $index) {
+      @if(tag|isstring) {
+       <div class="article-tag" (click)="didClickTag.emit(tag)">
+           @if (articleTagIconTemplate) {
+            <div class="article-tag-icon">
+              <ng-container *ngTemplateOutlet="articleTagIconTemplate; context: { text: tag }" />
+            </div>
+          }
+          {{tag}}
+        </div>
+      } @else {
+        <div class="article-tag" [style.--article-tag-background-color]="tag.color ?? '#5d7092'" (click)="didClickTagItem.emit(tag)">
+          @if (articleTagIconTemplate) {
+            <div class="article-tag-icon">
+              <ng-container *ngTemplateOutlet="articleTagIconTemplate; context: { text: tag.text, data: tag.data }" />
+            </div>
+          }
+          {{tag.text}}
+        </div>
+      }
+    }
     </div>
     <footer class="article-footer">
       <ng-content></ng-content>

@@ -13,7 +13,7 @@ export interface ListContext<T> {
   odd: boolean;
 }
 
-export declare type ListTemplateSlots =
+export type ListTemplateSlots =
   | 'row'
   | 'empty'
   | 'header'
@@ -27,4 +27,22 @@ export interface ListAction<T> {
   text?: string;
   when?: (item: T) => boolean;
   action: (item: T) => void | Promise<void>;
+}
+
+
+export interface ListItemTag<T = any> {
+  /**
+   * Data passed to articleTagIconTemplate as let-data if provided.
+   */
+  data?: T
+
+  /**
+   * The text to display in the tag. Also passed to articleTagIconTemplate as let-text if defined
+   */
+  text: string;
+
+  /**
+   * Optionnal background color of the tag
+   */
+  color?: string;
 }
