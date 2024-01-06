@@ -9,6 +9,7 @@ import {
   HostBinding,
   Input,
   OnChanges,
+  OnInit,
   Output,
   inject
 } from '@angular/core';
@@ -28,7 +29,7 @@ import { NgeMarkdownService } from './nge-markdown.service';
   styleUrls: ['nge-markdown.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
+export class NgeMarkdownComponent implements OnInit, OnChanges, AfterViewInit {
   private readonly el: ElementRef<HTMLElement> = inject(ElementRef)
   private readonly http = inject(HttpClient, { optional: true })
   private readonly markdownService = inject(NgeMarkdownService)
@@ -68,6 +69,10 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
     this.themes = this.themes || []
   }
 
+  ngOnInit(): void {
+    this.el.nativeElement.style.opacity = '0';
+  }
+
   async ngOnChanges(): Promise<void> {
     await this.checkTheme()
     this.file
@@ -78,7 +83,6 @@ export class NgeMarkdownComponent implements OnChanges, AfterViewInit {
 
   async ngAfterViewInit(): Promise<void> {
     await this.checkTheme()
-    this.el.nativeElement.style.opacity = '0';
     if (!this.file && !this.data) {
       await this.renderFromString(this.el.nativeElement.innerHTML, true);
     }
