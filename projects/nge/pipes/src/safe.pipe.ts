@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 @Pipe({
   name: 'safe',
+  standalone: true,
 })
 export class SafePipe implements PipeTransform {
   constructor(private readonly sanitiner: DomSanitizer) {}
@@ -29,8 +30,12 @@ export class SafePipe implements PipeTransform {
   }
 }
 
+
+/**
+ * @deprecated in favor of standalone api, so please use direclty the pipe as a standalone. Will be removed in/after v18
+ */
 @NgModule({
-  declarations: [SafePipe],
+  imports: [SafePipe],
   exports: [SafePipe],
 })
 export class SafePipeModule {}

@@ -1,6 +1,6 @@
 import { Directive, EventEmitter, HostListener, Input, NgModule, Output } from '@angular/core';
 
-@Directive({ selector: '[long-press-detector]' })
+@Directive({ selector: '[long-press-detector]', standalone: true })
 export class LongPressDetectorDirective {
   @Input() longPressDuration = 400;
   @Output() longPress = new EventEmitter<MouseEvent | TouchEvent>();
@@ -37,8 +37,11 @@ export class LongPressDetectorDirective {
   }
 }
 
+/**
+ * @deprecated in favor of standalone api, so please use direclty the directive as a standalone. Will be removed in/after v18
+ */
 @NgModule({
-  declarations: [LongPressDetectorDirective],
+  imports: [LongPressDetectorDirective],
   exports: [LongPressDetectorDirective]
 })
 export class LongPressDetectorDirectiveModule { }

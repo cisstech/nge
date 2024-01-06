@@ -2,7 +2,8 @@ import { Directive, ElementRef, EventEmitter, HostListener, NgModule, Output } f
 
 @Directive({
   selector: '[touch-detector]',
-  exportAs: 'touch-detector'
+  exportAs: 'touch-detector',
+  standalone: true,
 })
 export class TouchDetectorDirective {
   private _hover = false;
@@ -38,8 +39,11 @@ export class TouchDetectorDirective {
   }
 }
 
+/**
+ * @deprecated in favor of standalone api, so please use direclty the directive as a standalone. Will be removed in/after v18
+ */
 @NgModule({
-  declarations: [TouchDetectorDirective],
+  imports: [TouchDetectorDirective],
   exports: [TouchDetectorDirective]
 })
 export class TouchDetectorDirectiveModule { }

@@ -5,6 +5,7 @@ import { NgModule, Pipe, PipeTransform } from '@angular/core';
  */
 @Pipe({
   name: 'icongr',
+  standalone: true,
 })
 export class IconGrPipe implements PipeTransform {
   transform(value: any): any {
@@ -24,8 +25,12 @@ export class IconGrPipe implements PipeTransform {
   }
 }
 
+
+/**
+ * @deprecated in favor of standalone api, so please use direclty the pipe as a standalone. Will be removed in/after v18
+ */
 @NgModule({
-  declarations: [IconGrPipe],
+  imports: [IconGrPipe],
   exports: [IconGrPipe],
 })
 export class IconGrPipeModule {}
