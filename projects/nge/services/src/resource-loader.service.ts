@@ -210,7 +210,7 @@ export class ResourceLoaderService {
 
 
 export const ResourceLoaderConfigProvider = (
-  config: typeof ResourceLoaderConfig
+  config: Partial<ResourceLoaderConfig>
 ): any => ({
   provide: ResourceLoaderConfig,
   useValue: config,
