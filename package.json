@@ -70,7 +70,7 @@
     "@angular/cli": "^17.0.6",
     "@angular/compiler-cli": "^17.0.6",
     "@commitlint/cli": "^17.7.1",
-    "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/config-conventional": "^18.4.4",
     "@types/jasmine": "^4.3.5",
     "@types/jasminewd2": "^2.0.10",
     "@types/marked": "^4.0.1",
