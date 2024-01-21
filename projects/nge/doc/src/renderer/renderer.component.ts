@@ -27,7 +27,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   @ViewChild('container', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
 
-  loading = true;
+  loading = false;
   component?: ComponentRef<any>;
 
   get notFound(): boolean {
@@ -39,7 +39,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     private readonly docService: NgeDocService,
     private readonly compilerService: CompilerService,
     private readonly changeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -55,6 +55,8 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private async onChangeState(state: NgeDocState): Promise<void> {
     try {
       this.clearViewContainer();
+
+      this.showLoading();
 
       let component: ComponentRef<any> | undefined;
       if (state.currLink) {
@@ -72,7 +74,6 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
             break;
         }
       }
-
       this.component = component;
     } catch (error) {
       console.error(error);
@@ -80,6 +81,19 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
       this.loading = false;
       this.changeDetectorRef.markForCheck();
     }
+  }
+
+  private showLoading(): void {
+    this.loading = true;
+
+    // if loading is still true after 1s then we force change detection
+    // This is useful to show the loading indicator only if the loading is not too fast
+    // so that the loading indicator does not blink.
+    setTimeout(() => {
+      if (this.loading) {
+        this.changeDetectorRef.markForCheck();
+      }
+    }, 1000);
   }
 
   private async rendererMarkdown(data: string): Promise<ComponentRef<any>> {
@@ -132,9 +146,5 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     this.component?.destroy();
     this.component = undefined;
     this.container.clear();
-    this.loading = true;
-
-    this.changeDetectorRef.markForCheck();
-
   }
 }

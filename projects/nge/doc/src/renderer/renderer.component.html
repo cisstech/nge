@@ -1,9 +1,10 @@
-<div class="lds-ripple" *ngIf="loading">
-  <div></div><div></div>
+<div class="loading-container" *ngIf="loading">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Loading...</div>
 </div>
 <div *ngIf="notFound">
   <h1>Ooops!</h1>
-  <hr>
+  <hr />
   <p>It looks like this page doesn't exist.</p>
 </div>
 <div #container></div>
