@@ -62,14 +62,12 @@ export class NgeElementService {
           );
         }
 
-        const component = await this.compiler.resolveComponent(
+        const { component, injector } = await this.compiler.resolveComponent(
           type,
           this.injector
         );
 
-        const customElement = createCustomElement(component, {
-          injector: this.injector,
-        });
+        const customElement = createCustomElement(component, { injector });
 
         customElements.define(selector, customElement);
         await customElements.whenDefined(selector);

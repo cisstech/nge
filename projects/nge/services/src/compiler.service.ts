@@ -13,7 +13,7 @@ export class CompilerService {
   private readonly modules: ModuleInfo[] = [];
 
   async render(options: RendererOptions): Promise<ComponentRef<any>> {
-    const component = await this.resolveComponent(options.type, options.container.injector);
+    const { component } = await this.resolveComponent(options.type, options.container.injector);
     return await this.renderComponent(
       options.inputs,
       options.container.createComponent(component, {
@@ -23,7 +23,7 @@ export class CompilerService {
     );
   }
 
-  async resolveComponent(type: Type<any>, injector: Injector): Promise<Type<any>> {
+  async resolveComponent(type: Type<any>, injector: Injector) {
     // https://blog.ninja-squad.com/2019/05/07/what-is-angular-ivy/
     // https://juristr.com/blog/2019/10/lazyload-module-ivy-viewengine
 
@@ -34,12 +34,17 @@ export class CompilerService {
     }
 
     let component: Type<any> = type;
+    let componentInjector = injector;
     if ('ɵmod' in type) {
       const module = await this.resolveModuleInfo(type, injector);
+      componentInjector = module.injector;
       component = module.instance.component;
     }
 
-    return component;
+    return {
+      component,
+      injector: componentInjector
+    };
   }
 
   private async renderComponent(inputs: any, componentRef: ComponentRef<any>): Promise<ComponentRef<any>> {
@@ -81,7 +86,7 @@ export class CompilerService {
 }
 
 export interface RendererOptions {
-  type: Type<any> ;
+  type: Type<any>;
   inputs?: any;
   container: ViewContainerRef;
 }
