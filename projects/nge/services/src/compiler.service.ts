@@ -14,7 +14,7 @@ export class CompilerService {
 
   async render(options: RendererOptions): Promise<ComponentRef<any>> {
     const component = await this.resolveComponent(options.type, options.container.injector);
-    return this.renderComponent(
+    return await this.renderComponent(
       options.inputs,
       options.container.createComponent(component, {
         index: 0,
@@ -23,7 +23,7 @@ export class CompilerService {
     );
   }
 
-  async resolveComponent(type: Type<any>, injector: Injector) {
+  async resolveComponent(type: Type<any>, injector: Injector): Promise<Type<any>> {
     // https://blog.ninja-squad.com/2019/05/07/what-is-angular-ivy/
     // https://juristr.com/blog/2019/10/lazyload-module-ivy-viewengine
 
@@ -42,7 +42,7 @@ export class CompilerService {
     return component;
   }
 
-  private renderComponent(inputs: any, componentRef: ComponentRef<any>) {
+  private async renderComponent(inputs: any, componentRef: ComponentRef<any>): Promise<ComponentRef<any>> {
     if (inputs) {
       Object.keys(inputs).forEach((k) => {
         componentRef.instance[k] = inputs[k];
@@ -50,7 +50,7 @@ export class CompilerService {
     }
 
     if (componentRef.instance.ngOnChanges) {
-      componentRef.instance.ngOnChanges();
+      await componentRef.instance.ngOnChanges();
     }
 
     componentRef.changeDetectorRef.markForCheck();

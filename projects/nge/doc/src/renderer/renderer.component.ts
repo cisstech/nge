@@ -1,19 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {
-  Component,
+  ChangeDetectionStrategy, ChangeDetectorRef, Component,
   ComponentRef,
   Injector,
   OnDestroy,
   OnInit,
   Type,
   ViewChild,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
-import { lastValueFrom, Subscription } from 'rxjs';
-import { NgeDocState, NGE_DOC_RENDERERS } from '../nge-doc';
-import { NgeDocService } from '../nge-doc.service';
 import { CompilerService } from '@cisstech/nge/services';
+import { Subscription, firstValueFrom } from 'rxjs';
+import { NGE_DOC_RENDERERS, NgeDocState } from '../nge-doc';
+import { NgeDocService } from '../nge-doc.service';
 
 @Component({
   selector: 'nge-doc-renderer',
@@ -28,7 +27,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   @ViewChild('container', { read: ViewContainerRef, static: true })
   container!: ViewContainerRef;
 
-  loading = false;
+  loading = true;
   component?: ComponentRef<any>;
 
   get notFound(): boolean {
@@ -54,9 +53,9 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   }
 
   private async onChangeState(state: NgeDocState): Promise<void> {
-    this.clearViewContainer();
     try {
-      this.changeDetectorRef.markForCheck();
+      this.clearViewContainer();
+
       let component: ComponentRef<any> | undefined;
       if (state.currLink) {
         const renderer = await state.currLink.renderer;
@@ -104,7 +103,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
       }
 
       inputs = {
-        data: await lastValueFrom(http.get(data, { responseType: 'text' })),
+        data: await firstValueFrom(http.get(data, { responseType: 'text' })),
       };
     }
 
@@ -119,7 +118,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
       this.markdownRenderer = await renderer.component();
     }
 
-    return await this.compilerService.render({
+    return this.compilerService.render({
       inputs: {
         ...customInputs,
         ...inputs,
@@ -134,6 +133,8 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     this.component = undefined;
     this.container.clear();
     this.loading = true;
+
     this.changeDetectorRef.markForCheck();
+
   }
 }

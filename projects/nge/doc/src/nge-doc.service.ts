@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, skip } from 'rxjs/operators';
 import { NgeDocLink, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc';
 
 @Injectable()
@@ -32,7 +32,9 @@ export class NgeDocService implements OnDestroy {
 
   /** documentation state */
   get stateChanges() {
-    return this.state.asObservable();
+    return this.state.pipe(
+      skip(1) // skip initial state
+    )
   }
 
   constructor(
