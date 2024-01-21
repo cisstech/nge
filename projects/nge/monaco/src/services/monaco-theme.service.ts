@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgeMonacoContribution } from '../contributions/monaco-contribution';
-import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../monaco-config';
+import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../monaco-config';
 
 @Injectable({ providedIn: 'root' })
 export class NgeMonacoThemeService implements NgeMonacoContribution {
@@ -21,7 +21,7 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
     @Optional()
     @Inject(NGE_MONACO_CONFIG)
     private readonly config: NgeMonacoConfig
-  ) {}
+  ) { }
 
   /**
    * Gets the current active theme of monaco editor (undefined if monaco editor is not loaded).
@@ -49,8 +49,11 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
     );
   }
 
-  async activate() {
+  async activate(): Promise<void> {
+    this.decorateCreateEditorAPI();
+
     const node = document.createElement('div');
+
     const editor = monaco.editor.create(node);
     this.themeService = (editor as any)._themeService;
     setTimeout(() => editor.dispose());
@@ -58,6 +61,7 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
     this.retrieveThemes();
 
     await this.setTheme(this.config?.theming?.default || 'vs');
+    node.remove()
   }
 
   /**
@@ -65,7 +69,7 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
    * @param themeName The new theme to use.
    *
    */
-  async setTheme(themeName: string) {
+  async setTheme(themeName: string): Promise<void> {
     await this.defineTheme(themeName);
     monaco.editor.setTheme(themeName);
     this.activeTheme.next(this.themeService.getColorTheme());
@@ -76,31 +80,22 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
    * @param themeName The theme to get.
    * @returns A promise that resolves with the theme info.
    */
-  async getTheme(themeName: string) {
+  async getTheme(themeName: string): Promise<NgeMonacoTheme> {
     await this.defineTheme(themeName);
     return this.themeService._knownThemes.get(themeName);
   }
 
-  private retrieveThemes() {
-    const themes: string[] = [];
-    this.themeService._knownThemes.forEach((theme: any) => {
-      themes.push(theme.themeName);
-    });
-    const customThemes: string[] = (this.config?.theming?.themes || []).map(
-      this.themeNameFromPath.bind(this)
-    );
-    this.themes.next(themes.concat(customThemes));
-  }
-
-  private themeNameFromPath(path: string) {
-    const name = path.split('/').pop();
-    if (!name) {
-      throw new Error(`[nge-monaco]: invalid theme path "${path}"`);
-    }
-    return name.replace('.json', '');
-  }
-
-  private async defineTheme(themeName: string) {
+  /**
+   * Defines a theme for the Monaco editor.
+   * @remarks
+   * - If the theme is already defined, this method does nothing.
+   * @param themeName - The name of the theme to define.
+   * @throws {ReferenceError} If the themeName argument is not provided.
+   * @throws {Error} If the specified theme is missing.
+   * @throws {Error} If HttpClientModule is missing in AppModule.
+   * @returns A Promise that resolves when the theme is defined successfully.
+   */
+  async defineTheme(themeName: string): Promise<void> {
     if (!themeName) {
       throw new ReferenceError('Argument "themeName" is required');
     }
@@ -125,7 +120,7 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
     }
 
     try {
-      const theme = await lastValueFrom(this.http.get<any>(customThemePath));
+      const theme = await firstValueFrom(this.http.get<any>(customThemePath));
       monaco.editor.defineTheme(themeName, {
         base: theme.base,
         inherit: theme.inherit,
@@ -138,6 +133,49 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
         error
       );
     }
+  }
+
+  private retrieveThemes(): void {
+    const themes: string[] = [];
+    this.themeService._knownThemes.forEach((theme: any) => {
+      themes.push(theme.themeName);
+    });
+    const customThemes: string[] = (this.config?.theming?.themes || []).map(
+      this.themeNameFromPath.bind(this)
+    );
+    this.themes.next(themes.concat(customThemes));
+  }
+
+  private themeNameFromPath(path: string): string {
+    const name = path.split('/').pop();
+    if (!name) {
+      throw new Error(`[nge-monaco]: invalid theme path "${path}"`);
+    }
+    return name.replace('.json', '');
+  }
+
+
+  private decorateCreateEditorAPI(): void {
+    const createEditor = monaco.editor.create;
+    monaco.editor.create = (
+      element: HTMLElement,
+      options?: monaco.editor.IStandaloneEditorConstructionOptions | undefined,
+      override?: monaco.editor.IEditorOverrideServices | undefined
+    ) => {
+      const editor = createEditor.call(monaco.editor, element, options, override);
+      const updateOptions = editor.updateOptions;
+      editor.updateOptions = (newOptions: monaco.editor.IStandaloneEditorConstructionOptions) => {
+        updateOptions.call(editor, newOptions);
+        if (newOptions.theme) {
+          this.setTheme(newOptions.theme).catch(console.error);
+        }
+      };
+
+      if (options?.theme) {
+        this.setTheme(options.theme).catch(console.error);
+      }
+      return editor;
+    };
   }
 }
 

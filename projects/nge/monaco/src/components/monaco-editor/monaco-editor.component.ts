@@ -44,18 +44,13 @@ export class NgeMonacoEditorComponent
     private readonly config: NgeMonacoConfig
   ) {}
 
-  @HostListener('window:resize')
-  onResizeWindow() {
-    this.editor?.layout();
-  }
-
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.loader.loadAsync().then(() => {
       this.createEditor();
     });
   }
 
-  ngAfterViewChecked() {
+  ngAfterViewChecked(): void {
     if (!this.autoLayout) {
       return;
     }
@@ -67,11 +62,16 @@ export class NgeMonacoEditorComponent
     }
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.editor?.dispose();
   }
 
-  private createEditor() {
+  @HostListener('window:resize')
+  protected onResizeWindow(): void {
+    this.editor?.layout();
+  }
+
+  private createEditor(): void {
     this.editor = monaco.editor.create(this.container.nativeElement, {
       ...(this.config.options || {}),
       ...(this.options || {}),

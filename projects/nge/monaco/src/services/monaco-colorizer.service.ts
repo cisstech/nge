@@ -10,6 +10,11 @@ export class NgeMonacoColorizerService {
   ) {}
 
   async colorizeElement(options: NgeMonacoColorizeOptions) {
+    await this.loader.loadAsync();
+    if (options.theme) {
+      await this.theming.defineTheme(options.theme);
+    }
+
     const { element } = options;
 
     element.innerHTML = this.escapeHtml(options.code || '');
@@ -25,9 +30,8 @@ export class NgeMonacoColorizerService {
         pre.classList.add('monaco-editor-background');
       }
     }
-    element.className = '';
 
-    await this.loader.loadAsync();
+    element.className = '';
 
     const languages = monaco.languages.getLanguages();
     const language = languages.find((e) => {
@@ -39,14 +43,14 @@ export class NgeMonacoColorizerService {
 
     await monaco.editor.colorizeElement(element, {
       mimeType: language || 'plaintext',
-      theme:options.theme|| this.theming.theme?.themeName || 'vs',
+      theme: options.theme || this.theming.theme?.themeName || 'vs',
     });
 
     this.highlightLines(options);
     this.showLineNumbers(options);
   }
 
-  private escapeHtml(input: string) {
+  private escapeHtml(input: string): string {
     const map: any = {
       '<': '&lt;',
       '>': '&gt;',
@@ -54,7 +58,7 @@ export class NgeMonacoColorizerService {
     return input.replace(/[<>]/g, (tag) => map[tag] || tag);
   }
 
-  private highlightLines(options: NgeMonacoColorizeOptions) {
+  private highlightLines(options: NgeMonacoColorizeOptions): void {
     if (!options.highlights) {
       return;
     }
@@ -90,7 +94,7 @@ export class NgeMonacoColorizerService {
     );
   }
 
-  private showLineNumbers(options: NgeMonacoColorizeOptions) {
+  private showLineNumbers(options: NgeMonacoColorizeOptions): void {
     if (!options.lines) {
       return;
     }

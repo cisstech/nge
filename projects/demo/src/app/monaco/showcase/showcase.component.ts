@@ -14,8 +14,8 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
   private originalModel?: monaco.editor.ITextModel | null;
   private modifiedModel?: monaco.editor.ITextModel | null;
 
-  themes = this.theming.themesChanges;
-  theme?: NgeMonacoTheme;
+  protected theme?: NgeMonacoTheme;
+  protected themes = this.theming.themesChanges;
 
   constructor(private readonly theming: NgeMonacoThemeService) {}
 
@@ -75,6 +75,6 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
   }
 
   async switchTheme(theme: string) {
-    this.theming.setTheme(theme);
+   this.theming.setTheme(theme);
   }
 }

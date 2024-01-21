@@ -48,13 +48,13 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
     this.colorize(code);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.editor?.dispose();
     this.observer?.disconnect();
     this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
-  private async colorize(code: string) {
+  private async colorize(code: string): Promise<void> {
     await this.colorizer.colorizeElement({
       code: code || '',
       theme: this.theme,
