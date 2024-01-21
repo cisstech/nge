@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.5.0](https://github.com/cisstech/nge/compare/v17.4.0...v17.5.0) (2024-01-21)
+
+
+### Features
+
+* **elements:** load from component ([d0ca83d](https://github.com/cisstech/nge/commit/d0ca83d2a501fab557d87076702978436897d942))
+* **monaco:** dynamic theme loading ([2f4f184](https://github.com/cisstech/nge/commit/2f4f184c7f027e525dd02e87428a0fefa9249b50))
+
+
+### Bug Fixes
+
+* **doc:** initial render run twice ([eb1b9f9](https://github.com/cisstech/nge/commit/eb1b9f99f48f75d2702bd778856cbc979d435994))
+* **markdown:** emoji contribution slow down rendering ([e60a0d2](https://github.com/cisstech/nge/commit/e60a0d2a19ac7a793251dd5af4c15f1ccfec63b8))
+
 ## [17.4.0](https://github.com/cisstech/nge/compare/v17.3.0...v17.4.0) (2024-01-06)
 
 
