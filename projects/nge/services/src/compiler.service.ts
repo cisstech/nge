@@ -1,6 +1,6 @@
 import {
   ComponentRef,
-  createNgModuleRef,
+  createNgModule,
   Injectable,
   Injector,
   NgModuleRef,
@@ -13,24 +13,7 @@ export class CompilerService {
   private readonly modules: ModuleInfo[] = [];
 
   async render(options: RendererOptions): Promise<ComponentRef<any>> {
-    // https://blog.ninja-squad.com/2019/05/07/what-is-angular-ivy/
-    // https://juristr.com/blog/2019/10/lazyload-module-ivy-viewengine
-
-    if (!('ɵmod' in options.type) && !('ɵcmp' in options.type)) {
-      throw new Error(
-        `[render]: type "${options.type.name}" does not refers to a Component or a NgModule`
-      );
-    }
-
-    let component: Type<any> = options.type;
-    if ('ɵmod' in options.type) {
-      const module = await this.resolveModuleInfo(
-        options.type,
-        options.container.injector
-      );
-      component = module.instance.component;
-    }
-
+    const component = await this.resolveComponent(options.type, options.container.injector);
     return this.renderComponent(
       options.inputs,
       options.container.createComponent(component, {
@@ -38,6 +21,25 @@ export class CompilerService {
         injector: options.container.injector,
       })
     );
+  }
+
+  async resolveComponent(type: Type<any>, injector: Injector) {
+    // https://blog.ninja-squad.com/2019/05/07/what-is-angular-ivy/
+    // https://juristr.com/blog/2019/10/lazyload-module-ivy-viewengine
+
+    if (!('ɵmod' in type) && !('ɵcmp' in type)) {
+      throw new Error(
+        `[render]: type "${type.name}" does not refers to a Component or a NgModule`
+      );
+    }
+
+    let component: Type<any> = type;
+    if ('ɵmod' in type) {
+      const module = await this.resolveModuleInfo(type, injector);
+      component = module.instance.component;
+    }
+
+    return component;
   }
 
   private renderComponent(inputs: any, componentRef: ComponentRef<any>) {
@@ -64,7 +66,7 @@ export class CompilerService {
       return moduleInfo.module;
     }
 
-    const module: NgModuleRef<IDynamicModule> = createNgModuleRef(
+    const module: NgModuleRef<IDynamicModule> = createNgModule(
       type,
       injector
     );
