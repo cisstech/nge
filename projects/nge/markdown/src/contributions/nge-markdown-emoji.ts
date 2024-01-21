@@ -34,7 +34,7 @@ export class NgeMarkdownEmoji implements NgeMarkdownContribution {
     this.options = options || {};
     this.options.url =
       this.options.url ||
-      'https://cdn.jsdelivr.net/npm/emoji-toolkit@6.0.1/lib/js/joypixels.min.js';
+      'https://cdn.jsdelivr.net/npm/emoji-toolkit@8.0.0/lib/js/joypixels.min.js';
   }
 
   dependencies() {
@@ -59,7 +59,9 @@ export class NgeMarkdownEmoji implements NgeMarkdownContribution {
         if (insideCodeBlock) {
           continue;
         }
-        lines[i] = joypixels.shortnameToUnicode(lines[i]);
+        if (lines[i].match(/:[a-z0-9_+-]+:/g)) {
+          lines[i] = joypixels.shortnameToUnicode(lines[i]);
+        }
       }
       return lines.join('\n');
     });
