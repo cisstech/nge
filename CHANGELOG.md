@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.5.1](https://github.com/cisstech/nge/compare/v17.5.0...v17.5.1) (2024-01-21)
+
+
+### Bug Fixes
+
+* **elements:** use module injector ([b0ca2a3](https://github.com/cisstech/nge/commit/b0ca2a315beffcbb7bef158b9657d13a59d24ca1))
+
 ## [17.5.0](https://github.com/cisstech/nge/compare/v17.4.0...v17.5.0) (2024-01-21)
 
 
