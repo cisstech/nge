@@ -1,6 +1,7 @@
 import {
   AfterViewChecked,
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
@@ -12,26 +13,25 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../../monaco-config';
+import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../../monaco-config';
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service';
 
 @Component({
   selector: 'nge-monaco-editor',
   templateUrl: './monaco-editor.component.html',
   styleUrls: ['./monaco-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgeMonacoEditorComponent
   implements AfterViewInit, AfterViewChecked, OnDestroy
 {
+  protected loading = true;
   @ViewChild('container', { static: true })
-  container!: ElementRef<HTMLElement>;
+  protected container!: ElementRef<HTMLElement>;
 
-  @Output()
-  ready = new EventEmitter<monaco.editor.IEditor>();
-
+  @Output() ready = new EventEmitter<monaco.editor.IEditor>();
   @Input() autoLayout = true;
-  @Input()
-  options?: monaco.editor.IStandaloneEditorConstructionOptions;
+  @Input() options?: monaco.editor.IStandaloneEditorConstructionOptions;
 
   private editor?: monaco.editor.IStandaloneCodeEditor;
   private width = 0;
@@ -76,6 +76,7 @@ export class NgeMonacoEditorComponent
       ...(this.config.options || {}),
       ...(this.options || {}),
     });
+    this.loading = false;
     this.ready.emit(this.editor);
   }
 }

@@ -7,6 +7,7 @@ import { NGE_MONACO_CONTRIBUTION } from './contributions/monaco-contribution';
 import { PreventSymbolDuplication } from './contributions/prevent-symbol-duplication';
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from './monaco-config';
 import { NgeMonacoThemeService } from './services/monaco-theme.service';
+import { NgeMonacoPlaceholderComponent } from './components/monaco-placeholder/monaco-placeholder.component';
 
 @NgModule({
   imports: [CommonModule],
@@ -19,6 +20,7 @@ import { NgeMonacoThemeService } from './services/monaco-theme.service';
     NgeMonacoEditorComponent,
     NgeMonacoDiffEditorComponent,
     NgeMonacoViewerComponent,
+    NgeMonacoPlaceholderComponent,
   ],
 })
 export class NgeMonacoModule {

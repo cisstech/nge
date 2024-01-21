@@ -1,11 +1,13 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   OnChanges,
   OnDestroy,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { NgeMonacoColorizerService } from '../../services/monaco-colorizer.service';
 import { Subscription } from 'rxjs';
@@ -17,6 +19,15 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
+  private readonly colorizer = inject(NgeMonacoColorizerService)
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
+
+  private editor?: monaco.editor.IEditor;
+  private observer?: MutationObserver;
+  private subscriptions: Subscription[] = [];
+
+  protected loading = true
+
   @ViewChild('container', { static: true }) container!: ElementRef<HTMLElement>;
   @ViewChild('transclusion', { static: true })
   transclusion!: ElementRef<HTMLElement>;
@@ -36,11 +47,6 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   /** space separated list of line numbers to highlight */
   @Input() highlights?: string | number;
 
-  private editor?: monaco.editor.IEditor;
-  private observer?: MutationObserver;
-  private subscriptions: Subscription[] = [];
-
-  constructor(private readonly colorizer: NgeMonacoColorizerService) {}
 
   ngOnChanges(): void {
     const code =
@@ -55,13 +61,18 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   }
 
   private async colorize(code: string): Promise<void> {
-    await this.colorizer.colorizeElement({
-      code: code || '',
-      theme: this.theme,
-      lines: this.lines,
-      language: this.language,
-      highlights: this.highlights,
-      element: this.container.nativeElement,
-    });
+    try {
+      await this.colorizer.colorizeElement({
+        code: code || '',
+        theme: this.theme,
+        lines: this.lines,
+        language: this.language,
+        highlights: this.highlights,
+        element: this.container.nativeElement,
+      });
+    } finally {
+      this.loading = false
+      this.changeDetectorRef.markForCheck()
+    }
   }
 }
