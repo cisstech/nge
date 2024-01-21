@@ -1,15 +1,13 @@
 import {
-  createNgModuleRef,
   Inject,
   Injectable,
   Injector,
-  NgModuleRef,
-  Optional,
+  Optional
 } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import { IDynamicModule } from '@cisstech/nge/services';
-import { from, Observable } from 'rxjs';
-import { NgeElementDef, NGE_ELEMENTS } from './nge-element';
+import { CompilerService } from '@cisstech/nge/services';
+import { Observable, from } from 'rxjs';
+import { NGE_ELEMENTS, NgeElementDef } from './nge-element';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +19,7 @@ export class NgeElementService {
 
   constructor(
     private readonly injector: Injector,
+    private readonly compiler: CompilerService,
     @Optional()
     @Inject(NGE_ELEMENTS)
     elements: NgeElementDef[]
@@ -30,7 +29,7 @@ export class NgeElementService {
     });
   }
 
-  listUnloadeds() {
+  listUnloadeds(): string[] {
     return Array.from(this.registry.keys()).filter(
       (s) => !this.defineds.has(s)
     );
@@ -56,14 +55,22 @@ export class NgeElementService {
 
     const promise = new Promise<void>(async (resolve, reject) => {
       try {
-        const module: NgModuleRef<IDynamicModule> = createNgModuleRef(
-          await definition.module(),
+        const type = definition.module ? await definition.module() : definition.component ? await definition.component() : null;
+        if (!type) {
+          throw new Error(
+            `No module or component found for element "${selector}`
+          );
+        }
+
+        const component = await this.compiler.resolveComponent(
+          type,
           this.injector
         );
 
-        const customElement = createCustomElement(module.instance.component, {
-          injector: module.injector,
+        const customElement = createCustomElement(component, {
+          injector: this.injector,
         });
+
         customElements.define(selector, customElement);
         await customElements.whenDefined(selector);
 
