@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.6.1](https://github.com/cisstech/nge/compare/v17.6.0...v17.6.1) (2024-01-24)
+
+
+### Bug Fixes
+
+* **doc:** should not skip initial state change ([b104ee0](https://github.com/cisstech/nge/commit/b104ee0fa714555038dab7f2c93f699200023980))
+
 ## [17.6.0](https://github.com/cisstech/nge/compare/v17.5.1...v17.6.0) (2024-01-24)
 
 
