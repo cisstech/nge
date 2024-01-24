@@ -4,6 +4,7 @@ import {
   Injectable,
   Injector,
   NgModuleRef,
+  SimpleChanges,
   Type,
   ViewContainerRef,
 } from '@angular/core';
@@ -48,17 +49,26 @@ export class CompilerService {
   }
 
   private async renderComponent(inputs: any, componentRef: ComponentRef<any>): Promise<ComponentRef<any>> {
+    const changes: SimpleChanges = {};
+    const { instance, changeDetectorRef } = componentRef;
+
     if (inputs) {
       Object.keys(inputs).forEach((k) => {
-        componentRef.instance[k] = inputs[k];
+        instance[k] = inputs[k];
+        changes[k] = {
+          currentValue: inputs[k],
+          previousValue: undefined,
+          firstChange: true,
+          isFirstChange: () => true,
+        };
       });
     }
 
-    if (componentRef.instance.ngOnChanges) {
-      await componentRef.instance.ngOnChanges();
+    if (instance.ngOnChanges) {
+      await instance.ngOnChanges(changes);
     }
 
-    componentRef.changeDetectorRef.markForCheck();
+    changeDetectorRef.markForCheck();
     return componentRef;
   }
 
