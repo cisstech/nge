@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.6.3](https://github.com/cisstech/nge/compare/v17.6.1...v17.6.3) (2024-01-24)
+
+
+### Bug Fixes
+
+* **doc:** path detection ([ff607b0](https://github.com/cisstech/nge/commit/ff607b039e29b1d0a6c11da4f6bb80709ec8cf70))
+
 ### [17.6.1](https://github.com/cisstech/nge/compare/v17.6.0...v17.6.1) (2024-01-24)
 
 
