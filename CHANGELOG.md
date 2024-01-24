@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.6.0](https://github.com/cisstech/nge/compare/v17.5.1...v17.6.0) (2024-01-24)
+
+
+### Bug Fixes
+
+* **doc:** direct path access not work if custom baseHref is defined ([42b6a4c](https://github.com/cisstech/nge/commit/42b6a4c795c99457fa013df443b5e5424bd51039))
+* **services:** ngOnChanges not called for dynamic compiled components ([f58c5ae](https://github.com/cisstech/nge/commit/f58c5ae04e8345dc67b4b8af23c61e1546071e22))
+
 ### [17.5.1](https://github.com/cisstech/nge/compare/v17.5.0...v17.5.1) (2024-01-21)
 
 
