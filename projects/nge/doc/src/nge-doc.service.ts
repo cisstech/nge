@@ -68,7 +68,6 @@ export class NgeDocService implements OnDestroy {
       }
 
       if (!meta) {
-        console.log(setting, meta);
         throw new Error('[nge-doc]: Missing setting.meta');
       }
 
@@ -153,7 +152,7 @@ export class NgeDocService implements OnDestroy {
     createLink(page, meta.root);
   }
 
-  private async onChangeRoute() {
+  private async onChangeRoute(): Promise<void> {
     if (!this.pages.size) {
       return;
     }
@@ -163,8 +162,9 @@ export class NgeDocService implements OnDestroy {
 
     let meta: NgeDocMeta | undefined;
     let links: NgeDocLink[] = [];
+
     for (const [k, v] of this.pages) {
-      if (paths.some((path) => path.startsWith(k))) {
+      if (paths.some((path) => path.includes(k))) {
         meta = v.meta;
         links = v.links;
         break;
@@ -172,7 +172,6 @@ export class NgeDocService implements OnDestroy {
     }
 
     if (!meta) {
-      console.log(this.pages);
       throw new Error('[nge-doc]: Unregisted page ' + path);
     }
 
