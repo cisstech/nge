@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { filter, skip } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { NgeDocLink, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc';
 
 @Injectable()
@@ -32,9 +32,7 @@ export class NgeDocService implements OnDestroy {
 
   /** documentation state */
   get stateChanges() {
-    return this.state.pipe(
-      skip(1) // skip initial state
-    )
+    return this.state.asObservable()
   }
 
   constructor(
@@ -191,7 +189,7 @@ export class NgeDocService implements OnDestroy {
 
     for (let i = 0; i < this.links.length; i++) {
       const link = this.links[i];
-      if (paths.includes(link.href)) {
+      if (paths.some((path) => path.includes(link.href))) {
         const prevIndex = modulo(i - 1, this.links.length);
         const nextIndex = modulo(i + 1, this.links.length);
         currLink = link;
@@ -220,7 +218,7 @@ export class NgeDocService implements OnDestroy {
     // expand visible links
 
     this.links.forEach((link) => {
-      if (paths.some((path) => path.startsWith(link.href))) {
+      if (paths.some((path) => path.includes(link.href))) {
         link.expanded = true;
       }
     });
