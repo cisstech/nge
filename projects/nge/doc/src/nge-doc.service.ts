@@ -176,7 +176,7 @@ export class NgeDocService implements OnDestroy {
     let { currLink, prevLink, nextLink } = this.state.value;
 
     // ignore same page navigation (fragment navigation)
-    if (currLink && paths.includes(currLink.href)) {
+    if (currLink && paths.some(p => p.endsWith(currLink!.href))) {
       return;
     }
 
@@ -189,7 +189,7 @@ export class NgeDocService implements OnDestroy {
 
     for (let i = 0; i < this.links.length; i++) {
       const link = this.links[i];
-      if (paths.some((path) => path.includes(link.href))) {
+      if (paths.some((path) => path.endsWith(link.href))) {
         const prevIndex = modulo(i - 1, this.links.length);
         const nextIndex = modulo(i + 1, this.links.length);
         currLink = link;
@@ -218,7 +218,7 @@ export class NgeDocService implements OnDestroy {
     // expand visible links
 
     this.links.forEach((link) => {
-      if (paths.some((path) => path.includes(link.href))) {
+      if (paths.some((path) => path.endsWith(link.href))) {
         link.expanded = true;
       }
     });
