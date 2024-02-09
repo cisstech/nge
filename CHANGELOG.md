@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.7.0](https://github.com/cisstech/nge/compare/v17.6.3...v17.7.0) (2024-02-09)
+
+
+### Bug Fixes
+
+* **doc:** not found always visible initial render ([5f522e7](https://github.com/cisstech/nge/commit/5f522e73481afb6e90b9ab6e6d142a1bf2b1fc89))
+
 ### [17.6.3](https://github.com/cisstech/nge/compare/v17.6.1...v17.6.3) (2024-01-24)
 
 
