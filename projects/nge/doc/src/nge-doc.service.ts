@@ -32,7 +32,9 @@ export class NgeDocService implements OnDestroy {
 
   /** documentation state */
   get stateChanges() {
-    return this.state.asObservable()
+    return this.state.pipe(
+      filter((state) => !!state.currLink)
+    )
   }
 
   constructor(

@@ -81,6 +81,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     try {
       this.showLoading();
       this.clearViewContainer();
+
       if (state.currLink) {
         const renderer = await state.currLink.renderer;
         switch (typeof renderer) {
