@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.7.1](https://github.com/cisstech/nge/compare/v17.7.0...v17.7.1) (2024-02-26)
+
+
+### Features
+
+* **ui:** allow to pass template ref as list item action title ([b542995](https://github.com/cisstech/nge/commit/b542995258003cbceb75849e1dd63b686b3ae2af))
+
 ## [17.7.0](https://github.com/cisstech/nge/compare/v17.6.3...v17.7.0) (2024-02-09)
 
 
