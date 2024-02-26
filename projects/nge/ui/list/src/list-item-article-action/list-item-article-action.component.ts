@@ -1,10 +1,8 @@
 import {
   Component,
-  EventEmitter,
   HostBinding,
-  HostListener,
   Input,
-  Output,
+  TemplateRef
 } from '@angular/core';
 
 @Component({
@@ -13,7 +11,8 @@ import {
   styleUrls: ['./list-item-article-action.component.scss'],
 })
 export class ListItemArticleActionComponent {
-  @Input() actionTitle?: string | number | boolean | null;
+  @Input() actionTitle?: string | number | boolean | TemplateRef<any> | null;
+
   @Input()
   @HostBinding('class.clickable')
   clickable = false;

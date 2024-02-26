@@ -2,5 +2,10 @@
   <ng-content></ng-content>
 </div>
 <div class="list-item-article-action-title">
-  {{ actionTitle }}
+  @if (actionTitle|istemplate) {
+    <ng-container *ngTemplateOutlet="actionTitle" />
+  } @else {
+    {{actionTitle}}
+  }
 </div>
+
