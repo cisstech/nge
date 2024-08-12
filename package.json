@@ -75,7 +75,7 @@
     "@types/jasminewd2": "^2.0.10",
     "@types/marked": "^4.0.1",
     "@types/mime-db": "^1.43.1",
-    "@types/node": "^20.6.0",
+    "@types/node": "^22.2.0",
     "@types/uuid": "^9.0.0",
     "angular-cli-ghpages": "^1.0.5",
     "codelyzer": "^6.0.2",
