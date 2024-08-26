@@ -1,14 +1,14 @@
 @use '@angular/material' as mat;
 @import 'base';
 
-$mat-typography: mat.define-typography-config(
+$mat-typography: mat.m2-define-typography-config(
   $font-family: var(--brand-font)
 );
 
 @include mat.core();
 
 
-$mat-light-theme: mat.define-light-theme((
+$mat-light-theme: mat.m2-define-light-theme((
   color: (
     primary: $theme-primary,
     accent: $theme-accent,

@@ -5,7 +5,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "downlevelIteration": true,
+    "esModuleInterop": true,
     "strict": true,
     "strictNullChecks": true,
     "experimentalDecorators": true,
@@ -13,7 +13,6 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
     "target": "ES2022",
     "lib": [
       "es2019",

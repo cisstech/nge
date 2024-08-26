@@ -1,5 +1,5 @@
 // ANGULAR
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,52 +36,39 @@ export function markdownOptions(): NgeMarkdownConfig {
   };
 }
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-
-    NgeMarkdownModule,
-    NgeMonacoModule.forRoot({
-      locale: 'fr',
-      theming: {
-        themes: NGE_MONACO_THEMES.map(
-          (theme) => 'assets/nge/monaco/themes/' + theme
-        ),
-        default: 'github',
-      },
-    }),
-
-    AppRoutingModule,
-    BrowserAnimationsModule,
-  ],
-  providers: [
-    NgeMarkdownConfigProvider(markdownOptions),
-    NgeMarkdownThemeProvider({
-      name: 'github',
-      styleUrl: 'assets/nge/markdown/themes/github.css',
-    }),
-    NgeMarkdownKatexProvider,
-    NgeMarkdownIconsProvider,
-    NgeMarkdownEmojiProvider,
-    NgeMarkdownTabbedSetProvider,
-    NgeMarkdownLinkAnchorProvider,
-    NgeMarkdownAdmonitionsProvider,
-    NgeMarkdownHighlighterProvider,
-    NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
-    {
-      provide: NGE_DOC_RENDERERS,
-      useValue: {
-        markdown: {
-          component: () =>
-            import('@cisstech/nge/markdown').then(
-              (m) => m.NgeMarkdownComponent
-            ),
+@NgModule({ declarations: [AppComponent],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        NgeMarkdownModule,
+        NgeMonacoModule.forRoot({
+            locale: 'fr',
+            theming: {
+                themes: NGE_MONACO_THEMES.map((theme) => 'assets/nge/monaco/themes/' + theme),
+                default: 'github',
+            },
+        }),
+        AppRoutingModule,
+        BrowserAnimationsModule], providers: [
+        NgeMarkdownConfigProvider(markdownOptions),
+        NgeMarkdownThemeProvider({
+            name: 'github',
+            styleUrl: 'assets/nge/markdown/themes/github.css',
+        }),
+        NgeMarkdownKatexProvider,
+        NgeMarkdownIconsProvider,
+        NgeMarkdownEmojiProvider,
+        NgeMarkdownTabbedSetProvider,
+        NgeMarkdownLinkAnchorProvider,
+        NgeMarkdownAdmonitionsProvider,
+        NgeMarkdownHighlighterProvider,
+        NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
+        {
+            provide: NGE_DOC_RENDERERS,
+            useValue: {
+                markdown: {
+                    component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),
+                },
+            },
         },
-      },
-    },
-  ],
-  bootstrap: [AppComponent],
-})
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}
