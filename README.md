@@ -10,7 +10,7 @@
 
 NG Essentials is a collection of libraries for <a href="https://angular.io">Angular</a> developers.
 
-[![Tests](https://github.com/cisstech/nge/actions/workflows/tests.yml/badge.svg)](https://github.com/cisstech/nge/actions/workflows/tests.yml)
+[![Tests](https://github.com/cisstech/nge/actions/workflows/ci.yml/badge.svg)](https://github.com/cisstech/nge/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/cisstech/nge/branch/main/graph/badge.svg)](https://codecov.io/gh/cisstech/nge)
 [![codefactor](https://www.codefactor.io/repository/github/cisstech/nge/badge/main)](https://www.codefactor.io/repository/github/cisstech/nge/overview/main)
 [![GitHub Tags](https://img.shields.io/github/tag/cisstech/nge.svg)](https://github.com/cisstech/nge/tags)
@@ -25,15 +25,15 @@ NG Essentials is a collection of libraries for <a href="https://angular.io">Angu
 
 Follow the guides to integrate these essentials features into your applications:
 
-* [nge-doc](https://cisstech.github.io/nge/docs/nge-doc/)
+- [nge-doc](https://cisstech.github.io/nge/docs/nge-doc/)
 
 Project documentation tool.
 
-* [nge-markdown](https://cisstech.github.io/nge/docs/nge-markdown/)
+- [nge-markdown](https://cisstech.github.io/nge/docs/nge-markdown/)
 
 Markdown parser library based on [Marked](https://github.com/markedjs/marked) `(v^11)`.
 
-* [nge-monaco](https://cisstech.github.io/nge/docs/nge-monaco/)
+- [nge-monaco](https://cisstech.github.io/nge/docs/nge-monaco/)
 
 [Monaco Editor](https://microsoft.github.io/monaco-editor/) integration in angular.
 
@@ -49,7 +49,7 @@ npm install @cisstech/nge
 
 ## ⌨️ Development
 
-* Clone and install
+- Clone and install
 
 ```bash
 git clone https://github.com/cisstech/nge
@@ -57,7 +57,7 @@ cd nge
 npm install
 ```
 
-* Serve demo
+- Serve demo
 
 ```bash
 npm run start
