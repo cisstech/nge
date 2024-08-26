@@ -37,7 +37,7 @@
     "lint:fix": "ng lint --fix",
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",
-    "publish:lib": "npm publish ./dist/nge --access public",
+    "publish:lib": "npm publish ./dist/nge --provenance --access public",
     "publish:demo": "angular-cli-ghpages --dir=./dist/demo",
     "release": "standard-version",
     "release:major": "standard-version --release-as major",
