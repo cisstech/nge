@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 
 @Injectable({ providedIn: 'root' })
 export class ClipboardService {
   copy(data: string): Promise<void> {
-    return navigator.clipboard.writeText(data);
+    return navigator.clipboard.writeText(data)
   }
 
   read() {
-    return navigator.clipboard.readText();
+    return navigator.clipboard.readText()
   }
 }

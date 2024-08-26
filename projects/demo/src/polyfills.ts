@@ -45,11 +45,11 @@
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
-import 'zone.js'; // Included with Angular CLI.
+import 'zone.js' // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-import 'document-register-element';
-import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
-import '@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce-pf.js';
+import 'document-register-element'
+import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js'
+import '@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce-pf.js'

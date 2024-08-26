@@ -2,6 +2,9 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
+  "cli": {
+    "schematicCollections": ["@angular-eslint/schematics"]
+  },
   "projects": {
     "nge": {
       "projectType": "library",
@@ -20,6 +23,13 @@
             "production": {
               "tsConfig": "projects/nge/tsconfig.lib.prod.json"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": ".eslintrc.json",
+            "lintFilePatterns": ["**/*.spec.ts", "**/*.d.ts"]
           }
         }
       }
@@ -40,18 +50,28 @@
           "options": {
             "outputPath": "dist/demo",
             "index": "projects/demo/src/index.html",
-            "polyfills": [
-              "projects/demo/src/polyfills.ts"
-            ],
+            "polyfills": ["projects/demo/src/polyfills.ts"],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": [
               "projects/demo/src/favicon.ico",
               "projects/demo/src/assets",
               { "glob": "**/*", "input": "./node_modules/monaco-editor/min", "output": "./assets/nge/monaco/min" },
-              { "glob": "**/*", "input": "./node_modules/monaco-editor/min-maps", "output": "./assets/nge/monaco/min-maps" },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/monaco-editor/min-maps",
+                "output": "./assets/nge/monaco/min-maps"
+              },
               { "glob": "**/*", "input": "./projects/nge/monaco/src/themes", "output": "./assets/nge/monaco/themes" },
-              { "glob": "**/*", "input": "./projects/nge/markdown/src/themes", "output": "./assets/nge/markdown/themes" },
-              { "glob": "**/*", "input": "./projects/nge/ui/icon/src/assets/icons/files", "output": "./assets/vendors/nge/ui/icon/icons/files/" }
+              {
+                "glob": "**/*",
+                "input": "./projects/nge/markdown/src/themes",
+                "output": "./assets/nge/markdown/themes"
+              },
+              {
+                "glob": "**/*",
+                "input": "./projects/nge/ui/icon/src/assets/icons/files",
+                "output": "./assets/vendors/nge/ui/icon/icons/files/"
+              }
             ],
             "styles": ["projects/demo/src/styles.scss"],
             "scripts": [],
@@ -99,6 +119,13 @@
             "production": {
               "buildTarget": "demo:build:production"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "eslintConfig": ".eslintrc.json",
+            "lintFilePatterns": ["**/*.spec.ts", "**/*.d.ts"]
           }
         },
         "extract-i18n": {

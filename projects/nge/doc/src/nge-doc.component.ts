@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgeDocService } from './nge-doc.service';
+import { Component, OnInit } from '@angular/core'
+import { NgeDocService } from './nge-doc.service'
 
 @Component({
   selector: 'nge-doc',
@@ -11,6 +11,6 @@ export class NgeDocComponent implements OnInit {
   constructor(private readonly docService: NgeDocService) {}
 
   async ngOnInit() {
-    await this.docService.setup();
+    await this.docService.setup()
   }
 }

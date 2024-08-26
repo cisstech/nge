@@ -1,4 +1,4 @@
-import { NgModule, Pipe, PipeTransform } from '@angular/core';
+import { NgModule, Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({
   name: 'length',
@@ -6,10 +6,9 @@ import { NgModule, Pipe, PipeTransform } from '@angular/core';
 })
 export class LengthPipe implements PipeTransform {
   transform(value: any): number {
-    return Array.isArray(value) ? value.length : Object.keys(value).length;
+    return Array.isArray(value) ? value.length : Object.keys(value).length
   }
 }
-
 
 /**
  * @deprecated in favor of standalone api, so please use direclty the pipe as a standalone. Will be removed in/after v18
@@ -18,4 +17,4 @@ export class LengthPipe implements PipeTransform {
   exports: [LengthPipe],
   imports: [LengthPipe],
 })
-export class LengthPipeModule { }
+export class LengthPipeModule {}

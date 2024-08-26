@@ -1,34 +1,24 @@
-import {
-  Inject,
-  Injectable,
-  InjectionToken,
-  Optional,
-  Provider,
-} from '@angular/core';
-import { NgeMarkdownTransformer } from '../nge-markdown-transformer';
-import {
-  NgeMarkdownContribution,
-  NGE_MARKDOWN_CONTRIBUTION,
-} from '../nge-markdown-contribution';
+import { Inject, Injectable, InjectionToken, Optional, Provider } from '@angular/core'
+import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
+import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
 
 /** Custom options to pass to NgeMarkdownKatex contribution. */
 export interface NgeMarkdownKatexOptions {
   /** Base url to load katex scripts and styles. (default https://cdn.jsdelivr.net/npm/katex@0.15.1/dist) */
-  baseUrl?: string;
+  baseUrl?: string
   /** Options to pass to katex render function. https://katex.org/docs/options.html */
-  options?: Record<string, any>;
+  options?: Record<string, any>
   /** Katex extensions to include. https://katex.org/docs/libs.html  */
   extensions?: {
     /** https://github.com/Khan/KaTeX/tree/master/contrib/mhchem (default to `true`) */
-    mhchem?: boolean;
+    mhchem?: boolean
     /** https://github.com/Khan/KaTeX/tree/master/contrib/copy-tex (default to `true`) */
-    copyTex?: boolean;
-  };
+    copyTex?: boolean
+  }
 }
 
 /** Custom options to pass to NgeMarkdownKatex contribution. */
-export const NGE_MARKDOWN_KATEX_OPTIONS =
-  new InjectionToken<NgeMarkdownKatexOptions>('NGE_MARKDOWN_KATEX_OPTIONS');
+export const NGE_MARKDOWN_KATEX_OPTIONS = new InjectionToken<NgeMarkdownKatexOptions>('NGE_MARKDOWN_KATEX_OPTIONS')
 
 /**
  * Contribution to render math expressions in markdown using [Katex](https://katex.org) library.
@@ -45,48 +35,44 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
         mhchem: true,
         copyTex: true,
       },
-    };
-    this.options.extensions = this.options.extensions || {};
-    this.options.extensions.mhchem = this.options.extensions.mhchem ?? true;
-    this.options.extensions.copyTex = this.options.extensions.copyTex ?? true;
+    }
+    this.options.extensions = this.options.extensions || {}
+    this.options.extensions.mhchem = this.options.extensions.mhchem ?? true
+    this.options.extensions.copyTex = this.options.extensions.copyTex ?? true
   }
 
   dependencies() {
     if ('katex' in window) {
-      return [];
+      return []
     }
 
-    let baseUrl =
-      this.options?.baseUrl ||
-      'https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/';
+    let baseUrl = this.options?.baseUrl || 'https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/'
     if (!baseUrl.endsWith('/')) {
-      baseUrl += '/';
+      baseUrl += '/'
     }
 
     const deps = [
       ['style', `${baseUrl}katex.min.css`],
       ['script', `${baseUrl}katex.js`],
       ['script', `${baseUrl}contrib/auto-render.js`],
-    ];
+    ]
 
     if (this.options.extensions?.copyTex) {
-      deps.push(
-        ['script', `${baseUrl}contrib/copy-tex.min.js`]
-      );
+      deps.push(['script', `${baseUrl}contrib/copy-tex.min.js`])
     }
 
     if (this.options.extensions?.mhchem) {
-      deps.push(['script', `${baseUrl}contrib/mhchem.js`]);
+      deps.push(['script', `${baseUrl}contrib/mhchem.js`])
     }
 
-    return deps as any;
+    return deps as any
   }
 
   contribute(transformer: NgeMarkdownTransformer) {
     // pattern to search multiline latex between $$...$$ or inline latex between $...$
     // const pattern = /(\$\$\n((.|\s|\n)+?)\n\$\$)|(\$([^\s][^$\n]+?[^\s])\$)/gm;
     transformer.addHtmlTransformer((element) => {
-      const { renderMathInElement } = window as any;
+      const { renderMathInElement } = window as any
       try {
         renderMathInElement(
           element,
@@ -98,11 +84,11 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
               { left: '\\[', right: '\\]', display: false },
             ],
           }
-        );
+        )
       } catch (error) {
-        console.error(error);
+        console.error(error)
       }
-    });
+    })
   }
 }
 
@@ -113,17 +99,15 @@ export const NgeMarkdownKatexProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,
   multi: true,
   useClass: NgeMarkdownKatex,
-};
+}
 
 /**
  * Provider to pass options to `NgeMarkdownKatex` contribution.
  * @param options `NgeMarkdownKatex` options.
  */
-export function NgeMarkdownKatexOptionsProvider(
-  options: NgeMarkdownKatexOptions
-): Provider {
+export function NgeMarkdownKatexOptionsProvider(options: NgeMarkdownKatexOptions): Provider {
   return {
     provide: NGE_MARKDOWN_KATEX_OPTIONS,
     useValue: options,
-  };
+  }
 }

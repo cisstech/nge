@@ -1,4 +1,4 @@
-import { NgeMonacoContribution } from './monaco-contribution';
+import { NgeMonacoContribution } from './monaco-contribution'
 
 /**
  * When a user type a composition key like ^ or \` the editor
@@ -10,73 +10,64 @@ import { NgeMonacoContribution } from './monaco-contribution';
  * of `onDidCompositionStart` and `onDidCompositionEnd`
  */
 export class PreventSymbolDuplication implements NgeMonacoContribution {
-  private disposable?: monaco.IDisposable;
+  private disposable?: monaco.IDisposable
 
   activate() {
     this.disposable = monaco.editor.onDidCreateEditor((e) => {
-      this.preventSymbolDuplicationOnCompositionEnd(e);
-    });
+      this.preventSymbolDuplicationOnCompositionEnd(e)
+    })
   }
 
   deactivate() {
-    this.disposable?.dispose();
+    this.disposable?.dispose()
   }
 
-  private preventSymbolDuplicationOnCompositionEnd(
-    editor: monaco.editor.ICodeEditor
-  ) {
-    const positions: monaco.Position[] = [];
-    let disposables: monaco.IDisposable[] = [];
+  private preventSymbolDuplicationOnCompositionEnd(editor: monaco.editor.ICodeEditor) {
+    const positions: monaco.Position[] = []
+    let disposables: monaco.IDisposable[] = []
     disposables.push(
       editor.onDidCompositionStart(() => {
-        const position = editor.getPosition();
+        const position = editor.getPosition()
         if (position) {
-          positions.push(position);
+          positions.push(position)
         }
       })
-    );
+    )
     disposables.push(
       editor.onDidCompositionEnd(() => {
         setTimeout(() => {
           if (!positions.length) {
-            return;
+            return
           }
-          const before = positions[0];
-          const after = editor.getPosition();
+          const before = positions[0]
+          const after = editor.getPosition()
           if (!after) {
-            return;
+            return
           }
 
-          positions.splice(0, 1);
-          const diff = after.column - before.column;
+          positions.splice(0, 1)
+          const diff = after.column - before.column
           if (diff > 1) {
             // unfocus the editor to leave composition
             // mode because when the user type ` the editor
             // leave the composition mode and begin another one
-            (document.activeElement as any)?.blur();
+            ;(document.activeElement as any)?.blur()
 
             // focus the editor to let the user continue to edit the content
             // of the editor
-            editor.focus();
+            editor.focus()
 
-            const r = new monaco.Range(
-              after.lineNumber,
-              after.column - (diff - 1),
-              after.lineNumber,
-              after.column
-            );
-            editor.executeEdits('api', [
-              { range: r, text: '', forceMoveMarkers: false },
-            ]);
+            const r = new monaco.Range(after.lineNumber, after.column - (diff - 1), after.lineNumber, after.column)
+            editor.executeEdits('api', [{ range: r, text: '', forceMoveMarkers: false }])
           }
-        });
+        })
       })
-    );
+    )
     disposables.push(
       editor.onDidDispose(() => {
-        disposables.forEach((e) => e.dispose());
-        disposables = [];
+        disposables.forEach((e) => e.dispose())
+        disposables = []
       })
-    );
+    )
   }
 }

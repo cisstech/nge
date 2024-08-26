@@ -1,12 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Subscription } from 'rxjs';
-import { ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core'
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
+import { Subscription } from 'rxjs'
+import { ChangeDetectorRef } from '@angular/core'
 
 @Component({
   selector: 'nge-doc-default-layout',
@@ -15,9 +10,9 @@ import { ChangeDetectorRef } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
-  private subscription?: Subscription;
-  sidebarOpened = true;
-  showTableOfContents = true;
+  private subscription?: Subscription
+  sidebarOpened = true
+  showTableOfContents = true
 
   constructor(
     private readonly observer: BreakpointObserver,
@@ -25,20 +20,18 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.observer
-      .observe([Breakpoints.XSmall, Breakpoints.Small])
-      .subscribe((result) => {
-        this.sidebarOpened = true;
-        this.showTableOfContents = true;
-        if (result.matches) {
-          this.sidebarOpened = false;
-          this.showTableOfContents = false;
-        }
-        this.changeDetectorRef.markForCheck();
-      });
+    this.observer.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe((result) => {
+      this.sidebarOpened = true
+      this.showTableOfContents = true
+      if (result.matches) {
+        this.sidebarOpened = false
+        this.showTableOfContents = false
+      }
+      this.changeDetectorRef.markForCheck()
+    })
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.subscription?.unsubscribe()
   }
 }

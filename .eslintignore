@@ -1,0 +1,12 @@
+*
+!*/
+!*.js
+!*.ts
+!*.json
+node_modules
+dist
+umd
+.cache
+tmp
+CODEOWNERS
+backups

@@ -1,19 +1,14 @@
-import { InjectionToken, Injector, Type } from '@angular/core';
+import { InjectionToken, Injector, Type } from '@angular/core'
 
-export declare type StaticPage = NgeDocLink;
+export declare type StaticPage = NgeDocLink
 export declare type DynamicPage = (
   injector: Injector
-) => NgeDocLink | Promise<NgeDocLink> | NgeDocLink[] | Promise<NgeDocLink[]>;
+) => NgeDocLink | Promise<NgeDocLink> | NgeDocLink[] | Promise<NgeDocLink[]>
 
-export declare type StaticMeta = NgeDocMeta;
-export declare type DynamicMeta = (
-  injector: Injector
-) => NgeDocMeta | Promise<NgeDocMeta>;
+export declare type StaticMeta = NgeDocMeta
+export declare type DynamicMeta = (injector: Injector) => NgeDocMeta | Promise<NgeDocMeta>
 
-export declare type NgeDocRenderer =
-  | string
-  | Promise<string>
-  | (() => Type<any> | Promise<Type<any>>);
+export declare type NgeDocRenderer = string | Promise<string> | (() => Type<any> | Promise<Type<any>>)
 
 export declare type NgeDocRenderers = {
   /** Markdown renderer. */
@@ -24,38 +19,32 @@ export declare type NgeDocRenderers = {
      * The component should expose a `file` property to render a markdown from an url
      * and a `data` property to render markdown from a string.
      */
-    component: () => Type<any> | Promise<Type<any>>;
+    component: () => Type<any> | Promise<Type<any>>
     /** Inputs objects to pass to the component instance. */
-    inputs?:
-      | Record<string, any>
-      | ((
-          injector: Injector
-        ) => Record<string, any> | Promise<Record<string, any>>);
-  };
-};
+    inputs?: Record<string, any> | ((injector: Injector) => Record<string, any> | Promise<Record<string, any>>)
+  }
+}
 
-export declare type NgeDocLinkActionHandler =
-  | string
-  | ((injector: Injector) => void | Promise<void>);
+export declare type NgeDocLinkActionHandler = string | ((injector: Injector) => void | Promise<void>)
 
 /** Documentation site config. */
 export interface NgeDocSettings {
   /** Metadata informations about a documentation site. */
-  meta: StaticMeta | DynamicMeta;
+  meta: StaticMeta | DynamicMeta
   /** Pages of the documentation site. */
-  pages: (StaticPage | DynamicPage)[];
+  pages: (StaticPage | DynamicPage)[]
 }
 
 /** Metadata informations about a documentation site. */
 export interface NgeDocMeta {
   /** Name of the documentation site. */
-  name: string;
+  name: string
   /** Root url of the documentation site. (absolute url starting with `/`)  */
-  root: string;
+  root: string
   /** Url to the logo to the documentation logo. */
-  logo?: string;
+  logo?: string
   /** Optional back url (use of Angular [routerLink]) */
-  backUrl?: string;
+  backUrl?: string
 
   /** Optional url for the back button icon */
   backIconUrl?: string
@@ -66,26 +55,26 @@ export interface NgeDocMeta {
   /** Optional informations about a github repository linked to the site */
   repo?: {
     /** Url of the repository */
-    url: string;
+    url: string
     /** Name of the repository. */
-    name: string;
-  };
+    name: string
+  }
   /** social links to show insides the footer */
   links?: {
-    href: string;
-    icon: string;
-  }[];
+    href: string
+    icon: string
+  }[]
 }
 
 export interface NgeDocLinAction {
   /** Url to an icon to render. */
-  icon?: string;
+  icon?: string
   /** Title of the action. */
-  title?: string;
+  title?: string
   /** Action tooltip */
-  tooltip?: string;
+  tooltip?: string
   /** Action handler. (A string value here means that the action is an url to open in a new tab) */
-  run: NgeDocLinkActionHandler;
+  run: NgeDocLinkActionHandler
 }
 
 /**
@@ -93,9 +82,9 @@ export interface NgeDocLinAction {
  */
 export interface NgeDocLink {
   /** Url to display in the browser navigation bar. */
-  href: string;
+  href: string
   /** Title of the link */
-  title: string;
+  title: string
   /**
    * Content to render once the link is displayed.
    *
@@ -136,50 +125,49 @@ export interface NgeDocLink {
    * If you choose to reference a module, the module must contains a public field `component` that indicates
    * the component that you want to render.
    */
-  renderer?: NgeDocRenderer;
+  renderer?: NgeDocRenderer
   /** Sub links */
-  children?: NgeDocLink[];
+  children?: NgeDocLink[]
   /** A value indicating whether the link is expanded or not. */
-  expanded?: boolean;
+  expanded?: boolean
   /** Inputs to pass to the dynamic renderered component if `renderer` is a dynamic component. */
-  inputs?: Record<string, any>;
+  inputs?: Record<string, any>
   /** Optional icon */
-  icon?: string;
+  icon?: string
   /** Custom actions */
-  actions?: NgeDocLinAction[];
+  actions?: NgeDocLinAction[]
 }
 
 /** Representation of the documentation state. */
 export interface NgeDocState {
   /**  Metadata informations about the documentation. */
-  meta: NgeDocMeta;
+  meta: NgeDocMeta
   /** Root links of the site. */
-  links: NgeDocLink[];
+  links: NgeDocLink[]
   /** Current active link. */
-  currLink?: NgeDocLink;
+  currLink?: NgeDocLink
   /** Previous link of the current link. */
-  prevLink?: NgeDocLink;
+  prevLink?: NgeDocLink
   /** Next link of the current link. */
-  nextLink?: NgeDocLink;
+  nextLink?: NgeDocLink
 }
 
 /** Custom renderers components */
-export const NGE_DOC_RENDERERS = new InjectionToken<NgeDocRenderers>(
-  'NGE_DOC_RENDERERS'
-);
+export const NGE_DOC_RENDERERS = new InjectionToken<NgeDocRenderers>('NGE_DOC_RENDERERS')
 
 export const isNgeDocSettings = (v: any): v is NgeDocSettings =>
-  !!v && typeof v === 'object' && !Array.isArray(v) && !!v.meta && !!v.pages;
-
+  !!v && typeof v === 'object' && !Array.isArray(v) && !!v.meta && !!v.pages
 
 export const extractNgeDocSettings = (v: any): NgeDocSettings[] => {
-  let settings: NgeDocSettings[] = [];
+  let settings: NgeDocSettings[] = []
 
   if (isNgeDocSettings(v)) {
-    settings.push(v);
+    settings.push(v)
   } else if (typeof v === 'object') {
     settings.push(
-      ...Object.values(v).map((v) => extractNgeDocSettings(v)).flat()
+      ...Object.values(v)
+        .map((v) => extractNgeDocSettings(v))
+        .flat()
     )
   }
 

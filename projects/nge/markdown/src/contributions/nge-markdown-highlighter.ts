@@ -1,31 +1,20 @@
-import {
-  Injector,
-  InjectionToken,
-  Injectable,
-  Provider,
-  Inject,
-  Optional,
-  Type,
-} from '@angular/core';
-import { NgeMarkdownTransformer } from '../nge-markdown-transformer';
-import {
-  NgeMarkdownContribution,
-  NGE_MARKDOWN_CONTRIBUTION,
-} from '../nge-markdown-contribution';
+import { Injector, InjectionToken, Injectable, Provider, Inject, Optional, Type } from '@angular/core'
+import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
+import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
 
-const DATA_LINES = 'data-nge-md-hl-lines';
-const DATA_LANGUAGE = 'data-nge-md-hl-language';
-const DATA_HIGHLIGHTS = 'data-nge-md-hl-highlights';
+const DATA_LINES = 'data-nge-md-hl-lines'
+const DATA_LANGUAGE = 'data-nge-md-hl-language'
+const DATA_HIGHLIGHTS = 'data-nge-md-hl-highlights'
 
 /**
  * Highlight options.
  */
 export interface NgeMarkdownHighlightOptions {
   /** &lt;code&gt;&lt;/code&gt; element to colorize. */
-  element: HTMLElement;
+  element: HTMLElement
 
   /** Target language (default plaintext) */
-  language?: string;
+  language?: string
 
   /**
    * Start line number or a space separated list of line numbers to show.
@@ -45,7 +34,7 @@ export interface NgeMarkdownHighlightOptions {
    * `"2 4-7 9"`
    *
    */
-  lines?: string;
+  lines?: string
 
   /**
    * A space separated list of line numbers to highlight.
@@ -64,7 +53,7 @@ export interface NgeMarkdownHighlightOptions {
    *
    * `"2 4-7 9"`
    */
-  highlights?: string;
+  highlights?: string
 }
 
 /**
@@ -76,19 +65,15 @@ export interface NgeMarkdownHighlighterService {
    * @param injector Injector reference to use Angular dependency injection.
    * @param options Highlight options.
    */
-  highligtht?(
-    injector: Injector,
-    options: NgeMarkdownHighlightOptions
-  ): void | Promise<void>;
+  highligtht?(injector: Injector, options: NgeMarkdownHighlightOptions): void | Promise<void>
 }
 
 /**
  * Injection token to register a highlighter service.
  */
-export const NGE_MARKDOWN_HIGHLIGHTER_SERVICE =
-  new InjectionToken<NgeMarkdownHighlighterService>(
-    'NGE_MARKDOWN_HIGHLIGHTER_SERVICE'
-  );
+export const NGE_MARKDOWN_HIGHLIGHTER_SERVICE = new InjectionToken<NgeMarkdownHighlighterService>(
+  'NGE_MARKDOWN_HIGHLIGHTER_SERVICE'
+)
 
 /**
  * Contribution to add an abstract syntax highlighter.
@@ -103,69 +88,67 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
   ) {}
 
   contribute(transformer: NgeMarkdownTransformer) {
-    this.createAttributes(transformer);
-    this.colorizeCodes(transformer);
+    this.createAttributes(transformer)
+    this.colorizeCodes(transformer)
   }
 
   private createAttributes(transformer: NgeMarkdownTransformer) {
     transformer.addRendererTransformer((renderer) => {
       renderer.code = (code, args) => {
-        args = args || '';
-        const attributes = new Map<string, string>();
+        args = args || ''
+        const attributes = new Map<string, string>()
 
         // LANGUAGE
-        const language = args.split(' ').slice(0, 1).pop() || 'plaintext';
-        attributes.set(DATA_LANGUAGE, language);
+        const language = args.split(' ').slice(0, 1).pop() || 'plaintext'
+        attributes.set(DATA_LANGUAGE, language)
 
         // LINE NUMBERING
-        let match = args.match(/lines="(.+?)"/);
+        let match = args.match(/lines="(.+?)"/)
         if (match) {
-          attributes.set(DATA_LINES, match[1]);
+          attributes.set(DATA_LINES, match[1])
         }
 
         // LINE HIGHLIGHTING
-        match = args.match(/highlights="(.+?)"/);
+        match = args.match(/highlights="(.+?)"/)
         if (match) {
-          attributes.set(DATA_HIGHLIGHTS, match[1]);
+          attributes.set(DATA_HIGHLIGHTS, match[1])
         }
 
         const attribs = Array.from(attributes.entries())
           .map(([attributeName, attributeValue]) => {
-            return `${attributeName}="${attributeValue}"`;
+            return `${attributeName}="${attributeValue}"`
           })
-          .join(' ');
-        return `<pre ${attribs}><code>${this.escapeHtml(code)}</code></pre>`;
-      };
-      return renderer;
-    });
+          .join(' ')
+        return `<pre ${attribs}><code>${this.escapeHtml(code)}</code></pre>`
+      }
+      return renderer
+    })
   }
 
   private colorizeCodes(transformer: NgeMarkdownTransformer) {
     if (!this.options?.highligtht) {
-      return;
+      return
     }
-    const highlight = this.options.highligtht;
+    const highlight = this.options.highligtht
     transformer.addHtmlTransformer(async (element) => {
-      const preElements = Array.from(
-        element.querySelectorAll(`pre[${DATA_LANGUAGE}]`)
-      );
+      const preElements = Array.from(element.querySelectorAll(`pre[${DATA_LANGUAGE}]`))
       for (const pre of preElements) {
         highlight(this.injector, {
           lines: pre.getAttribute(DATA_LINES) || '',
           element: pre.querySelector('code') as HTMLElement,
           language: pre.getAttribute(DATA_LANGUAGE) || 'plaintext',
           highlights: pre.getAttribute(DATA_HIGHLIGHTS) || '',
-        });
+        })
       }
-    });
+    })
   }
 
   private escapeHtml(input: string) {
     const map: any = {
       '<': '&lt;',
       '>': '&gt;',
-    };
-    return input.replace(/[<>]/g, (tag) => map[tag] || tag);
+    }
+    return input.replace(/[<>]/g, (tag) => map[tag] || tag)
   }
 }
 
@@ -176,7 +159,7 @@ export const NgeMarkdownHighlighterProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,
   multi: true,
   useClass: NgeMarkdownHighlighter,
-};
+}
 
 /**
  * Provider to register `NgeMonacoColorizerService` as the syntax highlighter.
@@ -187,20 +170,20 @@ export function NgeMarkdownHighlighterMonacoProvider(type: Type<any>) {
     provide: NGE_MARKDOWN_HIGHLIGHTER_SERVICE,
     useValue: {
       highligtht: (injector, options) => {
-        const colorizer = injector.get(type, null);
-        const code = options.element;
-        const pre = code.parentElement as HTMLElement;
-        pre.style.margin = '0.5em 0';
-        pre.style.overflow = 'auto';
-        pre.style.border = '1px solid #F2F2F2';
+        const colorizer = injector.get(type, null)
+        const code = options.element
+        const pre = code.parentElement as HTMLElement
+        pre.style.margin = '0.5em 0'
+        pre.style.overflow = 'auto'
+        pre.style.border = '1px solid #F2F2F2'
         colorizer?.colorizeElement({
           element: code,
           language: options.language,
           code: code.textContent,
           lines: options.lines,
           highlights: options.highlights,
-        });
+        })
       },
     } as NgeMarkdownHighlighterService,
-  };
+  }
 }

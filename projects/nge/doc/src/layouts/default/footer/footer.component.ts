@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NgeDocService } from '../../../nge-doc.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core'
+import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
   selector: 'nge-doc-footer',
@@ -8,7 +8,7 @@ import { NgeDocService } from '../../../nge-doc.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent {
-  readonly state$ = this.docService.stateChanges;
+  readonly state$ = this.docService.stateChanges
 
   constructor(private readonly docService: NgeDocService) {}
 }

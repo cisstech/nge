@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { CURRENT_VISIBLE_TREES } from './internal';
-import { ITree } from './tree.model';
+import { Injectable } from '@angular/core'
+import { CURRENT_VISIBLE_TREES } from './internal'
+import { ITree } from './tree.model'
 
 @Injectable({ providedIn: 'root' })
 export class TreeService {
@@ -9,6 +9,6 @@ export class TreeService {
    * @param id Identifier of a tree.
    */
   get<T>(id: string): ITree<T> | undefined {
-    return CURRENT_VISIBLE_TREES.get(id) as ITree<T>;
+    return CURRENT_VISIBLE_TREES.get(id) as ITree<T>
   }
 }

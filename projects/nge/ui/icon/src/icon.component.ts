@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Icon } from './icons';
+import { Component, OnInit, Input } from '@angular/core'
+import { Icon } from './icons'
 
 @Component({
   selector: 'ui-icon',
@@ -7,5 +7,5 @@ import { Icon } from './icons';
   styleUrls: ['./icon.component.scss'],
 })
 export class IconComponent {
-  @Input() icon?: Icon;
+  @Input() icon?: Icon
 }

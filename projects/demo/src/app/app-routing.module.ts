@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { NGE_DOC } from './docs/nge-doc';
-import { NGE_MARKDOWN } from './docs/nge-markdown';
-import { NGE_MONACO } from './docs/nge-monaco';
+import { NgModule } from '@angular/core'
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router'
+import { NGE_DOC } from './docs/nge-doc'
+import { NGE_MARKDOWN } from './docs/nge-markdown'
+import { NGE_MONACO } from './docs/nge-monaco'
 
 const routes: Routes = [
   {
@@ -15,7 +15,7 @@ const routes: Routes = [
     data: [NGE_DOC, NGE_MONACO, NGE_MARKDOWN],
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
-];
+]
 
 @NgModule({
   imports: [

@@ -1,33 +1,33 @@
-import { DefaultIcon } from './icons.files';
+import { DefaultIcon } from './icons.files'
 
 export interface FolderIcon {
   /**
    * Name of the icon, e.g. 'src'
    */
-  name: string;
+  name: string
 
   /**
    * Define the folder names that should apply the icon.
    * E.g. ['src', 'source']
    */
-  folderNames: string[];
+  folderNames: string[]
 }
 
 export interface FolderTheme {
   /**
    * Define the default icon for folders in a theme.
    */
-  defaultIcon: DefaultIcon;
+  defaultIcon: DefaultIcon
 
   /**
    * Icon for root folders.
    */
-  rootFolder?: DefaultIcon;
+  rootFolder?: DefaultIcon
 
   /**
    * Defines folder icons for specific folder names.
    */
-  icons?: FolderIcon[];
+  icons?: FolderIcon[]
 }
 
 /**
@@ -49,16 +49,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-sass', folderNames: ['sass', '_sass', 'scss', '_scss'] },
     {
       name: 'folder-images',
-      folderNames: [
-        'images',
-        'image',
-        'img',
-        'icons',
-        'icon',
-        'ico',
-        'screenshot',
-        'screenshots',
-      ],
+      folderNames: ['images', 'image', 'img', 'icons', 'icon', 'ico', 'screenshot', 'screenshots'],
     },
     { name: 'folder-scripts', folderNames: ['script', 'scripts'] },
     { name: 'folder-node', folderNames: ['node_modules'] },
@@ -70,17 +61,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-bower', folderNames: ['bower_components'] },
     {
       name: 'folder-test',
-      folderNames: [
-        'test',
-        'tests',
-        'testing',
-        '__tests__',
-        '__snapshots__',
-        '__mocks__',
-        '__test__',
-        'spec',
-        'specs',
-      ],
+      folderNames: ['test', 'tests', 'testing', '__tests__', '__snapshots__', '__mocks__', '__test__', 'spec', 'specs'],
     },
     {
       name: 'folder-jinja',
@@ -92,14 +73,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-sublime', folderNames: ['sublime'] },
     {
       name: 'folder-docs',
-      folderNames: [
-        'doc',
-        'docs',
-        'documents',
-        'documentation',
-        'post',
-        'posts',
-      ],
+      folderNames: ['doc', 'docs', 'documents', 'documentation', 'post', 'posts'],
     },
     {
       name: 'folder-git',
@@ -110,29 +84,13 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-vscode', folderNames: ['.vscode', '.vscode-test'] },
     {
       name: 'folder-views',
-      folderNames: [
-        'view',
-        'views',
-        'screen',
-        'screens',
-        'page',
-        'pages',
-        'html',
-      ],
+      folderNames: ['view', 'views', 'screen', 'screens', 'page', 'pages', 'html'],
     },
     { name: 'folder-vue', folderNames: ['vue'] },
     { name: 'folder-expo', folderNames: ['.expo'] },
     {
       name: 'folder-config',
-      folderNames: [
-        'config',
-        'configs',
-        'configuration',
-        'configurations',
-        'settings',
-        '.settings',
-        'META-INF',
-      ],
+      folderNames: ['config', 'configs', 'configuration', 'configurations', 'settings', '.settings', 'META-INF'],
     },
     {
       name: 'folder-i18n',
@@ -155,26 +113,11 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-aurelia', folderNames: ['aurelia_project'] },
     {
       name: 'folder-resource',
-      folderNames: [
-        'resource',
-        'resources',
-        'res',
-        'asset',
-        'assets',
-        'static',
-      ],
+      folderNames: ['resource', 'resources', 'res', 'asset', 'assets', 'static'],
     },
     {
       name: 'folder-lib',
-      folderNames: [
-        'lib',
-        'libs',
-        'library',
-        'libraries',
-        'vendor',
-        'vendors',
-        'third-party',
-      ],
+      folderNames: ['lib', 'libs', 'library', 'libraries', 'vendor', 'vendors', 'third-party'],
     },
     {
       name: 'folder-theme',
@@ -199,15 +142,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-log', folderNames: ['log', 'logs'] },
     {
       name: 'folder-temp',
-      folderNames: [
-        'temp',
-        '.temp',
-        'tmp',
-        '.tmp',
-        'cached',
-        'cache',
-        '.cache',
-      ],
+      folderNames: ['temp', '.temp', 'tmp', '.tmp', 'cached', 'cache', '.cache'],
     },
     { name: 'folder-aws', folderNames: ['aws', '.aws'] },
     { name: 'folder-audio', folderNames: ['audio', 'audios', 'music'] },
@@ -224,15 +159,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-gradle', folderNames: ['gradle', '.gradle'] },
     {
       name: 'folder-coverage',
-      folderNames: [
-        'coverage',
-        '.nyc-output',
-        '.nyc_output',
-        'e2e',
-        'it',
-        'integration-test',
-        'integration-tests',
-      ],
+      folderNames: ['coverage', '.nyc-output', '.nyc_output', 'e2e', 'it', 'integration-test', 'integration-tests'],
     },
     {
       name: 'folder-class',
@@ -240,14 +167,7 @@ export const FOLDER_THEME: FolderTheme = {
     },
     {
       name: 'folder-other',
-      folderNames: [
-        'other',
-        'others',
-        'misc',
-        'miscellaneous',
-        'extra',
-        'extras',
-      ],
+      folderNames: ['other', 'others', 'misc', 'miscellaneous', 'extra', 'extras'],
     },
     {
       name: 'folder-typescript',
@@ -258,25 +178,11 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-ci', folderNames: ['.ci', 'ci'] },
     {
       name: 'folder-benchmark',
-      folderNames: [
-        'benchmark',
-        'benchmarks',
-        'performance',
-        'measure',
-        'measures',
-        'measurement',
-      ],
+      folderNames: ['benchmark', 'benchmarks', 'performance', 'measure', 'measures', 'measurement'],
     },
     {
       name: 'folder-messages',
-      folderNames: [
-        'messages',
-        'forum',
-        'chat',
-        'chats',
-        'conversation',
-        'conversations',
-      ],
+      folderNames: ['messages', 'forum', 'chat', 'chats', 'conversation', 'conversations'],
     },
     { name: 'folder-less', folderNames: ['less'] },
     {
@@ -287,27 +193,12 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-fastlane', folderNames: ['fastlane'] },
     {
       name: 'folder-plugin',
-      folderNames: [
-        'plugin',
-        'plugins',
-        '_plugins',
-        'extension',
-        'extensions',
-        'addon',
-        'addons',
-      ],
+      folderNames: ['plugin', 'plugins', '_plugins', 'extension', 'extensions', 'addon', 'addons'],
     },
     { name: 'folder-middleware', folderNames: ['middleware', 'middlewares'] },
     {
       name: 'folder-controller',
-      folderNames: [
-        'controller',
-        'controllers',
-        'service',
-        'services',
-        'provider',
-        'providers',
-      ],
+      folderNames: ['controller', 'controllers', 'service', 'services', 'provider', 'providers'],
     },
     { name: 'folder-ansible', folderNames: ['ansible'] },
     { name: 'folder-server', folderNames: ['server', 'servers', 'backend'] },
@@ -324,15 +215,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-app', folderNames: ['app', 'apps'] },
     {
       name: 'folder-archive',
-      folderNames: [
-        'archive',
-        'archives',
-        'archival',
-        'backup',
-        'backups',
-        'back-up',
-        'back-ups',
-      ],
+      folderNames: ['archive', 'archives', 'archival', 'backup', 'backups', 'back-up', 'back-ups'],
     },
     { name: 'folder-batch', folderNames: ['batch', 'batchs', 'batches'] },
     { name: 'folder-cluster', folderNames: ['cluster', 'clusters'] },
@@ -348,14 +231,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-dump', folderNames: ['dump', 'dumps'] },
     {
       name: 'folder-examples',
-      folderNames: [
-        'example',
-        'examples',
-        'sample',
-        'samples',
-        'demo',
-        'demos',
-      ],
+      folderNames: ['example', 'examples', 'sample', 'samples', 'demo', 'demos'],
     },
     {
       name: 'folder-environment',
@@ -367,15 +243,7 @@ export const FOLDER_THEME: FolderTheme = {
     },
     {
       name: 'folder-generator',
-      folderNames: [
-        'generator',
-        'generators',
-        'generated',
-        'cfn-gen',
-        'gen',
-        'gens',
-        'auto',
-      ],
+      folderNames: ['generator', 'generators', 'generated', 'cfn-gen', 'gen', 'gens', 'auto'],
     },
     {
       name: 'folder-hook',
@@ -410,16 +278,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-custom', folderNames: ['custom', 'customs'] },
     {
       name: 'folder-mock',
-      folderNames: [
-        'mock',
-        'mocks',
-        'draft',
-        'drafts',
-        'concept',
-        'concepts',
-        'sketch',
-        'sketches',
-      ],
+      folderNames: ['mock', 'mocks', 'draft', 'drafts', 'concept', 'concepts', 'sketch', 'sketches'],
     },
     {
       name: 'folder-syntax',
@@ -430,14 +289,7 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-flow', folderNames: ['flow-typed'] },
     {
       name: 'folder-rules',
-      folderNames: [
-        'rule',
-        'rules',
-        'validation',
-        'validations',
-        'validator',
-        'validators',
-      ],
+      folderNames: ['rule', 'rules', 'validation', 'validations', 'validator', 'validators'],
     },
     {
       name: 'folder-review',
@@ -452,4 +304,4 @@ export const FOLDER_THEME: FolderTheme = {
     { name: 'folder-pipe', folderNames: ['pipe', 'pipes'] },
     { name: 'folder-svg', folderNames: ['svg', 'svgs'] },
   ],
-};
+}

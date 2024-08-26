@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { ModuleWithProviders, NgModule } from '@angular/core';
-import { NgeElementDetectorDirective } from './nge-element-detector.directive';
-import { NGE_ELEMENTS, NgeElementDef } from './nge-element';
+import { CommonModule } from '@angular/common'
+import { ModuleWithProviders, NgModule } from '@angular/core'
+import { NgeElementDetectorDirective } from './nge-element-detector.directive'
+import { NGE_ELEMENTS, NgeElementDef } from './nge-element'
 
 @NgModule({
   imports: [CommonModule],
@@ -9,9 +9,7 @@ import { NGE_ELEMENTS, NgeElementDef } from './nge-element';
   exports: [NgeElementDetectorDirective],
 })
 export class NgeElementModule {
-  static forRoot(
-    elements: NgeElementDef[]
-  ): ModuleWithProviders<NgeElementModule> {
+  static forRoot(elements: NgeElementDef[]): ModuleWithProviders<NgeElementModule> {
     return {
       ngModule: NgeElementModule,
       providers: [
@@ -20,6 +18,6 @@ export class NgeElementModule {
           useValue: elements,
         },
       ],
-    };
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, TemplateRef } from '@angular/core';
+import { Pipe, PipeTransform, TemplateRef } from '@angular/core'
 
 @Pipe({
   name: 'isstring',

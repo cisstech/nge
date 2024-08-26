@@ -1,5 +1,5 @@
-import { Component, ContentChild, TemplateRef, Input } from '@angular/core';
-import { ListContext, ListTemplateSlots } from './list';
+import { Component, ContentChild, TemplateRef, Input } from '@angular/core'
+import { ListContext, ListTemplateSlots } from './list'
 
 @Component({
   selector: 'ui-list-template',
@@ -7,11 +7,11 @@ import { ListContext, ListTemplateSlots } from './list';
 })
 export class ListTemplateComponent<T> {
   @ContentChild(TemplateRef)
-  template?: TemplateRef<ListContext<T>>;
+  template?: TemplateRef<ListContext<T>>
 
   @Input()
-  slot?: ListTemplateSlots;
+  slot?: ListTemplateSlots
 
   @Input()
-  when?: (context: T | ListContext<T>) => boolean;
+  when?: (context: T | ListContext<T>) => boolean
 }

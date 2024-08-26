@@ -4,37 +4,37 @@ export interface DefaultIcon {
   /**
    * Name of the icon, e.g. 'src'
    */
-  name: string;
+  name: string
 }
 
 export interface FileIcon {
   /**
    * Name of the icon, e.g. 'javascript'
    */
-  name: string;
+  name: string
 
   /**
    * Define the file extensions that should use this icon.
    * E.g. ['js']
    */
-  fileExtensions?: string[];
+  fileExtensions?: string[]
 
   /**
    * Define if there are some static file names that should apply this icon.
    * E.g. ['sample.js']
    */
-  fileNames?: string[];
+  fileNames?: string[]
 }
 
 export interface FileTheme {
   /**
    * Define the default icon for folders.
    */
-  defaultIcon: DefaultIcon;
+  defaultIcon: DefaultIcon
   /**
    * Defines all folder icons.
    */
-  icons: FileIcon[];
+  icons: FileIcon[]
 }
 
 /**
@@ -179,12 +179,7 @@ export const FILE_THEME: FileTheme = {
     { name: 'table', fileExtensions: ['xlsx', 'xls', 'csv', 'tsv'] },
     {
       name: 'vscode',
-      fileExtensions: [
-        'vscodeignore',
-        'vsixmanifest',
-        'vsix',
-        'code-workplace',
-      ],
+      fileExtensions: ['vscodeignore', 'vsixmanifest', 'vsix', 'code-workplace'],
     },
     {
       name: 'visualstudio',
@@ -203,35 +198,12 @@ export const FILE_THEME: FileTheme = {
     },
     {
       name: 'database',
-      fileExtensions: [
-        'pdb',
-        'sql',
-        'pks',
-        'pkb',
-        'accdb',
-        'mdb',
-        'sqlite',
-        'pgsql',
-        'postgres',
-        'psql',
-      ],
+      fileExtensions: ['pdb', 'sql', 'pks', 'pkb', 'accdb', 'mdb', 'sqlite', 'pgsql', 'postgres', 'psql'],
     },
     { name: 'csharp', fileExtensions: ['cs', 'csx'] },
     {
       name: 'zip',
-      fileExtensions: [
-        'zip',
-        'tar',
-        'gz',
-        'xz',
-        'br',
-        'bzip2',
-        'gzip',
-        'brotli',
-        '7z',
-        'rar',
-        'tgz',
-      ],
+      fileExtensions: ['zip', 'tar', 'gz', 'xz', 'br', 'bzip2', 'gzip', 'brotli', '7z', 'rar', 'tgz'],
     },
     { name: 'exe', fileExtensions: ['exe', 'msi'] },
     { name: 'java', fileExtensions: ['java', 'jar', 'jsp'] },
@@ -244,28 +216,12 @@ export const FILE_THEME: FileTheme = {
     {
       name: 'python-misc',
       fileExtensions: ['pyc', 'whl'],
-      fileNames: [
-        'requirements.txt',
-        'pipfile',
-        '.python-version',
-        'manifest.in',
-      ],
+      fileNames: ['requirements.txt', 'pipfile', '.python-version', 'manifest.in'],
     },
     { name: 'url', fileExtensions: ['url'] },
     {
       name: 'console',
-      fileExtensions: [
-        'sh',
-        'ksh',
-        'csh',
-        'tcsh',
-        'zsh',
-        'bash',
-        'bat',
-        'cmd',
-        'awk',
-        'fish',
-      ],
+      fileExtensions: ['sh', 'ksh', 'csh', 'tcsh', 'zsh', 'bash', 'bat', 'cmd', 'awk', 'fish'],
     },
     {
       name: 'powershell',
@@ -280,14 +236,7 @@ export const FILE_THEME: FileTheme = {
     {
       name: 'certificate',
       fileExtensions: ['cer', 'cert', 'crt'],
-      fileNames: [
-        'license',
-        'license.md',
-        'license.txt',
-        'licence',
-        'licence.md',
-        'licence.txt',
-      ],
+      fileNames: ['license', 'license.md', 'license.txt', 'licence', 'licence.md', 'licence.txt'],
     },
     {
       name: 'key',
@@ -340,18 +289,7 @@ export const FILE_THEME: FileTheme = {
     { name: 'tex', fileExtensions: ['tex', 'cls', 'sty'] },
     {
       name: 'powerpoint',
-      fileExtensions: [
-        'pptx',
-        'ppt',
-        'pptm',
-        'potx',
-        'potm',
-        'ppsx',
-        'ppsm',
-        'pps',
-        'ppam',
-        'ppa',
-      ],
+      fileExtensions: ['pptx', 'ppt', 'pptm', 'potx', 'potm', 'ppsx', 'ppsm', 'pps', 'ppam', 'ppa'],
     },
     {
       name: 'video',
@@ -398,14 +336,7 @@ export const FILE_THEME: FileTheme = {
     {
       name: 'git',
       fileExtensions: ['patch'],
-      fileNames: [
-        '.gitignore',
-        '.gitconfig',
-        '.gitattributes',
-        '.gitmodules',
-        '.gitkeep',
-        'git-history',
-      ],
+      fileNames: ['.gitignore', '.gitconfig', '.gitattributes', '.gitmodules', '.gitkeep', 'git-history'],
     },
     { name: 'lua', fileExtensions: ['lua'], fileNames: ['.luacheckrc'] },
     { name: 'clojure', fileExtensions: ['clj', 'cljs', 'cljc'] },
@@ -424,20 +355,7 @@ export const FILE_THEME: FileTheme = {
     },
     {
       name: 'assembly',
-      fileExtensions: [
-        'asm',
-        'a51',
-        'inc',
-        'nasm',
-        's',
-        'ms',
-        'agc',
-        'ags',
-        'aea',
-        'argus',
-        'mitigus',
-        'binsource',
-      ],
+      fileExtensions: ['asm', 'a51', 'inc', 'nasm', 's', 'ms', 'agc', 'ags', 'aea', 'argus', 'mitigus', 'binsource'],
     },
     { name: 'vue', fileExtensions: ['vue'] },
     { name: 'vue-config', fileNames: ['vue.config.js', 'vue.config.ts'] },
@@ -457,14 +375,7 @@ export const FILE_THEME: FileTheme = {
     { name: 'test-ts', fileExtensions: ['spec.ts', 'test.ts', 'ts.snap'] },
     {
       name: 'test-jsx',
-      fileExtensions: [
-        'spec.tsx',
-        'test.tsx',
-        'tsx.snap',
-        'spec.jsx',
-        'test.jsx',
-        'jsx.snap',
-      ],
+      fileExtensions: ['spec.tsx', 'test.tsx', 'tsx.snap', 'spec.jsx', 'test.jsx', 'jsx.snap'],
     },
     { name: 'test-js', fileExtensions: ['spec.js', 'test.js', 'js.snap'] },
     {
@@ -621,13 +532,7 @@ export const FILE_THEME: FileTheme = {
     { name: 'npm', fileNames: ['.npmignore', '.npmrc'] },
     {
       name: 'yarn',
-      fileNames: [
-        '.yarnrc',
-        'yarn.lock',
-        '.yarnclean',
-        '.yarn-integrity',
-        'yarn-error.log',
-      ],
+      fileNames: ['.yarnrc', 'yarn.lock', '.yarnclean', '.yarn-integrity', 'yarn-error.log'],
     },
     { name: 'android', fileNames: ['androidmanifest.xml'] },
     {
@@ -703,14 +608,7 @@ export const FILE_THEME: FileTheme = {
     { name: 'bower', fileNames: ['.bowerrc', 'bower.json'] },
     {
       name: 'eslint',
-      fileNames: [
-        '.eslintrc.js',
-        '.eslintrc.yaml',
-        '.eslintrc.yml',
-        '.eslintrc.json',
-        '.eslintrc',
-        '.eslintignore',
-      ],
+      fileNames: ['.eslintrc.js', '.eslintrc.yaml', '.eslintrc.yml', '.eslintrc.json', '.eslintrc', '.eslintignore'],
     },
     {
       name: 'conduct',
@@ -720,14 +618,7 @@ export const FILE_THEME: FileTheme = {
     { name: 'aurelia', fileNames: ['aurelia.json'] },
     {
       name: 'mocha',
-      fileNames: [
-        'mocha.opts',
-        '.mocharc.yml',
-        '.mocharc.yaml',
-        '.mocharc.js',
-        '.mocharc.json',
-        '.mocharc.jsonc',
-      ],
+      fileNames: ['mocha.opts', '.mocharc.yml', '.mocharc.yaml', '.mocharc.js', '.mocharc.json', '.mocharc.jsonc'],
     },
     { name: 'jenkins', fileNames: ['jenkinsfile'] },
     { name: 'firebase', fileNames: ['firebase.json', '.firebaserc'] },
@@ -789,13 +680,7 @@ export const FILE_THEME: FileTheme = {
     { name: 'sequelize', fileNames: ['.sequelizerc'] },
     {
       name: 'gatsby',
-      fileNames: [
-        'gatsby.config.js',
-        'gatsby-config.js',
-        'gatsby-node.js',
-        'gatsby-browser.js',
-        'gatsby-ssr.js',
-      ],
+      fileNames: ['gatsby.config.js', 'gatsby-config.js', 'gatsby-node.js', 'gatsby-browser.js', 'gatsby-ssr.js'],
     },
     {
       name: 'wakatime',
@@ -893,4 +778,4 @@ export const FILE_THEME: FileTheme = {
     { name: 'svg', fileExtensions: ['svg'] },
     { name: 'svelte', fileExtensions: ['svelte'] },
   ],
-};
+}

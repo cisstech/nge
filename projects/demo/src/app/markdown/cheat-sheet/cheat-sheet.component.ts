@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { lastValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http'
+import { Component, OnInit } from '@angular/core'
+import { lastValueFrom } from 'rxjs'
 
 @Component({
   selector: 'app-markdown-cheat-sheet',
@@ -26,15 +26,15 @@ export class CheatSheetComponent implements OnInit {
     'Latex',
     'Admonitions',
     'TabbedSet',
-  ];
+  ]
 
   readonly contents: Record<
     string,
     {
-      expanded: boolean;
-      markdown: string;
+      expanded: boolean
+      markdown: string
     }
-  > = {};
+  > = {}
 
   constructor(private readonly http: HttpClient) {}
 
@@ -43,30 +43,25 @@ export class CheatSheetComponent implements OnInit {
       this.contents[e] = {
         expanded: false,
         markdown: '',
-      };
-    });
+      }
+    })
   }
 
   load(title: string) {
-    const record = this.contents[title];
+    const record = this.contents[title]
     if (record.expanded) {
-      return;
+      return
     }
-    record.expanded = true;
+    record.expanded = true
 
-    const url =
-      'assets/docs/nge-markdown/cheatsheet/' +
-      title.toLowerCase().replace(' ', '-') +
-      '.md';
+    const url = 'assets/docs/nge-markdown/cheatsheet/' + title.toLowerCase().replace(' ', '-') + '.md'
 
-    lastValueFrom(this.http.get(url, { responseType: 'text' })).then(
-      (markdown) => {
-        record.markdown = markdown;
-      }
-    );
+    lastValueFrom(this.http.get(url, { responseType: 'text' })).then((markdown) => {
+      record.markdown = markdown
+    })
   }
 
   trackBy(index: number) {
-    return index;
+    return index
   }
 }

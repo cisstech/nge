@@ -1,25 +1,21 @@
-import type { Renderer, Tokenizer, TokensList, marked } from 'marked';
-import { NgeMarkdownConfig } from './nge-markdown-config';
+import type { Renderer, Tokenizer, TokensList, marked } from 'marked'
+import { NgeMarkdownConfig } from './nge-markdown-config'
 
-declare type AstTransformer = (tokens: TokensList) => TokensList;
-declare type HtmlTransformer = (element: HTMLElement) => void;
-declare type MarkdownTransformer = (markdown: string) => string;
-declare type RendererTransformer = (
-  renderer: Renderer
-) => Renderer;
-declare type TokenizerTransformer = (
-  tokenizer: Tokenizer
-) => Tokenizer;
+declare type AstTransformer = (tokens: TokensList) => TokensList
+declare type HtmlTransformer = (element: HTMLElement) => void
+declare type MarkdownTransformer = (markdown: string) => string
+declare type RendererTransformer = (renderer: Renderer) => Renderer
+declare type TokenizerTransformer = (tokenizer: Tokenizer) => Tokenizer
 
 /**
  * Nge markdown transformer used by the contributions.
  */
 export class NgeMarkdownTransformer {
-  private readonly astTransformers: AstTransformer[] = [];
-  private readonly htmlTransformers: HtmlTransformer[] = [];
-  private readonly markdownTransformers: MarkdownTransformer[] = [];
-  private readonly rendererTransformers: RendererTransformer[] = [];
-  private readonly tokenizerTransformers: TokenizerTransformer[] = [];
+  private readonly astTransformers: AstTransformer[] = []
+  private readonly htmlTransformers: HtmlTransformer[] = []
+  private readonly markdownTransformers: MarkdownTransformer[] = []
+  private readonly rendererTransformers: RendererTransformer[] = []
+  private readonly tokenizerTransformers: TokenizerTransformer[] = []
 
   constructor(
     /** Configuration option */
@@ -32,10 +28,10 @@ export class NgeMarkdownTransformer {
    */
   addAstTransformer(transform: AstTransformer) {
     if (transform == null) {
-      throw new ReferenceError('argument "transform" is required');
+      throw new ReferenceError('argument "transform" is required')
     }
 
-    this.astTransformers.push(transform);
+    this.astTransformers.push(transform)
   }
 
   /**
@@ -44,10 +40,10 @@ export class NgeMarkdownTransformer {
    */
   addHtmlTransformer(transformer: HtmlTransformer) {
     if (transformer == null) {
-      throw new ReferenceError('argument "transform" is required');
+      throw new ReferenceError('argument "transform" is required')
     }
 
-    this.htmlTransformers.push(transformer);
+    this.htmlTransformers.push(transformer)
   }
 
   /**
@@ -56,10 +52,10 @@ export class NgeMarkdownTransformer {
    */
   addMarkdownTransformer(transform: MarkdownTransformer) {
     if (transform == null) {
-      throw new ReferenceError('argument "transform" is required');
+      throw new ReferenceError('argument "transform" is required')
     }
 
-    this.markdownTransformers.push(transform);
+    this.markdownTransformers.push(transform)
   }
 
   /**
@@ -68,10 +64,10 @@ export class NgeMarkdownTransformer {
    */
   addRendererTransformer(transform: RendererTransformer) {
     if (transform == null) {
-      throw new ReferenceError('argument "transform" is required');
+      throw new ReferenceError('argument "transform" is required')
     }
 
-    this.rendererTransformers.push(transform);
+    this.rendererTransformers.push(transform)
   }
 
   /**
@@ -80,10 +76,10 @@ export class NgeMarkdownTransformer {
    */
   addTokenizerTransformer(transform: TokenizerTransformer) {
     if (transform == null) {
-      throw new ReferenceError('argument "transform" is required');
+      throw new ReferenceError('argument "transform" is required')
     }
 
-    this.tokenizerTransformers.push(transform);
+    this.tokenizerTransformers.push(transform)
   }
 
   /**
@@ -93,14 +89,14 @@ export class NgeMarkdownTransformer {
    */
   transformAst(ast: TokensList): TokensList {
     if (ast == null) {
-      throw new ReferenceError('argument "ast" is required');
+      throw new ReferenceError('argument "ast" is required')
     }
 
     for (const fn of this.astTransformers) {
-      ast = fn(ast);
+      ast = fn(ast)
     }
 
-    return ast;
+    return ast
   }
 
   /**
@@ -110,14 +106,14 @@ export class NgeMarkdownTransformer {
    */
   transformHTML(element: HTMLElement) {
     if (element == null) {
-      throw new ReferenceError('argument "html" is required');
+      throw new ReferenceError('argument "html" is required')
     }
 
     for (const fn of this.htmlTransformers) {
-      fn(element);
+      fn(element)
     }
 
-    return element;
+    return element
   }
 
   /**
@@ -127,14 +123,14 @@ export class NgeMarkdownTransformer {
    */
   transformMarkdown(markdown: string): string {
     if (markdown == null) {
-      throw new ReferenceError('argument "markdown" is required');
+      throw new ReferenceError('argument "markdown" is required')
     }
 
     for (const fn of this.markdownTransformers) {
-      markdown = fn(markdown);
+      markdown = fn(markdown)
     }
 
-    return markdown;
+    return markdown
   }
 
   /**
@@ -144,14 +140,14 @@ export class NgeMarkdownTransformer {
    */
   transformRenderer(renderer: Renderer): Renderer {
     if (renderer == null) {
-      throw new ReferenceError('argument "renderer" is required');
+      throw new ReferenceError('argument "renderer" is required')
     }
 
     for (const fn of this.rendererTransformers) {
-      renderer = fn(renderer);
+      renderer = fn(renderer)
     }
 
-    return renderer;
+    return renderer
   }
 
   /**
@@ -161,14 +157,14 @@ export class NgeMarkdownTransformer {
    */
   transformTokenizer(tokenizer: Tokenizer): Tokenizer {
     if (tokenizer == null) {
-      throw new ReferenceError('argument "tokenizer" is required');
+      throw new ReferenceError('argument "tokenizer" is required')
     }
 
     for (const fn of this.tokenizerTransformers) {
-      tokenizer = fn(tokenizer);
+      tokenizer = fn(tokenizer)
     }
 
-    return tokenizer;
+    return tokenizer
   }
 
   /**
@@ -177,14 +173,14 @@ export class NgeMarkdownTransformer {
    * @returns A promise that resolves once the element is loaded.
    */
   addStyle(url: string) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = url;
-    document.body.appendChild(link);
+    const link = document.createElement('link')
+    link.rel = 'stylesheet'
+    link.href = url
+    document.body.appendChild(link)
     return new Promise<any>((resolve, reject) => {
-      link.onload = resolve;
-      link.onerror = reject;
-    });
+      link.onload = resolve
+      link.onerror = reject
+    })
   }
 
   /**
@@ -193,14 +189,14 @@ export class NgeMarkdownTransformer {
    * @returns A promise that resolves once the element is loaded.
    */
   addScript(url: string) {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-    script.defer = true;
-    document.body.appendChild(script);
+    const script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.src = url
+    script.defer = true
+    document.body.appendChild(script)
     return new Promise<any>((resolve, reject) => {
-      script.onload = resolve;
-      script.onerror = reject;
-    });
+      script.onload = resolve
+      script.onerror = reject
+    })
   }
 }

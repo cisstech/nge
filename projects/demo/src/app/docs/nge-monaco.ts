@@ -1,4 +1,4 @@
-import { NgeDocSettings } from '@cisstech/nge/doc';
+import { NgeDocSettings } from '@cisstech/nge/doc'
 
 export const NGE_MONACO: NgeDocSettings = {
   meta: {
@@ -30,10 +30,7 @@ export const NGE_MONACO: NgeDocSettings = {
     {
       title: 'Showcase',
       href: 'showcase',
-      renderer: () =>
-        import('../monaco/showcase/showcase.module').then(
-          (m) => m.ShowcaseModule
-        ),
+      renderer: () => import('../monaco/showcase/showcase.module').then((m) => m.ShowcaseModule),
     },
   ],
-};
+}

@@ -1,12 +1,12 @@
-import { Inject, Injectable, Optional } from '@angular/core';
-import { MarkedOptions, marked } from 'marked';
-import { NgeMarkdownContribution } from './nge-markdown-contribution';
-import { NgeMarkdownConfig, NGE_MARKDOWN_CONFIG } from './nge-markdown-config';
-import { NgeMarkdownTransformer } from './nge-markdown-transformer';
-import { ResourceLoaderService } from '@cisstech/nge/services';
-import { lastValueFrom } from 'rxjs';
+import { Inject, Injectable, Optional } from '@angular/core'
+import { MarkedOptions, marked } from 'marked'
+import { NgeMarkdownContribution } from './nge-markdown-contribution'
+import { NgeMarkdownConfig, NGE_MARKDOWN_CONFIG } from './nge-markdown-config'
+import { NgeMarkdownTransformer } from './nge-markdown-transformer'
+import { ResourceLoaderService } from '@cisstech/nge/services'
+import { lastValueFrom } from 'rxjs'
 
-const WINDOW = window as any;
+const WINDOW = window as any
 
 /**
  * Markdown compiler service.
@@ -21,7 +21,7 @@ export class NgeMarkdownService {
     readonly config: NgeMarkdownConfig,
     private readonly resourceLoader: ResourceLoaderService
   ) {
-    this.config = config || {};
+    this.config = config || {}
   }
 
   /**
@@ -31,44 +31,42 @@ export class NgeMarkdownService {
    * (with the modifications of the contributions).
    */
   async compile(options: NgeMarkdownCompileOptions) {
-    let markdown = this.trimIndent(options.markdown);
+    let markdown = this.trimIndent(options.markdown)
     if (options.isHtmlString) {
-      markdown = this.decodeHtml(markdown);
+      markdown = this.decodeHtml(markdown)
     }
 
-    const transformer = await this.createTransformer(options);
-    const renderer = this.renderer(transformer);
-    const tokenizer = this.tokenizer(transformer);
+    const transformer = await this.createTransformer(options)
+    const renderer = this.renderer(transformer)
+    const tokenizer = this.tokenizer(transformer)
 
     const markedOptions: MarkedOptions = {
       gfm: true,
       ...this.config,
       renderer,
       tokenizer,
-    };
+    }
 
-    markdown = transformer.transformMarkdown(markdown);
+    markdown = transformer.transformMarkdown(markdown)
 
-    const tokens = transformer.transformAst(
-      marked.lexer(markdown, markedOptions)
-    );
+    const tokens = transformer.transformAst(marked.lexer(markdown, markedOptions))
 
-    options.target.innerHTML = marked.parser(tokens, markedOptions);
+    options.target.innerHTML = marked.parser(tokens, markedOptions)
 
-    transformer.transformHTML(options.target);
+    transformer.transformHTML(options.target)
 
-    return tokens;
+    return tokens
   }
 
   private async createTransformer(options: NgeMarkdownCompileOptions) {
-    const contributions = [...(options.contributions || [])];
-    const transformer = new NgeMarkdownTransformer(this.config);
-    const dependencies: any[] = [];
+    const contributions = [...(options.contributions || [])]
+    const transformer = new NgeMarkdownTransformer(this.config)
+    const dependencies: any[] = []
     for (const contrib of contributions) {
       if (contrib.dependencies) {
-        dependencies.push(...contrib.dependencies());
+        dependencies.push(...contrib.dependencies())
       }
-      contrib.contribute(transformer);
+      contrib.contribute(transformer)
     }
 
     // Try to fix the issues described here by loading monaco editor
@@ -76,53 +74,47 @@ export class NgeMarkdownService {
     // https://stackoverflow.com/a/33635881
     // https://github.com/microsoft/monaco-editor/issues/662
     // https://github.com/microsoft/monaco-editor/issues/1249
-    const define = WINDOW.define;
-    WINDOW.define = undefined;
-    await lastValueFrom(this.resourceLoader.loadAllSync(dependencies));
-    WINDOW.define = define;
-    return transformer;
+    const define = WINDOW.define
+    WINDOW.define = undefined
+    await lastValueFrom(this.resourceLoader.loadAllSync(dependencies))
+    WINDOW.define = define
+    return transformer
   }
 
   private renderer(transformer: NgeMarkdownTransformer) {
-    const renderer = transformer.transformRenderer(
-      this.config?.renderer || new marked.Renderer()
-    );
-    return renderer;
+    const renderer = transformer.transformRenderer(this.config?.renderer || new marked.Renderer())
+    return renderer
   }
 
   private tokenizer(transformer: NgeMarkdownTransformer) {
-    return transformer.transformTokenizer(
-      this.config?.tokenizer || new marked.Tokenizer()
-    );
+    return transformer.transformTokenizer(this.config?.tokenizer || new marked.Tokenizer())
   }
 
   private decodeHtml(html: string): string {
-    const textarea = document.createElement('textarea');
-    textarea.innerHTML = html;
-    return textarea.value;
+    const textarea = document.createElement('textarea')
+    textarea.innerHTML = html
+    return textarea.value
   }
 
   private trimIndent(markdown: string): string {
     if (!markdown) {
-      return '';
+      return ''
     }
 
-    let indentStart: number;
+    let indentStart: number
     return markdown
       .split('\n')
       .map((line) => {
-        let lineIdentStart = indentStart;
+        let lineIdentStart = indentStart
         if (line.length > 0) {
-          lineIdentStart = isNaN(lineIdentStart)
-            ? line.search(/\S|$/)
-            : Math.min(line.search(/\S|$/), lineIdentStart);
+          lineIdentStart = isNaN(lineIdentStart) ? line.search(/\S|$/) : Math.min(line.search(/\S|$/), lineIdentStart)
         }
         if (isNaN(indentStart)) {
-          indentStart = lineIdentStart;
+          indentStart = lineIdentStart
         }
-        return !!lineIdentStart ? line.substring(lineIdentStart) : line;
+        return !!lineIdentStart ? line.substring(lineIdentStart) : line
       })
-      .join('\n');
+      .join('\n')
   }
 }
 
@@ -131,11 +123,11 @@ export class NgeMarkdownService {
  */
 interface NgeMarkdownCompileOptions {
   /** Markdown string to compile. */
-  markdown: string;
+  markdown: string
   /** HTMLElement on which to render the compiled markdown.  */
-  target: HTMLElement;
+  target: HTMLElement
   /** Is the markdown contains html code? */
-  isHtmlString?: boolean;
+  isHtmlString?: boolean
   /** List of contribution to use during the compilation. */
-  contributions?: NgeMarkdownContribution[];
+  contributions?: NgeMarkdownContribution[]
 }

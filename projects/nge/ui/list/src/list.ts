@@ -1,34 +1,28 @@
 export interface ListContext<T> {
-  item: T;
-  items: T[];
+  item: T
+  items: T[]
   /** The index of the current item in the iterable. */
-  index: number;
+  index: number
   /** True when the item is the first item in the iterable. */
-  first: boolean;
+  first: boolean
   /** True when the item is the last item in the iterable. */
-  last: boolean;
+  last: boolean
   /** True when the item has an even index in the iterable. */
-  even: boolean;
+  even: boolean
   /** True when the item has an odd index in the iterable. */
-  odd: boolean;
+  odd: boolean
 }
 
-export type ListTemplateSlots =
-  | 'row'
-  | 'empty'
-  | 'header'
-  | 'noresult'
-  | 'selection';
+export type ListTemplateSlots = 'row' | 'empty' | 'header' | 'noresult' | 'selection'
 
 export interface ListAction<T> {
-  color?: string;
-  side?: 'start' | 'end';
-  icon?: string;
-  text?: string;
-  when?: (item: T) => boolean;
-  action: (item: T) => void | Promise<void>;
+  color?: string
+  side?: 'start' | 'end'
+  icon?: string
+  text?: string
+  when?: (item: T) => boolean
+  action: (item: T) => void | Promise<void>
 }
-
 
 export interface ListItemTag<T = any> {
   /**
@@ -39,10 +33,10 @@ export interface ListItemTag<T = any> {
   /**
    * The text to display in the tag. Also passed to articleTagIconTemplate as let-text if defined
    */
-  text: string;
+  text: string
 
   /**
    * Optionnal background color of the tag
    */
-  color?: string;
+  color?: string
 }

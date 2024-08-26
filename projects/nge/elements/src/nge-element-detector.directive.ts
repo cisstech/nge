@@ -1,5 +1,5 @@
-import { AfterViewInit, Directive, OnDestroy } from '@angular/core';
-import { NgeElementService } from './nge-element.service';
+import { AfterViewInit, Directive, OnDestroy } from '@angular/core'
+import { NgeElementService } from './nge-element.service'
 
 // TODO make angular universal compatible using Renderer2
 
@@ -8,65 +8,65 @@ import { NgeElementService } from './nge-element.service';
   selector: 'nge-element-detector, [nge-element-detector]',
 })
 export class NgeElementDetectorDirective implements AfterViewInit, OnDestroy {
-  private observer?: MutationObserver;
-  private listener?: () => void;
+  private observer?: MutationObserver
+  private listener?: () => void
 
   constructor(private readonly elementService: NgeElementService) {}
 
   async ngAfterViewInit(): Promise<void> {
-    let selectors = this.elementService.listUnloadeds();
+    let selectors = this.elementService.listUnloadeds()
     for (const selector of selectors) {
-      const tags = document.getElementsByTagName(selector);
+      const tags = document.getElementsByTagName(selector)
       if (tags?.length) {
-        await this.elementService.loadElement(selector);
-        selectors = selectors.filter((e) => e !== selector);
+        await this.elementService.loadElement(selector)
+        selectors = selectors.filter((e) => e !== selector)
       }
     }
 
-    this.addMutationObserver();
+    this.addMutationObserver()
   }
 
   ngOnDestroy(): void {
-    this.observer?.disconnect();
+    this.observer?.disconnect()
     if (this.listener) {
-      this.listener();
+      this.listener()
     }
   }
 
   private addMutationObserver(): void {
-    const target = document.body;
-    let unloadedTags = this.elementService.listUnloadeds();
+    const target = document.body
+    let unloadedTags = this.elementService.listUnloadeds()
     this.observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node instanceof HTMLElement) {
-            unloadedTags = this.checkElementsInNode(node, unloadedTags);
+            unloadedTags = this.checkElementsInNode(node, unloadedTags)
           }
-        });
-      });
-    });
+        })
+      })
+    })
     this.observer.observe(target, {
       subtree: true,
       childList: true,
-    });
+    })
   }
 
   private checkElementsInNode(node: HTMLElement, unloadedTags: string[]) {
     if (!unloadedTags.length) {
-      return unloadedTags;
+      return unloadedTags
     }
 
-    const tagName = node.tagName.toLowerCase();
+    const tagName = node.tagName.toLowerCase()
     if (unloadedTags.includes(tagName)) {
-      unloadedTags = unloadedTags.filter((e) => e !== tagName);
-      this.elementService.loadElement(tagName).catch(console.error);
+      unloadedTags = unloadedTags.filter((e) => e !== tagName)
+      this.elementService.loadElement(tagName).catch(console.error)
     }
 
     for (const child of Array.from(node.childNodes)) {
       if (child instanceof HTMLElement) {
-        unloadedTags = this.checkElementsInNode(child, unloadedTags);
+        unloadedTags = this.checkElementsInNode(child, unloadedTags)
       }
     }
-    return unloadedTags;
+    return unloadedTags
   }
 }

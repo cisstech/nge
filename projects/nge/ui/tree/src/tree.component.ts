@@ -1,4 +1,4 @@
-import { FlatTreeControl } from '@angular/cdk/tree';
+import { FlatTreeControl } from '@angular/cdk/tree'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -9,15 +9,12 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit
-} from '@angular/core';
-import {
-  MatTreeFlatDataSource,
-  MatTreeFlattener
-} from '@angular/material/tree';
-import { BehaviorSubject } from 'rxjs';
-import { CURRENT_VISIBLE_TREES } from './internal';
-import { TreeNodeDirective } from './tree-node.directive';
+  OnInit,
+} from '@angular/core'
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
+import { BehaviorSubject } from 'rxjs'
+import { CURRENT_VISIBLE_TREES } from './internal'
+import { TreeNodeDirective } from './tree-node.directive'
 import {
   INode,
   ITree,
@@ -26,8 +23,8 @@ import {
   ITreeFilter,
   ITreeNodeHolder,
   ITreeState,
-  TreeFilter
-} from './tree.model';
+  TreeFilter,
+} from './tree.model'
 
 @Component({
   selector: 'ui-tree',
@@ -35,35 +32,33 @@ import {
   styleUrls: ['tree.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TreeComponent<T>
-  implements ITree<T>, OnInit, OnChanges, OnDestroy {
-
-  @Input() nodes: T[] = [];
-  @Input() adapter!: ITreeAdapter<T>;
+export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy {
+  @Input() nodes: T[] = []
+  @Input() adapter!: ITreeAdapter<T>
 
   @ContentChild(TreeNodeDirective, { static: true })
-  protected nodeDirective!: TreeNodeDirective<T>;
+  protected nodeDirective!: TreeNodeDirective<T>
 
-  private readonly DATA_TREE_NODE_ID = 'data-tree-node-id';
+  private readonly DATA_TREE_NODE_ID = 'data-tree-node-id'
 
-  private readonly flattener: MatTreeFlattener<T, ITreeNodeHolder<T>>;
-  private readonly dataSource: MatTreeFlatDataSource<T, ITreeNodeHolder<T>>;
+  private readonly flattener: MatTreeFlattener<T, ITreeNodeHolder<T>>
+  private readonly dataSource: MatTreeFlatDataSource<T, ITreeNodeHolder<T>>
 
-  private readonly nodesIndex = new Map<string, ITreeNodeHolder<T>>();
-  private readonly parentsIndex = new Map<string, string>();
-  private readonly hiddenNodes = new Map<string, ITreeNodeHolder<T>>();
-  private readonly selectedNodes = new Map<string, ITreeNodeHolder<T>>();
+  private readonly nodesIndex = new Map<string, ITreeNodeHolder<T>>()
+  private readonly parentsIndex = new Map<string, string>()
+  private readonly hiddenNodes = new Map<string, ITreeNodeHolder<T>>()
+  private readonly selectedNodes = new Map<string, ITreeNodeHolder<T>>()
 
-  private isEmpty = false;
-  private isShiftKeyPressed = false;
-  private activeNode?: ITreeNodeHolder<T>;
-  private stateBeforeSearching: ITreeState | undefined;
+  private isEmpty = false
+  private isShiftKeyPressed = false
+  private activeNode?: ITreeNodeHolder<T>
+  private stateBeforeSearching: ITreeState | undefined
 
-  protected editing: Partial<ITreeEdition<T>> = { text: '', node: undefined };
-  protected readonly visibleNodes = new BehaviorSubject<ITreeNodeHolder<T>[]>([]);
+  protected editing: Partial<ITreeEdition<T>> = { text: '', node: undefined }
+  protected readonly visibleNodes = new BehaviorSubject<ITreeNodeHolder<T>[]>([])
 
-  readonly filter: ITreeFilter = new TreeFilter();
-  readonly controler: FlatTreeControl<ITreeNodeHolder<T>>;
+  readonly filter: ITreeFilter = new TreeFilter()
+  readonly controler: FlatTreeControl<ITreeNodeHolder<T>>
 
   protected get treeHeight(): string {
     return this.adapter?.itemHeight?.toString() || '100%'
@@ -79,306 +74,299 @@ export class TreeComponent<T>
       {
         trackBy: (node) => node,
       }
-    );
+    )
 
     this.flattener = new MatTreeFlattener<T, ITreeNodeHolder<T>>(
       (node, level) => this.transformer(node, level),
       (node) => node.level,
       (node) => node.expandable,
       (node) => this.children(node)
-    );
+    )
 
-    this.dataSource = new MatTreeFlatDataSource(this.controler, this.flattener);
+    this.dataSource = new MatTreeFlatDataSource(this.controler, this.flattener)
   }
 
   ngOnInit(): void {
     if (!this.adapter.id?.trim()) {
-      throw new Error('@Input() adapter.id is required !');
+      throw new Error('@Input() adapter.id is required !')
     }
-    CURRENT_VISIBLE_TREES.set(this.adapter.id, this);
+    CURRENT_VISIBLE_TREES.set(this.adapter.id, this)
   }
 
   ngOnChanges(): void {
     if (!this.adapter) {
-      throw new Error('@Input() adapter is required !');
+      throw new Error('@Input() adapter is required !')
     }
 
-    const requires: (keyof ITreeAdapter<T>)[] = [
-      'id',
-      'idProvider',
-      'nameProvider',
-      'isExpandable',
-      'childrenProvider',
-    ];
+    const requires: (keyof ITreeAdapter<T>)[] = ['id', 'idProvider', 'nameProvider', 'isExpandable', 'childrenProvider']
     for (const key of requires) {
-      const value = this.adapter[key];
+      const value = this.adapter[key]
       if (!value || (typeof value === 'string' && value.trim() === '')) {
-        throw new Error(`@Input() adapter.${key} is required !`);
+        throw new Error(`@Input() adapter.${key} is required !`)
       }
     }
 
-    this.adapter.itemHeight = this.adapter.itemHeight || 32;
-    this.adapter.treeHeight = this.adapter.treeHeight || '100%';
-    this.adapter.keepStateOnChangeNodes =
-      this.adapter.keepStateOnChangeNodes ?? true;
+    this.adapter.itemHeight = this.adapter.itemHeight || 32
+    this.adapter.treeHeight = this.adapter.treeHeight || '100%'
+    this.adapter.keepStateOnChangeNodes = this.adapter.keepStateOnChangeNodes ?? true
 
-    let state: ITreeState | undefined;
+    let state: ITreeState | undefined
     if (this.adapter.keepStateOnChangeNodes) {
-      state = this.saveState();
+      state = this.saveState()
     }
 
-    this.buildIndexes();
+    this.buildIndexes()
 
     if (state) {
-      this.restoreState(state);
+      this.restoreState(state)
     } else {
-      this.unselectAll(false);
-      this.render();
+      this.unselectAll(false)
+      this.render()
     }
   }
 
   ngOnDestroy(): void {
     if (this.adapter?.id) {
-      CURRENT_VISIBLE_TREES.delete(this.adapter.id);
+      CURRENT_VISIBLE_TREES.delete(this.adapter.id)
     }
   }
 
   //#region API
 
   selections(): T[] {
-    return Array.from(this.selectedNodes.values()).map((e) => e.data);
+    return Array.from(this.selectedNodes.values()).map((e) => e.data)
   }
 
   focusedNode(): T | undefined {
-    return this.activeNode?.data;
+    return this.activeNode?.data
   }
 
   isFocused(node: INode<T>): boolean {
     if (node == null) {
-      throw new ReferenceError('Argument "node" is required.');
+      throw new ReferenceError('Argument "node" is required.')
     }
 
     if (!this.activeNode) {
-      return false;
+      return false
     }
 
-    return this.findHolder(node)?.id === this.activeNode.id;
+    return this.findHolder(node)?.id === this.activeNode.id
   }
 
   isExpanded(node: INode<T>): boolean {
     if (node == null) {
-      throw new ReferenceError('Argument "node" is required.');
+      throw new ReferenceError('Argument "node" is required.')
     }
 
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (!holder?.expandable) {
-      return false;
+      return false
     }
 
-    return this.controler.isExpanded(holder);
+    return this.controler.isExpanded(holder)
   }
 
   isSelected(node: INode<T>): boolean {
     if (node == null) {
-      throw new ReferenceError('Argument "node" is required.');
+      throw new ReferenceError('Argument "node" is required.')
     }
 
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (!holder) {
-      return false;
+      return false
     }
 
-    return this.selectedNodes.has(holder.id);
+    return this.selectedNodes.has(holder.id)
   }
 
   focus(node: INode<T>, render = true): void {
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (holder) {
       if (this.activeNode) {
-        this.unselect(this.activeNode, false);
+        this.unselect(this.activeNode, false)
       }
-      this.activeNode = holder;
-      this.select(node, false);
-      this.expandAncestors(holder);
+      this.activeNode = holder
+      this.select(node, false)
+      this.expandAncestors(holder)
       if (render) {
-        this.render();
+        this.render()
       }
-      this.scrollInto(holder);
+      this.scrollInto(holder)
     }
   }
 
   unfocus(): void {
-    this.activeNode = undefined;
-    this.changeDetectorRef.detectChanges();
+    this.activeNode = undefined
+    this.changeDetectorRef.detectChanges()
   }
 
   expand(node: INode<T>, render = true): void {
     if (!node) {
-      return;
+      return
     }
 
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (!holder) {
-      return;
+      return
     }
 
     if (holder.expandable && !this.controler.isExpanded(holder)) {
-      this.controler.expand(holder);
-      this.expandAncestors(holder);
+      this.controler.expand(holder)
+      this.expandAncestors(holder)
       if (render) {
-        this.render();
+        this.render()
       }
     }
   }
 
   expandAll(render = true): void {
     this.controler.dataNodes?.forEach((node) => {
-      this.controler.expand(node);
-    });
+      this.controler.expand(node)
+    })
     // this.controler.expandAll(); // https://github.com/vmware/clarity/issues/4850
     if (render) {
-      this.render();
+      this.render()
     }
   }
 
   collapse(node: INode<T>, render = true): void {
     if (!node) {
-      return;
+      return
     }
 
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (!holder) {
-      return;
+      return
     }
 
     if (holder.expandable && this.controler.isExpanded(holder)) {
-      this.controler.collapse(holder);
+      this.controler.collapse(holder)
       if (this.adapter.onDidCollapse) {
-        this.adapter.onDidCollapse(holder.data);
+        this.adapter.onDidCollapse(holder.data)
       }
       if (render) {
-        this.render();
+        this.render()
       }
     }
   }
 
   collapseAll(render = true): void {
-    this.controler.collapseAll();
+    this.controler.collapseAll()
     if (render) {
-      this.render();
+      this.render()
     }
   }
 
   toggle(node: INode<T>, render = true): void {
     if (!node) {
-      return;
+      return
     }
 
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (holder?.expandable) {
       if (this.controler.isExpanded(holder)) {
-        this.collapse(node, render);
+        this.collapse(node, render)
       } else {
-        this.expand(node, render);
+        this.expand(node, render)
       }
     }
   }
 
   startEdition(node: INode<T>, creation?: boolean): void {
-    if (!this.adapter.onDidEditName) return;
+    if (!this.adapter.onDidEditName) return
 
     if (!node) {
-      throw new ReferenceError('Argument "node" is required.');
+      throw new ReferenceError('Argument "node" is required.')
     }
 
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (holder) {
-      this.unselectAll(false);
-      this.editing.node = holder.data;
-      this.editing.text = creation ? '' : holder.name;
-      this.editing.creation = creation;
-      holder.renaming = !creation;
-      holder.creating = creation;
+      this.unselectAll(false)
+      this.editing.node = holder.data
+      this.editing.text = creation ? '' : holder.name
+      this.editing.creation = creation
+      holder.renaming = !creation
+      holder.creating = creation
       if (holder.expandable && !this.isExpanded(holder)) {
-        this.expand(node);
+        this.expand(node)
       }
     }
 
-    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.detectChanges()
   }
 
   endEdition(): void {
-    const holder = this.findHolder(this.editing.node!);
+    const holder = this.findHolder(this.editing.node!)
     if (holder) {
-      holder.renaming = false;
-      holder.creating = false;
+      holder.renaming = false
+      holder.creating = false
     }
     this.editing = { text: '' }
-    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.detectChanges()
   }
 
   search(filter: ITreeFilter) {
     if (!this.filter.term) {
-      this.stateBeforeSearching = this.saveState();
+      this.stateBeforeSearching = this.saveState()
     }
 
-    this.filter.term = (filter.term || '').trim();
+    this.filter.term = (filter.term || '').trim()
 
     if (!this.filter.term) {
       if (this.stateBeforeSearching) {
-        this.restoreState(this.stateBeforeSearching);
-        this.stateBeforeSearching = undefined;
+        this.restoreState(this.stateBeforeSearching)
+        this.stateBeforeSearching = undefined
       } else {
-        this.hiddenNodes.clear();
-        this.render();
+        this.hiddenNodes.clear()
+        this.render()
       }
-      return;
+      return
     }
 
-    const pattern = this.buildSearchPattern();
+    const pattern = this.buildSearchPattern()
     if (pattern) {
-      this.activeNode = undefined;
-      this.hiddenNodes.clear();
-      this.selectedNodes.clear();
-      this.collapseAll(false);
+      this.activeNode = undefined
+      this.hiddenNodes.clear()
+      this.selectedNodes.clear()
+      this.collapseAll(false)
 
-      const p = pattern;
-      const matches = new Set<string>();
-      const nodes = this.controler.dataNodes || [];
-      const n = nodes.length - 1;
+      const p = pattern
+      const matches = new Set<string>()
+      const nodes = this.controler.dataNodes || []
+      const n = nodes.length - 1
       for (let i = n; i >= 0; i--) {
-        const node = nodes[i];
-        if (matches.has(node.id)) continue;
+        const node = nodes[i]
+        if (matches.has(node.id)) continue
 
         if (node.name.toLowerCase().match(p)) {
-          matches.add(node.id);
+          matches.add(node.id)
           this.iterateAncestors(node, (e) => {
-            this.controler.expand(e);
-            matches.add(e.id);
-          });
+            this.controler.expand(e)
+            matches.add(e.id)
+          })
         } else {
-          this.hiddenNodes.set(node.id, node);
+          this.hiddenNodes.set(node.id, node)
         }
       }
-      this.render();
+      this.render()
     } else {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges()
     }
   }
 
   saveState(): ITreeState {
-    const { term } = this.filter;
-    const dataNodes = this.controler.dataNodes || [];
+    const { term } = this.filter
+    const dataNodes = this.controler.dataNodes || []
     const state: ITreeState = {
       filter: { term },
       active: this.activeNode ? this.activeNode.id : '',
       expandedNodes: dataNodes
         .filter((e) => {
-          return this.controler.isExpanded(e);
+          return this.controler.isExpanded(e)
         })
         .map((e) => e.id),
-    };
-    return state;
+    }
+    return state
   }
 
   restoreState(state: ITreeState): void {
@@ -386,30 +374,30 @@ export class TreeComponent<T>
       active: '',
       filter: new TreeFilter(),
       expandedNodes: [],
-    };
+    }
 
-    state.active = state.active || '';
-    state.filter = state.filter || new TreeFilter();
-    state.expandedNodes = state.expandedNodes || [];
+    state.active = state.active || ''
+    state.filter = state.filter || new TreeFilter()
+    state.expandedNodes = state.expandedNodes || []
 
-    this.hiddenNodes.clear();
-    this.selectedNodes.clear();
+    this.hiddenNodes.clear()
+    this.selectedNodes.clear()
 
-    this.collapseAll(false);
+    this.collapseAll(false)
 
-    const { active, filter, expandedNodes } = state;
+    const { active, filter, expandedNodes } = state
 
     if (filter.term) {
-      this.search(filter);
+      this.search(filter)
     } else {
-      expandedNodes.forEach((node) => this.expand(node, false));
-      this.render();
+      expandedNodes.forEach((node) => this.expand(node, false))
+      this.render()
     }
 
     if (active) {
-      const activeNode = this.findHolder(active);
+      const activeNode = this.findHolder(active)
       if (activeNode) {
-        this.focus(activeNode);
+        this.focus(activeNode)
       }
     }
   }
@@ -419,75 +407,69 @@ export class TreeComponent<T>
   //#region CALLED FROM TEMPLATE
   protected _onEdit(event: Event): void {
     if (this.adapter.onDidEditName) {
-      event.stopPropagation();
+      event.stopPropagation()
 
-      const { node, text, creation } = this.editing;
+      const { node, text, creation } = this.editing
       if (!node) {
-        throw new Error('There is no focused node.');
+        throw new Error('There is no focused node.')
       }
 
-      const isBlur = event instanceof FocusEvent && event.type === 'blur';
-      const isEnter = event instanceof KeyboardEvent && event.key === 'Enter';
-      const isEscape = event instanceof KeyboardEvent && event.key === 'Escape';
+      const isBlur = event instanceof FocusEvent && event.type === 'blur'
+      const isEnter = event instanceof KeyboardEvent && event.key === 'Enter'
+      const isEscape = event instanceof KeyboardEvent && event.key === 'Escape'
 
       if (isEscape) {
-        event.preventDefault();
-        this.endEdition();
+        event.preventDefault()
+        this.endEdition()
       } else if (isBlur || isEnter) {
-        event.preventDefault();
-        const name = text?.trim() || '';
+        event.preventDefault()
+        const name = text?.trim() || ''
         try {
           if (name) {
             this.adapter.onDidEditName({
               node: node,
               text: name,
               creation,
-            });
+            })
           }
         } finally {
-          this.focus(node);
-          this.endEdition();
+          this.focus(node)
+          this.endEdition()
         }
       }
     }
   }
 
   protected _clearFilter(): void {
-    this.search({ term: '' });
+    this.search({ term: '' })
   }
 
   protected _isRenaming(node: INode<T>): boolean {
     if (node == null) {
-      throw new ReferenceError('Argument "node" is required.');
+      throw new ReferenceError('Argument "node" is required.')
     }
 
     if (!this.editing?.node) {
-      return false;
+      return false
     }
 
-    return (
-      !this.editing.creation &&
-      this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node)
-    );
+    return !this.editing.creation && this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node)
   }
 
   protected _isCreating(node: INode<T>): boolean {
     if (node == null) {
-      throw new ReferenceError('Argument "node" is required.');
+      throw new ReferenceError('Argument "node" is required.')
     }
 
     if (!this.editing?.node) {
-      return false;
+      return false
     }
 
-    return (
-      !!this.editing.creation &&
-      this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node)
-    );
+    return !!this.editing.creation && this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node)
   }
 
   protected _trackById(_: number, e: ITreeNodeHolder<T>) {
-    return e.id;
+    return e.id
   }
   //#endregion
 
@@ -495,206 +477,206 @@ export class TreeComponent<T>
 
   @HostListener('document:keyup')
   keyup() {
-    this.isShiftKeyPressed = false;
+    this.isShiftKeyPressed = false
   }
 
   @HostListener('document:keydown', ['$event'])
   keydown($event: KeyboardEvent) {
-    this.isShiftKeyPressed = $event.shiftKey;
+    this.isShiftKeyPressed = $event.shiftKey
     if (this.isTreeContainsEvent($event)) {
-      this.onKeyDown($event);
+      this.onKeyDown($event)
     }
   }
 
   @HostListener('document:click', ['$event'])
   mousedown($event: MouseEvent) {
-    this.changeDetectorRef.detach();
+    this.changeDetectorRef.detach()
     if (this.isTreeContainsEvent($event)) {
-      this.changeDetectorRef.reattach();
-      this.onMouseDown($event);
+      this.changeDetectorRef.reattach()
+      this.onMouseDown($event)
     }
   }
 
   @HostListener('document:contextmenu', ['$event'])
   contextmenu($event: MouseEvent) {
-    this.changeDetectorRef.detach();
+    this.changeDetectorRef.detach()
     if (this.isTreeContainsEvent($event)) {
-      this.changeDetectorRef.reattach();
-      this.onContextMenu($event);
+      this.changeDetectorRef.reattach()
+      this.onContextMenu($event)
     }
   }
 
   private onKeyDown(event: KeyboardEvent): void {
     if (!this.activeNode && !this.isEmpty && !this.selectedNodes.size) {
-      this.focus(this.controler.dataNodes[0]);
+      this.focus(this.controler.dataNodes[0])
     }
 
-    const element = this.activeNode ? this.domNode(this.activeNode) : undefined;
+    const element = this.activeNode ? this.domNode(this.activeNode) : undefined
 
     if (element && this.activeNode) {
       switch (event.key) {
         case 'ArrowUp':
-          event.preventDefault();
-          event.stopPropagation();
-          this.navigate(element, 'up');
-          break;
+          event.preventDefault()
+          event.stopPropagation()
+          this.navigate(element, 'up')
+          break
         case 'ArrowDown':
-          event.preventDefault();
-          event.stopPropagation();
-          this.navigate(element, 'down');
-          break;
+          event.preventDefault()
+          event.stopPropagation()
+          this.navigate(element, 'down')
+          break
         case 'ArrowLeft':
           if (!this.isShiftKeyPressed) {
-            event.preventDefault();
-            event.stopPropagation();
-            this.collapse(this.activeNode, true);
+            event.preventDefault()
+            event.stopPropagation()
+            this.collapse(this.activeNode, true)
           }
-          break;
+          break
         case 'ArrowRight':
           if (!this.isShiftKeyPressed) {
-            event.preventDefault();
-            event.stopPropagation();
-            this.expand(this.activeNode, true);
+            event.preventDefault()
+            event.stopPropagation()
+            this.expand(this.activeNode, true)
           }
-          break;
+          break
         default:
-          this.triggerKeyboardEvent(event);
-          this.triggerFilterEvent(event);
-          break;
+          this.triggerKeyboardEvent(event)
+          this.triggerFilterEvent(event)
+          break
       }
     } else {
-      this.triggerFilterEvent(event);
+      this.triggerFilterEvent(event)
     }
 
     if (event.key === 'Backspace') {
       // prevent browser to navigate back if Backspace is pressed
-      event.preventDefault();
+      event.preventDefault()
     }
   }
 
   private onMouseDown(event: MouseEvent): void {
-    const node = this.findHolderFromEvent(event);
+    const node = this.findHolderFromEvent(event)
     if (!node) {
-      return;
+      return
     }
 
     if (this.isShiftKeyPressed && this.activeNode) {
-      const domStart = this.domNode(this.activeNode);
+      const domStart = this.domNode(this.activeNode)
       if (!domStart) {
-        this.select(node);
-        return;
+        this.select(node)
+        return
       }
 
-      const domEnd = this.domNode(node);
+      const domEnd = this.domNode(node)
       if (!domEnd) {
-        return;
+        return
       }
 
       // select all nodes between the focused and the target node.
 
-      this.unselectAll(false);
+      this.unselectAll(false)
 
-      let cursor = domStart;
-      const y2 = domEnd.getClientRects().item(0)!.top;
-      const y1 = domStart.getClientRects().item(0)!.top;
+      let cursor = domStart
+      const y2 = domEnd.getClientRects().item(0)!.top
+      const y1 = domStart.getClientRects().item(0)!.top
       if (y1 < y2) {
         // traverse down
         do {
-          this.select(cursor, false);
-          cursor = cursor.nextElementSibling as HTMLElement;
-        } while (cursor && !cursor.isEqualNode(domEnd));
+          this.select(cursor, false)
+          cursor = cursor.nextElementSibling as HTMLElement
+        } while (cursor && !cursor.isEqualNode(domEnd))
       } else if (y1 > y2) {
         // traverse up
         do {
-          this.select(cursor, false);
-          cursor = cursor.previousElementSibling as HTMLElement;
-        } while (cursor && !cursor.isEqualNode(domEnd));
+          this.select(cursor, false)
+          cursor = cursor.previousElementSibling as HTMLElement
+        } while (cursor && !cursor.isEqualNode(domEnd))
       }
 
-      this.select(domEnd, false);
-      this.focus(node, true);
+      this.select(domEnd, false)
+      this.focus(node, true)
     } else {
-      this.unselectAll(false);
-      this.toggle(node, false);
-      this.focus(node, true);
+      this.unselectAll(false)
+      this.toggle(node, false)
+      this.focus(node, true)
 
-      const { actions } = this.adapter;
+      const { actions } = this.adapter
       if (actions?.mouse?.click) {
         actions.mouse.click({
           node: node.data,
           event: event,
-        });
+        })
       }
     }
   }
 
   private onContextMenu(e: MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
-    const node = this.findHolderFromEvent(e);
+    const node = this.findHolderFromEvent(e)
     if (node) {
       if (!this.isSelected(node)) {
-        this.unselectAll(false);
+        this.unselectAll(false)
       }
-      this.focus(node, true);
+      this.focus(node, true)
     }
 
-    const { actions } = this.adapter;
+    const { actions } = this.adapter
     if (actions?.mouse?.rightClick) {
       actions.mouse.rightClick({
         node: node?.data,
         event: e,
-      });
+      })
     }
   }
 
   private isTreeContainsEvent(event: Event): boolean {
-    return this.elementRef.nativeElement.contains(event.target as any);
+    return this.elementRef.nativeElement.contains(event.target as any)
   }
 
   private triggerFilterEvent(e: KeyboardEvent) {
     if (e.defaultPrevented || !this.adapter.enableKeyboardFiltering) {
-      return;
+      return
     }
 
     // prevent browser to navigate back if Backspace is pressed
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
-    const { term } = this.filter;
+    const { term } = this.filter
     switch (e.key) {
       case 'Backspace':
         if (term) {
-          this.search({ term: term.slice(0, -1) });
+          this.search({ term: term.slice(0, -1) })
         }
-        break;
+        break
       case ' ':
       case 'Tab':
-        break;
+        break
       default:
         if (e.key.length === 1) {
-          this.search({ term: term + e.key });
+          this.search({ term: term + e.key })
         }
-        break;
+        break
     }
   }
 
   private triggerKeyboardEvent(event: KeyboardEvent): void {
     if (!this.activeNode) {
-      return;
+      return
     }
 
-    const { actions } = this.adapter;
+    const { actions } = this.adapter
     if (actions) {
-      const { keys } = actions;
+      const { keys } = actions
       if (keys) {
-        const action = keys[event.key];
+        const action = keys[event.key]
         if (action) {
           action({
             event: event,
             node: this.activeNode.data,
-          });
+          })
         }
       }
     }
@@ -704,74 +686,72 @@ export class TreeComponent<T>
 
   //#region PRIVATE
   private render(): void {
-    const nodes: ITreeNodeHolder<T>[] = [];
-    const dataNodes = this.controler.dataNodes || [];
-    const expandedNodes = new Set(
-      this.controler.expansionModel.selected.map((node) => node.id)
-    );
+    const nodes: ITreeNodeHolder<T>[] = []
+    const dataNodes = this.controler.dataNodes || []
+    const expandedNodes = new Set(this.controler.expansionModel.selected.map((node) => node.id))
 
-    this.isEmpty = true;
+    this.isEmpty = true
     dataNodes.forEach((node) => {
-      this.isEmpty = false;
+      this.isEmpty = false
       if (this.hiddenNodes.has(node.id)) {
-        return;
+        return
       }
 
-      node.focused = this.isFocused(node);
-      node.expanded = this.isExpanded(node);
-      node.renaming = this._isRenaming(node);
-      node.creating = this._isCreating(node);
-      node.selected = this.isSelected(node);
+      node.focused = this.isFocused(node)
+      node.expanded = this.isExpanded(node)
+      node.renaming = this._isRenaming(node)
+      node.creating = this._isCreating(node)
+      node.selected = this.isSelected(node)
 
       // root nodes are always visible
       if (node.level === 0) {
-        nodes.push(node);
-        return;
+        nodes.push(node)
+        return
       }
 
-      let parent = this.findParent(node);
+      let parent = this.findParent(node)
       while (parent != null) {
         // hide a node if any of its ancestors is not expanded
         if (!expandedNodes.has(parent.id)) {
-          return;
+          return
         }
 
         if (parent.level === 0) {
-          break;
+          break
         }
 
-        parent = this.findParent(parent);
+        parent = this.findParent(parent)
       }
-      nodes.push(node);
-    });
+      nodes.push(node)
+    })
 
-    this.visibleNodes.next(nodes);
+    this.visibleNodes.next(nodes)
 
-    this.changeDetectorRef.detectChanges();
+    this.changeDetectorRef.detectChanges()
   }
 
   private buildIndexes(): void {
-    this.nodesIndex.clear();
-    this.parentsIndex.clear();
-    this.dataSource.data = this.nodes;
+    this.nodesIndex.clear()
+    this.parentsIndex.clear()
+    this.dataSource.data = this.nodes
     this.controler.dataNodes?.forEach((node) => {
-      this.nodesIndex.set(node.id, node);
-    });
+      this.nodesIndex.set(node.id, node)
+    })
   }
 
   private buildSearchPattern(): RegExp | undefined {
-    let pattern: RegExp | undefined;
+    let pattern: RegExp | undefined
     try {
       if (this.filter.term) {
         const escape = (text: string) => {
-          return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-        };
-        pattern = new RegExp(`(${escape(this.filter.term)})`, 'g');
+          return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
+        }
+        pattern = new RegExp(`(${escape(this.filter.term)})`, 'g')
       }
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-    return pattern;
+    return pattern
   }
 
   /**
@@ -779,11 +759,11 @@ export class TreeComponent<T>
    * @param e A node.
    */
   private domNode(e: INode<T>): HTMLElement | null {
-    const node = this.findHolder(e);
+    const node = this.findHolder(e)
     if (!node) {
-      throw new Error(e + ' is not a registered node');
+      throw new Error(e + ' is not a registered node')
     }
-    return document.querySelector(`[${this.DATA_TREE_NODE_ID}="${node.id}"]`);
+    return document.querySelector(`[${this.DATA_TREE_NODE_ID}="${node.id}"]`)
   }
 
   /**
@@ -791,15 +771,15 @@ export class TreeComponent<T>
    * @param node The node to select.
    */
   private select(node: INode<T>, detectChanges: boolean = true): void {
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (!holder) {
-      return;
+      return
     }
 
-    this.selectedNodes.set(holder.id, holder);
+    this.selectedNodes.set(holder.id, holder)
 
     if (detectChanges) {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges()
     }
   }
 
@@ -808,19 +788,19 @@ export class TreeComponent<T>
    * @param node The node to unselect.
    */
   private unselect(node: INode<T>, detectChanges: boolean = true): void {
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (!holder) {
-      return;
+      return
     }
 
-    this.selectedNodes.delete(holder.id);
+    this.selectedNodes.delete(holder.id)
 
     if (holder.id === this.activeNode?.id) {
-      this.activeNode = undefined;
+      this.activeNode = undefined
     }
 
     if (detectChanges) {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges()
     }
   }
 
@@ -828,11 +808,11 @@ export class TreeComponent<T>
    * Clears the selected nodes.
    */
   private unselectAll(detectChanges: boolean = true): void {
-    this.activeNode = undefined;
-    this.selectedNodes.clear();
+    this.activeNode = undefined
+    this.selectedNodes.clear()
 
     if (detectChanges) {
-      this.changeDetectorRef.detectChanges();
+      this.changeDetectorRef.detectChanges()
     }
   }
 
@@ -843,12 +823,12 @@ export class TreeComponent<T>
   private expandAncestors(node: ITreeNodeHolder<T>) {
     this.iterateAncestors(node, (e) => {
       if (e.expandable && !this.controler.isExpanded(e)) {
-        this.controler.expand(e);
+        this.controler.expand(e)
         if (this.adapter.onDidExpand) {
-          this.adapter.onDidExpand(e.data);
+          this.adapter.onDidExpand(e.data)
         }
       }
-    });
+    })
   }
 
   /**
@@ -856,21 +836,18 @@ export class TreeComponent<T>
    * @param node A node reference.
    * @param action A function to call for each ancestor.
    */
-  private iterateAncestors(
-    node: ITreeNodeHolder<T>,
-    action: (e: ITreeNodeHolder<T>) => void
-  ) {
+  private iterateAncestors(node: ITreeNodeHolder<T>, action: (e: ITreeNodeHolder<T>) => void) {
     const recursive = (e: ITreeNodeHolder<T>) => {
-      action(e);
-      const p = this.findParent(e);
+      action(e)
+      const p = this.findParent(e)
       if (p && p.level >= 0) {
-        recursive(p);
+        recursive(p)
       }
-    };
+    }
 
-    const parent = this.findParent(node);
+    const parent = this.findParent(node)
     if (parent) {
-      recursive(parent);
+      recursive(parent)
     }
   }
 
@@ -879,13 +856,13 @@ export class TreeComponent<T>
    * @param node The node to show.
    */
   private scrollInto(node: INode<T>) {
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (holder) {
-      const index = this.visibleNodes.value.indexOf(holder);
+      const index = this.visibleNodes.value.indexOf(holder)
       if (index == -1) {
-        return;
+        return
       }
-      this.domNode(node)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      this.domNode(node)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
   }
 
@@ -895,150 +872,140 @@ export class TreeComponent<T>
    * @param direction Navigation direction.
    */
   private navigate(currEl: Element, direction: 'up' | 'down'): void {
-    this.unselectAll();
+    this.unselectAll()
 
-    const currNode = this.findHolderFromElement(currEl);
+    const currNode = this.findHolderFromElement(currEl)
     if (!currNode) {
-      return;
+      return
     }
 
-    const prevEl = currEl.previousElementSibling;
-    const nextEl = currEl.nextElementSibling;
-    const targEl = direction === 'up' ? prevEl : nextEl;
+    const prevEl = currEl.previousElementSibling
+    const nextEl = currEl.nextElementSibling
+    const targEl = direction === 'up' ? prevEl : nextEl
     if (!targEl) {
-      return;
+      return
     }
 
-    const targNode = this.findHolderFromElement(targEl);
+    const targNode = this.findHolderFromElement(targEl)
     if (!targNode) {
-      this.focus(currNode);
-      return;
+      this.focus(currNode)
+      return
     }
 
-    const prevNode: ITreeNodeHolder<T> | undefined = prevEl
-      ? this.findHolderFromElement(prevEl)
-      : undefined;
+    const prevNode: ITreeNodeHolder<T> | undefined = prevEl ? this.findHolderFromElement(prevEl) : undefined
 
     if (prevNode && this.isSelected(prevNode) && targEl.isEqualNode(prevEl)) {
-      this.unselect(currNode);
+      this.unselect(currNode)
     }
 
-    const nextNode: ITreeNodeHolder<T> | undefined = nextEl
-      ? this.findHolderFromElement(nextEl)
-      : undefined;
+    const nextNode: ITreeNodeHolder<T> | undefined = nextEl ? this.findHolderFromElement(nextEl) : undefined
 
     if (nextNode && this.isSelected(nextNode) && targEl.isEqualNode(nextEl)) {
-      this.unselect(currNode);
+      this.unselect(currNode)
     }
 
-    this.focus(targNode);
+    this.focus(targNode)
   }
 
   private findParent(node: INode<T>): ITreeNodeHolder<T> | undefined {
-    const holder = this.findHolder(node);
+    const holder = this.findHolder(node)
     if (!holder) {
-      return;
+      return
     }
-    const parentId = this.parentsIndex.get(holder.id);
+    const parentId = this.parentsIndex.get(holder.id)
     if (parentId) {
-      return this.nodesIndex.get(parentId);
+      return this.nodesIndex.get(parentId)
     }
     return undefined
   }
 
   private findHolderFromId(id: string): ITreeNodeHolder<T> | undefined {
-    const { dataNodes } = this.controler;
+    const { dataNodes } = this.controler
     if (!dataNodes) {
-      return undefined;
+      return undefined
     }
-    return dataNodes.find((n) => n.id === id);
+    return dataNodes.find((n) => n.id === id)
   }
 
   private findHolderFromData(data: T): ITreeNodeHolder<T> | undefined {
-    const { dataNodes } = this.controler;
+    const { dataNodes } = this.controler
     if (!dataNodes) {
-      return undefined;
+      return undefined
     }
 
-    return this.nodesIndex.get(this.adapter.idProvider(data));
+    return this.nodesIndex.get(this.adapter.idProvider(data))
   }
 
   private findHolderFromEvent(event: Event): ITreeNodeHolder<T> | undefined {
-    const { dataNodes } = this.controler;
+    const { dataNodes } = this.controler
     if (!dataNodes) {
-      return undefined;
+      return undefined
     }
 
-    const dataId = this.DATA_TREE_NODE_ID;
-    const fn = (
-      target?: HTMLElement | null
-    ): ITreeNodeHolder<T> | undefined => {
+    const dataId = this.DATA_TREE_NODE_ID
+    const fn = (target?: HTMLElement | null): ITreeNodeHolder<T> | undefined => {
       if (!target) {
-        return undefined;
+        return undefined
       }
 
-      const targetId = target.getAttribute(dataId);
-      return targetId
-        ? this.nodesIndex.get(targetId)
-        : fn(target.parentElement);
-    };
+      const targetId = target.getAttribute(dataId)
+      return targetId ? this.nodesIndex.get(targetId) : fn(target.parentElement)
+    }
 
-    return fn(event.target as any);
+    return fn(event.target as any)
   }
 
-  private findHolderFromElement(
-    element: Element
-  ): ITreeNodeHolder<T> | undefined {
-    const { dataNodes } = this.controler;
+  private findHolderFromElement(element: Element): ITreeNodeHolder<T> | undefined {
+    const { dataNodes } = this.controler
     if (!dataNodes) {
-      return undefined;
+      return undefined
     }
 
-    const id = element.getAttribute(this.DATA_TREE_NODE_ID);
+    const id = element.getAttribute(this.DATA_TREE_NODE_ID)
     if (!id) {
-      return undefined;
+      return undefined
     }
 
-    return this.nodesIndex.get(id);
+    return this.nodesIndex.get(id)
   }
 
   private findHolder(node: INode<T>): ITreeNodeHolder<T> | undefined {
     if (!node) {
-      return undefined;
+      return undefined
     }
 
     if (!this.controler.dataNodes) {
-      return undefined;
+      return undefined
     }
 
     if (typeof node === 'string') {
-      return this.findHolderFromId(node);
+      return this.findHolderFromId(node)
     }
 
     if (node instanceof Element) {
-      return this.findHolderFromElement(node);
+      return this.findHolderFromElement(node)
     }
 
     // instanceof ITreeNodeHolder<T>
     if ('data' in (node as unknown as any)) {
-      return node as ITreeNodeHolder<T>;
+      return node as ITreeNodeHolder<T>
     }
 
     // instance of T
-    return this.findHolderFromData(node as T);
+    return this.findHolderFromData(node as T)
   }
 
   private children(node: T): T[] {
-    const children = this.adapter.childrenProvider(node) || [];
-    const parentId = this.adapter.idProvider(node);
+    const children = this.adapter.childrenProvider(node) || []
+    const parentId = this.adapter.idProvider(node)
     children.forEach((child) => {
-      this.parentsIndex.set(this.adapter.idProvider(child), parentId);
-    });
-    return children;
+      this.parentsIndex.set(this.adapter.idProvider(child), parentId)
+    })
+    return children
   }
 
   private transformer(node: T, level: number): ITreeNodeHolder<T> {
-    const expandable = this.adapter.isExpandable(node);
+    const expandable = this.adapter.isExpandable(node)
     return {
       id: this.adapter.idProvider(node),
       data: node,
@@ -1047,7 +1014,7 @@ export class TreeComponent<T>
       padding: level * 12 + 'px',
       tooltip: this.adapter.tooltipProvider?.(node),
       expandable,
-    };
+    }
   }
   //#endregion
 }

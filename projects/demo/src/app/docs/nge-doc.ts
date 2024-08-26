@@ -1,4 +1,4 @@
-import { NgeDocSettings } from '@cisstech/nge/doc';
+import { NgeDocSettings } from '@cisstech/nge/doc'
 
 export const NGE_DOC: NgeDocSettings = {
   meta: {
@@ -33,4 +33,4 @@ export const NGE_DOC: NgeDocSettings = {
       renderer: 'assets/docs/nge-doc/advanced-usage.md',
     },
   ],
-};
+}

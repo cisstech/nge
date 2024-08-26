@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, TemplateRef } from '@angular/core';
+import { Pipe, PipeTransform, TemplateRef } from '@angular/core'
 
 @Pipe({
   name: 'istemplate',
@@ -6,6 +6,6 @@ import { Pipe, PipeTransform, TemplateRef } from '@angular/core';
 })
 export class IsTemplatePipe implements PipeTransform {
   transform(value: any): value is TemplateRef<any> {
-    return value instanceof TemplateRef;
+    return value instanceof TemplateRef
   }
 }
