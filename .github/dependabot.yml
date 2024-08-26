@@ -4,8 +4,8 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly' # default: on monday
-    open-pull-requests-limit: 10 # default: 5
+      interval: 'monthly'
+    open-pull-requests-limit: 10
     commit-message:
       prefix: 'chore(other)'
       include: 'scope'
