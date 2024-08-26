@@ -1,15 +1,10 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - 'main'
   pull_request:
     branches:
       - 'main'
   workflow_dispatch:
-  schedule:
-    - cron:  '0 6 * * 1'
 
 env:
   NODE_VERSION: 22
@@ -52,10 +47,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - run: Run tests
       - run: yarn test
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v4
         with:
-          file: ./coverage/lcov.info
+          files: ./coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN }}
