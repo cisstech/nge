@@ -1,5 +1,4 @@
-// tslint:disable-next-line: no-reference
-/// <reference path="../../../node_modules/monaco-editor/monaco.d.ts" />
+/// <reference types="monaco-editor/monaco" />
 
 export * from './src/components/monaco-diff-editor/monaco-diff-editor.component'
 export * from './src/components/monaco-editor/monaco-editor.component'
