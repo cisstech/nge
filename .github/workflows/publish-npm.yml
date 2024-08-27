@@ -1,9 +1,9 @@
-name: Publish Package to npmjs (Improved)
+name: Publish Package to npmjs
 
 on:
-  workflow_dispatch:  # Allow manual triggering from Actions tab
+  workflow_dispatch:
     inputs:
-      version:  # Define input for version type (patch, minor, major)
+      version:
         description: 'Select version type'
         required: true
         default: 'patch'
@@ -71,12 +71,12 @@ jobs:
           tag_name: ${{ steps.bump_version.outputs.version }}
           release_name: "v${{ steps.bump_version.outputs.version  }}"
           body: No changelog provided
-          draft: false  # Publish as a full release
+          draft: false
 
-     # - name: Publish to npm
-     #   if: success()
-     #   run: |
-     #     yarn build:lib
-     #     npm publish --provenance --access public --registry=https://npm.pkg.github.com/
-     #   env:
-     #     NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLIC_TOKEN }}
+      - name: Publish to npm
+        if: success()
+        run: |
+          yarn build:lib
+          npm publish --provenance --access public --registry=https://npm.pkg.github.com/
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLIC_TOKEN }}
