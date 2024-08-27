@@ -53,7 +53,6 @@
             "polyfills": ["projects/demo/src/polyfills.ts"],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": [
-              "projects/demo/src/favicon.ico",
               "projects/demo/src/assets",
               { "glob": "**/*", "input": "./node_modules/monaco-editor/min", "output": "./assets/nge/monaco/min" },
               {
