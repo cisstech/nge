@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 18.0.2 (2024-08-27)
+
+
+### Bug Fixes
+
+* **monaco:** missing declaration file on build output ([d12a85a](https://github.com/cisstech/nge/commit/d12a85ad59a5391c5e8b90752de9a087ef952acd))
+
 ### 18.0.1 (2024-08-27)
 
 ## [18.0.0](https://github.com/cisstech/nge/compare/v17.7.1...v18.0.0) (2024-08-26)
