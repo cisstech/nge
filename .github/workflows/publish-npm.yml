@@ -77,6 +77,6 @@ jobs:
         if: success()
         run: |
           yarn build:lib
-          npm publish --provenance --access public --registry=https://npm.pkg.github.com/
+          npm publish --provenance --access public --registry=https://registry.npmjs.org/
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLIC_TOKEN }}
