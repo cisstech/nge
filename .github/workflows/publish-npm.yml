@@ -76,7 +76,9 @@ jobs:
       - name: Publish to npm
         if: success()
         run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLIC_TOKEN }}" > ~/.npmrc
+          cat ~/.npmrc
           yarn build:lib
-          npm publish --provenance --access public --registry=https://registry.npmjs.org/
+          yarn publish ./dist/nge --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLIC_TOKEN }}

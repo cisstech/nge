@@ -136,5 +136,8 @@
   "resolutions": {
     "wrap-ansi": "7.0.0",
     "string-width": "4.1.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   }
 }
