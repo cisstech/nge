@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cp -rf ./README.md ./dist/nge
 cp -rf ./LICENSE ./dist/nge
 cp -rf ./CHANGELOG.md ./dist/nge
