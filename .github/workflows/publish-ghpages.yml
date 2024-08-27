@@ -28,12 +28,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Build
-        run: yarn build:demo
-
       - name: Publish to gh-pages
         if: success()
         run:  yarn publish:demo
         env:
-          CI: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAGE_TOKEN }}

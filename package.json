@@ -38,7 +38,7 @@
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",
     "publish:lib": "yarn publish ./dist/nge --provenance --access public",
-    "publish:demo": "angular-cli-ghpages --dir=./dist/demo",
+    "publish:demo": "ng deploy demo --no-silent",
     "release": "standard-version",
     "release:major": "standard-version --release-as major",
     "release:minor": "standard-version --release-as minor",
