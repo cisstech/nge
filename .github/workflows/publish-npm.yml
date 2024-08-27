@@ -77,7 +77,6 @@ jobs:
         if: success()
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLIC_TOKEN }}" > ~/.npmrc
-          cat ~/.npmrc
           yarn build:lib
           yarn publish ./dist/nge --provenance --access public
         env:
