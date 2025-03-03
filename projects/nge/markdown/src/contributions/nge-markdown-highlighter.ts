@@ -5,6 +5,7 @@ import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markd
 const DATA_LINES = 'data-nge-md-hl-lines'
 const DATA_LANGUAGE = 'data-nge-md-hl-language'
 const DATA_HIGHLIGHTS = 'data-nge-md-hl-highlights'
+const DATA_FILENAME = 'data-nge-md-hl-filename'
 
 /**
  * Highlight options.
@@ -54,6 +55,9 @@ export interface NgeMarkdownHighlightOptions {
    * `"2 4-7 9"`
    */
   highlights?: string
+
+  /** Filename to display */
+  filename?: string
 }
 
 /**
@@ -114,11 +118,18 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
           attributes.set(DATA_HIGHLIGHTS, match[1])
         }
 
+        // FILENAME
+        match = args.match(/filename="(.+?)"/)
+        if (match) {
+          attributes.set(DATA_FILENAME, match[1])
+        }
+
         const attribs = Array.from(attributes.entries())
           .map(([attributeName, attributeValue]) => {
             return `${attributeName}="${attributeValue}"`
           })
           .join(' ')
+          console.log(attribs)
         return `<pre ${attribs}><code>${this.escapeHtml(code)}</code></pre>`
       }
       return renderer
@@ -138,12 +149,14 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
           element: pre.querySelector('code') as HTMLElement,
           language: pre.getAttribute(DATA_LANGUAGE) || 'plaintext',
           highlights: pre.getAttribute(DATA_HIGHLIGHTS) || '',
+          filename: pre.getAttribute(DATA_FILENAME) || '',
         })
       }
     })
   }
 
   private escapeHtml(input: string) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const map: any = {
       '<': '&lt;',
       '>': '&gt;',
@@ -165,6 +178,7 @@ export const NgeMarkdownHighlighterProvider: Provider = {
  * Provider to register `NgeMonacoColorizerService` as the syntax highlighter.
  * @param type A reference to NgeMonacoColorizerService type.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function NgeMarkdownHighlighterMonacoProvider(type: Type<any>) {
   return {
     provide: NGE_MARKDOWN_HIGHLIGHTER_SERVICE,
@@ -181,6 +195,7 @@ export function NgeMarkdownHighlighterMonacoProvider(type: Type<any>) {
           language: options.language,
           code: code.textContent,
           lines: options.lines,
+          filename: options.filename,
           highlights: options.highlights,
         })
       },

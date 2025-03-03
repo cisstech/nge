@@ -47,6 +47,10 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   /** space separated list of line numbers to highlight */
   @Input() highlights?: string | number
 
+  /** filename to display in the header tab */
+  @Input() filename?: string
+
+
   ngOnChanges(): void {
     const code = this.transclusion.nativeElement.textContent?.trim() || this.code || ''
     this.colorize(code)
@@ -66,6 +70,7 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
         lines: this.lines,
         language: this.language,
         highlights: this.highlights,
+        filename: this.filename,
         element: this.container.nativeElement,
       })
     } finally {

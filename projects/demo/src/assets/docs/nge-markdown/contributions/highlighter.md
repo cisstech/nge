@@ -5,26 +5,18 @@
 ## Configuration
 
 ```typescript highlights="6-9 18 21"
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http'
+import { NgModule } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
-import {
-  NgeMarkdownModule,
-  NgeMarkdownHighlighterProvider,
-} from '@cisstech/nge/markdown';
+import { NgeMarkdownModule, NgeMarkdownHighlighterProvider } from '@cisstech/nge/markdown'
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './app.component'
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgeMarkdownModule,
-    BrowserAnimationsModule,
-  ],
+  imports: [BrowserModule, HttpClientModule, NgeMarkdownModule, BrowserAnimationsModule],
   providers: [NgeMarkdownHighlighterProvider],
   bootstrap: [AppComponent],
 })
@@ -42,34 +34,25 @@ highlighter service to the contribution, so
 you can use it.
 
 ```typescript lines="1" highlights="6-12 21-22 26-27"
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http'
+import { NgModule } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
-import { NgeMonacoModule, NgeMonacoColorizerService, NGE_THEMES } from '@cisstech/nge/monaco';
+import { NgeMonacoModule, NgeMonacoColorizerService, NGE_THEMES } from '@cisstech/nge/monaco'
 
 import {
   NgeMarkdownModule,
   NgeMarkdownMonacoProvider,
-  NgeMarkdownHighlighterMonacoProvider
-} from '@cisstech/nge/markdown';
+  NgeMarkdownHighlighterMonacoProvider,
+} from '@cisstech/nge/markdown'
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './app.component'
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgeMarkdownModule,
-    NgeMonacoModule.forRoot(),
-    BrowserAnimationsModule,
-  ],
-  providers: [
-    NgeMarkdownMonacoProvider,
-    NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
-  ],
+  imports: [BrowserModule, HttpClientModule, NgeMarkdownModule, NgeMonacoModule.forRoot(), BrowserAnimationsModule],
+  providers: [NgeMarkdownMonacoProvider, NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService)],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
@@ -89,8 +72,8 @@ alert(s);
 Result
 
 ```javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
+var s = 'JavaScript syntax highlighting'
+alert(s)
 ```
 
 Example
@@ -138,5 +121,21 @@ Result
 
 ```python highlights="1-2"
 s = "Highlight range"
+print(s)
+```
+
+Example
+
+````plaintext
+```python highlights="1-2" filename="test.py"
+s = "Display filename with action buttons"
+print(s)
+```
+````
+
+Result
+
+```python highlights="1-2" filename="test.py"
+s = "Display filename with action buttons"
 print(s)
 ```

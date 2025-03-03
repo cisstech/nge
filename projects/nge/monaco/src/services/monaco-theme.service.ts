@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http'
 import { Inject, Injectable, Optional } from '@angular/core'
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs'
@@ -48,7 +49,7 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
   }
 
   async activate(): Promise<void> {
-    this.decorateCreateEditorAPI()
+    //this.decorateCreateEditorAPI()
 
     const node = document.createElement('div')
 

@@ -45,9 +45,12 @@ export class NgeMonacoColorizerService {
 
     this.highlightLines(options)
     this.showLineNumbers(options)
+
+    this.addFileTab(options)
   }
 
   private escapeHtml(input: string): string {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const map: any = {
       '<': '&lt;',
       '>': '&gt;',
@@ -142,6 +145,228 @@ export class NgeMonacoColorizerService {
     }
     return lines
   }
+
+  private addFileTab(options: NgeMonacoColorizeOptions): void {
+    const { element, code, filename } = options
+    const container = element.parentElement as HTMLElement
+
+    // Force remove padding from pre element
+    if (container) {
+      container.style.padding = '0'
+      container.style.margin = '0'
+      container.style.width = '100%'
+    }
+
+    // Create tab container that takes full width
+    const tabContainer = document.createElement('div')
+    tabContainer.style.display = 'flex'
+    tabContainer.style.justifyContent = 'space-between'
+    tabContainer.style.alignItems = 'center'
+    tabContainer.style.padding = '8px 16px'
+    tabContainer.style.borderBottom = '1px solid var(--vscode-dropdown-border, #e8e8e8)'
+    tabContainer.style.backgroundColor = 'var(--vscode-editor-background, #fafafa)'
+    tabContainer.style.fontSize = '14px'
+    tabContainer.style.width = '100%'
+    tabContainer.style.boxSizing = 'border-box'
+    tabContainer.style.fontFamily = 'var(--monaco-monospace-font, "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", monospace)'
+
+    // Add filename on left side
+    const filenameSpan = document.createElement('span')
+    filenameSpan.textContent = filename || ''
+    filenameSpan.style.overflow = 'hidden'
+    filenameSpan.style.textOverflow = 'ellipsis'
+    filenameSpan.style.whiteSpace = 'nowrap'
+    filenameSpan.style.fontWeight = '500'
+    filenameSpan.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))'
+    filenameSpan.title = filename || ''
+
+    // Add file actions container (right side)
+    const fileActions = document.createElement('div')
+    fileActions.className = 'file-actions'
+    fileActions.style.display = 'flex'
+    fileActions.style.gap = '4px'
+
+    // Create copy button with icon
+    const copyButton = document.createElement('button')
+    copyButton.style.border = 'none'
+    copyButton.style.background = 'none'
+    copyButton.style.cursor = 'pointer'
+    copyButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))'
+    copyButton.style.display = 'flex'
+    copyButton.style.alignItems = 'center'
+    copyButton.style.justifyContent = 'center'
+    copyButton.style.width = '32px'
+    copyButton.style.height = '32px'
+    copyButton.style.padding = '0'
+    copyButton.style.borderRadius = '4px'
+    copyButton.style.transition = 'all 0.3s'
+    copyButton.title = 'Copy code to clipboard'
+
+    // Hover effect
+    copyButton.addEventListener('mouseover', () => {
+      copyButton.style.color = '#1890ff'
+      copyButton.style.backgroundColor = 'rgba(0, 0, 0, 0.04)'
+    })
+    copyButton.addEventListener('mouseout', () => {
+      copyButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))'
+      copyButton.style.backgroundColor = 'transparent'
+    })
+
+    // Copy functionality
+    copyButton.addEventListener('click', async (event) => {
+      // Prevent default action and event bubbling
+      event.preventDefault();
+      event.stopPropagation();
+
+      try {
+        await navigator.clipboard.writeText(code || '');
+
+        // Show feedback
+        copyButton.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>`;
+        copyButton.style.color = '#52c41a';
+
+
+        setTimeout(() => {
+          // Use requestAnimationFrame to ensure smooth transition
+          requestAnimationFrame(() => {
+            copyButton.innerHTML = copySvg;
+            copyButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))';
+
+          });
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy code:', err);
+
+      }
+
+      // Return false to ensure no further action
+      return false;
+    })
+
+    // Create download button with icon
+    const downloadButton = document.createElement('button')
+    downloadButton.style.border = 'none'
+    downloadButton.style.background = 'none'
+    downloadButton.style.cursor = 'pointer'
+    downloadButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))'
+    downloadButton.style.display = 'flex'
+    downloadButton.style.alignItems = 'center'
+    downloadButton.style.justifyContent = 'center'
+    downloadButton.style.width = '32px'
+    downloadButton.style.height = '32px'
+    downloadButton.style.padding = '0'
+    downloadButton.style.borderRadius = '4px'
+    downloadButton.style.transition = 'all 0.3s'
+    downloadButton.title = 'Download code as file'
+
+    // Hover effect
+    downloadButton.addEventListener('mouseover', () => {
+      downloadButton.style.color = '#1890ff'
+      downloadButton.style.backgroundColor = 'rgba(0, 0, 0, 0.04)'
+    })
+    downloadButton.addEventListener('mouseout', () => {
+      downloadButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))'
+      downloadButton.style.backgroundColor = 'transparent'
+    })
+
+    // Download functionality
+    downloadButton.addEventListener('click', (event) => {
+      // Prevent default action and event bubbling
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Save original content
+      const originalInnerHTML = downloadButton.innerHTML;
+
+      try {
+        const blob = new Blob([code || ''], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename || 'code.txt';
+        a.style.display = 'none';
+        a.setAttribute('data-no-scroll', 'true'); // Mark as no-scroll
+
+        // Execute download
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Show success feedback similar to copy button
+        downloadButton.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>`;
+        downloadButton.style.color = '#52c41a';
+
+
+        // Reset button after timeout
+        setTimeout(() => {
+          // Use requestAnimationFrame for smoother transition
+          requestAnimationFrame(() => {
+            downloadButton.innerHTML = downloadSvg;
+            downloadButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))';
+            URL.revokeObjectURL(url); // Clean up URL object
+
+          });
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to download code:', err);
+        downloadButton.innerHTML = originalInnerHTML;
+      }
+
+      // Return false to ensure no further action
+      return false;
+    })
+
+    // Copy icon SVG
+    const copySvg = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+
+    // Download icon SVG
+    const downloadSvg = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+
+    copyButton.innerHTML = copySvg;
+    downloadButton.innerHTML = downloadSvg;
+
+    // Add buttons to actions container
+    fileActions.appendChild(copyButton)
+    fileActions.appendChild(downloadButton)
+
+    // Build the tab
+    tabContainer.appendChild(filenameSpan)
+    tabContainer.appendChild(fileActions)
+
+    // Insert tab before the editor content
+    if (container) {
+      container.insertBefore(tabContainer, element)
+
+      // Add some styling to the container for better appearance
+      container.style.border = '1px solid #e8e8e8'
+      container.style.borderRadius = '2px'
+      container.style.overflow = 'hidden'
+      container.style.marginBottom = '16px'
+      container.style.padding = '0'
+
+      // Add inner padding to code content
+      element.style.padding = '16px'
+    } else {
+      // If no container, wrap the element with one
+      const wrapper = document.createElement('div')
+      wrapper.style.border = '1px solid #e8e8e8'
+      wrapper.style.borderRadius = '2px'
+      wrapper.style.overflow = 'hidden'
+      wrapper.style.marginBottom = '16px'
+      wrapper.style.padding = '0'
+      wrapper.style.width = '100%'
+
+      const parent = element.parentElement
+      if (parent) {
+        parent.insertBefore(wrapper, element)
+        wrapper.appendChild(tabContainer)
+        wrapper.appendChild(element)
+
+        // Add inner padding to code content
+        element.style.padding = '16px'
+      }
+    }
+  }
 }
 
 export interface NgeMonacoColorizeOptions {
@@ -194,4 +419,10 @@ export interface NgeMonacoColorizeOptions {
    * `"2 4-7 9"`
    */
   highlights?: string | number
+
+
+  /**
+   * Optional filename to display in the tab header.
+   */
+  filename?: string
 }
