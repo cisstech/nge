@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [18.1.0](https://github.com/cisstech/nge/compare/v18.0.4...v18.1.0) (2025-03-03)
+
+
+### Features
+
+* **nge-monaco:** display filename/copy/download in code viewer ([53683a2](https://github.com/cisstech/nge/commit/53683a288e0eefe5845e316cce618fd8c28b44a8))
+
 ### 18.0.4 (2024-08-27)
 
 ### 18.0.3 (2024-08-27)
