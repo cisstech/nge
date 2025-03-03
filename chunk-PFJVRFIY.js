@@ -1,4 +1,4 @@
-import{B as d,C as l}from"./chunk-QET4ZBO7.js";import{Aa as a,Fb as g,J as c,N as m,O as h,Ra as e,qb as p,ya as s,za as i}from"./chunk-4STL355D.js";var u=(()=>{let t=class t{constructor(){}ngOnInit(){}};t.\u0275fac=function(o){return new(o||t)},t.\u0275cmp=m({type:t,selectors:[["app-home"]],decls:18,vars:0,consts:[["align","center"],["src","./assets/images/nge.svg","alt","Logo NGE","width","120px"],["href","https://angular.io"]],template:function(o,f){o&1&&(s(0,"nge-markdown"),e(1,`
+import{B as d,C as l}from"./chunk-UOVVAPMN.js";import{Aa as a,Fb as g,J as c,N as m,O as h,Ra as e,qb as p,ya as s,za as i}from"./chunk-4STL355D.js";var u=(()=>{let t=class t{constructor(){}ngOnInit(){}};t.\u0275fac=function(o){return new(o||t)},t.\u0275cmp=m({type:t,selectors:[["app-home"]],decls:18,vars:0,consts:[["align","center"],["src","./assets/images/nge.svg","alt","Logo NGE","width","120px"],["href","https://angular.io"]],template:function(o,f){o&1&&(s(0,"nge-markdown"),e(1,`
 `),s(2,"h1",0),e(3," NG Essentials"),i(),e(4,`
 
 `),s(5,"div",0),e(6,`
