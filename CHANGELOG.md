@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 18.2.0 (2025-03-04)
+
+
+### Bug Fixes
+
+* **nge-monaco:** code viewer overflow ([8635c62](https://github.com/cisstech/nge/commit/8635c621f438044a52b4615d414b635dfb09461a))
+
 ## [18.1.0](https://github.com/cisstech/nge/compare/v18.0.4...v18.1.0) (2025-03-03)
 
 
