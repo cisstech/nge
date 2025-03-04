@@ -20,6 +20,7 @@ export class NgeMonacoColorizerService {
     element.innerHTML = this.escapeHtml(options.code || '')
     element.style.padding = '4px'
     element.style.display = 'block'
+    element.style.overflow = 'auto'
 
     const pre = element.parentElement
     if (pre?.tagName === 'PRE') {

@@ -1,15 +1,16 @@
 import { Inject, Injectable, OnDestroy, Optional } from '@angular/core'
 import { ResourceLoaderService } from '@cisstech/nge/services'
 import { lastValueFrom, of, Subject } from 'rxjs'
-import { NgeMonacoContribution, NGE_MONACO_CONTRIBUTION } from '../contributions/monaco-contribution'
-import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../monaco-config'
+import { NGE_MONACO_CONTRIBUTION, NgeMonacoContribution } from '../contributions/monaco-contribution'
+import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../monaco-config'
 
 /** monaco editor cdn url hosted at cdnjs. */
-export const MONACO_CDNJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.43.0'
+export const MONACO_CDNJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.0'
 
 /** monaco editor cdn url hosted at jsdeliver. */
-export const MONACO_JS_DELIVER_URL = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.43.0'
+export const MONACO_JS_DELIVER_URL = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const WINDOW = window as any
 
 /**
@@ -59,35 +60,37 @@ export class NgeMonacoLoaderService implements OnDestroy {
   loadAsync() {
     return (
       this.loadPromise ??
-      (this.loadPromise = new Promise(async (resolve) => {
-        // Try to fix the issues described here by loading monaco editor
-        // after all the other scripts.
-        // https://stackoverflow.com/a/33635881
-        // https://github.com/microsoft/monaco-editor/issues/662
-        // https://github.com/microsoft/monaco-editor/issues/1249
-        const interval = setInterval(() => {
-          if (document.readyState !== 'complete') return
-          clearInterval(interval)
+      (this.loadPromise = new Promise((resolve) => {
+        (async () => {
+          // Try to fix the issues described here by loading monaco editor
+          // after all the other scripts.
+          // https://stackoverflow.com/a/33635881
+          // https://github.com/microsoft/monaco-editor/issues/662
+          // https://github.com/microsoft/monaco-editor/issues/1249
+          const interval = setInterval(() => {
+            if (document.readyState !== 'complete') return
+            clearInterval(interval)
 
-          setTimeout(async () => {
-            await this.resourceLoader.waitForPendings()
+            setTimeout(async () => {
+              await this.resourceLoader.waitForPendings()
 
-            this.baseUrl = this.config?.assets || MONACO_CDNJS_URL
-            if (this.baseUrl.endsWith('/')) {
-              this.baseUrl = this.baseUrl.slice(0, this.baseUrl.length - 1)
-            }
+              this.baseUrl = this.config?.assets || MONACO_CDNJS_URL
+              if (this.baseUrl.endsWith('/')) {
+                this.baseUrl = this.baseUrl.slice(0, this.baseUrl.length - 1)
+              }
 
-            this.addWorkersIfCrossDomain()
+              this.addWorkersIfCrossDomain()
 
-            if (!WINDOW.require) {
-              lastValueFrom(this.resourceLoader.loadAllAsync([['script', `${this.baseUrl}/min/vs/loader.js`]])).then(
-                () => this.onLoad(resolve)
-              )
-            } else {
-              this.onLoad(resolve)
-            }
-          }, 300)
-        })
+              if (!WINDOW.require) {
+                lastValueFrom(this.resourceLoader.loadAllAsync([['script', `${this.baseUrl}/min/vs/loader.js`]])).then(
+                  () => this.onLoad(resolve)
+                )
+              } else {
+                this.onLoad(resolve)
+              }
+            }, 300)
+          })
+        })()
       }))
     )
   }
