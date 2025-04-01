@@ -89,7 +89,7 @@
     "@typescript-eslint/eslint-plugin": "7.11.0",
     "@typescript-eslint/parser": "7.11.0",
     "angular-cli-ghpages": "^2.0.1",
-    "angular-eslint": "18.3.0",
+    "angular-eslint": "19.3.0",
     "codelyzer": "^6.0.2",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "8.57.0",
