@@ -169,6 +169,11 @@
   resolved "https://registry.yarnpkg.com/@angular-eslint/bundled-angular-compiler/-/bundled-angular-compiler-18.3.0.tgz#086bf5d529e60a864bbcf3d448ccb9544bfd9b86"
   integrity sha512-v/59FxUKnMzymVce99gV43huxoqXWMb85aKvzlNvLN+ScDu6ZE4YMiTQNpfapVL2lkxhs0uwB3jH17EYd5TcsA==
 
+"@angular-eslint/bundled-angular-compiler@19.3.0":
+  version "19.3.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/bundled-angular-compiler/-/bundled-angular-compiler-19.3.0.tgz#2d770366d52ad242762d0dedff491ff85591a678"
+  integrity sha512-63Zci4pvnUR1iSkikFlNbShF1tO5HOarYd8fvNfmOZwFfZ/1T3j3bCy9YbE+aM5SYrWqPaPP/OcwZ3wJ8WNvqA==
+
 "@angular-eslint/eslint-plugin-template@18.3.0":
   version "18.3.0"
   resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-18.3.0.tgz#137ca3934fef6f57fcc6af5810c0984a3c1f71f8"
@@ -186,6 +191,14 @@
   dependencies:
     "@angular-eslint/bundled-angular-compiler" "18.3.0"
     "@angular-eslint/utils" "18.3.0"
+
+"@angular-eslint/eslint-plugin@19.3.0":
+  version "19.3.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-19.3.0.tgz#8147b529db2cc37dfc08b56eabfc61414b5f44a3"
+  integrity sha512-nBLslLI20KnVbqlfNW7GcnI9R6cYCvRGjOE2QYhzxM316ciAQ62tvQuXP9ZVnRBLSKDAVnMeC0eTq9O4ysrxrQ==
+  dependencies:
+    "@angular-eslint/bundled-angular-compiler" "19.3.0"
+    "@angular-eslint/utils" "19.3.0"
 
 "@angular-eslint/schematics@18.3.0":
   version "18.3.0"
@@ -212,6 +225,13 @@
   integrity sha512-sCrkHkpxBJZLuCikdboZoawCfc2UgbJv+T14tu2uQCv+Vwzeadnu04vkeY2vTkA8GeBdBij/G9/N/nvwmwVw3g==
   dependencies:
     "@angular-eslint/bundled-angular-compiler" "18.3.0"
+
+"@angular-eslint/utils@19.3.0":
+  version "19.3.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/utils/-/utils-19.3.0.tgz#c945b0967c93b255e6affed50d1a932930f5b27b"
+  integrity sha512-ovvbQh96FIJfepHqLCMdKFkPXr3EbcvYc9kMj9hZyIxs/9/VxwPH7x25mMs4VsL6rXVgH2FgG5kR38UZlcTNNw==
+  dependencies:
+    "@angular-eslint/bundled-angular-compiler" "19.3.0"
 
 "@angular/animations@^18.2.1":
   version "18.2.1"
