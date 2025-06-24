@@ -199,7 +199,8 @@ Characters such as &lt;, &gt;, {, } directly written in the HTML template file m
 
 ## Options
 
-Optionally, nge-monaco can be configured by passing **NgeMonacoConfig** object to the forRoot method of **NgeMonacoModule**.
+Optionally, nge-monaco can be configured by passing **NgeMonacoConfig** object to the forRoot method of **NgeMonacoModule** directly
+or as factory function, which allows access to dependency injection via `inject` function.
 
 ```typescript highlights="5 14-29"
 import { NgModule } from '@angular/core';
