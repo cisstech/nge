@@ -7702,9 +7702,9 @@ jest-preset-angular@14.1.0:
     esbuild ">=0.15.13"
 
 jest-preset-angular@^14.2.2:
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/jest-preset-angular/-/jest-preset-angular-14.2.2.tgz#80001590166b8b0283381c7e30f6815c74c39cd5"
-  integrity sha512-vdpv1DV4yJMMoBRbTdwRA16Es0UU+8CuOHsV2vfUL0LOy69anvq2RUawh07EyTWSVxko838jOC146jlnCkWOOw==
+  version "14.4.2"
+  resolved "https://registry.yarnpkg.com/jest-preset-angular/-/jest-preset-angular-14.4.2.tgz#c2c0e1581cebed863b86efa52a14b1cb8b3cae30"
+  integrity sha512-BYYv0FaTDfBNh8WyA9mpOV3krfw20kurBGK8INZUnv7KZDAWZuQtCET4TwTWxSNQ9jS1OX1+a5weCm/bTDDM1A==
   dependencies:
     bs-logger "^0.2.6"
     esbuild-wasm ">=0.15.13"
