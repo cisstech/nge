@@ -20,11 +20,17 @@ import { NgeMonacoPlaceholderComponent } from './components/monaco-placeholder/m
   ],
 })
 export class NgeMonacoModule {
-  static forRoot(config: NgeMonacoConfig): ModuleWithProviders<NgeMonacoModule> {
+  static forRoot(
+    config: NgeMonacoConfig | (() => NgeMonacoConfig)
+  ): ModuleWithProviders<NgeMonacoModule> {
+    const configProvider =
+      typeof config === "function"
+        ? { provide: NGE_MONACO_CONFIG, useFactory: config }
+        : { provide: NGE_MONACO_CONFIG, useValue: config }
     return {
       ngModule: NgeMonacoModule,
       providers: [
-        { provide: NGE_MONACO_CONFIG, useValue: config },
+        configProvider,
         {
           provide: NGE_MONACO_CONTRIBUTION,
           multi: true,
