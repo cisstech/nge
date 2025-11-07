@@ -1,4 +1,5 @@
-import { Component, HostBinding, Input, TemplateRef } from '@angular/core'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component, HostBinding, HostListener, Input, TemplateRef } from '@angular/core'
 
 @Component({
   selector: 'ui-list-item-article-action',
@@ -11,4 +12,10 @@ export class ListItemArticleActionComponent {
   @Input()
   @HostBinding('class.clickable')
   clickable = false
+
+  @HostListener('click', ['$event'])
+  protected onClick($event: Event) {
+    // Prevent event propagation to parent clickable elements (like the article item)
+    $event.stopPropagation()
+  }
 }

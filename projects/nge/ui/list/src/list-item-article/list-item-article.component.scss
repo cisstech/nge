@@ -6,13 +6,19 @@
 article {
   border-radius: 0.5rem;
   transition: box-shadow 0.5s;
+  box-shadow:
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14);
+
   &.bordered {
     border-left: 2px solid var(--border-color);
   }
 
-  &:hover {
-    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-      0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  &.hoverable:hover {
+    box-shadow:
+      0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+      0px 1px 10px 0px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -52,10 +58,13 @@ article {
   }
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .article-title {
   margin: 0;
   margin-left: 8px;
-  cursor: pointer;
 }
 
 .article-tags {
@@ -78,7 +87,7 @@ article {
   align-items: center;
 
   &:hover {
-    opacity: .8;
+    opacity: 0.8;
   }
 
   .article-tag-icon {

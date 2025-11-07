@@ -1,61 +1,79 @@
-<article class="mat-elevation-z1" [class.bordered]="!articleBannerUrl">
-  <img class="article-banner" [src]="articleBannerUrl" [alt]="articleBannerAlt" *ngIf="articleBannerUrl">
+<article
+  [class.bordered]="!articleBannerUrl"
+  [class.clickable]="isClickable"
+  [class.hoverable]="isClickable || isTitleClickable"
+  (click)="onClickHost()"
+>
+  @if (articleBannerUrl) {
+    <img class="article-banner" [src]="articleBannerUrl" [alt]="articleBannerAlt" />
+  }
   <div class="article-content-wrapper">
     <header class="article-header">
       <div class="article-image">
-        <ng-container *ngIf="articleIconTemplate; else: noImageTemplate">
+        @if (articleIconTemplate) {
           <ng-container *ngTemplateOutlet="articleIconTemplate"></ng-container>
-        </ng-container>
-        <ng-template #noImageTemplate>
-          <img *ngIf="articleIconUrl" [src]="articleIconUrl" [alt]="articleIconAlt">
-        </ng-template>
+        } @else if (articleIconUrl) {
+          <img [src]="articleIconUrl" [alt]="articleIconAlt" />
+        }
       </div>
-      @if (articleTitle|istemplate) {
+      @if (articleTitle | istemplate) {
         <h3
-        class="article-title"
-        [routerLink]="articleUrl"
-        (click)="didClickTitle.emit()">
-        <ng-container *ngTemplateOutlet="articleTitle" />
-      </h3>
+          class="article-title"
+          [class.clickable]="isTitleClickable"
+          [routerLink]="articleUrl"
+          (click)="onClickTitle($event)"
+        >
+          <ng-container *ngTemplateOutlet="articleTitle" />
+        </h3>
       } @else {
-      <div
-        class="article-title"
-        [routerLink]="articleUrl"
-        (click)="didClickTitle.emit()">
-        {{articleTitle}}
-      </div>
+        <div
+          class="article-title"
+          [class.clickable]="isTitleClickable"
+          [routerLink]="articleUrl"
+          (click)="onClickTitle($event)"
+        >
+          {{ articleTitle }}
+        </div>
       }
     </header>
     <p class="article-description">
-      @if (articleDescription|istemplate) {
+      @if (articleDescription | istemplate) {
         <ng-container *ngTemplateOutlet="articleDescription" />
       } @else {
-        {{articleDescription}}
+        {{ articleDescription }}
       }
     </p>
-    <div class="article-tags" [class.clickable]="isTagsCliclable" *ngIf="articleTags?.length">
-    @for (tag of articleTags; track $index) {
-      @if(tag|isstring) {
-       <div class="article-tag" (click)="didClickTag.emit(tag)">
-           @if (articleTagIconTemplate) {
-            <div class="article-tag-icon">
-              <ng-container *ngTemplateOutlet="articleTagIconTemplate; context: { text: tag }" />
+    @if (articleTags && articleTags.length) {
+      <div class="article-tags" [class.clickable]="isTagsClickable">
+        @for (tag of articleTags; track $index) {
+          @if (tag | isstring) {
+            <div class="article-tag" (click)="onClickTag($event, tag)">
+              @if (articleTagIconTemplate) {
+                <div class="article-tag-icon">
+                  <ng-container *ngTemplateOutlet="articleTagIconTemplate; context: { text: tag }" />
+                </div>
+              }
+              {{ tag }}
+            </div>
+          } @else {
+            <div
+              class="article-tag"
+              [style.--article-tag-background-color]="tag.color ?? '#5d7092'"
+              (click)="onClickTagItem($event, tag)"
+            >
+              @if (articleTagIconTemplate) {
+                <div class="article-tag-icon">
+                  <ng-container
+                    *ngTemplateOutlet="articleTagIconTemplate; context: { text: tag.text, data: tag.data }"
+                  />
+                </div>
+              }
+              {{ tag.text }}
             </div>
           }
-          {{tag}}
-        </div>
-      } @else {
-        <div class="article-tag" [style.--article-tag-background-color]="tag.color ?? '#5d7092'" (click)="didClickTagItem.emit(tag)">
-          @if (articleTagIconTemplate) {
-            <div class="article-tag-icon">
-              <ng-container *ngTemplateOutlet="articleTagIconTemplate; context: { text: tag.text, data: tag.data }" />
-            </div>
-          }
-          {{tag.text}}
-        </div>
-      }
+        }
+      </div>
     }
-    </div>
     <footer class="article-footer">
       <ng-content></ng-content>
     </footer>
