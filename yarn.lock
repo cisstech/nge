@@ -169,6 +169,11 @@
   resolved "https://registry.yarnpkg.com/@angular-eslint/bundled-angular-compiler/-/bundled-angular-compiler-18.3.0.tgz#086bf5d529e60a864bbcf3d448ccb9544bfd9b86"
   integrity sha512-v/59FxUKnMzymVce99gV43huxoqXWMb85aKvzlNvLN+ScDu6ZE4YMiTQNpfapVL2lkxhs0uwB3jH17EYd5TcsA==
 
+"@angular-eslint/bundled-angular-compiler@21.1.0":
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/bundled-angular-compiler/-/bundled-angular-compiler-21.1.0.tgz#56ef7b91cdc406161afab748aab476e31bfdd4b1"
+  integrity sha512-t52J6FszgEHaJ+IjuzU9qaWfVxsjlVNkAP+B5z2t4NDgbbDDsmI+QJh0OtP1qdlqzjh2pbocEml30KhYmNZm/Q==
+
 "@angular-eslint/eslint-plugin-template@18.3.0":
   version "18.3.0"
   resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-18.3.0.tgz#137ca3934fef6f57fcc6af5810c0984a3c1f71f8"
@@ -205,6 +210,14 @@
   dependencies:
     "@angular-eslint/bundled-angular-compiler" "18.3.0"
     eslint-scope "^8.0.2"
+
+"@angular-eslint/template-parser@21.1.0":
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/template-parser/-/template-parser-21.1.0.tgz#7af5cff19cf522dfe4182b680d569202c60b54e4"
+  integrity sha512-PYVgNbjNtuD5/QOuS6cHR8A7bRqsVqxtUUXGqdv76FYMAajQcAvyfR0QxOkqf3NmYxgNgO3hlUHWq0ILjVbcow==
+  dependencies:
+    "@angular-eslint/bundled-angular-compiler" "21.1.0"
+    eslint-scope "^9.0.0"
 
 "@angular-eslint/utils@18.3.0":
   version "18.3.0"
@@ -5804,6 +5817,14 @@ eslint-scope@^8.0.2:
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-8.0.2.tgz#5cbb33d4384c9136083a71190d548158fe128f94"
   integrity sha512-6E4xmrTw5wtxnLA5wYL3WDfhZ/1bUBGOXV0zQvVRDOtrR8D0p6W7fs3JweNYhwRYeGvd/1CKX2se0/2s7Q/nJA==
+  dependencies:
+    esrecurse "^4.3.0"
+    estraverse "^5.2.0"
+
+eslint-scope@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-9.0.0.tgz#b4eeba2278f9cfc440c7a126da58795b666909c6"
+  integrity sha512-+Yh0LeQKq+mW/tQArNj67tljR3L1HajDTQPuZOEwC00oBdoIDQrr89yBgjAlzAwRrY/5zDkM3v99iGHwz9y0dw==
   dependencies:
     esrecurse "^4.3.0"
     estraverse "^5.2.0"
