@@ -169,6 +169,11 @@
   resolved "https://registry.yarnpkg.com/@angular-eslint/bundled-angular-compiler/-/bundled-angular-compiler-18.3.0.tgz#086bf5d529e60a864bbcf3d448ccb9544bfd9b86"
   integrity sha512-v/59FxUKnMzymVce99gV43huxoqXWMb85aKvzlNvLN+ScDu6ZE4YMiTQNpfapVL2lkxhs0uwB3jH17EYd5TcsA==
 
+"@angular-eslint/bundled-angular-compiler@21.1.0":
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/bundled-angular-compiler/-/bundled-angular-compiler-21.1.0.tgz#56ef7b91cdc406161afab748aab476e31bfdd4b1"
+  integrity sha512-t52J6FszgEHaJ+IjuzU9qaWfVxsjlVNkAP+B5z2t4NDgbbDDsmI+QJh0OtP1qdlqzjh2pbocEml30KhYmNZm/Q==
+
 "@angular-eslint/eslint-plugin-template@18.3.0":
   version "18.3.0"
   resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-18.3.0.tgz#137ca3934fef6f57fcc6af5810c0984a3c1f71f8"
@@ -186,6 +191,15 @@
   dependencies:
     "@angular-eslint/bundled-angular-compiler" "18.3.0"
     "@angular-eslint/utils" "18.3.0"
+
+"@angular-eslint/eslint-plugin@21.1.0":
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-21.1.0.tgz#92581dcaf1e03fb8624f42bedd6e6ca7ce1273e6"
+  integrity sha512-oNp+4UzN2M3KwGwEw03NUdXz93vqJd9sMzTbGXWF9+KVfA2LjckGDTrI6g6asGcJMdyTo07rDcnw0m0MkLB5VA==
+  dependencies:
+    "@angular-eslint/bundled-angular-compiler" "21.1.0"
+    "@angular-eslint/utils" "21.1.0"
+    ts-api-utils "^2.1.0"
 
 "@angular-eslint/schematics@18.3.0":
   version "18.3.0"
@@ -212,6 +226,13 @@
   integrity sha512-sCrkHkpxBJZLuCikdboZoawCfc2UgbJv+T14tu2uQCv+Vwzeadnu04vkeY2vTkA8GeBdBij/G9/N/nvwmwVw3g==
   dependencies:
     "@angular-eslint/bundled-angular-compiler" "18.3.0"
+
+"@angular-eslint/utils@21.1.0":
+  version "21.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/utils/-/utils-21.1.0.tgz#e6985d1f8e62564157364b65ad8d736e4b1ff8b9"
+  integrity sha512-rWINgxGREu+NFUPCpAVsBGG8B4hfXxyswM0N5GbjykvsfB5W6PUix2Gsoh++iEsZPT+c9lvgXL5GbpwfanjOow==
+  dependencies:
+    "@angular-eslint/bundled-angular-compiler" "21.1.0"
 
 "@angular/animations@^18.2.1":
   version "18.2.1"
@@ -11155,6 +11176,11 @@ ts-api-utils@^1.0.1, ts-api-utils@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-1.3.0.tgz#4b490e27129f1e8e686b45cc4ab63714dc60eea1"
   integrity sha512-UQMIo7pb8WRomKR1/+MFVLTroIvDVtMX3K6OUir8ynLyzB8Jeriont2bTAtmNPa1ekAgN7YPDyf6V+ygrdU+eQ==
+
+ts-api-utils@^2.1.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-2.3.0.tgz#9f397ac9d88ac76e8dd6e8bc4af0dbf98af99f73"
+  integrity sha512-6eg3Y9SF7SsAvGzRHQvvc1skDAhwI4YQ32ui1scxD1Ccr0G5qIIbUBT3pFTKX8kmWIQClHobtUdNuaBgwdfdWg==
 
 ts-jest@^29.0.0, ts-jest@^29.2.5:
   version "29.2.5"
