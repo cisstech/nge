@@ -10,14 +10,11 @@ import { NgeMonacoThemeService } from './services/monaco-theme.service'
 import { NgeMonacoPlaceholderComponent } from './components/monaco-placeholder/monaco-placeholder.component'
 
 @NgModule({
-  imports: [CommonModule],
-  exports: [NgeMonacoEditorComponent, NgeMonacoDiffEditorComponent, NgeMonacoViewerComponent],
-  declarations: [
-    NgeMonacoEditorComponent,
-    NgeMonacoDiffEditorComponent,
-    NgeMonacoViewerComponent,
-    NgeMonacoPlaceholderComponent,
-  ],
+    imports: [CommonModule, NgeMonacoEditorComponent,
+        NgeMonacoDiffEditorComponent,
+        NgeMonacoViewerComponent,
+        NgeMonacoPlaceholderComponent],
+    exports: [NgeMonacoEditorComponent, NgeMonacoDiffEditorComponent, NgeMonacoViewerComponent],
 })
 export class NgeMonacoModule {
   static forRoot(

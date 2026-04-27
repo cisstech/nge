@@ -3,6 +3,7 @@ import { FaIcon, ICON_TOKEN } from '../icons'
 
 @Component({
   selector: 'ui-icon-fa',
+  standalone: false,
   templateUrl: './icon-fa.component.html',
   styleUrls: ['./icon-fa.component.scss'],
 })

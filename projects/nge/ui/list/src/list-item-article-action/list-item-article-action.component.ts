@@ -3,6 +3,7 @@ import { Component, HostBinding, HostListener, Input, TemplateRef } from '@angul
 
 @Component({
   selector: 'ui-list-item-article-action',
+  standalone: false,
   templateUrl: './list-item-article-action.component.html',
   styleUrls: ['./list-item-article-action.component.scss'],
 })

@@ -3,7 +3,7 @@ import { ComponentRef, Directive, ElementRef, Input, OnChanges, OnDestroy } from
 import { ActivatedRoute, Router, Scroll } from '@angular/router'
 import { Subscription } from 'rxjs'
 
-@Directive({ selector: '[ngeDocToc]' })
+@Directive({ selector: '[ngeDocToc]', standalone: false })
 export class NgeDocTocDirective implements OnDestroy, OnChanges {
   private readonly subscriptions: Subscription[] = []
   private readonly observer = new MutationObserver(() => {

@@ -5,6 +5,7 @@ import { ChangeDetectorRef } from '@angular/core'
 
 @Component({
   selector: 'nge-doc-default-layout',
+  standalone: false,
   templateUrl: './default-layout.component.html',
   styleUrls: ['./default-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -15,6 +15,7 @@ import { ListTemplateComponent } from './list-template.component'
 
 @Component({
   selector: 'ui-list',
+  standalone: false,
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })

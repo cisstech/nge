@@ -3,6 +3,7 @@ import { ICON_TOKEN, ImgIcon } from '../icons'
 
 @Component({
   selector: 'ui-icon-img',
+  standalone: false,
   templateUrl: './icon-img.component.html',
   styleUrls: ['./icon-img.component.scss'],
 })

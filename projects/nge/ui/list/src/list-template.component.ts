@@ -3,6 +3,7 @@ import { ListContext, ListTemplateSlots } from './list'
 
 @Component({
   selector: 'ui-list-template',
+  standalone: false,
   template: ``,
 })
 export class ListTemplateComponent<T> {

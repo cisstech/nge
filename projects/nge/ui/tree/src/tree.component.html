@@ -1,33 +1,27 @@
-<ng-container *ngIf="filter.term">
+@if (filter.term) {
   <div class="tree-filter" title="Filter">
     <span class="tree-filter__label">{{ filter.term }}</span>
     <div class="tree-filter__commands">
       <span class="command-clear" role="button" title="Clear" (click)="_clearFilter()">&times;</span>
     </div>
   </div>
-</ng-container>
+}
 
-<div
-  tabindex="0"
-  class="tree-component"
-  [class.editing]="editing.node != null"
-  [style.height]="treeHeight">
-  <ng-container *ngFor="let node of visibleNodes|async; trackBy: _trackById;">
+<div tabindex="0" class="tree-component" [class.editing]="editing.node != null" [style.height]="treeHeight">
+  @for (node of visibleNodes | async; track _trackById($index, node)) {
     <!-- RENAMING -->
-    <ng-container *ngIf="node.renaming; else: nodeTemplate">
+    @if (node.renaming) {
       <div
         class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
         [attr.data-tree-node-id]="node.id"
         [style.padding-left]="node.padding"
-        [style.height.px]="adapter.itemHeight">
+        [style.height.px]="adapter.itemHeight"
+      >
         <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
           <ng-container *ngTemplateOutlet="inputTemplate" />
         </div>
       </div>
-    </ng-container>
-
-    <!-- NODE -->
-    <ng-template #nodeTemplate>
+    } @else {
       <div
         class="tree-node tree-node--level-{{ node.level }}"
         [attr.data-tree-node-id]="node.id"
@@ -36,26 +30,28 @@
         [ngClass]="{
           focused: node.focused,
           selected: node.selected,
-          expanded: node.expanded
-        }">
-          <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
-            <ng-container *ngTemplateOutlet="nodeDirective.templateRef; context: { $implicit: node }" />
-          </div>
+          expanded: node.expanded,
+        }"
+      >
+        <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
+          <ng-container *ngTemplateOutlet="nodeDirective.templateRef; context: { $implicit: node }" />
+        </div>
       </div>
-    </ng-template>
-
+    }
+    <!-- NODE -->
     <!-- CREATING -->
-    <ng-container *ngIf="node.creating">
+    @if (node.creating) {
       <div
         class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
         [style.padding-left]="node.padding"
-        [style.height.px]="adapter.itemHeight">
+        [style.height.px]="adapter.itemHeight"
+      >
         <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
           <ng-container *ngTemplateOutlet="inputTemplate" />
         </div>
       </div>
-    </ng-container>
-  </ng-container>
+    }
+  }
 </div>
 
 <ng-template #inputTemplate>
@@ -67,6 +63,7 @@
       (click)="$event.preventDefault(); $event.stopPropagation()"
       [(ngModel)]="editing.text"
       (keydown)="_onEdit($event)"
-      (blur)="_onEdit($event)" />
+      (blur)="_onEdit($event)"
+    />
   </span>
 </ng-template>

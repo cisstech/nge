@@ -9,10 +9,6 @@ import { DefaultLayoutModule } from './layouts/default/default-layout.module'
 
 @NgModule({
   declarations: [NgeDocComponent],
-  imports: [
-    CommonModule,
-    RouterModule.forChild([{ path: '**', pathMatch: 'full', component: NgeDocComponent }]),
-    DefaultLayoutModule,
-  ],
+  imports: [CommonModule, RouterModule.forChild([{ path: '**', pathMatch: 'full', component: NgeDocComponent }]), DefaultLayoutModule],
 })
 export class NgeDocModule {}

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-monaco-showcase',
+  standalone: false,
   templateUrl: './showcase.component.html',
   styleUrls: ['./showcase.component.scss'],
 })

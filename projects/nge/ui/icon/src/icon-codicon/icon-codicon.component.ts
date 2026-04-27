@@ -3,6 +3,7 @@ import { CodIcon, ICON_TOKEN } from '../icons'
 
 @Component({
   selector: 'ui-icon-codicon',
+  standalone: false,
   templateUrl: './icon-codicon.component.html',
   styleUrls: ['./icon-codicon.component.scss'],
 })

@@ -4,6 +4,7 @@ import { ListItemTag } from '../list'
 
 @Component({
   selector: 'ui-list-item-article',
+  standalone: false,
   templateUrl: './list-item-article.component.html',
   styleUrls: ['./list-item-article.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

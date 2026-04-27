@@ -4,6 +4,7 @@ import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
   selector: 'nge-doc-header',
+  standalone: false,
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

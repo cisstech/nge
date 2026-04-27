@@ -20,6 +20,7 @@ import { NgeDocService } from '../nge-doc.service'
 
 @Component({
   selector: 'nge-doc-renderer',
+  standalone: false,
   templateUrl: 'renderer.component.html',
   styleUrls: ['renderer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

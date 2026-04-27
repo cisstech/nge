@@ -3,6 +3,7 @@ import { IcongrIcon, ICON_TOKEN } from '../icons'
 
 @Component({
   selector: 'ui-icon-icongr',
+  standalone: false,
   templateUrl: './icon-icongr.component.html',
   styleUrls: ['./icon-icongr.component.scss'],
 })

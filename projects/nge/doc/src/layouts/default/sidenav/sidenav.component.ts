@@ -4,6 +4,7 @@ import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
   selector: 'nge-doc-sidenav',
+  standalone: false,
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

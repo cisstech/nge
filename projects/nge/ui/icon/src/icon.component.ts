@@ -3,6 +3,7 @@ import { Icon } from './icons'
 
 @Component({
   selector: 'ui-icon',
+  standalone: false,
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss'],
 })

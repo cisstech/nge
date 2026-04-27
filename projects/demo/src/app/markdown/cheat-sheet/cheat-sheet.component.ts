@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs'
 
 @Component({
   selector: 'app-markdown-cheat-sheet',
+  standalone: false,
   templateUrl: './cheat-sheet.component.html',
   styleUrls: ['./cheat-sheet.component.scss'],
 })
@@ -61,7 +62,7 @@ export class CheatSheetComponent implements OnInit {
     })
   }
 
-  trackBy(index: number) {
+  trackBy(index: number, _item: string) {
     return index
   }
 }

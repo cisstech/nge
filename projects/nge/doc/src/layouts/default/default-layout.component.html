@@ -6,10 +6,9 @@
     <nge-doc-header (toggle)="sidebarOpened = !sidebarOpened" />
     <article>
       <nge-doc-renderer #renderer />
-      <aside
-        *ngIf="showTableOfContents"
-        [ngeDocToc]="renderer.componentRef">
-      </aside>
+      @if (showTableOfContents) {
+        <aside [ngeDocToc]="renderer.componentRef"></aside>
+      }
     </article>
   </section>
 </main>

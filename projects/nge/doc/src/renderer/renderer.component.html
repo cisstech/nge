@@ -1,10 +1,14 @@
-<div class="loading-container" *ngIf="loading">
-  <div class="loading-spinner"></div>
-  <div class="loading-text">Loading...</div>
-</div>
-<div *ngIf="noFound">
-  <h1>Ooops!</h1>
-  <hr />
-  <p>It looks like this page doesn't exist.</p>
-</div>
+@if (loading) {
+  <div class="loading-container">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading...</div>
+  </div>
+}
+@if (noFound) {
+  <div>
+    <h1>Ooops!</h1>
+    <hr />
+    <p>It looks like this page doesn't exist.</p>
+  </div>
+}
 <div #container></div>

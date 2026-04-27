@@ -11,12 +11,15 @@ import {
 } from '@angular/core'
 import { NgeMonacoColorizerService } from '../../services/monaco-colorizer.service'
 import { Subscription } from 'rxjs'
+import { NgeMonacoPlaceholderComponent } from '../monaco-placeholder/monaco-placeholder.component'
 
 @Component({
   selector: 'nge-monaco-viewer',
   templateUrl: 'monaco-viewer.component.html',
   styleUrls: ['monaco-viewer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgeMonacoPlaceholderComponent],
+  standalone: true,
 })
 export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   private readonly colorizer = inject(NgeMonacoColorizerService)

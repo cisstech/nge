@@ -19,6 +19,7 @@ import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
   selector: 'nge-monaco-diff-editor',
   templateUrl: './monaco-diff-editor.component.html',
   styleUrls: ['./monaco-diff-editor.component.scss'],
+  standalone: true
 })
 export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
   @ViewChild('container', { static: true })

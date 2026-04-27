@@ -22,6 +22,7 @@ import { NgeMarkdownService } from './nge-markdown.service'
 
 @Component({
   selector: 'nge-markdown, [nge-markdown]',
+  standalone: false,
   templateUrl: 'nge-markdown.component.html',
   styleUrls: ['nge-markdown.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

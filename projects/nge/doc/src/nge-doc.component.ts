@@ -3,6 +3,7 @@ import { NgeDocService } from './nge-doc.service'
 
 @Component({
   selector: 'nge-doc',
+  standalone: false,
   templateUrl: './nge-doc.component.html',
   providers: [NgeDocService],
   styleUrls: ['nge-doc.component.scss'],

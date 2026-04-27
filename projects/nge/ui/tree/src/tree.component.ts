@@ -28,6 +28,7 @@ import {
 
 @Component({
   selector: 'ui-tree',
+  standalone: false,
   templateUrl: 'tree.component.html',
   styleUrls: ['tree.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

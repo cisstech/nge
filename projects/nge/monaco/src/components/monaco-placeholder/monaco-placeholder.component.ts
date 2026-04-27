@@ -5,5 +5,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core'
   templateUrl: './monaco-placeholder.component.html',
   styleUrls: ['./monaco-placeholder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true
 })
 export class NgeMonacoPlaceholderComponent {}

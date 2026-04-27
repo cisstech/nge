@@ -8,6 +8,7 @@ import { Icon, ICON_TOKEN } from '../icons'
 
 @Pipe({
   name: 'icon',
+  standalone: false,
 })
 export class IconPipe implements PipeTransform {
   constructor(private readonly injector: Injector) {}

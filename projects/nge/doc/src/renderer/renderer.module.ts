@@ -6,8 +6,8 @@ import { NgeDocTocDirective } from './toc.directive'
 const declarations = [NgeDocRendererComponent, NgeDocTocDirective]
 
 @NgModule({
+  declarations,
   imports: [CommonModule],
   exports: declarations,
-  declarations,
 })
 export class NgeDocRendererModule {}

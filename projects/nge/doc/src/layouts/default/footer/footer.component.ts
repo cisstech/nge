@@ -3,6 +3,7 @@ import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
   selector: 'nge-doc-footer',
+  standalone: false,
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

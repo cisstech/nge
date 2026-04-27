@@ -5,9 +5,9 @@ import { NgeMonacoModule } from '@cisstech/nge/monaco'
 import { NgeMarkdownModule } from '@cisstech/nge/markdown'
 
 @NgModule({
+  declarations: [ShowcaseComponent],
   imports: [CommonModule, NgeMarkdownModule, NgeMonacoModule],
   exports: [ShowcaseComponent],
-  declarations: [ShowcaseComponent],
 })
 export class ShowcaseModule {
   component = ShowcaseComponent

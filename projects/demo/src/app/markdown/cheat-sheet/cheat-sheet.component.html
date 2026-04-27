@@ -1,16 +1,11 @@
 <h1>Cheatsheet</h1>
 <p>
-  The following examples are intended as a quick markdown reference and
-  showcase. Some of the examples are based on
-  <a
-    href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
-    target="_blank"
-    >Adam Pritchard work</a
-  >
+  The following examples are intended as a quick markdown reference and showcase. Some of the examples are based on
+  <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Adam Pritchard work</a>
   of Markdown Cheat Sheet.
 </p>
 <mat-accordion multi>
-  <ng-container *ngFor="let item of titles; trackBy: trackBy">
+  @for (item of titles; track trackBy($index, item)) {
     <mat-expansion-panel (opened)="load(item)">
       <mat-expansion-panel-header>{{ item }}</mat-expansion-panel-header>
       <ng-template matExpansionPanelContent>
@@ -22,5 +17,5 @@
         </section>
       </ng-template>
     </mat-expansion-panel>
-  </ng-container>
+  }
 </mat-accordion>
