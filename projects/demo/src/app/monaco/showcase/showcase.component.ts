@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { NgeMonacoTheme, NgeMonacoThemeService } from '@cisstech/nge/monaco'
 import { Subscription } from 'rxjs'
 
@@ -10,6 +10,8 @@ import { Subscription } from 'rxjs'
   standalone: false,
 })
 export class ShowcaseComponent implements OnInit, OnDestroy {
+  private readonly theming = inject(NgeMonacoThemeService)
+
   private readonly disposables: monaco.IDisposable[] = []
   private readonly subscriptions: Subscription[] = []
   private model?: monaco.editor.ITextModel | null
@@ -18,8 +20,6 @@ export class ShowcaseComponent implements OnInit, OnDestroy {
 
   protected theme?: NgeMonacoTheme
   protected themes = this.theming.themesChanges
-
-  constructor(private readonly theming: NgeMonacoThemeService) {}
 
   ngOnInit() {
     this.subscriptions.push(

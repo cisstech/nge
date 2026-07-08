@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, Injector, Input, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { ICON_TOKEN, ImgIcon } from '../icons'
 
 @Component({
@@ -9,9 +9,9 @@ import { ICON_TOKEN, ImgIcon } from '../icons'
   standalone: false,
 })
 export class IconImgComponent implements OnInit {
-  @Input() icon!: ImgIcon
+  private readonly injector = inject(Injector)
 
-  constructor(private readonly injector: Injector) {}
+  @Input() icon!: ImgIcon
 
   ngOnInit() {
     this.icon = this.icon || this.injector.get<ImgIcon>(ICON_TOKEN)

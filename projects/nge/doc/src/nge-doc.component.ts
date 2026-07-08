@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { NgeDocService } from './nge-doc.service'
 
 @Component({
@@ -10,7 +10,7 @@ import { NgeDocService } from './nge-doc.service'
   standalone: false,
 })
 export class NgeDocComponent implements OnInit {
-  constructor(private readonly docService: NgeDocService) {}
+  private readonly docService = inject(NgeDocService)
 
   async ngOnInit() {
     await this.docService.setup()

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common'
-import { Injectable, Provider } from '@angular/core'
+import { Injectable, Provider, inject } from '@angular/core'
 import { Router } from '@angular/router'
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
@@ -9,10 +9,8 @@ import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markd
  */
 @Injectable()
 export class NgeMarkdownLinkAnchor implements NgeMarkdownContribution {
-  constructor(
-    private readonly router: Router,
-    private readonly location: Location
-  ) {}
+  private readonly router = inject(Router)
+  private readonly location = inject(Location)
 
   contribute(transformer: NgeMarkdownTransformer) {
     transformer.addRendererTransformer((renderer) => {

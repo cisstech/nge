@@ -1,13 +1,18 @@
 import { Location } from '@angular/common'
-import { ComponentRef, Directive, ElementRef, Input, OnChanges, OnDestroy } from '@angular/core'
+import { ComponentRef, Directive, ElementRef, Input, OnChanges, OnDestroy, inject } from '@angular/core'
 import { ActivatedRoute, Router, Scroll } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 @Directive({
-    selector: '[ngeDocToc]',
-    standalone: false
+  selector: '[ngeDocToc]',
+  standalone: false,
 })
 export class NgeDocTocDirective implements OnDestroy, OnChanges {
+  private readonly router = inject(Router)
+  private readonly location = inject(Location)
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
+  private readonly activatedRoute = inject(ActivatedRoute)
+
   private readonly subscriptions: Subscription[] = []
   private readonly observer = new MutationObserver(() => {
     this.observer?.disconnect()
@@ -20,12 +25,7 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
   @Input('ngeDocToc')
   component?: ComponentRef<any>
 
-  constructor(
-    private readonly router: Router,
-    private readonly location: Location,
-    private readonly elementRef: ElementRef<HTMLElement>,
-    private readonly activatedRoute: ActivatedRoute
-  ) {
+  constructor() {
     this.subscriptions.push(
       this.router.events.subscribe((event) => {
         if (event instanceof Scroll && event.anchor) {

@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken, Optional, Provider } from '@angular/core'
+import { Injectable, InjectionToken, Provider, inject } from '@angular/core'
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
 
@@ -16,14 +16,9 @@ export const NGE_MARKDOWN_EMOJI_OPTIONS = new InjectionToken<NgeMarkdownEmojiOpt
  */
 @Injectable()
 export class NgeMarkdownEmoji implements NgeMarkdownContribution {
-  constructor(
-    @Optional()
-    @Inject(NGE_MARKDOWN_EMOJI_OPTIONS)
-    private readonly options: NgeMarkdownEmojiOptions
-  ) {
-    this.options = options || {}
-    this.options.url = this.options.url || 'https://cdn.jsdelivr.net/npm/emoji-toolkit@8.0.0/lib/js/joypixels.min.js'
-  }
+  private readonly options: NgeMarkdownEmojiOptions = inject<NgeMarkdownEmojiOptions>(NGE_MARKDOWN_EMOJI_OPTIONS, {
+    optional: true,
+  }) ?? { url: 'https://cdn.jsdelivr.net/npm/emoji-toolkit@8.0.0/lib/js/joypixels.min.js' }
 
   dependencies() {
     const deps: any[] = []

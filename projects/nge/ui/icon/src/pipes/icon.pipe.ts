@@ -1,5 +1,5 @@
 import { ComponentPortal } from '@angular/cdk/portal'
-import { Injector, Pipe, PipeTransform } from '@angular/core'
+import { Injector, Pipe, PipeTransform, inject } from '@angular/core'
 import { IconCodIconComponent } from '../icon-codicon/icon-codicon.component'
 import { IconFaComponent } from '../icon-fa/icon-fa.component'
 import { IconIcongrComponent } from '../icon-icongr/icon-icongr.component'
@@ -7,11 +7,12 @@ import { IconImgComponent } from '../icon-img/icon-img.component'
 import { Icon, ICON_TOKEN } from '../icons'
 
 @Pipe({
-    name: 'icon',
-    standalone: false
+  name: 'icon',
+  standalone: false,
 })
 export class IconPipe implements PipeTransform {
-  constructor(private readonly injector: Injector) {}
+  private readonly injector = inject(Injector)
+
   transform(icon?: Icon): ComponentPortal<any> {
     switch (icon?.type) {
       case 'fa':

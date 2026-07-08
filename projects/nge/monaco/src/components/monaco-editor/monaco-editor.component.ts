@@ -6,24 +6,26 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
-  Inject,
   Input,
   OnDestroy,
-  Optional,
   Output,
   ViewChild,
+  inject,
 } from '@angular/core'
 import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
 
 @Component({
-    selector: 'nge-monaco-editor',
-    templateUrl: './monaco-editor.component.html',
-    styleUrls: ['./monaco-editor.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'nge-monaco-editor',
+  templateUrl: './monaco-editor.component.html',
+  styleUrls: ['./monaco-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
+  private readonly loader = inject(NgeMonacoLoaderService)
+  private readonly config = inject<NgeMonacoConfig>(NGE_MONACO_CONFIG, { optional: true })
+
   protected loading = true
   @ViewChild('container', { static: true })
   protected container!: ElementRef<HTMLElement>
@@ -35,13 +37,6 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
   private editor?: monaco.editor.IStandaloneCodeEditor
   private width = 0
   private height = 0
-
-  constructor(
-    private readonly loader: NgeMonacoLoaderService,
-    @Optional()
-    @Inject(NGE_MONACO_CONFIG)
-    private readonly config: NgeMonacoConfig
-  ) {}
 
   ngAfterViewInit(): void {
     this.loader.loadAsync().then(() => {
@@ -72,7 +67,7 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
 
   private createEditor(): void {
     this.editor = monaco.editor.create(this.container.nativeElement, {
-      ...(this.config.options || {}),
+      ...(this.config?.options || {}),
       ...(this.options || {}),
     })
     this.loading = false

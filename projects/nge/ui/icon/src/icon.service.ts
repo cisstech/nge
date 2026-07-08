@@ -1,15 +1,11 @@
-import { Inject, Injectable, Optional } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { FileIconOptions, ImgIcon, NgeUiIconConfig, NGE_UI_ICON_CONFIG } from './icons'
 import { FILE_THEME } from './icons.files'
 import { FOLDER_THEME } from './icons.folders'
 
 @Injectable({ providedIn: 'root' })
 export class NgeIconService {
-  constructor(
-    @Optional()
-    @Inject(NGE_UI_ICON_CONFIG)
-    private readonly config?: NgeUiIconConfig
-  ) {}
+  private readonly config = inject<NgeUiIconConfig>(NGE_UI_ICON_CONFIG, { optional: true })
 
   fromFileName(fileName: string, options: FileIconOptions): ImgIcon {
     const { defaultIcon } = FILE_THEME

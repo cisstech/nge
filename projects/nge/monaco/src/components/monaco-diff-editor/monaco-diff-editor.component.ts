@@ -5,13 +5,12 @@ import {
   ElementRef,
   EventEmitter,
   HostListener,
-  Inject,
   Input,
   OnDestroy,
-  Optional,
   Output,
   ViewChild,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core'
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
@@ -24,6 +23,9 @@ import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
   standalone: false,
 })
 export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
+  private readonly loader = inject(NgeMonacoLoaderService)
+  private readonly config = inject<NgeMonacoConfig>(NGE_MONACO_CONFIG, { optional: true })
+
   @ViewChild('container', { static: true })
   container!: ElementRef<HTMLElement>
 
@@ -39,13 +41,6 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
   private editor?: monaco.editor.IStandaloneDiffEditor
   private width = 0
   private height = 0
-
-  constructor(
-    private readonly loader: NgeMonacoLoaderService,
-    @Optional()
-    @Inject(NGE_MONACO_CONFIG)
-    private readonly config: NgeMonacoConfig
-  ) {}
 
   @HostListener('window:resize')
   onResizeWindow() {
@@ -76,7 +71,7 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
 
   private createEditor() {
     this.editor = monaco.editor.createDiffEditor(this.container.nativeElement, {
-      ...(this.config.options || {}),
+      ...(this.config?.options || {}),
       ...(this.options || {}),
     })
     this.ready.emit(this.editor)

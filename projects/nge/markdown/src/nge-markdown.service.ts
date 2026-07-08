@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { MarkedOptions, marked } from 'marked'
 import { NgeMarkdownContribution } from './nge-markdown-contribution'
 import { NgeMarkdownConfig, NGE_MARKDOWN_CONFIG } from './nge-markdown-config'
@@ -15,14 +15,8 @@ const WINDOW = window as any
   providedIn: 'root',
 })
 export class NgeMarkdownService {
-  constructor(
-    @Optional()
-    @Inject(NGE_MARKDOWN_CONFIG)
-    readonly config: NgeMarkdownConfig,
-    private readonly resourceLoader: ResourceLoaderService
-  ) {
-    this.config = config || {}
-  }
+  readonly config: NgeMarkdownConfig = inject<NgeMarkdownConfig>(NGE_MARKDOWN_CONFIG, { optional: true }) ?? {}
+  private readonly resourceLoader = inject(ResourceLoaderService)
 
   /**
    * Compiles a markdown string to an html string.

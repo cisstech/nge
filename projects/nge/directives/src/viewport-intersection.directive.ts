@@ -7,6 +7,7 @@ import {
   OnDestroy,
   Output,
   booleanAttribute,
+  inject,
 } from '@angular/core'
 
 @Directive({
@@ -14,6 +15,8 @@ import {
   standalone: true,
 })
 export class ViewportIntersectionDirective implements AfterViewInit, OnDestroy {
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef)
+
   /**
    * An optional reference to a container element with its own scrollable area. If not provided, the viewport is used as the default container.
    */
@@ -45,8 +48,6 @@ export class ViewportIntersectionDirective implements AfterViewInit, OnDestroy {
   @Output() intersected: EventEmitter<void> = new EventEmitter()
 
   private intersectionObserver?: IntersectionObserver
-
-  constructor(private readonly element: ElementRef<HTMLElement>) {}
 
   ngAfterViewInit(): void {
     this.intersectionObserver = new IntersectionObserver(

@@ -1,4 +1,4 @@
-import { Injector, InjectionToken, Injectable, Provider, Inject, Optional, Type } from '@angular/core'
+import { Injector, InjectionToken, Injectable, Provider, Type, inject } from '@angular/core'
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
 
@@ -84,12 +84,8 @@ export const NGE_MARKDOWN_HIGHLIGHTER_SERVICE = new InjectionToken<NgeMarkdownHi
  */
 @Injectable()
 export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
-  constructor(
-    private readonly injector: Injector,
-    @Optional()
-    @Inject(NGE_MARKDOWN_HIGHLIGHTER_SERVICE)
-    private readonly options: NgeMarkdownHighlighterService
-  ) {}
+  private readonly injector = inject(Injector)
+  private readonly options = inject<NgeMarkdownHighlighterService>(NGE_MARKDOWN_HIGHLIGHTER_SERVICE, { optional: true })
 
   contribute(transformer: NgeMarkdownTransformer) {
     this.createAttributes(transformer)
@@ -129,7 +125,7 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
             return `${attributeName}="${attributeValue}"`
           })
           .join(' ')
-          console.log(attribs)
+        console.log(attribs)
         return `<pre ${attribs}><code>${this.escapeHtml(code)}</code></pre>`
       }
       return renderer

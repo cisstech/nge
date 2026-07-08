@@ -10,6 +10,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  inject,
 } from '@angular/core'
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { BehaviorSubject } from 'rxjs'
@@ -27,13 +28,16 @@ import {
 } from './tree.model'
 
 @Component({
-    selector: 'ui-tree',
-    templateUrl: 'tree.component.html',
-    styleUrls: ['tree.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'ui-tree',
+  templateUrl: 'tree.component.html',
+  styleUrls: ['tree.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy {
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
+
   @Input() nodes: T[] = []
   @Input() adapter!: ITreeAdapter<T>
 
@@ -65,10 +69,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     return this.adapter?.itemHeight?.toString() || '100%'
   }
 
-  constructor(
-    private readonly elementRef: ElementRef<HTMLElement>,
-    private readonly changeDetectorRef: ChangeDetectorRef
-  ) {
+  constructor() {
     this.controler = new FlatTreeControl<ITreeNodeHolder<T>>(
       (node) => node.level,
       (node) => node.expandable,

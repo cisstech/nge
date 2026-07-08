@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken, Optional, Provider } from '@angular/core'
+import { Injectable, InjectionToken, Provider, inject } from '@angular/core'
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
 
@@ -25,17 +25,10 @@ export const NGE_MARKDOWN_KATEX_OPTIONS = new InjectionToken<NgeMarkdownKatexOpt
  */
 @Injectable()
 export class NgeMarkdownKatex implements NgeMarkdownContribution {
-  constructor(
-    @Optional()
-    @Inject(NGE_MARKDOWN_KATEX_OPTIONS)
-    private readonly options: NgeMarkdownKatexOptions
-  ) {
-    this.options = options || {
-      extensions: {
-        mhchem: true,
-        copyTex: true,
-      },
-    }
+  private readonly options: NgeMarkdownKatexOptions =
+    inject<NgeMarkdownKatexOptions>(NGE_MARKDOWN_KATEX_OPTIONS, { optional: true }) ?? {}
+
+  constructor() {
     this.options.extensions = this.options.extensions || {}
     this.options.extensions.mhchem = this.options.extensions.mhchem ?? true
     this.options.extensions.copyTex = this.options.extensions.copyTex ?? true

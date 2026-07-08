@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http'
-import { Inject, Injectable, Optional } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { NgeMonacoContribution } from '../contributions/monaco-contribution'
@@ -8,19 +8,13 @@ import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../monaco-config'
 
 @Injectable({ providedIn: 'root' })
 export class NgeMonacoThemeService implements NgeMonacoContribution {
+  private readonly http = inject(HttpClient, { optional: true })
+  private readonly config = inject<NgeMonacoConfig>(NGE_MONACO_CONFIG, { optional: true })
+
   private readonly themes = new BehaviorSubject<string[]>([])
   private readonly activeTheme = new BehaviorSubject<NgeMonacoTheme | undefined>(undefined)
 
   private themeService: any
-
-  constructor(
-    @Optional()
-    private readonly http: HttpClient,
-
-    @Optional()
-    @Inject(NGE_MONACO_CONFIG)
-    private readonly config: NgeMonacoConfig
-  ) {}
 
   /**
    * Gets the current active theme of monaco editor (undefined if monaco editor is not loaded).

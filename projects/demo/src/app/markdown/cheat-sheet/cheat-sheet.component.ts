@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { lastValueFrom } from 'rxjs'
 
 @Component({
@@ -10,6 +10,8 @@ import { lastValueFrom } from 'rxjs'
   standalone: false,
 })
 export class CheatSheetComponent implements OnInit {
+  private readonly http = inject(HttpClient)
+
   readonly titles = [
     'Headers',
     'Emphasis',
@@ -37,8 +39,6 @@ export class CheatSheetComponent implements OnInit {
       markdown: string
     }
   > = {}
-
-  constructor(private readonly http: HttpClient) {}
 
   ngOnInit() {
     this.titles.forEach((e) => {

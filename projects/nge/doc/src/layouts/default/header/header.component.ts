@@ -1,22 +1,20 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Output } from '@angular/core'
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Output, inject } from '@angular/core'
 import { NgeDocLinkActionHandler } from '../../../nge-doc'
 import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
-    selector: 'nge-doc-header',
-    templateUrl: './header.component.html',
-    styleUrls: ['./header.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'nge-doc-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class HeaderComponent {
+  readonly injector = inject(Injector)
+  readonly docService = inject(NgeDocService)
+
   @Output() toggle = new EventEmitter()
   state$ = this.docService.stateChanges
-
-  constructor(
-    readonly injector: Injector,
-    readonly docService: NgeDocService
-  ) {}
 
   async invoke(handler: NgeDocLinkActionHandler) {
     if (typeof handler === 'string') {
