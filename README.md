@@ -1,14 +1,14 @@
 <!-- markdownlint-disable MD033 -->
 
-<h1 align="center"> NG Essentials</h1>
+<h1 align="center">NG Essentials</h1>
 
 <div align="center">
-  <img src="./projects/demo/src/assets/images/nge.svg" alt="Logo NGE" width="120px" />
+  <img src="./projects/demo/src/assets/images/nge.svg" alt="NGE logo" width="120px" />
 </div>
 
 <div align="center">
 
-NG Essentials is a collection of libraries for <a href="https://angular.io">Angular</a> developers.
+A collection of libraries for [Angular](https://angular.dev) developers.
 
 [![Tests](https://github.com/cisstech/nge/actions/workflows/ci.yml/badge.svg)](https://github.com/cisstech/nge/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/cisstech/nge/branch/main/graph/badge.svg)](https://codecov.io/gh/cisstech/nge)
@@ -21,72 +21,82 @@ NG Essentials is a collection of libraries for <a href="https://angular.io">Angu
 
 </div>
 
-## ✨ Features Guides
+## Overview
 
-Follow the guides to integrate these essentials features into your applications:
+`@cisstech/nge` is a set of focused building blocks for Angular apps: a documentation
+site engine, a Markdown renderer, a Monaco editor integration, and a few UI and utility
+packages. Everything ships from a single package split into secondary entry points, so
+you only bundle what you import.
 
-- [nge-doc](https://cisstech.github.io/nge/docs/nge-doc/)
+## Libraries
 
-Project documentation tool.
+| Entry point | What it does |
+| --- | --- |
+| [`@cisstech/nge/doc`](https://cisstech.github.io/nge/docs/nge-doc/) | Build a documentation site from a route config, Markdown files or live Angular components. |
+| [`@cisstech/nge/markdown`](https://cisstech.github.io/nge/docs/nge-markdown/) | Markdown rendering built on [Marked](https://github.com/markedjs/marked) v11, with admonitions, tabs, KaTeX and syntax highlighting. |
+| [`@cisstech/nge/monaco`](https://cisstech.github.io/nge/docs/nge-monaco/) | [Monaco editor](https://microsoft.github.io/monaco-editor/) integration: editor, diff editor and read-only viewer. |
 
-- [nge-markdown](https://cisstech.github.io/nge/docs/nge-markdown/)
+Additional entry points are available for UI and helpers: `@cisstech/nge/ui/tree`,
+`@cisstech/nge/ui/list`, `@cisstech/nge/ui/icon`, `@cisstech/nge/services`,
+`@cisstech/nge/pipes` and `@cisstech/nge/utils`.
 
-Markdown parser library based on [Marked](https://github.com/markedjs/marked) `(v^11)`.
+## Compatibility
 
-- [nge-monaco](https://cisstech.github.io/nge/docs/nge-monaco/)
+The major version of `@cisstech/nge` tracks the Angular major it targets. Pick the line
+that matches your Angular version.
 
-[Monaco Editor](https://microsoft.github.io/monaco-editor/) integration in angular.
+| @cisstech/nge | Angular | Node |
+| --- | --- | --- |
+| 22.x | 22 | ^22.22.3, ^24.15.0 or >=26 |
+| 18.x | 18 | ^18.19, ^20.11 or >=22 |
+| 17.x | 17 | ^18.13 or >=20 |
+| 16.x | 16 | ^16.14 or >=18 |
+| 15.x | 15 | ^14.20, ^16.13 or >=18 |
 
-## 📄 Docs
-
-Documentation available at [https://cisstech.github.io/nge/](https://cisstech.github.io/nge/)
-
-## 📦 Installation
+## Installation
 
 ```bash
 npm install @cisstech/nge
 ```
 
-## ⌨️ Development
+`@angular/common`, `@angular/core`, `@angular/cdk` and `@angular/material` are required
+peer dependencies. `marked` (for `nge/markdown`), `monaco-editor` (for `nge/monaco`) and
+`ngx-pipes` are optional peers: install them only when you use the matching entry point.
 
-- Clone and install
+## Documentation
+
+Guides and API for every library are hosted at
+[cisstech.github.io/nge](https://cisstech.github.io/nge/).
+
+## Development
 
 ```bash
 git clone https://github.com/cisstech/nge
 cd nge
 npm install
-```
-
-- Serve demo
-
-```bash
 npm run start
 ```
 
-Browser would open automatically at <http://localhost:4200/>.
+The demo opens at <http://localhost:4200>. The repository pins its Node version in
+`.nvmrc` (run `nvm use`). Useful scripts:
 
-## 🤝 Contribution
+- `npm run build` builds the library, then the demo.
+- `npm test` runs the unit tests.
+- `npm run lint` runs ESLint.
 
-Contributions are always welcome. <br/>
+## Contributing
 
-Please read our [CONTRIBUTING.md](https://github.com/cisstech/nge/blob/main/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/cisstech/nge/pulls) or as [GitHub issues](https://github.com/cisstech/nge/issues).
+Contributions are welcome. Read [CONTRIBUTING.md](https://github.com/cisstech/nge/blob/main/CONTRIBUTING.md)
+first, then open a [pull request](https://github.com/cisstech/nge/pulls) or an
+[issue](https://github.com/cisstech/nge/issues). Before submitting, make sure your code
+matches the existing style and that the tests and linter pass.
 
-Please just make sure that ...
+## Support
 
-Your code style matches with the rest of the project
+This library is free to use. As its owner and main maintainer, I put a lot of time into
+it, aside from my job and my family, to answer questions, fix issues and add features. If
+it saved you or your team some time, a star helps support its maintenance and future work.
 
-Unit tests pass
-
-Linter passes
-
-## ❓ Support Development
-
-The use of this library is totally free.
-
-As the owner and primary maintainer of this project, I am putting a lot of time and effort beside my job, my family and my private time to bring the best support I can by answering questions, addressing issues and improving the library to provide more and more features over time.
-
-If this project has been useful, that it helped you or your business to save precious time, don't hesitate to give it a star to support its maintenance and future development.
-
-## ✨ License
+## License
 
 MIT © [Mamadou Cisse](https://github.com/cisstech)

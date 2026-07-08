@@ -19,10 +19,11 @@ import { NGE_DOC_RENDERERS, NgeDocState } from '../nge-doc'
 import { NgeDocService } from '../nge-doc.service'
 
 @Component({
-  selector: 'nge-doc-renderer',
-  templateUrl: 'renderer.component.html',
-  styleUrls: ['renderer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'nge-doc-renderer',
+    templateUrl: 'renderer.component.html',
+    styleUrls: ['renderer.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private readonly injector = inject(Injector)

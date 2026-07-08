@@ -3,10 +3,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 import { ListItemTag } from '../list'
 
 @Component({
-  selector: 'ui-list-item-article',
-  templateUrl: './list-item-article.component.html',
-  styleUrls: ['./list-item-article.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'ui-list-item-article',
+    templateUrl: './list-item-article.component.html',
+    styleUrls: ['./list-item-article.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class ListItemArticleComponent implements OnInit {
   @Input() articleTitle?: string | TemplateRef<any>

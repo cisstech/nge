@@ -4,8 +4,9 @@ import { NgeElementService } from './nge-element.service'
 // TODO make angular universal compatible using Renderer2
 
 @Directive({
-  // tslint:disable-next-line: directive-selector
-  selector: 'nge-element-detector, [nge-element-detector]',
+    // tslint:disable-next-line: directive-selector
+    selector: 'nge-element-detector, [nge-element-detector]',
+    standalone: false
 })
 export class NgeElementDetectorDirective implements AfterViewInit, OnDestroy {
   private observer?: MutationObserver

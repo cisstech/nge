@@ -17,10 +17,11 @@ import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
 
 @Component({
-  selector: 'nge-monaco-editor',
-  templateUrl: './monaco-editor.component.html',
-  styleUrls: ['./monaco-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'nge-monaco-editor',
+    templateUrl: './monaco-editor.component.html',
+    styleUrls: ['./monaco-editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
   protected loading = true

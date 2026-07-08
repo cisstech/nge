@@ -4,10 +4,11 @@ import { Subscription } from 'rxjs'
 import { ChangeDetectorRef } from '@angular/core'
 
 @Component({
-  selector: 'nge-doc-default-layout',
-  templateUrl: './default-layout.component.html',
-  styleUrls: ['./default-layout.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'nge-doc-default-layout',
+    templateUrl: './default-layout.component.html',
+    styleUrls: ['./default-layout.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
   private subscription?: Subscription

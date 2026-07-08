@@ -3,10 +3,11 @@ import { NgeDocLinkActionHandler } from '../../../nge-doc'
 import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
-  selector: 'nge-doc-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'nge-doc-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HeaderComponent {
   @Output() toggle = new EventEmitter()

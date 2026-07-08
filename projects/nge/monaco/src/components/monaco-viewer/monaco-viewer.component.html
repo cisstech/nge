@@ -1,10 +1,11 @@
-<nge-monaco-placeholder *ngIf="loading" />
+@if (loading) {
+  <nge-monaco-placeholder />
+}
 
 <pre class="monaco-editor monaco-editor-background">
   <code #container></code>
 </pre>
 
-<div #transclusion style="display: none;">
+<div #transclusion style="display: none">
   <ng-content></ng-content>
 </div>
-

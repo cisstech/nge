@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { lastValueFrom } from 'rxjs'
 
 @Component({
   selector: 'app-markdown-cheat-sheet',
   templateUrl: './cheat-sheet.component.html',
   styleUrls: ['./cheat-sheet.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class CheatSheetComponent implements OnInit {
   readonly titles = [
@@ -59,9 +61,5 @@ export class CheatSheetComponent implements OnInit {
     lastValueFrom(this.http.get(url, { responseType: 'text' })).then((markdown) => {
       record.markdown = markdown
     })
-  }
-
-  trackBy(index: number) {
-    return index
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { NgeDocService } from './nge-doc.service'
 
 @Component({
@@ -6,6 +6,8 @@ import { NgeDocService } from './nge-doc.service'
   templateUrl: './nge-doc.component.html',
   providers: [NgeDocService],
   styleUrls: ['nge-doc.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class NgeDocComponent implements OnInit {
   constructor(private readonly docService: NgeDocService) {}

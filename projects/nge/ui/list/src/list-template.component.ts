@@ -1,9 +1,11 @@
-import { Component, ContentChild, TemplateRef, Input } from '@angular/core'
+import { Component, ContentChild, TemplateRef, Input, ChangeDetectionStrategy } from '@angular/core'
 import { ListContext, ListTemplateSlots } from './list'
 
 @Component({
   selector: 'ui-list-template',
   template: ``,
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class ListTemplateComponent<T> {
   @ContentChild(TemplateRef)

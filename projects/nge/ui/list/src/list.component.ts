@@ -9,6 +9,7 @@ import {
   Output,
   QueryList,
   TemplateRef,
+  ChangeDetectionStrategy,
 } from '@angular/core'
 import { ListContext, ListTemplateSlots } from './list'
 import { ListTemplateComponent } from './list-template.component'
@@ -17,6 +18,8 @@ import { ListTemplateComponent } from './list-template.component'
   selector: 'ui-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class ListComponent<T> implements OnChanges, AfterContentInit {
   @ContentChildren(ListTemplateComponent)
@@ -85,13 +88,6 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
     this.selections = this.selections.filter((e) => e !== item)
     this._selectionStates[id] = false
     this.selectionsChange.emit(this.selections)
-  }
-
-  _trackBy(index: number, item: any): any {
-    if (this.trackBy) {
-      return item[this.trackBy] ?? index
-    }
-    return index
   }
 
   _template(context: T | ListContext<T>, slot: ListTemplateSlots): TemplateRef<any> | null {

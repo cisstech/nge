@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core'
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core'
 import { NgeMonacoTheme, NgeMonacoThemeService } from '@cisstech/nge/monaco'
 import { Subscription } from 'rxjs'
 
@@ -6,6 +6,8 @@ import { Subscription } from 'rxjs'
   selector: 'app-monaco-showcase',
   templateUrl: './showcase.component.html',
   styleUrls: ['./showcase.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false,
 })
 export class ShowcaseComponent implements OnInit, OnDestroy {
   private readonly disposables: monaco.IDisposable[] = []

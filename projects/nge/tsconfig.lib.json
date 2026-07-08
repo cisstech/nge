@@ -5,11 +5,16 @@
     "declarationMap": true,
     "declaration": true,
     "inlineSources": true,
-    "types": ["../../node_modules/monaco-editor/monaco.d.ts"],
-    "lib": ["dom", "es2019"]
+    "types": ["../../node_modules/monaco-editor/monaco.d.ts"]
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    },
     "strictMetadataEmit": true,
     "enableResourceInlining": true
   },

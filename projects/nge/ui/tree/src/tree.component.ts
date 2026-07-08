@@ -27,10 +27,11 @@ import {
 } from './tree.model'
 
 @Component({
-  selector: 'ui-tree',
-  templateUrl: 'tree.component.html',
-  styleUrls: ['tree.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'ui-tree',
+    templateUrl: 'tree.component.html',
+    styleUrls: ['tree.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy {
   @Input() nodes: T[] = []
@@ -468,9 +469,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     return !!this.editing.creation && this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node)
   }
 
-  protected _trackById(_: number, e: ITreeNodeHolder<T>) {
-    return e.id
-  }
   //#endregion
 
   //#region EVENTS
