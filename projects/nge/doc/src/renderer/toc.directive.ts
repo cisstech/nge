@@ -3,10 +3,7 @@ import { ComponentRef, Directive, ElementRef, Input, OnChanges, OnDestroy, injec
 import { ActivatedRoute, Router, Scroll } from '@angular/router'
 import { Subscription } from 'rxjs'
 
-@Directive({
-  selector: '[ngeDocToc]',
-  standalone: false,
-})
+@Directive({ selector: '[ngeDocToc]' })
 export class NgeDocTocDirective implements OnDestroy, OnChanges {
   private readonly router = inject(Router)
   private readonly location = inject(Location)

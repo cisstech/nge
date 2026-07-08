@@ -2,13 +2,18 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
 import { Subscription } from 'rxjs'
 import { ChangeDetectorRef } from '@angular/core'
+import { SidenavComponent } from './sidenav/sidenav.component'
+import { HeaderComponent } from './header/header.component'
+import { NgeDocRendererComponent } from '../../renderer/renderer.component'
+import { NgeDocTocDirective } from '../../renderer/toc.directive'
+import { FooterComponent } from './footer/footer.component'
 
 @Component({
   selector: 'nge-doc-default-layout',
   templateUrl: './default-layout.component.html',
   styleUrls: ['./default-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+  imports: [SidenavComponent, HeaderComponent, NgeDocRendererComponent, NgeDocTocDirective, FooterComponent],
 })
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
   private readonly observer = inject(BreakpointObserver)

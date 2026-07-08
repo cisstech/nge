@@ -6,7 +6,6 @@ import { CodIcon, ICON_TOKEN } from '../icons'
   templateUrl: './icon-codicon.component.html',
   styleUrls: ['./icon-codicon.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
 })
 export class IconCodIconComponent implements OnInit {
   private readonly injector = inject(Injector)

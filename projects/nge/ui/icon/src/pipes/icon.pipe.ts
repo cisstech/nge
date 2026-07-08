@@ -6,10 +6,7 @@ import { IconIcongrComponent } from '../icon-icongr/icon-icongr.component'
 import { IconImgComponent } from '../icon-img/icon-img.component'
 import { Icon, ICON_TOKEN } from '../icons'
 
-@Pipe({
-  name: 'icon',
-  standalone: false,
-})
+@Pipe({ name: 'icon' })
 export class IconPipe implements PipeTransform {
   private readonly injector = inject(Injector)
 

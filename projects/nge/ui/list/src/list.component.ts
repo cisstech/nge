@@ -13,13 +13,16 @@ import {
 } from '@angular/core'
 import { ListContext, ListTemplateSlots } from './list'
 import { ListTemplateComponent } from './list-template.component'
+import { NgTemplateOutlet, NgClass } from '@angular/common'
+import { FormsModule } from '@angular/forms'
+import { NgArrayPipesModule } from 'ngx-pipes'
 
 @Component({
   selector: 'ui-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
+  imports: [NgTemplateOutlet, NgClass, FormsModule, NgArrayPipesModule],
 })
 export class ListComponent<T> implements OnChanges, AfterContentInit {
   @ContentChildren(ListTemplateComponent)

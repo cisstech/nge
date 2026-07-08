@@ -14,13 +14,14 @@ import {
 } from '@angular/core'
 import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
+import { NgeMonacoPlaceholderComponent } from '../monaco-placeholder/monaco-placeholder.component'
 
 @Component({
   selector: 'nge-monaco-editor',
   templateUrl: './monaco-editor.component.html',
   styleUrls: ['./monaco-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+  imports: [NgeMonacoPlaceholderComponent],
 })
 export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
   private readonly loader = inject(NgeMonacoLoaderService)

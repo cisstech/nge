@@ -8,7 +8,7 @@ describe('NgeMarkdownComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NgeMarkdownComponent],
+      imports: [NgeMarkdownComponent],
       providers: [],
       schemas: [NO_ERRORS_SCHEMA],
     })

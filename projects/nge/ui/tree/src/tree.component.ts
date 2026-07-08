@@ -26,13 +26,16 @@ import {
   ITreeState,
   TreeFilter,
 } from './tree.model'
+import { NgTemplateOutlet, NgClass, AsyncPipe } from '@angular/common'
+import { AutofocusDirective } from './autofocus.directive'
+import { FormsModule } from '@angular/forms'
 
 @Component({
   selector: 'ui-tree',
   templateUrl: 'tree.component.html',
   styleUrls: ['tree.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: false,
+  imports: [NgTemplateOutlet, NgClass, AutofocusDirective, FormsModule, AsyncPipe],
 })
 export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)

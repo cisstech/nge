@@ -3,7 +3,6 @@ import { AfterContentInit, Directive, ElementRef, inject } from '@angular/core'
 @Directive({
   // tslint:disable-next-line: directive-selector
   selector: 'input[autofocus]',
-  standalone: false,
 })
 export class AutofocusDirective implements AfterContentInit {
   private readonly el = inject(ElementRef)

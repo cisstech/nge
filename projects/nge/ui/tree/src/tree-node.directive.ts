@@ -9,7 +9,6 @@ export declare type Context<T> = {
 @Directive({
   // tslint:disable-next-line: directive-selector
   selector: '[treeNode], ui-tree-node',
-  standalone: false,
 })
 export class TreeNodeDirective<T> {
   readonly templateRef = inject<TemplateRef<Context<T>>>(TemplateRef)

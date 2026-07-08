@@ -5,7 +5,6 @@ import { ListContext, ListTemplateSlots } from './list'
   selector: 'ui-list-template',
   template: ``,
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
 })
 export class ListTemplateComponent<T> {
   @ContentChild(TemplateRef)

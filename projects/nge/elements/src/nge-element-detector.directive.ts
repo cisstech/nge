@@ -6,7 +6,6 @@ import { NgeElementService } from './nge-element.service'
 @Directive({
   // tslint:disable-next-line: directive-selector
   selector: 'nge-element-detector, [nge-element-detector]',
-  standalone: false,
 })
 export class NgeElementDetectorDirective implements AfterViewInit, OnDestroy {
   private readonly elementService = inject(NgeElementService)

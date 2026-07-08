@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core'
 import { ListItemTag } from '../list'
+import { NgTemplateOutlet } from '@angular/common'
+import { RouterLink } from '@angular/router'
+import { IsTemplatePipe, IsStringPipe } from '@cisstech/nge/pipes'
 
 @Component({
-    selector: 'ui-list-item-article',
-    templateUrl: './list-item-article.component.html',
-    styleUrls: ['./list-item-article.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'ui-list-item-article',
+  templateUrl: './list-item-article.component.html',
+  styleUrls: ['./list-item-article.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgTemplateOutlet, RouterLink, IsTemplatePipe, IsStringPipe],
 })
 export class ListItemArticleComponent implements OnInit {
   @Input() articleTitle?: string | TemplateRef<any>
@@ -58,5 +61,4 @@ export class ListItemArticleComponent implements OnInit {
     $event.preventDefault()
     this.didClickTagItem.emit(tag)
   }
-
 }

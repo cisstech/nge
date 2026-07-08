@@ -21,11 +21,10 @@ import { NGE_MARKDOWN_CONTRIBUTION, NgeMarkdownContribution } from './nge-markdo
 import { NgeMarkdownService } from './nge-markdown.service'
 
 @Component({
-    selector: 'nge-markdown, [nge-markdown]',
-    templateUrl: 'nge-markdown.component.html',
-    styleUrls: ['nge-markdown.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'nge-markdown, [nge-markdown]',
+  templateUrl: 'nge-markdown.component.html',
+  styleUrls: ['nge-markdown.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgeMarkdownComponent implements OnInit, OnChanges, AfterViewInit {
   private readonly el: ElementRef<HTMLElement> = inject(ElementRef)

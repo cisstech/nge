@@ -10,21 +10,19 @@ import { NgeMonacoThemeService } from './services/monaco-theme.service'
 import { NgeMonacoPlaceholderComponent } from './components/monaco-placeholder/monaco-placeholder.component'
 
 @NgModule({
-  imports: [CommonModule],
-  exports: [NgeMonacoEditorComponent, NgeMonacoDiffEditorComponent, NgeMonacoViewerComponent],
-  declarations: [
+  imports: [
+    CommonModule,
     NgeMonacoEditorComponent,
     NgeMonacoDiffEditorComponent,
     NgeMonacoViewerComponent,
     NgeMonacoPlaceholderComponent,
   ],
+  exports: [NgeMonacoEditorComponent, NgeMonacoDiffEditorComponent, NgeMonacoViewerComponent],
 })
 export class NgeMonacoModule {
-  static forRoot(
-    config: NgeMonacoConfig | (() => NgeMonacoConfig)
-  ): ModuleWithProviders<NgeMonacoModule> {
+  static forRoot(config: NgeMonacoConfig | (() => NgeMonacoConfig)): ModuleWithProviders<NgeMonacoModule> {
     const configProvider =
-      typeof config === "function"
+      typeof config === 'function'
         ? { provide: NGE_MONACO_CONFIG, useFactory: config }
         : { provide: NGE_MONACO_CONFIG, useValue: config }
     return {

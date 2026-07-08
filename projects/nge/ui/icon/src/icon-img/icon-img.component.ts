@@ -6,7 +6,6 @@ import { ICON_TOKEN, ImgIcon } from '../icons'
   templateUrl: './icon-img.component.html',
   styleUrls: ['./icon-img.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
 })
 export class IconImgComponent implements OnInit {
   private readonly injector = inject(Injector)

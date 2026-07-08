@@ -30,8 +30,7 @@ const DECLARATIONS = [
 ]
 
 @NgModule({
-  declarations: [...DECLARATIONS],
-  imports: [CommonModule, PortalModule, IconGrPipe],
+  imports: [CommonModule, PortalModule, IconGrPipe, ...DECLARATIONS],
   exports: [...DECLARATIONS],
 })
 export class NgeUiIconModule {}

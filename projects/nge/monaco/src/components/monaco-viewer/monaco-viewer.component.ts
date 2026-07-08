@@ -11,13 +11,14 @@ import {
 } from '@angular/core'
 import { NgeMonacoColorizerService } from '../../services/monaco-colorizer.service'
 import { Subscription } from 'rxjs'
+import { NgeMonacoPlaceholderComponent } from '../monaco-placeholder/monaco-placeholder.component'
 
 @Component({
-    selector: 'nge-monaco-viewer',
-    templateUrl: 'monaco-viewer.component.html',
-    styleUrls: ['monaco-viewer.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'nge-monaco-viewer',
+  templateUrl: 'monaco-viewer.component.html',
+  styleUrls: ['monaco-viewer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgeMonacoPlaceholderComponent],
 })
 export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   private readonly colorizer = inject(NgeMonacoColorizerService)
@@ -50,7 +51,6 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
 
   /** filename to display in the header tab */
   @Input() filename?: string
-
 
   ngOnChanges(): void {
     const code = this.transclusion.nativeElement.textContent?.trim() || this.code || ''

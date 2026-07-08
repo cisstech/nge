@@ -14,13 +14,14 @@ import {
 } from '@angular/core'
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
+import { NgeMonacoEditorComponent } from '../monaco-editor/monaco-editor.component'
 
 @Component({
   selector: 'nge-monaco-diff-editor',
   templateUrl: './monaco-diff-editor.component.html',
   styleUrls: ['./monaco-diff-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
+  imports: [NgeMonacoEditorComponent],
 })
 export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
   private readonly loader = inject(NgeMonacoLoaderService)

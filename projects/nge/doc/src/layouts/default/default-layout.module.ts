@@ -10,8 +10,15 @@ import { SidenavComponent } from './sidenav/sidenav.component'
 import { DefaultLayoutComponent } from './default-layout.component'
 
 @NgModule({
-  declarations: [FooterComponent, HeaderComponent, SidenavComponent, DefaultLayoutComponent],
   exports: [DefaultLayoutComponent],
-  imports: [CommonModule, RouterModule, NgeDocRendererModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    NgeDocRendererModule,
+    FooterComponent,
+    HeaderComponent,
+    SidenavComponent,
+    DefaultLayoutComponent,
+  ],
 })
 export class DefaultLayoutModule {}

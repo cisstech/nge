@@ -2,10 +2,7 @@ import { Pipe, PipeTransform, inject } from '@angular/core'
 import { NgeIconService } from '../icon.service'
 import { FileIconOptions, ImgIcon } from '../icons'
 
-@Pipe({
-  name: 'iconFile',
-  standalone: false,
-})
+@Pipe({ name: 'iconFile' })
 export class IconFilePipe implements PipeTransform {
   private readonly service = inject(NgeIconService)
 

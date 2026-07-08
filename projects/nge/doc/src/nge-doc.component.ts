@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
 import { NgeDocService } from './nge-doc.service'
+import { DefaultLayoutComponent } from './layouts/default/default-layout.component'
 
 @Component({
   selector: 'nge-doc',
@@ -7,7 +8,7 @@ import { NgeDocService } from './nge-doc.service'
   providers: [NgeDocService],
   styleUrls: ['nge-doc.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: false,
+  imports: [DefaultLayoutComponent],
 })
 export class NgeDocComponent implements OnInit {
   private readonly docService = inject(NgeDocService)
