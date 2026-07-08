@@ -7,7 +7,7 @@ import { DefaultLayoutComponent } from './layouts/default/default-layout.compone
   templateUrl: './nge-doc.component.html',
   providers: [NgeDocService],
   styleUrls: ['nge-doc.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DefaultLayoutComponent],
 })
 export class NgeDocComponent implements OnInit {

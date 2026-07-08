@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, HostBinding, HostListener, Input, TemplateRef, ChangeDetectionStrategy } from '@angular/core'
 import { NgTemplateOutlet } from '@angular/common'
-import { ListComponent } from '../list.component'
+import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, TemplateRef } from '@angular/core'
 import { IsTemplatePipe } from '@cisstech/nge/pipes'
 
 @Component({
   selector: 'ui-list-item-article-action',
   templateUrl: './list-item-article-action.component.html',
   styleUrls: ['./list-item-article-action.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [NgTemplateOutlet, ListComponent, IsTemplatePipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgTemplateOutlet, IsTemplatePipe],
 })
 export class ListItemArticleActionComponent {
   @Input() actionTitle?: string | number | boolean | TemplateRef<any> | null

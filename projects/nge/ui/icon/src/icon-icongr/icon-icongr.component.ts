@@ -6,7 +6,7 @@ import { IconGrPipe } from '@cisstech/nge/pipes'
   selector: 'ui-icon-icongr',
   templateUrl: './icon-icongr.component.html',
   styleUrls: ['./icon-icongr.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IconGrPipe],
 })
 export class IconIcongrComponent implements OnInit {

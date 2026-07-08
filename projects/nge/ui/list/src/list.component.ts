@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   EventEmitter,
@@ -10,6 +11,7 @@ import {
   QueryList,
   TemplateRef,
   ChangeDetectionStrategy,
+  inject,
 } from '@angular/core'
 import { ListContext, ListTemplateSlots } from './list'
 import { ListTemplateComponent } from './list-template.component'
@@ -21,10 +23,12 @@ import { NgArrayPipesModule } from 'ngx-pipes'
   selector: 'ui-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, NgClass, FormsModule, NgArrayPipesModule],
 })
 export class ListComponent<T> implements OnChanges, AfterContentInit {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef)
+
   @ContentChildren(ListTemplateComponent)
   templates!: QueryList<ListTemplateComponent<T>>
 
@@ -135,5 +139,6 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
       return false
     })
     this.selectionsChange.emit(this.selections)
+    this.changeDetectorRef.markForCheck()
   }
 }

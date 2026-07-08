@@ -5,7 +5,7 @@ import { CodIcon, ICON_TOKEN } from '../icons'
   selector: 'ui-icon-codicon',
   templateUrl: './icon-codicon.component.html',
   styleUrls: ['./icon-codicon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconCodIconComponent implements OnInit {
   private readonly injector = inject(Injector)

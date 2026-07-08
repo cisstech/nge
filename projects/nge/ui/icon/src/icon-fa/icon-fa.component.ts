@@ -5,7 +5,7 @@ import { FaIcon, ICON_TOKEN } from '../icons'
   selector: 'ui-icon-fa',
   templateUrl: './icon-fa.component.html',
   styleUrls: ['./icon-fa.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IconFaComponent implements OnInit {
   private readonly injector = inject(Injector)

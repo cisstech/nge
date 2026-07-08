@@ -20,7 +20,7 @@ import { NgeMonacoEditorComponent } from '../monaco-editor/monaco-editor.compone
   selector: 'nge-monaco-diff-editor',
   templateUrl: './monaco-diff-editor.component.html',
   styleUrls: ['./monaco-diff-editor.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgeMonacoEditorComponent],
 })
 export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {

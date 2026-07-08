@@ -8,7 +8,7 @@ import { IconPipe } from './pipes/icon.pipe'
   selector: 'ui-icon',
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgSwitch, CdkPortalOutlet, IconPipe],
 })
 export class IconComponent {
