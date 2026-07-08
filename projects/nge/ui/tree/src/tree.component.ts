@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   ElementRef,
   HostListener,
   Input,
@@ -11,6 +10,7 @@ import {
   OnDestroy,
   OnInit,
   inject,
+  contentChild,
 } from '@angular/core'
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { BehaviorSubject } from 'rxjs'
@@ -44,8 +44,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   @Input() nodes: T[] = []
   @Input() adapter!: ITreeAdapter<T>
 
-  @ContentChild(TreeNodeDirective, { static: true })
-  protected nodeDirective!: TreeNodeDirective<T>
+  protected readonly nodeDirective = contentChild.required(TreeNodeDirective)
 
   private readonly DATA_TREE_NODE_ID = 'data-tree-node-id'
 

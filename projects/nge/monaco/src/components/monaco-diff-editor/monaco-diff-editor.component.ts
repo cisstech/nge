@@ -3,35 +3,30 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
   HostListener,
   Input,
   OnDestroy,
-  Output,
-  ViewChild,
   ChangeDetectionStrategy,
   inject,
+  output,
+  viewChild,
 } from '@angular/core'
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
-import { NgeMonacoEditorComponent } from '../monaco-editor/monaco-editor.component'
 
 @Component({
   selector: 'nge-monaco-diff-editor',
   templateUrl: './monaco-diff-editor.component.html',
   styleUrls: ['./monaco-diff-editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgeMonacoEditorComponent],
 })
 export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
   private readonly loader = inject(NgeMonacoLoaderService)
   private readonly config = inject<NgeMonacoConfig>(NGE_MONACO_CONFIG, { optional: true })
 
-  @ViewChild('container', { static: true })
-  container!: ElementRef<HTMLElement>
+  readonly container = viewChild.required<ElementRef<HTMLElement>>('container')
 
-  @Output()
-  ready = new EventEmitter<monaco.editor.IEditor>()
+  readonly ready = output<monaco.editor.IEditor>()
 
   @Input()
   autoLayout = true
@@ -58,7 +53,7 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
     if (!this.autoLayout) {
       return
     }
-    const { offsetWidth, offsetHeight } = this.container.nativeElement
+    const { offsetWidth, offsetHeight } = this.container().nativeElement
     if (offsetWidth !== this.width || offsetHeight !== this.height) {
       this.width = offsetWidth
       this.height = offsetHeight
@@ -71,7 +66,7 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
   }
 
   private createEditor() {
-    this.editor = monaco.editor.createDiffEditor(this.container.nativeElement, {
+    this.editor = monaco.editor.createDiffEditor(this.container().nativeElement, {
       ...(this.config?.options || {}),
       ...(this.options || {}),
     })

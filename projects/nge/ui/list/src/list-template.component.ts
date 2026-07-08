@@ -1,4 +1,4 @@
-import { Component, ContentChild, TemplateRef, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, TemplateRef, Input, ChangeDetectionStrategy, contentChild } from '@angular/core'
 import { ListContext, ListTemplateSlots } from './list'
 
 @Component({
@@ -7,8 +7,7 @@ import { ListContext, ListTemplateSlots } from './list'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ListTemplateComponent<T> {
-  @ContentChild(TemplateRef)
-  template?: TemplateRef<ListContext<T>>
+  readonly template = contentChild(TemplateRef)
 
   @Input()
   slot?: ListTemplateSlots

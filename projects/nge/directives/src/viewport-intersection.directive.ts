@@ -1,14 +1,4 @@
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  Output,
-  booleanAttribute,
-  inject,
-} from '@angular/core'
+import { AfterViewInit, Directive, ElementRef, Input, OnDestroy, booleanAttribute, inject, output } from '@angular/core'
 
 @Directive({
   selector: '[viewportIntersection]',
@@ -45,7 +35,7 @@ export class ViewportIntersectionDirective implements AfterViewInit, OnDestroy {
    * This event is emitted whenever the observed element intersects with the viewport or the specified scrollContainer
    * according to the given threshold and rootMargin.
    */
-  @Output() intersected: EventEmitter<void> = new EventEmitter()
+  readonly intersected = output<void>()
 
   private intersectionObserver?: IntersectionObserver
 

@@ -6,8 +6,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  ViewChild,
   inject,
+  viewChild,
 } from '@angular/core'
 import { NgeMonacoColorizerService } from '../../services/monaco-colorizer.service'
 import { Subscription } from 'rxjs'
@@ -30,9 +30,11 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
 
   protected loading = true
 
-  @ViewChild('container', { static: true }) container!: ElementRef<HTMLElement>
-  @ViewChild('transclusion', { static: true })
-  transclusion!: ElementRef<HTMLElement>
+  readonly container = viewChild.required<ElementRef<HTMLElement>>('container')
+  readonly transclusion = viewChild.required<
+    ElementRef<HTMLElement>
+    /** code to highlight */
+  >('transclusion')
 
   /** code to highlight */
   @Input() code?: string
@@ -53,7 +55,7 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   @Input() filename?: string
 
   ngOnChanges(): void {
-    const code = this.transclusion.nativeElement.textContent?.trim() || this.code || ''
+    const code = this.transclusion().nativeElement.textContent?.trim() || this.code || ''
     this.colorize(code)
   }
 
@@ -72,7 +74,7 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
         language: this.language,
         highlights: this.highlights,
         filename: this.filename,
-        element: this.container.nativeElement,
+        element: this.container().nativeElement,
       })
     } finally {
       this.loading = false

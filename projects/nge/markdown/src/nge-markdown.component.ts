@@ -5,13 +5,12 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   HostBinding,
   Input,
   OnChanges,
   OnInit,
-  Output,
   inject,
+  output,
 } from '@angular/core'
 import { ResourceLoaderService } from '@cisstech/nge/services'
 import type { TokensList } from 'marked'
@@ -62,7 +61,7 @@ export class NgeMarkdownComponent implements OnInit, OnChanges, AfterViewInit {
    * An event that emit after each rendering pass
    * with the list of tokens parsed from the input markdown.
    */
-  @Output() render = new EventEmitter<TokensList>()
+  readonly render = output<TokensList>()
 
   constructor() {
     this.themes = this.themes || []

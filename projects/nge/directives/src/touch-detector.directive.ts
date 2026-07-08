@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, NgModule, Output, inject } from '@angular/core'
+import { Directive, ElementRef, HostListener, NgModule, inject, output } from '@angular/core'
 
 @Directive({
   selector: '[touch-detector]',
@@ -14,7 +14,7 @@ export class TouchDetectorDirective {
     return this._hover
   }
 
-  @Output() onUpWhileHovering = new EventEmitter<void>()
+  readonly onUpWhileHovering = output<void>()
 
   @HostListener('document:mousemove', ['$event'])
   @HostListener('document:touchmove', ['$event'])

@@ -3,15 +3,13 @@ import {
   AfterContentInit,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
-  EventEmitter,
   Input,
   OnChanges,
-  Output,
-  QueryList,
   TemplateRef,
   ChangeDetectionStrategy,
   inject,
+  output,
+  contentChildren,
 } from '@angular/core'
 import { ListContext, ListTemplateSlots } from './list'
 import { ListTemplateComponent } from './list-template.component'
@@ -29,8 +27,7 @@ import { NgArrayPipesModule } from 'ngx-pipes'
 export class ListComponent<T> implements OnChanges, AfterContentInit {
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
 
-  @ContentChildren(ListTemplateComponent)
-  templates!: QueryList<ListTemplateComponent<T>>
+  readonly templates = contentChildren(ListTemplateComponent)
 
   @Input()
   idField!: string
@@ -56,8 +53,7 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   @Input()
   containerClass?: string
 
-  @Output()
-  selectionsChange = new EventEmitter<T[]>()
+  readonly selectionsChange = output<T[]>()
 
   _selectionStates: Record<string, boolean> = {}
   _noResultTemplate: TemplateRef<any> | null = null
@@ -86,8 +82,14 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   }
 
   ngAfterContentInit() {
-    this._noResultTemplate = this.templates.find((e) => e.slot === 'noresult')?.template || null
-    this._emptyStateTemplate = this.templates.find((e) => e.slot === 'empty')?.template || null
+    this._noResultTemplate =
+      this.templates()
+        .find((e) => e.slot === 'noresult')
+        ?.template() || null
+    this._emptyStateTemplate =
+      this.templates()
+        .find((e) => e.slot === 'empty')
+        ?.template() || null
   }
 
   unselect(item: T) {
@@ -98,14 +100,17 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   }
 
   _template(context: T | ListContext<T>, slot: ListTemplateSlots): TemplateRef<any> | null {
+    const templates = this.templates()
     return (
-      this.templates.find((e) => {
-        if (e.slot === slot && e.when) {
-          return e.when(context)
-        }
-        return false
-      })?.template ||
-      this.templates.find((e) => e.slot === slot && !e.when)?.template ||
+      templates
+        .find((e) => {
+          if (e.slot === slot && e.when) {
+            return e.when(context)
+          }
+          return false
+        })
+        ?.template() ||
+      templates.find((e) => e.slot === slot && !e.when)?.template() ||
       null
     )
   }
