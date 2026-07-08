@@ -1,31 +1,32 @@
-<ng-container *ngIf="state$|async as state">
+@if (state$ | async; as state) {
   <header>
-    <ng-container *ngIf="state.meta.logo; else: nologo">
-      <img [src]="state.meta.logo" alt="Documentation Logo">
-    </ng-container>
-    <ng-template #nologo>
-      <img src="https://icongr.am/octicons/book.svg?size=48&color=34495e">
-    </ng-template>
+    @if (state.meta.logo) {
+      <img [src]="state.meta.logo" alt="Documentation Logo" />
+    } @else {
+      <img src="https://icongr.am/octicons/book.svg?size=48&color=34495e" />
+    }
     <h1>{{ state.meta.name }}</h1>
   </header>
-  <nav *ngIf="state.links.length">
-    <ng-container *ngTemplateOutlet="template; context: { $implicit: state.links }"></ng-container>
-  </nav>
-</ng-container>
+  @if (state.links.length) {
+    <nav>
+      <ng-container *ngTemplateOutlet="template; context: { $implicit: state.links }"></ng-container>
+    </nav>
+  }
+}
 <ng-template #template let-links>
   <ul>
-    <ng-container *ngFor="let link of links; trackBy: trackBy">
+    @for (link of links; track link.href) {
       <li [class.caption]="docService.isExpandable(link)">
         <a [routerLink]="link.href" [class.active]="docService.isActive(link)">
-          <img *ngIf="link.icon" [src]="link.icon">
+          @if (link.icon) {
+            <img [src]="link.icon" />
+          }
           {{ link.title }}
         </a>
       </li>
-      <ng-container *ngIf="docService.isExpandable(link)">
-        <ng-container
-          *ngTemplateOutlet="template; context: { $implicit: link.children }">
-        </ng-container>
-      </ng-container>
-    </ng-container>
+      @if (docService.isExpandable(link)) {
+        <ng-container *ngTemplateOutlet="template; context: { $implicit: link.children }"> </ng-container>
+      }
+    }
   </ul>
 </ng-template>

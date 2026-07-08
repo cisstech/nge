@@ -1,7 +1,7 @@
-@import './styles//normalize.scss';
-@import './styles/fonts';
-@import './styles/variables';
-@import './styles/material/light.scss';
+@use './styles/normalize';
+@use './styles/fonts';
+@use './styles/variables';
+@use './styles/material/light';
 
 body {
   width: 100vw;

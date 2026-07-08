@@ -1,10 +1,15 @@
 import { Location } from '@angular/common'
-import { ComponentRef, Directive, ElementRef, Input, OnChanges, OnDestroy } from '@angular/core'
+import { ComponentRef, Directive, ElementRef, OnDestroy, effect, inject, input } from '@angular/core'
 import { ActivatedRoute, Router, Scroll } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 @Directive({ selector: '[ngeDocToc]' })
-export class NgeDocTocDirective implements OnDestroy, OnChanges {
+export class NgeDocTocDirective implements OnDestroy {
+  private readonly router = inject(Router)
+  private readonly location = inject(Location)
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
+  private readonly activatedRoute = inject(ActivatedRoute)
+
   private readonly subscriptions: Subscription[] = []
   private readonly observer = new MutationObserver(() => {
     this.observer?.disconnect()
@@ -14,15 +19,9 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
   private intersection?: IntersectionObserver
   private anchors: HTMLElement[] = []
 
-  @Input('ngeDocToc')
-  component?: ComponentRef<any>
+  readonly component = input<ComponentRef<any>>(undefined, { alias: 'ngeDocToc' })
 
-  constructor(
-    private readonly router: Router,
-    private readonly location: Location,
-    private readonly elementRef: ElementRef<HTMLElement>,
-    private readonly activatedRoute: ActivatedRoute
-  ) {
+  constructor() {
     this.subscriptions.push(
       this.router.events.subscribe((event) => {
         if (event instanceof Scroll && event.anchor) {
@@ -30,6 +29,11 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
         }
       })
     )
+
+    effect(() => {
+      this.component() // will trigger the effect when the component changes
+      this.build()
+    })
   }
 
   ngOnDestroy(): void {
@@ -37,18 +41,15 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
     this.subscriptions.forEach((s) => s.unsubscribe())
   }
 
-  ngOnChanges(): void {
-    this.build()
-  }
-
   private build(): void {
     this.clear()
 
-    if (!this.component) {
+    const component = this.component()
+    if (!component) {
       return
     }
 
-    const componentNode = this.component.injector.get(ElementRef).nativeElement as HTMLElement
+    const componentNode = component.injector.get(ElementRef).nativeElement as HTMLElement
 
     const tocContainer = this.elementRef.nativeElement
 

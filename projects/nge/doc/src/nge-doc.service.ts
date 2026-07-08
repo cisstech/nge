@@ -1,5 +1,5 @@
 import { Location } from '@angular/common'
-import { Injectable, Injector, OnDestroy } from '@angular/core'
+import { Injectable, Injector, OnDestroy, inject } from '@angular/core'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
@@ -7,6 +7,11 @@ import { NgeDocLink, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './ng
 
 @Injectable()
 export class NgeDocService implements OnDestroy {
+  private readonly router = inject(Router)
+  private readonly injector = inject(Injector)
+  private readonly location = inject(Location)
+  private readonly activatedRoute = inject(ActivatedRoute)
+
   private readonly state = new BehaviorSubject<NgeDocState>({
     meta: {
       root: '',
@@ -34,13 +39,6 @@ export class NgeDocService implements OnDestroy {
   get stateChanges() {
     return this.state.pipe(filter((state) => !!state.currLink))
   }
-
-  constructor(
-    private readonly router: Router,
-    private readonly injector: Injector,
-    private readonly location: Location,
-    private readonly activatedRoute: ActivatedRoute
-  ) {}
 
   ngOnDestroy(): void {
     this.reset()

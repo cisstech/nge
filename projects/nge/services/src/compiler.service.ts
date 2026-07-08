@@ -1,13 +1,4 @@
-import {
-  ComponentRef,
-  createNgModule,
-  Injectable,
-  Injector,
-  NgModuleRef,
-  SimpleChanges,
-  Type,
-  ViewContainerRef,
-} from '@angular/core'
+import { ComponentRef, createNgModule, Injectable, Injector, NgModuleRef, Type, ViewContainerRef } from '@angular/core'
 
 @Injectable({ providedIn: 'root' })
 export class CompilerService {
@@ -15,7 +6,7 @@ export class CompilerService {
 
   async render(options: RendererOptions): Promise<ComponentRef<any>> {
     const { component } = await this.resolveComponent(options.type, options.container.injector)
-    return await this.renderComponent(
+    return this.renderComponent(
       options.inputs,
       options.container.createComponent(component, {
         index: 0,
@@ -46,27 +37,14 @@ export class CompilerService {
     }
   }
 
-  private async renderComponent(inputs: any, componentRef: ComponentRef<any>): Promise<ComponentRef<any>> {
-    const changes: SimpleChanges = {}
-    const { instance, changeDetectorRef } = componentRef
-
+  private renderComponent(inputs: any, componentRef: ComponentRef<any>): ComponentRef<any> {
     if (inputs) {
-      Object.keys(inputs).forEach((k) => {
-        instance[k] = inputs[k]
-        changes[k] = {
-          currentValue: inputs[k],
-          previousValue: undefined,
-          firstChange: true,
-          isFirstChange: () => true,
-        }
+      Object.keys(inputs).forEach((key) => {
+        componentRef.setInput(key, inputs[key])
       })
     }
 
-    if (instance.ngOnChanges) {
-      await instance.ngOnChanges(changes)
-    }
-
-    changeDetectorRef.markForCheck()
+    componentRef.changeDetectorRef.markForCheck()
     return componentRef
   }
 

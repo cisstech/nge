@@ -1,4 +1,4 @@
-import { Inject, Injectable, Injector, Optional } from '@angular/core'
+import { Injectable, Injector, inject } from '@angular/core'
 import { createCustomElement } from '@angular/elements'
 import { CompilerService } from '@cisstech/nge/services'
 import { Observable, from } from 'rxjs'
@@ -8,17 +8,16 @@ import { NGE_ELEMENTS, NgeElementDef } from './nge-element'
   providedIn: 'root',
 })
 export class NgeElementService {
+  private readonly injector = inject(Injector)
+  private readonly compiler = inject(CompilerService)
+
   private readonly registry = new Map<string, NgeElementDef>()
   private readonly defineds = new Set<string>()
   private readonly promises = new Map<string, Promise<void>>()
 
-  constructor(
-    private readonly injector: Injector,
-    private readonly compiler: CompilerService,
-    @Optional()
-    @Inject(NGE_ELEMENTS)
-    elements: NgeElementDef[]
-  ) {
+  constructor() {
+    const elements = inject(NGE_ELEMENTS, { optional: true })
+
     elements?.forEach((route) => {
       this.registry.set(route.selector.trim().toLowerCase(), route)
     })

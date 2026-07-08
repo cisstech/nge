@@ -1,20 +1,12 @@
 const { pathsToModuleNameMapper } = require('ts-jest')
+const { createCjsPreset } = require('jest-preset-angular/presets')
 const { compilerOptions } = require('../../tsconfig')
 
 module.exports = {
-  preset: 'jest-preset-angular',
-  globalSetup: 'jest-preset-angular/global-setup',
+  ...createCjsPreset(),
+  displayName: 'demo',
   setupFilesAfterEnv: ['<rootDir>/../../setup-jest.ts'],
   testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/dist/'],
-  transform: {
-    '^.+\\.(ts|js|html)$': [
-      'jest-preset-angular',
-      {
-        tsconfig: '<rootDir>/tsconfig.spec.json',
-        stringifyContentPathRegex: '\\.html$',
-      },
-    ],
-  },
   testMatch: ['**/+(*.)+(spec).+(ts|js)'],
   coverageDirectory: '<rootDir>/coverage/demo',
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths || {}, {

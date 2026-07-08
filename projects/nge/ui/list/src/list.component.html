@@ -1,24 +1,24 @@
-@if (selectable) {
-  @for (item of selections; track _trackBy($index, item); let i = $index) {
+@if (selectable()) {
+  @for (item of selections(); track $any(item)[$any(trackBy())] ?? $index; let i = $index) {
     <ng-container *ngTemplateOutlet="_template(item, 'selection'); context: { item: item }"></ng-container>
   }
 }
 
 <!-- TEMPLATE FOR EMPTY STATE -->
 <ng-template #emptyStateTemplate>
-  @if (!filter?.trim()) {
+  @if (!filter()?.trim()) {
     <ng-container *ngTemplateOutlet="_emptyStateTemplate"></ng-container>
   } @else {
-    <ng-container *ngTemplateOutlet="_noResultTemplate; context: { $implicit: filter }"></ng-container>
+    <ng-container *ngTemplateOutlet="_noResultTemplate; context: { $implicit: filter() }"></ng-container>
   }
 </ng-template>
 
-@if (filter ? (items | filterBy: filterBy : filter) : items; as filtered) {
+@if (filter() ? (items() | filterBy: filterBy() : filter()) : items(); as filtered) {
   @if (filtered.length) {
     <ul class="ui-list-container" [ngClass]="classes">
       @for (
         item of filtered;
-        track _trackBy($index, item);
+        track $any(item)[$any(trackBy())] ?? $index;
         let index = $index;
         let first = $first;
         let last = $last;
@@ -37,16 +37,16 @@
 
           <!-- ROW -->
           @if (_template(context, 'row'); as row) {
-            <li class="ui-list-item-content" [class.selectable]="selectable">
+            <li class="ui-list-item-content" [class.selectable]="selectable()">
               <ng-container *ngTemplateOutlet="row; context: context"></ng-container>
 
               <!-- CHECKBOX -->
-              @if (selectable) {
+              @if (selectable()) {
                 <label class="ui-list-label">
                   <input
                     class="ui-list-label__checkbox"
                     type="checkbox"
-                    [(ngModel)]="_selectionStates[$any(item)[idField]]"
+                    [(ngModel)]="_selectionStates[$any(item)[idField()]]"
                     (ngModelChange)="_toggleSelection(item)"
                   />
                   <span class="ui-list-label__text">

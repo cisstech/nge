@@ -1,27 +1,32 @@
-import { Directive, Input, NgModule, OnChanges, Type, ViewContainerRef } from '@angular/core'
+import { Directive, NgModule, Type, ViewContainerRef, effect, inject, input } from '@angular/core'
 import { CompilerService } from '@cisstech/nge/services'
 
 @Directive({
   selector: '[dynamic-component]',
   standalone: true,
 })
-export class DynamicComponentDirective implements OnChanges {
-  @Input('dynamic-component')
-  type!: () => Type<any> | Promise<Type<any>>
+export class DynamicComponentDirective {
+  private readonly compilerService = inject(CompilerService)
+  private readonly viewContainerRef = inject(ViewContainerRef)
 
-  @Input('dynamic-componentInputs') inputs: any
+  readonly type = input.required<() => Type<any> | Promise<Type<any>>>({ alias: 'dynamic-component' })
 
-  constructor(
-    private readonly compilerService: CompilerService,
-    private readonly viewContainerRef: ViewContainerRef
-  ) {}
+  readonly inputs = input<any>(undefined, { alias: 'dynamic-componentInputs' })
 
-  async ngOnChanges(): Promise<void> {
+  constructor() {
+    effect(() => {
+      const type = this.type()
+      const inputs = this.inputs()
+      this.render(type, inputs)
+    })
+  }
+
+  private async render(type: () => Type<any> | Promise<Type<any>>, inputs: any): Promise<void> {
     this.viewContainerRef.clear()
     await this.compilerService.render({
       container: this.viewContainerRef,
-      type: await this.type(),
-      inputs: this.inputs,
+      type: await type(),
+      inputs,
     })
   }
 }

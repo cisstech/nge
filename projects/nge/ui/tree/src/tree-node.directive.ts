@@ -1,4 +1,4 @@
-import { Directive, TemplateRef } from '@angular/core'
+import { Directive, TemplateRef, inject } from '@angular/core'
 import { ITreeNodeHolder } from './tree.model'
 
 export declare type Context<T> = {
@@ -11,9 +11,10 @@ export declare type Context<T> = {
   selector: '[treeNode], ui-tree-node',
 })
 export class TreeNodeDirective<T> {
+  readonly templateRef = inject<TemplateRef<Context<T>>>(TemplateRef)
+
   // https://medium.com/angular-in-depth/type-checking-templates-in-angular-viewengine-and-ivy-77f8536359f5
   static ngTemplateContextGuard<T>(_: TreeNodeDirective<T>, ctx: any): ctx is Context<T> {
     return true
   }
-  constructor(readonly templateRef: TemplateRef<Context<T>>) {}
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnDestroy, Optional } from '@angular/core'
+import { Injectable, OnDestroy, inject } from '@angular/core'
 import { ResourceLoaderService } from '@cisstech/nge/services'
 import { lastValueFrom, of, Subject } from 'rxjs'
 import { NGE_MONACO_CONTRIBUTION, NgeMonacoContribution } from '../contributions/monaco-contribution'
@@ -18,22 +18,15 @@ const WINDOW = window as any
  */
 @Injectable({ providedIn: 'root' })
 export class NgeMonacoLoaderService implements OnDestroy {
+  private readonly config = inject<NgeMonacoConfig>(NGE_MONACO_CONFIG, { optional: true })
+  private readonly contributions: NgeMonacoContribution[] =
+    inject<NgeMonacoContribution[]>(NGE_MONACO_CONTRIBUTION, { optional: true }) ?? []
+  private readonly resourceLoader = inject(ResourceLoaderService)
+
   private readonly monaco$ = new Subject<typeof monaco>()
 
   private baseUrl = MONACO_CDNJS_URL
   private loadPromise?: Promise<typeof monaco>
-
-  constructor(
-    @Optional()
-    @Inject(NGE_MONACO_CONFIG)
-    private readonly config: NgeMonacoConfig,
-    @Optional()
-    @Inject(NGE_MONACO_CONTRIBUTION)
-    private readonly contributions: NgeMonacoContribution[],
-    private readonly resourceLoader: ResourceLoaderService
-  ) {
-    this.contributions = contributions || []
-  }
 
   async ngOnDestroy() {
     await this.deactivateContributions()
@@ -61,7 +54,7 @@ export class NgeMonacoLoaderService implements OnDestroy {
     return (
       this.loadPromise ??
       (this.loadPromise = new Promise((resolve) => {
-        (async () => {
+        ;(async () => {
           // Try to fix the issues described here by loading monaco editor
           // after all the other scripts.
           // https://stackoverflow.com/a/33635881

@@ -1,3 +1,6 @@
+@use 'sass:color';
+@use '@angular/material' as mat;
+
 $brand-color-primary: #171C8F;
 $brand-color-primary-rgb: 23,28,143;
 $brand-color-primary-contrast: #ffffff;
@@ -51,11 +54,11 @@ $mat-light-theme-foreground: (
 // BACKGROUND LIGHT
 
 $light-background: #FFFFFF;
-$light-bg-darker-5: darken($light-background, 5%);
-$light-bg-darker-10: darken($light-background, 10%);
-$light-bg-darker-20: darken($light-background, 20%);
-$light-bg-darker-30: darken($light-background, 30%);
-$light-bg-lighter-5: lighten($light-background, 5%);
+$light-bg-darker-5: color.adjust($light-background, $lightness: -5%);
+$light-bg-darker-10: color.adjust($light-background, $lightness: -10%);
+$light-bg-darker-20: color.adjust($light-background, $lightness: -20%);
+$light-bg-darker-30: color.adjust($light-background, $lightness: -30%);
+$light-bg-lighter-5: color.adjust($light-background, $lightness: 5%);
 $dark-bg-alpha-4: rgba(#292d33, 0.04);
 $dark-bg-alpha-12: rgba(#292d33, 0.12);
 
@@ -108,10 +111,10 @@ $mat-dark-theme-foreground: (
 // BACKGROUND DARK
 
 $dark-background: #22272e;
-$dark-bg-lighter-5: lighten($dark-background, 5%);
-$dark-bg-lighter-10: lighten($dark-background, 10%);
-$dark-bg-lighter-20: lighten($dark-background, 20%);
-$dark-bg-lighter-30: lighten($dark-background, 30%);
+$dark-bg-lighter-5: color.adjust($dark-background, $lightness: 5%);
+$dark-bg-lighter-10: color.adjust($dark-background, $lightness: 10%);
+$dark-bg-lighter-20: color.adjust($dark-background, $lightness: 20%);
+$dark-bg-lighter-30: color.adjust($dark-background, $lightness: 30%);
 $light-bg-alpha-4: rgba(#f6f6f6, 0.04);
 $light-bg-alpha-12: rgba(#f6f6f6, 0.12);
 

@@ -5,7 +5,11 @@ import { NgeMarkdownModule } from '@cisstech/nge/markdown'
 import { HomeComponent } from './home.component'
 
 @NgModule({
-  imports: [CommonModule, NgeMarkdownModule, RouterModule.forChild([{ path: '', component: HomeComponent }])],
-  declarations: [HomeComponent],
+  imports: [
+    CommonModule,
+    NgeMarkdownModule,
+    RouterModule.forChild([{ path: '', component: HomeComponent }]),
+    HomeComponent,
+  ],
 })
 export class HomeModule {}

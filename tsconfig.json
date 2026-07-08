@@ -2,6 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "ignoreDeprecations": "6.0",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -10,12 +11,11 @@
     "strictNullChecks": true,
     "experimentalDecorators": true,
     "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "importHelpers": true,
     "resolveJsonModule": true,
     "target": "ES2022",
     "moduleDetection": "force",
-    "lib": ["es2019", "dom"],
     "paths": {
       "@cisstech/nge": ["projects/nge"],
       "@cisstech/nge/directives": ["projects/nge/directives"],

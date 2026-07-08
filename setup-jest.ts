@@ -1,6 +1,6 @@
-// https://thymikee.github.io/jest-preset-angular/docs/getting-started/installation/
+import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 
-import 'jest-preset-angular/setup-jest';
+setupZoneTestEnv();
 
 Object.defineProperty(document, 'doctype', {
   value: '<!DOCTYPE html>',

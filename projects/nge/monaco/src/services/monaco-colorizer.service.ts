@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core'
+import { Injectable, inject } from '@angular/core'
 import { NgeMonacoLoaderService } from './monaco-loader.service'
 import { NgeMonacoThemeService } from './monaco-theme.service'
 
 @Injectable({ providedIn: 'root' })
 export class NgeMonacoColorizerService {
-  constructor(
-    private readonly loader: NgeMonacoLoaderService,
-    private readonly theming: NgeMonacoThemeService
-  ) {}
+  private readonly loader = inject(NgeMonacoLoaderService)
+  private readonly theming = inject(NgeMonacoThemeService)
 
   async colorizeElement(options: NgeMonacoColorizeOptions) {
     await this.loader.loadAsync()
@@ -168,7 +166,8 @@ export class NgeMonacoColorizerService {
     tabContainer.style.fontSize = '14px'
     tabContainer.style.width = '100%'
     tabContainer.style.boxSizing = 'border-box'
-    tabContainer.style.fontFamily = 'var(--monaco-monospace-font, "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", monospace)'
+    tabContainer.style.fontFamily =
+      'var(--monaco-monospace-font, "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", monospace)'
 
     // Add filename on left side
     const filenameSpan = document.createElement('span')
@@ -215,32 +214,29 @@ export class NgeMonacoColorizerService {
     // Copy functionality
     copyButton.addEventListener('click', async (event) => {
       // Prevent default action and event bubbling
-      event.preventDefault();
-      event.stopPropagation();
+      event.preventDefault()
+      event.stopPropagation()
 
       try {
-        await navigator.clipboard.writeText(code || '');
+        await navigator.clipboard.writeText(code || '')
 
         // Show feedback
-        copyButton.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>`;
-        copyButton.style.color = '#52c41a';
-
+        copyButton.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>`
+        copyButton.style.color = '#52c41a'
 
         setTimeout(() => {
           // Use requestAnimationFrame to ensure smooth transition
           requestAnimationFrame(() => {
-            copyButton.innerHTML = copySvg;
-            copyButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))';
-
-          });
-        }, 2000);
+            copyButton.innerHTML = copySvg
+            copyButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))'
+          })
+        }, 2000)
       } catch (err) {
-        console.error('Failed to copy code:', err);
-
+        console.error('Failed to copy code:', err)
       }
 
       // Return false to ensure no further action
-      return false;
+      return false
     })
 
     // Create download button with icon
@@ -272,58 +268,56 @@ export class NgeMonacoColorizerService {
     // Download functionality
     downloadButton.addEventListener('click', (event) => {
       // Prevent default action and event bubbling
-      event.preventDefault();
-      event.stopPropagation();
+      event.preventDefault()
+      event.stopPropagation()
 
       // Save original content
-      const originalInnerHTML = downloadButton.innerHTML;
+      const originalInnerHTML = downloadButton.innerHTML
 
       try {
-        const blob = new Blob([code || ''], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename || 'code.txt';
-        a.style.display = 'none';
-        a.setAttribute('data-no-scroll', 'true'); // Mark as no-scroll
+        const blob = new Blob([code || ''], { type: 'text/plain' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = filename || 'code.txt'
+        a.style.display = 'none'
+        a.setAttribute('data-no-scroll', 'true') // Mark as no-scroll
 
         // Execute download
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
 
         // Show success feedback similar to copy button
-        downloadButton.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>`;
-        downloadButton.style.color = '#52c41a';
-
+        downloadButton.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path></svg>`
+        downloadButton.style.color = '#52c41a'
 
         // Reset button after timeout
         setTimeout(() => {
           // Use requestAnimationFrame for smoother transition
           requestAnimationFrame(() => {
-            downloadButton.innerHTML = downloadSvg;
-            downloadButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))';
-            URL.revokeObjectURL(url); // Clean up URL object
-
-          });
-        }, 2000);
+            downloadButton.innerHTML = downloadSvg
+            downloadButton.style.color = 'var(--vscode-editor-foreground, rgba(0, 0, 0, 0.85))'
+            URL.revokeObjectURL(url) // Clean up URL object
+          })
+        }, 2000)
       } catch (err) {
-        console.error('Failed to download code:', err);
-        downloadButton.innerHTML = originalInnerHTML;
+        console.error('Failed to download code:', err)
+        downloadButton.innerHTML = originalInnerHTML
       }
 
       // Return false to ensure no further action
-      return false;
+      return false
     })
 
     // Copy icon SVG
-    const copySvg = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+    const copySvg = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`
 
     // Download icon SVG
-    const downloadSvg = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+    const downloadSvg = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`
 
-    copyButton.innerHTML = copySvg;
-    downloadButton.innerHTML = downloadSvg;
+    copyButton.innerHTML = copySvg
+    downloadButton.innerHTML = downloadSvg
 
     // Add buttons to actions container
     fileActions.appendChild(copyButton)
@@ -419,7 +413,6 @@ export interface NgeMonacoColorizeOptions {
    * `"2 4-7 9"`
    */
   highlights?: string | number
-
 
   /**
    * Optional filename to display in the tab header.

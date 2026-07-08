@@ -3,14 +3,13 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  EventEmitter,
   HostListener,
-  Inject,
-  Input,
   OnDestroy,
-  Optional,
-  Output,
-  ViewChild,
+  ChangeDetectionStrategy,
+  inject,
+  output,
+  viewChild,
+  input,
 } from '@angular/core'
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
@@ -19,30 +18,23 @@ import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
   selector: 'nge-monaco-diff-editor',
   templateUrl: './monaco-diff-editor.component.html',
   styleUrls: ['./monaco-diff-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChecked, OnDestroy {
-  @ViewChild('container', { static: true })
-  container!: ElementRef<HTMLElement>
+  private readonly loader = inject(NgeMonacoLoaderService)
+  private readonly config = inject<NgeMonacoConfig>(NGE_MONACO_CONFIG, { optional: true })
 
-  @Output()
-  ready = new EventEmitter<monaco.editor.IEditor>()
+  readonly container = viewChild.required<ElementRef<HTMLElement>>('container')
 
-  @Input()
-  autoLayout = true
+  readonly ready = output<monaco.editor.IEditor>()
 
-  @Input()
-  options?: monaco.editor.IStandaloneDiffEditorConstructionOptions
+  readonly autoLayout = input(true)
+
+  readonly options = input<monaco.editor.IStandaloneDiffEditorConstructionOptions>()
 
   private editor?: monaco.editor.IStandaloneDiffEditor
   private width = 0
   private height = 0
-
-  constructor(
-    private readonly loader: NgeMonacoLoaderService,
-    @Optional()
-    @Inject(NGE_MONACO_CONFIG)
-    private readonly config: NgeMonacoConfig
-  ) {}
 
   @HostListener('window:resize')
   onResizeWindow() {
@@ -56,10 +48,10 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
   }
 
   ngAfterViewChecked() {
-    if (!this.autoLayout) {
+    if (!this.autoLayout()) {
       return
     }
-    const { offsetWidth, offsetHeight } = this.container.nativeElement
+    const { offsetWidth, offsetHeight } = this.container().nativeElement
     if (offsetWidth !== this.width || offsetHeight !== this.height) {
       this.width = offsetWidth
       this.height = offsetHeight
@@ -72,9 +64,9 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
   }
 
   private createEditor() {
-    this.editor = monaco.editor.createDiffEditor(this.container.nativeElement, {
-      ...(this.config.options || {}),
-      ...(this.options || {}),
+    this.editor = monaco.editor.createDiffEditor(this.container().nativeElement, {
+      ...(this.config?.options || {}),
+      ...(this.options() || {}),
     })
     this.ready.emit(this.editor)
   }

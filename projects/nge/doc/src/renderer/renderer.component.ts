@@ -7,11 +7,10 @@ import {
   Injector,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   Type,
-  ViewChild,
   ViewContainerRef,
   inject,
+  viewChild,
 } from '@angular/core'
 import { CompilerService } from '@cisstech/nge/services'
 import { Subscription, firstValueFrom } from 'rxjs'
@@ -38,8 +37,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
 
   componentRef?: ComponentRef<any>
 
-  @ViewChild('container', { read: ViewContainerRef, static: true })
-  container!: ViewContainerRef
+  readonly container = viewChild.required('container', { read: ViewContainerRef })
 
   ngOnInit(): void {
     this.subscriptions.push(this.docService.stateChanges.subscribe(this.onChangeState.bind(this)))
@@ -66,13 +64,13 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private clearViewContainer(): void {
     const componentRefs = Array.from(this.componentRefByTypes.values())
     if (this.componentRef && componentRefs.includes(this.componentRef)) {
-      while (this.container.length > 0) {
-        this.container.detach()
+      while (this.container().length > 0) {
+        this.container().detach()
       }
     } else {
       this.componentRef?.destroy()
       this.componentRef = undefined
-      this.container.clear()
+      this.container().clear()
     }
   }
 
@@ -91,7 +89,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
             this.componentRef = await this.compilerService.render({
               type: await renderer(),
               inputs: state.currLink.inputs,
-              container: this.container,
+              container: this.container(),
             })
             break
         }
@@ -151,35 +149,21 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     const componentRef = await this.compilerService.render({
       type,
       inputs: await createInputs(),
-      container: this.container,
+      container: this.container(),
     })
 
     this.componentRef = componentRef
     this.componentRefByTypes.set(type, componentRef)
   }
 
-  private async attachComponent(componentRef: ComponentRef<any>, inputs: Record<string, any>): Promise<void> {
-    this.container.insert(componentRef.hostView)
+  private attachComponent(componentRef: ComponentRef<any>, inputs: Record<string, any>): void {
+    this.container().insert(componentRef.hostView)
     this.componentRef = componentRef
 
-    // compute changes
-    const changes: SimpleChanges = {}
-    const { instance, changeDetectorRef } = componentRef
     Object.keys(inputs).forEach((key) => {
-      changes[key] = {
-        currentValue: inputs[key],
-        previousValue: instance[key],
-        firstChange: false,
-        isFirstChange: () => false,
-      }
-      instance[key] = inputs[key]
+      componentRef.setInput(key, inputs[key])
     })
 
-    // call ngOnChanges
-    if (instance.ngOnChanges) {
-      await instance.ngOnChanges(changes)
-    }
-
-    changeDetectorRef.markForCheck()
+    componentRef.changeDetectorRef.markForCheck()
   }
 }

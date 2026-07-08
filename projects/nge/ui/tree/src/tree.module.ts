@@ -10,8 +10,7 @@ import { TreeNodeDirective } from './tree-node.directive'
 import { AutofocusDirective } from './autofocus.directive'
 
 @NgModule({
-  declarations: [TreeComponent, TreeNodeDirective, AutofocusDirective],
-  imports: [CommonModule, FormsModule, ScrollingModule],
+  imports: [CommonModule, FormsModule, ScrollingModule, TreeComponent, TreeNodeDirective, AutofocusDirective],
   exports: [TreeComponent, TreeNodeDirective],
 })
 export class NgeUiTreeModule {}

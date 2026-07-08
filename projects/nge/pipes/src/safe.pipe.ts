@@ -1,4 +1,4 @@
-import { NgModule, Pipe, PipeTransform } from '@angular/core'
+import { NgModule, Pipe, PipeTransform, inject } from '@angular/core'
 import { DomSanitizer } from '@angular/platform-browser'
 
 @Pipe({
@@ -6,7 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser'
   standalone: true,
 })
 export class SafePipe implements PipeTransform {
-  constructor(private readonly sanitiner: DomSanitizer) {}
+  private readonly sanitiner = inject(DomSanitizer)
 
   transform(input: string | null, type: 'url' | 'html' | 'style' | 'script' | 'resource'): any {
     if (!input) return input

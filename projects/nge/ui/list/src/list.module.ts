@@ -14,8 +14,19 @@ import { ListTemplateComponent } from './list-template.component'
 import { ListComponent } from './list.component'
 
 @NgModule({
-  imports: [CommonModule, FormsModule, RouterModule, ScrollingModule, IsTemplatePipe, IsStringPipe, NgArrayPipesModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    ScrollingModule,
+    IsTemplatePipe,
+    IsStringPipe,
+    NgArrayPipesModule,
+    ListComponent,
+    ListTemplateComponent,
+    ListItemArticleComponent,
+    ListItemArticleActionComponent,
+  ],
   exports: [ListComponent, ListTemplateComponent, ListItemArticleComponent, ListItemArticleActionComponent],
-  declarations: [ListComponent, ListTemplateComponent, ListItemArticleComponent, ListItemArticleActionComponent],
 })
 export class NgeUiListModule {}

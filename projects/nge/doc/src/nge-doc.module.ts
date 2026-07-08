@@ -8,11 +8,11 @@ import { NgeDocComponent } from './nge-doc.component'
 import { DefaultLayoutModule } from './layouts/default/default-layout.module'
 
 @NgModule({
-  declarations: [NgeDocComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([{ path: '**', pathMatch: 'full', component: NgeDocComponent }]),
     DefaultLayoutModule,
+    NgeDocComponent,
   ],
 })
 export class NgeDocModule {}

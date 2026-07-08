@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, OnDestroy } from '@angular/core'
+import { AfterViewInit, Directive, OnDestroy, inject } from '@angular/core'
 import { NgeElementService } from './nge-element.service'
 
 // TODO make angular universal compatible using Renderer2
@@ -8,10 +8,10 @@ import { NgeElementService } from './nge-element.service'
   selector: 'nge-element-detector, [nge-element-detector]',
 })
 export class NgeElementDetectorDirective implements AfterViewInit, OnDestroy {
+  private readonly elementService = inject(NgeElementService)
+
   private observer?: MutationObserver
   private listener?: () => void
-
-  constructor(private readonly elementService: NgeElementService) {}
 
   async ngAfterViewInit(): Promise<void> {
     let selectors = this.elementService.listUnloadeds()
