@@ -5,11 +5,11 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Input,
   OnDestroy,
   inject,
   output,
   viewChild,
+  input,
 } from '@angular/core'
 import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
@@ -30,8 +30,8 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
   protected readonly container = viewChild.required<ElementRef<HTMLElement>>('container')
 
   readonly ready = output<monaco.editor.IEditor>()
-  @Input() autoLayout = true
-  @Input() options?: monaco.editor.IStandaloneEditorConstructionOptions
+  readonly autoLayout = input(true)
+  readonly options = input<monaco.editor.IStandaloneEditorConstructionOptions>()
 
   private editor?: monaco.editor.IStandaloneCodeEditor
   private width = 0
@@ -44,7 +44,7 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
   }
 
   ngAfterViewChecked(): void {
-    if (!this.autoLayout) {
+    if (!this.autoLayout()) {
       return
     }
     const { offsetWidth, offsetHeight } = this.container().nativeElement
@@ -67,7 +67,7 @@ export class NgeMonacoEditorComponent implements AfterViewInit, AfterViewChecked
   private createEditor(): void {
     this.editor = monaco.editor.create(this.container().nativeElement, {
       ...(this.config?.options || {}),
-      ...(this.options || {}),
+      ...(this.options() || {}),
     })
     this.loading = false
     this.ready.emit(this.editor)

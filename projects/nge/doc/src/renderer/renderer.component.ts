@@ -7,7 +7,6 @@ import {
   Injector,
   OnDestroy,
   OnInit,
-  SimpleChanges,
   Type,
   ViewContainerRef,
   inject,
@@ -157,28 +156,14 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     this.componentRefByTypes.set(type, componentRef)
   }
 
-  private async attachComponent(componentRef: ComponentRef<any>, inputs: Record<string, any>): Promise<void> {
+  private attachComponent(componentRef: ComponentRef<any>, inputs: Record<string, any>): void {
     this.container().insert(componentRef.hostView)
     this.componentRef = componentRef
 
-    // compute changes
-    const changes: SimpleChanges = {}
-    const { instance, changeDetectorRef } = componentRef
     Object.keys(inputs).forEach((key) => {
-      changes[key] = {
-        currentValue: inputs[key],
-        previousValue: instance[key],
-        firstChange: false,
-        isFirstChange: () => false,
-      }
-      instance[key] = inputs[key]
+      componentRef.setInput(key, inputs[key])
     })
 
-    // call ngOnChanges
-    if (instance.ngOnChanges) {
-      await instance.ngOnChanges(changes)
-    }
-
-    changeDetectorRef.markForCheck()
+    componentRef.changeDetectorRef.markForCheck()
   }
 }

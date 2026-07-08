@@ -1,4 +1,4 @@
-import { Component, TemplateRef, Input, ChangeDetectionStrategy, contentChild } from '@angular/core'
+import { Component, TemplateRef, ChangeDetectionStrategy, contentChild, input } from '@angular/core'
 import { ListContext, ListTemplateSlots } from './list'
 
 @Component({
@@ -9,9 +9,7 @@ import { ListContext, ListTemplateSlots } from './list'
 export class ListTemplateComponent<T> {
   readonly template = contentChild(TemplateRef)
 
-  @Input()
-  slot?: ListTemplateSlots
+  readonly slot = input<ListTemplateSlots>()
 
-  @Input()
-  when?: (context: T | ListContext<T>) => boolean
+  readonly when = input<(context: T | ListContext<T>) => boolean>()
 }

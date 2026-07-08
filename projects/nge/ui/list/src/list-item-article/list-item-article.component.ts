@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef, input } from '@angular/core'
 import { outputFromObservable } from '@angular/core/rxjs-interop'
 import { Subject } from 'rxjs'
 import { ListItemTag } from '../list'
@@ -16,11 +16,11 @@ import { IsTemplatePipe, IsStringPipe } from '@cisstech/nge/pipes'
 })
 export class ListItemArticleComponent implements OnInit {
   @Input() articleTitle?: string | TemplateRef<any>
-  @Input() articleUrl?: string | any[]
+  readonly articleUrl = input<string | any[]>()
   @Input() articleBannerUrl?: string
-  @Input() articleBannerAlt?: string
+  readonly articleBannerAlt = input<string>()
   @Input() articleIconUrl?: string
-  @Input() articleIconAlt?: string
+  readonly articleIconAlt = input<string>()
   @Input() articleDescription?: string | TemplateRef<any>
   @Input() articleTags: string[] | ListItemTag[] = []
 

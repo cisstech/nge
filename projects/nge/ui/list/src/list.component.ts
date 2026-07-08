@@ -10,6 +10,7 @@ import {
   inject,
   output,
   contentChildren,
+  input,
 } from '@angular/core'
 import { ListContext, ListTemplateSlots } from './list'
 import { ListTemplateComponent } from './list-template.component'
@@ -32,26 +33,21 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   @Input()
   idField!: string
 
-  @Input()
-  items: T[] = []
+  readonly items = input<T[]>([])
 
-  @Input()
-  trackBy?: string
+  readonly trackBy = input<string>()
 
-  @Input()
-  selectable = false
+  readonly selectable = input(false)
 
   @Input()
   filter?: string
 
-  @Input()
-  filterBy: string[] = []
+  readonly filterBy = input<string[]>([])
 
   @Input()
   selections: T[] = []
 
-  @Input()
-  containerClass?: string
+  readonly containerClass = input<string>()
 
   readonly selectionsChange = output<T[]>()
 
@@ -66,16 +62,17 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   }
 
   protected get classes() {
-    if (!this.containerClass) {
+    const containerClass = this.containerClass()
+    if (!containerClass) {
       return {}
     }
     return {
-      [this.containerClass]: true,
+      [containerClass]: true,
     }
   }
 
   ngOnChanges() {
-    this._empty = !this.items?.length
+    this._empty = !this.items()?.length
     setTimeout(() => {
       this.checkSelections()
     }, 300)
@@ -84,11 +81,11 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   ngAfterContentInit() {
     this._noResultTemplate =
       this.templates()
-        .find((e) => e.slot === 'noresult')
+        .find((e) => e.slot() === 'noresult')
         ?.template() || null
     this._emptyStateTemplate =
       this.templates()
-        .find((e) => e.slot === 'empty')
+        .find((e) => e.slot() === 'empty')
         ?.template() || null
   }
 
@@ -104,13 +101,14 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
     return (
       templates
         .find((e) => {
-          if (e.slot === slot && e.when) {
-            return e.when(context)
+          const when = e.when()
+          if (e.slot() === slot && when) {
+            return when(context)
           }
           return false
         })
         ?.template() ||
-      templates.find((e) => e.slot === slot && !e.when)?.template() ||
+      templates.find((e) => e.slot() === slot && !e.when())?.template() ||
       null
     )
   }
@@ -137,7 +135,7 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
 
   private checkSelections() {
     this.selections = this.selections.filter((selection: any) => {
-      if (this.items.find((item) => this.equals(item, selection))) {
+      if (this.items().find((item) => this.equals(item, selection))) {
         return true
       }
       delete this._selectionStates[selection[this.idField]]

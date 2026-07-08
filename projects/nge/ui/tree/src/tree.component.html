@@ -15,9 +15,9 @@
         class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
         [attr.data-tree-node-id]="node.id"
         [style.padding-left]="node.padding"
-        [style.height.px]="adapter.itemHeight"
+        [style.height.px]="adapter().itemHeight"
       >
-        <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
+        <div class="tree-node__content" [style.height.px]="adapter().itemHeight">
           <ng-container *ngTemplateOutlet="inputTemplate" />
         </div>
       </div>
@@ -26,14 +26,14 @@
         class="tree-node tree-node--level-{{ node.level }}"
         [attr.data-tree-node-id]="node.id"
         [style.padding-left]="node.padding"
-        [style.height.px]="adapter.itemHeight"
+        [style.height.px]="adapter().itemHeight"
         [ngClass]="{
           focused: node.focused,
           selected: node.selected,
           expanded: node.expanded,
         }"
       >
-        <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
+        <div class="tree-node__content" [style.height.px]="adapter().itemHeight">
           <ng-container *ngTemplateOutlet="nodeDirective().templateRef; context: { $implicit: node }" />
         </div>
       </div>
@@ -44,9 +44,9 @@
       <div
         class="tree-node opaque focused selected tree-node--level-{{ node.level + 1 }}"
         [style.padding-left]="node.padding"
-        [style.height.px]="adapter.itemHeight"
+        [style.height.px]="adapter().itemHeight"
       >
-        <div class="tree-node__content" [style.height.px]="adapter.itemHeight">
+        <div class="tree-node__content" [style.height.px]="adapter().itemHeight">
           <ng-container *ngTemplateOutlet="inputTemplate" />
         </div>
       </div>

@@ -6,11 +6,11 @@ import {
   Component,
   ElementRef,
   HostBinding,
-  Input,
-  OnChanges,
   OnInit,
+  effect,
   inject,
   output,
+  input,
 } from '@angular/core'
 import { ResourceLoaderService } from '@cisstech/nge/services'
 import type { TokensList } from 'marked'
@@ -25,7 +25,7 @@ import { NgeMarkdownService } from './nge-markdown.service'
   styleUrls: ['nge-markdown.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NgeMarkdownComponent implements OnInit, OnChanges, AfterViewInit {
+export class NgeMarkdownComponent implements OnInit, AfterViewInit {
   private readonly el: ElementRef<HTMLElement> = inject(ElementRef)
   private readonly http = inject(HttpClient, { optional: true })
   private readonly markdownService = inject(NgeMarkdownService)
@@ -39,20 +39,21 @@ export class NgeMarkdownComponent implements OnInit, OnChanges, AfterViewInit {
   private isDark = false
 
   /** Link to a markdown file to render. */
-  @Input() file?: string
+  readonly file = input<string>()
 
   /** Markdown string to render. */
-  @Input() data?: string
+  readonly data = input<string>()
 
   /** Theme to apply to the markdown content. */
-  @Input() theme?: string | null = 'github'
+  readonly theme = input<string | null | undefined>('github')
 
   @HostBinding('class')
   get klass() {
-    if (!this.theme) return ''
-    const classeNames = [`nge-markdown-theme--${this.theme}`]
+    const theme = this.theme()
+    if (!theme) return ''
+    const classeNames = [`nge-markdown-theme--${theme}`]
     if (this.isDark) {
-      classeNames.push(`nge-markdown-theme--${this.theme}--dark`)
+      classeNames.push(`nge-markdown-theme--${theme}--dark`)
     }
     return classeNames.join(' ')
   }
@@ -65,21 +66,36 @@ export class NgeMarkdownComponent implements OnInit, OnChanges, AfterViewInit {
 
   constructor() {
     this.themes = this.themes || []
+
+    // Re-render whenever the file, data or theme input changes.
+    effect(() => {
+      const file = this.file()
+      const data = this.data()
+      this.theme()
+      if (file || data) {
+        this.renderContent(file, data)
+      }
+    })
   }
 
   ngOnInit(): void {
     this.el.nativeElement.style.opacity = '0'
   }
 
-  async ngOnChanges(): Promise<void> {
-    await this.checkTheme()
-    this.file ? await this.renderFromFile(this.file) : await this.renderFromString(this.data || '')
-    this.el.nativeElement.style.opacity = '1'
+  async ngAfterViewInit(): Promise<void> {
+    // Render the projected content when no file or data input is provided.
+    if (!this.file() && !this.data()) {
+      await this.renderContent()
+    }
   }
 
-  async ngAfterViewInit(): Promise<void> {
+  private async renderContent(file?: string, data?: string): Promise<void> {
     await this.checkTheme()
-    if (!this.file && !this.data) {
+    if (file) {
+      await this.renderFromFile(file)
+    } else if (data) {
+      await this.renderFromString(data)
+    } else {
       await this.renderFromString(this.el.nativeElement.innerHTML, true)
     }
     this.el.nativeElement.style.opacity = '1'
@@ -107,8 +123,8 @@ export class NgeMarkdownComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   private async checkTheme(): Promise<void> {
-    if (this.theme) {
-      const themeInfo = this.themes?.find((theme) => theme.name === this.theme)
+    if (this.theme()) {
+      const themeInfo = this.themes?.find((theme) => theme.name === this.theme())
       if (themeInfo) {
         await firstValueFrom(this.resourceLoader.loadAllSync([['style', themeInfo.styleUrl]])).catch()
       }

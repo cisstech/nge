@@ -5,7 +5,7 @@
   (click)="onClickHost()"
 >
   @if (articleBannerUrl) {
-    <img class="article-banner" [src]="articleBannerUrl" [alt]="articleBannerAlt" />
+    <img class="article-banner" [src]="articleBannerUrl" [alt]="articleBannerAlt()" />
   }
   <div class="article-content-wrapper">
     <header class="article-header">
@@ -13,14 +13,14 @@
         @if (articleIconTemplate) {
           <ng-container *ngTemplateOutlet="articleIconTemplate"></ng-container>
         } @else if (articleIconUrl) {
-          <img [src]="articleIconUrl" [alt]="articleIconAlt" />
+          <img [src]="articleIconUrl" [alt]="articleIconAlt()" />
         }
       </div>
       @if (articleTitle | istemplate) {
         <h3
           class="article-title"
           [class.clickable]="isTitleClickable"
-          [routerLink]="articleUrl"
+          [routerLink]="articleUrl()"
           (click)="onClickTitle($event)"
         >
           <ng-container *ngTemplateOutlet="articleTitle" />
@@ -29,7 +29,7 @@
         <div
           class="article-title"
           [class.clickable]="isTitleClickable"
-          [routerLink]="articleUrl"
+          [routerLink]="articleUrl()"
           (click)="onClickTitle($event)"
         >
           {{ articleTitle }}

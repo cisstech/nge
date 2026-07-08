@@ -3,11 +3,11 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input,
   OnChanges,
   OnDestroy,
   inject,
   viewChild,
+  input,
 } from '@angular/core'
 import { NgeMonacoColorizerService } from '../../services/monaco-colorizer.service'
 import { Subscription } from 'rxjs'
@@ -37,25 +37,34 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   >('transclusion')
 
   /** code to highlight */
-  @Input() code?: string
+  readonly code = input<string>()
+  /** show line numbers? */
 
   /** show line numbers? */
-  @Input() lines?: string | number
+  readonly lines = input<
+    string | number
+    /** theme to use for the syntax highlighting  */
+  >()
 
   /** theme to use for the syntax highlighting  */
-  @Input() theme?: string
+  readonly theme = input<string>()
+  /** target language */
 
   /** target language */
-  @Input() language?: string
+  readonly language = input<string>()
+  /** space separated list of line numbers to highlight */
 
   /** space separated list of line numbers to highlight */
-  @Input() highlights?: string | number
+  readonly highlights = input<
+    string | number
+    /** filename to display in the header tab */
+  >()
 
   /** filename to display in the header tab */
-  @Input() filename?: string
+  readonly filename = input<string>()
 
   ngOnChanges(): void {
-    const code = this.transclusion().nativeElement.textContent?.trim() || this.code || ''
+    const code = this.transclusion().nativeElement.textContent?.trim() || this.code() || ''
     this.colorize(code)
   }
 
@@ -69,11 +78,11 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
     try {
       await this.colorizer.colorizeElement({
         code: code || '',
-        theme: this.theme,
-        lines: this.lines,
-        language: this.language,
-        highlights: this.highlights,
-        filename: this.filename,
+        theme: this.theme(),
+        lines: this.lines(),
+        language: this.language(),
+        highlights: this.highlights(),
+        filename: this.filename(),
         element: this.container().nativeElement,
       })
     } finally {

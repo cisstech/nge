@@ -1,8 +1,8 @@
-import { Directive, HostListener, Input, NgModule, output } from '@angular/core'
+import { Directive, HostListener, NgModule, output, input } from '@angular/core'
 
 @Directive({ selector: '[long-press-detector]', standalone: true })
 export class LongPressDetectorDirective {
-  @Input() longPressDuration = 400
+  readonly longPressDuration = input(400)
   readonly longPress = output<MouseEvent | TouchEvent>()
   readonly longPressEnd = output<boolean>()
 
@@ -19,7 +19,7 @@ export class LongPressDetectorDirective {
       this.pressing = true
       event.preventDefault()
       event.stopPropagation()
-    }, this.longPressDuration)
+    }, this.longPressDuration())
   }
 
   @HostListener('mouseup')

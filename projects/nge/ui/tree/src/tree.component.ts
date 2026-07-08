@@ -5,12 +5,12 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
   inject,
   contentChild,
+  input,
 } from '@angular/core'
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { BehaviorSubject } from 'rxjs'
@@ -41,8 +41,8 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
 
-  @Input() nodes: T[] = []
-  @Input() adapter!: ITreeAdapter<T>
+  readonly nodes = input<T[]>([])
+  readonly adapter = input.required<ITreeAdapter<T>>()
 
   protected readonly nodeDirective = contentChild.required(TreeNodeDirective)
 
@@ -68,7 +68,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   readonly controler: FlatTreeControl<ITreeNodeHolder<T>>
 
   protected get treeHeight(): string {
-    return this.adapter?.itemHeight?.toString() || '100%'
+    return this.adapter()?.itemHeight?.toString() || '100%'
   }
 
   constructor() {
@@ -91,31 +91,33 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   }
 
   ngOnInit(): void {
-    if (!this.adapter.id?.trim()) {
+    const adapter = this.adapter()
+    if (!adapter.id?.trim()) {
       throw new Error('@Input() adapter.id is required !')
     }
-    CURRENT_VISIBLE_TREES.set(this.adapter.id, this)
+    CURRENT_VISIBLE_TREES.set(adapter.id, this)
   }
 
   ngOnChanges(): void {
-    if (!this.adapter) {
+    const adapter = this.adapter()
+    if (!adapter) {
       throw new Error('@Input() adapter is required !')
     }
 
     const requires: (keyof ITreeAdapter<T>)[] = ['id', 'idProvider', 'nameProvider', 'isExpandable', 'childrenProvider']
     for (const key of requires) {
-      const value = this.adapter[key]
+      const value = adapter[key]
       if (!value || (typeof value === 'string' && value.trim() === '')) {
         throw new Error(`@Input() adapter.${key} is required !`)
       }
     }
 
-    this.adapter.itemHeight = this.adapter.itemHeight || 32
-    this.adapter.treeHeight = this.adapter.treeHeight || '100%'
-    this.adapter.keepStateOnChangeNodes = this.adapter.keepStateOnChangeNodes ?? true
+    adapter.itemHeight = adapter.itemHeight || 32
+    adapter.treeHeight = adapter.treeHeight || '100%'
+    adapter.keepStateOnChangeNodes = adapter.keepStateOnChangeNodes ?? true
 
     let state: ITreeState | undefined
-    if (this.adapter.keepStateOnChangeNodes) {
+    if (adapter.keepStateOnChangeNodes) {
       state = this.saveState()
     }
 
@@ -130,8 +132,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   }
 
   ngOnDestroy(): void {
-    if (this.adapter?.id) {
-      CURRENT_VISIBLE_TREES.delete(this.adapter.id)
+    const adapter = this.adapter()
+    if (adapter?.id) {
+      CURRENT_VISIBLE_TREES.delete(adapter.id)
     }
   }
 
@@ -245,8 +248,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
 
     if (holder.expandable && this.controler.isExpanded(holder)) {
       this.controler.collapse(holder)
-      if (this.adapter.onDidCollapse) {
-        this.adapter.onDidCollapse(holder.data)
+      const adapter = this.adapter()
+      if (adapter.onDidCollapse) {
+        adapter.onDidCollapse(holder.data)
       }
       if (render) {
         this.render()
@@ -277,7 +281,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   }
 
   startEdition(node: INode<T>, creation?: boolean): void {
-    if (!this.adapter.onDidEditName) return
+    if (!this.adapter().onDidEditName) return
 
     if (!node) {
       throw new ReferenceError('Argument "node" is required.')
@@ -410,7 +414,8 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
 
   //#region CALLED FROM TEMPLATE
   protected _onEdit(event: Event): void {
-    if (this.adapter.onDidEditName) {
+    const adapter = this.adapter()
+    if (adapter.onDidEditName) {
       event.stopPropagation()
 
       const { node, text, creation } = this.editing
@@ -430,7 +435,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
         const name = text?.trim() || ''
         try {
           if (name) {
-            this.adapter.onDidEditName({
+            adapter.onDidEditName({
               node: node,
               text: name,
               creation,
@@ -457,7 +462,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
       return false
     }
 
-    return !this.editing.creation && this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node)
+    return !this.editing.creation && this.findHolder(node)?.id === this.adapter().idProvider(this.editing.node)
   }
 
   protected _isCreating(node: INode<T>): boolean {
@@ -469,7 +474,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
       return false
     }
 
-    return !!this.editing.creation && this.findHolder(node)?.id === this.adapter.idProvider(this.editing.node)
+    return !!this.editing.creation && this.findHolder(node)?.id === this.adapter().idProvider(this.editing.node)
   }
 
   //#endregion
@@ -601,7 +606,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
       this.toggle(node, false)
       this.focus(node, true)
 
-      const { actions } = this.adapter
+      const { actions } = this.adapter()
       if (actions?.mouse?.click) {
         actions.mouse.click({
           node: node.data,
@@ -623,7 +628,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
       this.focus(node, true)
     }
 
-    const { actions } = this.adapter
+    const { actions } = this.adapter()
     if (actions?.mouse?.rightClick) {
       actions.mouse.rightClick({
         node: node?.data,
@@ -637,7 +642,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   }
 
   private triggerFilterEvent(e: KeyboardEvent) {
-    if (e.defaultPrevented || !this.adapter.enableKeyboardFiltering) {
+    if (e.defaultPrevented || !this.adapter().enableKeyboardFiltering) {
       return
     }
 
@@ -668,7 +673,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
       return
     }
 
-    const { actions } = this.adapter
+    const { actions } = this.adapter()
     if (actions) {
       const { keys } = actions
       if (keys) {
@@ -734,7 +739,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   private buildIndexes(): void {
     this.nodesIndex.clear()
     this.parentsIndex.clear()
-    this.dataSource.data = this.nodes
+    this.dataSource.data = this.nodes()
     this.controler.dataNodes?.forEach((node) => {
       this.nodesIndex.set(node.id, node)
     })
@@ -825,8 +830,9 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     this.iterateAncestors(node, (e) => {
       if (e.expandable && !this.controler.isExpanded(e)) {
         this.controler.expand(e)
-        if (this.adapter.onDidExpand) {
-          this.adapter.onDidExpand(e.data)
+        const adapter = this.adapter()
+        if (adapter.onDidExpand) {
+          adapter.onDidExpand(e.data)
         }
       }
     })
@@ -934,7 +940,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
       return undefined
     }
 
-    return this.nodesIndex.get(this.adapter.idProvider(data))
+    return this.nodesIndex.get(this.adapter().idProvider(data))
   }
 
   private findHolderFromEvent(event: Event): ITreeNodeHolder<T> | undefined {
@@ -997,23 +1003,23 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
   }
 
   private children(node: T): T[] {
-    const children = this.adapter.childrenProvider(node) || []
-    const parentId = this.adapter.idProvider(node)
+    const children = this.adapter().childrenProvider(node) || []
+    const parentId = this.adapter().idProvider(node)
     children.forEach((child) => {
-      this.parentsIndex.set(this.adapter.idProvider(child), parentId)
+      this.parentsIndex.set(this.adapter().idProvider(child), parentId)
     })
     return children
   }
 
   private transformer(node: T, level: number): ITreeNodeHolder<T> {
-    const expandable = this.adapter.isExpandable(node)
+    const expandable = this.adapter().isExpandable(node)
     return {
-      id: this.adapter.idProvider(node),
+      id: this.adapter().idProvider(node),
       data: node,
-      name: this.adapter.nameProvider(node),
+      name: this.adapter().nameProvider(node),
       level: level,
       padding: level * 12 + 'px',
-      tooltip: this.adapter.tooltipProvider?.(node),
+      tooltip: this.adapter().tooltipProvider?.(node),
       expandable,
     }
   }

@@ -1,5 +1,5 @@
 import { Location } from '@angular/common'
-import { ComponentRef, Directive, ElementRef, Input, OnChanges, OnDestroy, inject } from '@angular/core'
+import { ComponentRef, Directive, ElementRef, OnChanges, OnDestroy, inject, input } from '@angular/core'
 import { ActivatedRoute, Router, Scroll } from '@angular/router'
 import { Subscription } from 'rxjs'
 
@@ -19,8 +19,7 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
   private intersection?: IntersectionObserver
   private anchors: HTMLElement[] = []
 
-  @Input('ngeDocToc')
-  component?: ComponentRef<any>
+  readonly component = input<ComponentRef<any>>(undefined, { alias: 'ngeDocToc' })
 
   constructor() {
     this.subscriptions.push(
@@ -44,11 +43,12 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
   private build(): void {
     this.clear()
 
-    if (!this.component) {
+    const component = this.component()
+    if (!component) {
       return
     }
 
-    const componentNode = this.component.injector.get(ElementRef).nativeElement as HTMLElement
+    const componentNode = component.injector.get(ElementRef).nativeElement as HTMLElement
 
     const tocContainer = this.elementRef.nativeElement
 

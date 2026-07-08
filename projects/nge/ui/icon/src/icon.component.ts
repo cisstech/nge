@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core'
+import { Component, ChangeDetectionStrategy, input } from '@angular/core'
 import { Icon } from './icons'
 import { NgSwitch } from '@angular/common'
 import { CdkPortalOutlet } from '@angular/cdk/portal'
@@ -12,5 +12,5 @@ import { IconPipe } from './pipes/icon.pipe'
   imports: [NgSwitch, CdkPortalOutlet, IconPipe],
 })
 export class IconComponent {
-  @Input() icon?: Icon
+  readonly icon = input<Icon>()
 }

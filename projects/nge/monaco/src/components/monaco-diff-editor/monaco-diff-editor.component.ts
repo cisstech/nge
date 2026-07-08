@@ -4,12 +4,12 @@ import {
   Component,
   ElementRef,
   HostListener,
-  Input,
   OnDestroy,
   ChangeDetectionStrategy,
   inject,
   output,
   viewChild,
+  input,
 } from '@angular/core'
 import { NgeMonacoConfig, NGE_MONACO_CONFIG } from '../../monaco-config'
 import { NgeMonacoLoaderService } from '../../services/monaco-loader.service'
@@ -28,11 +28,9 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
 
   readonly ready = output<monaco.editor.IEditor>()
 
-  @Input()
-  autoLayout = true
+  readonly autoLayout = input(true)
 
-  @Input()
-  options?: monaco.editor.IStandaloneDiffEditorConstructionOptions
+  readonly options = input<monaco.editor.IStandaloneDiffEditorConstructionOptions>()
 
   private editor?: monaco.editor.IStandaloneDiffEditor
   private width = 0
@@ -50,7 +48,7 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
   }
 
   ngAfterViewChecked() {
-    if (!this.autoLayout) {
+    if (!this.autoLayout()) {
       return
     }
     const { offsetWidth, offsetHeight } = this.container().nativeElement
@@ -68,7 +66,7 @@ export class NgeMonacoDiffEditorComponent implements AfterViewInit, AfterViewChe
   private createEditor() {
     this.editor = monaco.editor.createDiffEditor(this.container().nativeElement, {
       ...(this.config?.options || {}),
-      ...(this.options || {}),
+      ...(this.options() || {}),
     })
     this.ready.emit(this.editor)
   }
