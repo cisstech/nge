@@ -1,5 +1,5 @@
 @if (selectable()) {
-  @for (item of selections; track $any(item)[$any(trackBy())] ?? $index; let i = $index) {
+  @for (item of selections(); track $any(item)[$any(trackBy())] ?? $index; let i = $index) {
     <ng-container *ngTemplateOutlet="_template(item, 'selection'); context: { item: item }"></ng-container>
   }
 }

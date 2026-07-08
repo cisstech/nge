@@ -3,8 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  OnChanges,
   OnDestroy,
+  effect,
   inject,
   viewChild,
   input,
@@ -20,7 +20,7 @@ import { NgeMonacoPlaceholderComponent } from '../monaco-placeholder/monaco-plac
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgeMonacoPlaceholderComponent],
 })
-export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
+export class NgeMonacoViewerComponent implements OnDestroy {
   private readonly colorizer = inject(NgeMonacoColorizerService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
 
@@ -63,9 +63,17 @@ export class NgeMonacoViewerComponent implements OnChanges, OnDestroy {
   /** filename to display in the header tab */
   readonly filename = input<string>()
 
-  ngOnChanges(): void {
-    const code = this.transclusion().nativeElement.textContent?.trim() || this.code() || ''
-    this.colorize(code)
+  constructor() {
+    effect(() => {
+      const code = this.transclusion().nativeElement.textContent?.trim() || this.code() || ''
+      // track the inputs used during colorization so it re-runs when they change
+      this.theme()
+      this.lines()
+      this.language()
+      this.highlights()
+      this.filename()
+      this.colorize(code)
+    })
   }
 
   ngOnDestroy(): void {

@@ -3,12 +3,11 @@ import {
   AfterContentInit,
   ChangeDetectorRef,
   Component,
-  Input,
-  OnChanges,
   TemplateRef,
   ChangeDetectionStrategy,
+  effect,
   inject,
-  output,
+  model,
   contentChildren,
   input,
 } from '@angular/core'
@@ -25,7 +24,7 @@ import { NgArrayPipesModule } from 'ngx-pipes'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, NgClass, FormsModule, NgArrayPipesModule],
 })
-export class ListComponent<T> implements OnChanges, AfterContentInit {
+export class ListComponent<T> implements AfterContentInit {
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
 
   readonly templates = contentChildren(ListTemplateComponent)
@@ -42,12 +41,9 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
 
   readonly filterBy = input<string[]>([])
 
-  @Input()
-  selections: T[] = []
+  readonly selections = model<T[]>([])
 
   readonly containerClass = input<string>()
-
-  readonly selectionsChange = output<T[]>()
 
   _selectionStates: Record<string, boolean> = {}
   _noResultTemplate: TemplateRef<any> | null = null
@@ -56,7 +52,7 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   _empty = false
 
   get hasSelection() {
-    return !!this.selections.length
+    return !!this.selections().length
   }
 
   protected get classes() {
@@ -69,11 +65,11 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
     }
   }
 
-  ngOnChanges() {
-    this._empty = !this.items()?.length
-    setTimeout(() => {
-      this.checkSelections()
-    }, 300)
+  constructor() {
+    effect(() => {
+      this._empty = !this.items()?.length
+      setTimeout(() => this.checkSelections(), 300)
+    })
   }
 
   ngAfterContentInit() {
@@ -89,9 +85,8 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
 
   unselect(item: T) {
     const id = (item as any)[this.idField()]
-    this.selections = this.selections.filter((e) => e !== item)
+    this.selections.set(this.selections().filter((e) => e !== item))
     this._selectionStates[id] = false
-    this.selectionsChange.emit(this.selections)
   }
 
   _template(context: T | ListContext<T>, slot: ListTemplateSlots): TemplateRef<any> | null {
@@ -112,19 +107,17 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   }
 
   _isSelected(item: T): boolean {
-    return !!this.selections.find((e) => e === item)
+    return !!this.selections().find((e) => e === item)
   }
 
   _toggleSelection(item: T): void {
-    for (let i = 0; i < this.selections.length; i++) {
-      if (this.equals(this.selections[i], item)) {
-        this.selections.splice(i, 1)
-        this.selectionsChange.emit(this.selections)
-        return
-      }
+    const current = this.selections()
+    const index = current.findIndex((e) => this.equals(e, item))
+    if (index >= 0) {
+      this.selections.set(current.filter((_, i) => i !== index))
+    } else {
+      this.selections.set([...current, item])
     }
-    this.selections.push(item)
-    this.selectionsChange.emit(this.selections)
   }
 
   private equals(a: any, b: any) {
@@ -132,14 +125,15 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   }
 
   private checkSelections() {
-    this.selections = this.selections.filter((selection: any) => {
-      if (this.items().find((item) => this.equals(item, selection))) {
-        return true
-      }
-      delete this._selectionStates[selection[this.idField()]]
-      return false
-    })
-    this.selectionsChange.emit(this.selections)
+    this.selections.set(
+      this.selections().filter((selection: any) => {
+        if (this.items().find((item) => this.equals(item, selection))) {
+          return true
+        }
+        delete this._selectionStates[selection[this.idField()]]
+        return false
+      })
+    )
     this.changeDetectorRef.markForCheck()
   }
 }

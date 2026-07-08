@@ -1,10 +1,10 @@
 import { Location } from '@angular/common'
-import { ComponentRef, Directive, ElementRef, OnChanges, OnDestroy, inject, input } from '@angular/core'
+import { ComponentRef, Directive, ElementRef, OnDestroy, effect, inject, input } from '@angular/core'
 import { ActivatedRoute, Router, Scroll } from '@angular/router'
 import { Subscription } from 'rxjs'
 
 @Directive({ selector: '[ngeDocToc]' })
-export class NgeDocTocDirective implements OnDestroy, OnChanges {
+export class NgeDocTocDirective implements OnDestroy {
   private readonly router = inject(Router)
   private readonly location = inject(Location)
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
@@ -29,15 +29,16 @@ export class NgeDocTocDirective implements OnDestroy, OnChanges {
         }
       })
     )
+
+    effect(() => {
+      this.component() // will trigger the effect when the component changes
+      this.build()
+    })
   }
 
   ngOnDestroy(): void {
     this.intersection?.disconnect()
     this.subscriptions.forEach((s) => s.unsubscribe())
-  }
-
-  ngOnChanges(): void {
-    this.build()
   }
 
   private build(): void {

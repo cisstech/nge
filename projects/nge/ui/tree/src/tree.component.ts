@@ -5,9 +5,9 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnChanges,
   OnDestroy,
   OnInit,
+  effect,
   inject,
   contentChild,
   input,
@@ -37,7 +37,7 @@ import { FormsModule } from '@angular/forms'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, NgClass, AutofocusDirective, FormsModule, AsyncPipe],
 })
-export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy {
+export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
 
@@ -88,6 +88,11 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     )
 
     this.dataSource = new MatTreeFlatDataSource(this.controler, this.flattener)
+
+    // Rebuild the tree whenever the adapter or nodes input changes.
+    effect(() => {
+      this.syncFromInputs()
+    })
   }
 
   ngOnInit(): void {
@@ -98,11 +103,12 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnChanges, OnDestroy 
     CURRENT_VISIBLE_TREES.set(adapter.id, this)
   }
 
-  ngOnChanges(): void {
+  private syncFromInputs(): void {
     const adapter = this.adapter()
     if (!adapter) {
-      throw new Error('@Input() adapter is required !')
+      throw new Error('adapter is required !')
     }
+    this.nodes()
 
     const requires: (keyof ITreeAdapter<T>)[] = ['id', 'idProvider', 'nameProvider', 'isExpandable', 'childrenProvider']
     for (const key of requires) {
