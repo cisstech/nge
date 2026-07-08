@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef, input } from '@angular/core'
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, input } from '@angular/core'
 import { outputFromObservable } from '@angular/core/rxjs-interop'
 import { Subject } from 'rxjs'
 import { ListItemTag } from '../list'
@@ -15,17 +15,17 @@ import { IsTemplatePipe, IsStringPipe } from '@cisstech/nge/pipes'
   imports: [NgTemplateOutlet, RouterLink, IsTemplatePipe, IsStringPipe],
 })
 export class ListItemArticleComponent implements OnInit {
-  @Input() articleTitle?: string | TemplateRef<any>
+  readonly articleTitle = input<string | TemplateRef<any>>()
   readonly articleUrl = input<string | any[]>()
-  @Input() articleBannerUrl?: string
+  readonly articleBannerUrl = input<string>()
   readonly articleBannerAlt = input<string>()
-  @Input() articleIconUrl?: string
+  readonly articleIconUrl = input<string>()
   readonly articleIconAlt = input<string>()
-  @Input() articleDescription?: string | TemplateRef<any>
-  @Input() articleTags: string[] | ListItemTag[] = []
+  readonly articleDescription = input<string | TemplateRef<any>>()
+  readonly articleTags = input<string[] | ListItemTag[]>([])
 
-  @Input() articleIconTemplate?: TemplateRef<any>
-  @Input() articleTagIconTemplate?: TemplateRef<{ text: string; data?: any }>
+  readonly articleIconTemplate = input<TemplateRef<any>>()
+  readonly articleTagIconTemplate = input<TemplateRef<{ text: string; data?: any }>>()
 
   private readonly didClick$ = new Subject<void>()
   readonly didClick = outputFromObservable(this.didClick$)

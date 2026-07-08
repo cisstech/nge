@@ -30,8 +30,7 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
 
   readonly templates = contentChildren(ListTemplateComponent)
 
-  @Input()
-  idField!: string
+  readonly idField = input.required<string>()
 
   readonly items = input<T[]>([])
 
@@ -39,8 +38,7 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
 
   readonly selectable = input(false)
 
-  @Input()
-  filter?: string
+  readonly filter = input<string>()
 
   readonly filterBy = input<string[]>([])
 
@@ -90,7 +88,7 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   }
 
   unselect(item: T) {
-    const id = (item as any)[this.idField]
+    const id = (item as any)[this.idField()]
     this.selections = this.selections.filter((e) => e !== item)
     this._selectionStates[id] = false
     this.selectionsChange.emit(this.selections)
@@ -130,7 +128,7 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
   }
 
   private equals(a: any, b: any) {
-    return a[this.idField] === b[this.idField]
+    return a[this.idField()] === b[this.idField()]
   }
 
   private checkSelections() {
@@ -138,7 +136,7 @@ export class ListComponent<T> implements OnChanges, AfterContentInit {
       if (this.items().find((item) => this.equals(item, selection))) {
         return true
       }
-      delete this._selectionStates[selection[this.idField]]
+      delete this._selectionStates[selection[this.idField()]]
       return false
     })
     this.selectionsChange.emit(this.selections)

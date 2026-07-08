@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Injector, computed, inject, input } from '@angular/core'
 import { IcongrIcon, ICON_TOKEN } from '../icons'
 import { IconGrPipe } from '@cisstech/nge/pipes'
 
@@ -9,12 +9,10 @@ import { IconGrPipe } from '@cisstech/nge/pipes'
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [IconGrPipe],
 })
-export class IconIcongrComponent implements OnInit {
+export class IconIcongrComponent {
   private readonly injector = inject(Injector)
 
-  @Input() icon!: IcongrIcon
+  readonly icon = input<IcongrIcon>()
 
-  ngOnInit() {
-    this.icon = this.icon || this.injector.get<IcongrIcon>(ICON_TOKEN)
-  }
+  protected readonly resolvedIcon = computed(() => this.icon() ?? this.injector.get<IcongrIcon>(ICON_TOKEN))
 }

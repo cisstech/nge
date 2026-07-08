@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Injector, computed, inject, input } from '@angular/core'
 import { FaIcon, ICON_TOKEN } from '../icons'
 
 @Component({
@@ -7,12 +7,10 @@ import { FaIcon, ICON_TOKEN } from '../icons'
   styleUrls: ['./icon-fa.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IconFaComponent implements OnInit {
+export class IconFaComponent {
   private readonly injector = inject(Injector)
 
-  @Input() icon!: FaIcon
+  readonly icon = input<FaIcon>()
 
-  ngOnInit() {
-    this.icon = this.icon || this.injector.get<FaIcon>(ICON_TOKEN)
-  }
+  protected readonly resolvedIcon = computed(() => this.icon() ?? this.injector.get<FaIcon>(ICON_TOKEN))
 }

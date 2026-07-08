@@ -1,4 +1,4 @@
-import { Component, Injector, Input, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, Injector, computed, inject, input } from '@angular/core'
 import { ICON_TOKEN, ImgIcon } from '../icons'
 
 @Component({
@@ -7,12 +7,10 @@ import { ICON_TOKEN, ImgIcon } from '../icons'
   styleUrls: ['./icon-img.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IconImgComponent implements OnInit {
+export class IconImgComponent {
   private readonly injector = inject(Injector)
 
-  @Input() icon!: ImgIcon
+  readonly icon = input<ImgIcon>()
 
-  ngOnInit() {
-    this.icon = this.icon || this.injector.get<ImgIcon>(ICON_TOKEN)
-  }
+  protected readonly resolvedIcon = computed(() => this.icon() ?? this.injector.get<ImgIcon>(ICON_TOKEN))
 }

@@ -6,14 +6,14 @@
 
 <!-- TEMPLATE FOR EMPTY STATE -->
 <ng-template #emptyStateTemplate>
-  @if (!filter?.trim()) {
+  @if (!filter()?.trim()) {
     <ng-container *ngTemplateOutlet="_emptyStateTemplate"></ng-container>
   } @else {
-    <ng-container *ngTemplateOutlet="_noResultTemplate; context: { $implicit: filter }"></ng-container>
+    <ng-container *ngTemplateOutlet="_noResultTemplate; context: { $implicit: filter() }"></ng-container>
   }
 </ng-template>
 
-@if (filter ? (items() | filterBy: filterBy() : filter) : items(); as filtered) {
+@if (filter() ? (items() | filterBy: filterBy() : filter()) : items(); as filtered) {
   @if (filtered.length) {
     <ul class="ui-list-container" [ngClass]="classes">
       @for (
@@ -46,7 +46,7 @@
                   <input
                     class="ui-list-label__checkbox"
                     type="checkbox"
-                    [(ngModel)]="_selectionStates[$any(item)[idField]]"
+                    [(ngModel)]="_selectionStates[$any(item)[idField()]]"
                     (ngModelChange)="_toggleSelection(item)"
                   />
                   <span class="ui-list-label__text">

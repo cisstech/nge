@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NgTemplateOutlet } from '@angular/common'
-import { ChangeDetectionStrategy, Component, HostBinding, HostListener, Input, TemplateRef } from '@angular/core'
+import { ChangeDetectionStrategy, Component, HostListener, TemplateRef, input } from '@angular/core'
 import { IsTemplatePipe } from '@cisstech/nge/pipes'
 
 @Component({
@@ -9,13 +9,12 @@ import { IsTemplatePipe } from '@cisstech/nge/pipes'
   styleUrls: ['./list-item-article-action.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgTemplateOutlet, IsTemplatePipe],
+  host: { '[class.clickable]': 'clickable()' },
 })
 export class ListItemArticleActionComponent {
-  @Input() actionTitle?: string | number | boolean | TemplateRef<any> | null
+  readonly actionTitle = input<string | number | boolean | TemplateRef<any> | null>()
 
-  @Input()
-  @HostBinding('class.clickable')
-  clickable = false
+  readonly clickable = input(false)
 
   @HostListener('click', ['$event'])
   protected onClick($event: Event) {
