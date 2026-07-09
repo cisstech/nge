@@ -1,9 +1,10 @@
 import { Location } from '@angular/common'
-import { Injectable, Injector, OnDestroy, inject } from '@angular/core'
+import { Injectable, Injector, OnDestroy, computed, inject } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
-import { NgeDocLink, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
+import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
 
 @Injectable()
 export class NgeDocService implements OnDestroy {
@@ -34,6 +35,21 @@ export class NgeDocService implements OnDestroy {
   private readonly links: NgeDocLink[] = []
 
   private readonly subscriptions: Subscription[] = []
+
+  private readonly snapshot = toSignal(this.state, { initialValue: this.state.value })
+
+  /** Metadata of the active documentation site. */
+  readonly meta = computed(() => this.snapshot().meta)
+  /** Root links of the active documentation site (the navigation tree). */
+  readonly rootLinks = computed(() => this.snapshot().links)
+  /** Active link, or `undefined` before the first navigation resolves. */
+  readonly currLink = computed(() => this.snapshot().currLink)
+  /** Link before the active one in reading order. */
+  readonly prevLink = computed(() => this.snapshot().prevLink)
+  /** Link after the active one in reading order. */
+  readonly nextLink = computed(() => this.snapshot().nextLink)
+  /** Ancestor chain from a root link down to the active one, inclusive. */
+  readonly breadcrumb = computed(() => this.trailTo(this.snapshot()))
 
   /** documentation state */
   get stateChanges() {
@@ -228,6 +244,47 @@ export class NgeDocService implements OnDestroy {
       currLink,
       nextLink,
     })
+  }
+
+  /**
+   * Runs a link action.
+   *
+   * A string handler is treated as a url to open in a new tab; a function
+   * handler is invoked with the environment injector.
+   * @param run The action handler declared on a link.
+   */
+  async runAction(run: NgeDocLinkActionHandler): Promise<void> {
+    if (typeof run === 'string') {
+      window.open(run, '_blank', 'noopener')
+      return
+    }
+    await run(this.injector)
+  }
+
+  /** Walks the navigation tree to the active link, collecting its ancestors. */
+  private trailTo(state: NgeDocState): NgeDocLink[] {
+    const { currLink, links } = state
+    if (!currLink) {
+      return []
+    }
+
+    const trail: NgeDocLink[] = []
+    const walk = (nodes: NgeDocLink[], ancestors: NgeDocLink[]): boolean => {
+      for (const node of nodes) {
+        const path = [...ancestors, node]
+        if (node.href === currLink.href) {
+          trail.push(...path)
+          return true
+        }
+        if (node.children?.length && walk(node.children, path)) {
+          return true
+        }
+      }
+      return false
+    }
+
+    walk(links, [])
+    return trail
   }
 
   private reset(): void {

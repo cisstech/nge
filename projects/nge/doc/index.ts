@@ -1,3 +1,6 @@
 export * from './src/nge-doc'
 export * from './src/nge-doc.module'
 export * from './src/nge-doc.providers'
+export * from './src/nge-doc.service'
+export * from './src/nge-doc-theme.service'
+export * from './src/renderer/renderer.component'
