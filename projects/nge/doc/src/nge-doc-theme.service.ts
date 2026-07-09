@@ -1,7 +1,10 @@
-import { DOCUMENT, Injectable, computed, effect, inject, signal } from '@angular/core'
+import { DOCUMENT, InjectionToken, Injectable, computed, effect, inject, signal } from '@angular/core'
 
 /** Color scheme preference. `auto` follows the operating system setting. */
 export type NgeDocColorScheme = 'light' | 'dark' | 'auto'
+
+/** Default color scheme used when the user has not chosen one yet (see `withDarkMode`). */
+export const NGE_DOC_DEFAULT_COLOR_SCHEME = new InjectionToken<NgeDocColorScheme>('NGE_DOC_DEFAULT_COLOR_SCHEME')
 
 /**
  * Owns the documentation color scheme.
@@ -18,6 +21,7 @@ export class NgeDocThemeService {
 
   private readonly document = inject(DOCUMENT)
   private readonly window = this.document.defaultView
+  private readonly defaultScheme = inject(NGE_DOC_DEFAULT_COLOR_SCHEME, { optional: true }) ?? 'auto'
 
   private readonly systemPrefersDark = signal(this.matchSystemDark())
 
@@ -67,8 +71,8 @@ export class NgeDocThemeService {
         return stored
       }
     } catch {
-      // Ignore unreadable storage and fall back to auto.
+      // Ignore unreadable storage and fall back to the configured default.
     }
-    return 'auto'
+    return this.defaultScheme
   }
 }

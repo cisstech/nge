@@ -1,10 +1,11 @@
 import { Location } from '@angular/common'
-import { Injectable, Injector, OnDestroy, computed, inject } from '@angular/core'
+import { Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
+import { NGE_DOC_NAVBAR, NgeDocNavLink } from './nge-doc.providers'
 
 /** A page matched by {@link NgeDocService.search}. */
 export interface NgeDocSearchResult {
@@ -22,6 +23,7 @@ export class NgeDocService implements OnDestroy {
   private readonly injector = inject(Injector)
   private readonly location = inject(Location)
   private readonly activatedRoute = inject(ActivatedRoute)
+  private readonly explicitNavbar = inject(NGE_DOC_NAVBAR, { optional: true })
 
   private readonly state = new BehaviorSubject<NgeDocState>({
     meta: {
@@ -47,6 +49,19 @@ export class NgeDocService implements OnDestroy {
   private readonly subscriptions: Subscription[] = []
 
   private readonly snapshot = toSignal(this.state, { initialValue: this.state.value })
+
+  /** Metadata of every registered documentation site, in declaration order. */
+  readonly sites = signal<NgeDocMeta[]>([])
+
+  /**
+   * Header navigation links: the ones declared with `withNavbar`, or one per
+   * registered site (its name and root) as a sensible default.
+   */
+  readonly navbar = computed<NgeDocNavLink[]>(
+    () =>
+      this.explicitNavbar ??
+      this.sites().map((meta) => ({ title: meta.name, href: meta.root, icon: meta.logo }))
+  )
 
   /** Metadata of the active documentation site. */
   readonly meta = computed(() => this.snapshot().meta)
@@ -120,6 +135,8 @@ export class NgeDocService implements OnDestroy {
         })
       }
     }
+
+    this.sites.set(Array.from(this.pages.values()).map((page) => page.meta))
 
     this.subscriptions.push(
       this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(this.onChangeRoute.bind(this))
@@ -316,6 +333,17 @@ export class NgeDocService implements OnDestroy {
       acc.pop()
     }
     return false
+  }
+
+  /** Whether a header navigation link points to the active site. */
+  isNavLinkActive(link: NgeDocNavLink): boolean {
+    if (link.external) {
+      return false
+    }
+    const strip = (url: string) => url.replace(/\/+$/, '')
+    const current = strip(this.meta().root)
+    const target = strip(link.href)
+    return current === target || current.startsWith(target + '/')
   }
 
   /** Walks the navigation tree to the active link, collecting its ancestors. */

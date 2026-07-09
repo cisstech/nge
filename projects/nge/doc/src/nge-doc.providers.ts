@@ -1,4 +1,6 @@
 import { EnvironmentProviders, InjectionToken, Provider, Type, makeEnvironmentProviders } from '@angular/core'
+import { NGE_DOC_RENDERERS, NgeDocIcon, NgeDocRenderers } from './nge-doc'
+import { NGE_DOC_DEFAULT_COLOR_SCHEME, NgeDocColorScheme } from './nge-doc-theme.service'
 
 /**
  * Loads the theme component that renders the documentation.
@@ -44,4 +46,41 @@ export function provideNgeDoc(...features: NgeDocFeature[]): EnvironmentProvider
 /** Use a custom theme instead of the default one. */
 export function withTheme(loader: NgeDocLayoutLoader): NgeDocFeature {
   return { providers: [{ provide: NGE_DOC_LAYOUT, useValue: loader }] }
+}
+
+/** A top-level navigation link shown in the theme header. */
+export interface NgeDocNavLink {
+  /** Text of the link. */
+  title: string
+  /** Target url (an Angular routerLink, or an absolute url when `external`). */
+  href: string
+  /** Optional icon. */
+  icon?: NgeDocIcon
+  /** Open in a new tab as a plain anchor instead of routing internally. */
+  external?: boolean
+}
+
+/** Header navigation links. When absent, a theme may derive them from the registered sites. */
+export const NGE_DOC_NAVBAR = new InjectionToken<NgeDocNavLink[]>('NGE_DOC_NAVBAR')
+
+/**
+ * Declare the header navigation links (e.g. to move between documentation sites).
+ *
+ * Without it, the default theme lists the registered sites automatically.
+ */
+export function withNavbar(links: NgeDocNavLink[]): NgeDocFeature {
+  return { providers: [{ provide: NGE_DOC_NAVBAR, useValue: links }] }
+}
+
+/** Register the component used to render markdown pages. */
+export function withMarkdownRenderer(markdown: NgeDocRenderers['markdown']): NgeDocFeature {
+  return { providers: [{ provide: NGE_DOC_RENDERERS, useValue: { markdown } }] }
+}
+
+/**
+ * Set the default color scheme applied before the user picks one.
+ * @param mode `auto` (follow the OS, default), `dark` or `light`.
+ */
+export function withDarkMode(mode: NgeDocColorScheme = 'auto'): NgeDocFeature {
+  return { providers: [{ provide: NGE_DOC_DEFAULT_COLOR_SCHEME, useValue: mode }] }
 }
