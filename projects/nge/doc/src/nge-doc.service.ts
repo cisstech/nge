@@ -6,7 +6,15 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
-import { NGE_DOC_BRAND, NGE_DOC_NAVBAR, NgeDocBrand, NgeDocNavLink } from './nge-doc.providers'
+import {
+  DEFAULT_NGE_DOC_LABELS,
+  NGE_DOC_BRAND,
+  NGE_DOC_LABELS,
+  NGE_DOC_NAVBAR,
+  NgeDocBrand,
+  NgeDocLabels,
+  NgeDocNavLink,
+} from './nge-doc.providers'
 
 /** A page matched by {@link NgeDocService.search}. */
 export interface NgeDocSearchResult {
@@ -28,6 +36,9 @@ export class NgeDocService implements OnDestroy {
   private readonly metaTags = inject(Meta)
   private readonly explicitNavbar = inject(NGE_DOC_NAVBAR, { optional: true })
   private readonly explicitBrand = inject(NGE_DOC_BRAND, { optional: true })
+
+  /** Resolved theme wording: the English defaults merged with any `withLabels` overrides. */
+  readonly labels: NgeDocLabels = { ...DEFAULT_NGE_DOC_LABELS, ...inject(NGE_DOC_LABELS, { optional: true }) }
 
   private readonly state = new BehaviorSubject<NgeDocState>({
     meta: {

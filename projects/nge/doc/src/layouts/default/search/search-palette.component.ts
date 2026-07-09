@@ -27,6 +27,7 @@ export class SearchPaletteComponent {
   /** Emitted when the palette should be dismissed. */
   readonly closed = output()
 
+  protected readonly labels = this.docService.labels
   protected readonly query = signal('')
   protected readonly activeIndex = signal(0)
   protected readonly results = computed<NgeDocSearchResult[]>(() => this.docService.search(this.query()))

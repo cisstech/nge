@@ -9,8 +9,8 @@
       type="text"
       autocomplete="off"
       spellcheck="false"
-      placeholder="Search documentation"
-      aria-label="Search documentation"
+      [attr.placeholder]="labels.search"
+      [attr.aria-label]="labels.search"
       [value]="query()"
       (input)="onInput(input.value)"
     />
@@ -19,7 +19,7 @@
 
   <div class="palette-results" role="listbox">
     @if (query() && !results().length) {
-      <div class="palette-empty">No results for “{{ query() }}”</div>
+      <div class="palette-empty">{{ labels.searchEmpty }} “{{ query() }}”</div>
     }
     @for (result of results(); track result.link.href; let i = $index) {
       <button

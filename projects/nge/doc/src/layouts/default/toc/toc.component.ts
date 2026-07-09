@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core'
 import { NgeDocRendererComponent } from '../../../renderer/renderer.component'
+import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
   selector: 'nge-doc-toc',
@@ -10,6 +11,8 @@ import { NgeDocRendererComponent } from '../../../renderer/renderer.component'
 export class TocComponent {
   /** The active renderer, whose extracted headings drive this table of contents. */
   readonly renderer = input.required<NgeDocRendererComponent>()
+
+  protected readonly labels = inject(NgeDocService).labels
 
   protected onSelect(event: Event, id: string): void {
     event.preventDefault()

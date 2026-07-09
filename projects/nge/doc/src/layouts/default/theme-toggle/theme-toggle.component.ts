@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { NgeDocThemeService } from '../../../nge-doc-theme.service'
+import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
   selector: 'nge-doc-theme-toggle',
@@ -8,7 +9,7 @@ import { NgeDocThemeService } from '../../../nge-doc-theme.service'
     <button
       class="icon-btn"
       type="button"
-      [attr.aria-label]="isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+      [attr.aria-label]="isDark() ? labels.switchToLight : labels.switchToDark"
       (click)="theme.toggle()"
     >
       @if (isDark()) {
@@ -27,4 +28,5 @@ import { NgeDocThemeService } from '../../../nge-doc-theme.service'
 export class ThemeToggleComponent {
   protected readonly theme = inject(NgeDocThemeService)
   protected readonly isDark = this.theme.isDark
+  protected readonly labels = inject(NgeDocService).labels
 }

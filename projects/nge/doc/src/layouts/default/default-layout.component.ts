@@ -40,6 +40,7 @@ export class DefaultLayoutComponent {
   private readonly docService = inject(NgeDocService)
   private readonly router = inject(Router)
 
+  protected readonly labels = this.docService.labels
   protected readonly sidebarOpen = signal(false)
   protected readonly searchOpen = signal(false)
   /** Desktop: whether the sidebar is collapsed to give the content more room. */

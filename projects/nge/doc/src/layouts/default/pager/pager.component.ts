@@ -13,4 +13,5 @@ export class PagerComponent {
   private readonly docService = inject(NgeDocService)
   protected readonly prev = this.docService.prevLink
   protected readonly next = this.docService.nextLink
+  protected readonly labels = this.docService.labels
 }

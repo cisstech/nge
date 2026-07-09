@@ -1,5 +1,5 @@
 @if (navbar().length > 1) {
-  <nav class="drawer-navbar" aria-label="Documentation sections">
+  <nav class="drawer-navbar" [attr.aria-label]="labels.sections">
     @for (link of navbar(); track link.href) {
       @if (link.external) {
         <a class="drawer-navbar-link" [href]="link.href" target="_blank" rel="noopener">
@@ -58,7 +58,7 @@
             type="button"
             (click)="toggle(link)"
             [attr.aria-expanded]="isOpen(link)"
-            [attr.aria-label]="(isOpen(link) ? 'Collapse ' : 'Expand ') + link.title"
+            [attr.aria-label]="(isOpen(link) ? labels.collapse : labels.expand) + ' ' + link.title"
           >
             <svg class="chevron" [class.open]="isOpen(link)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <polyline points="9 18 15 12 9 6" />

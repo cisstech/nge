@@ -18,6 +18,7 @@ export class HeaderComponent {
   protected readonly currLink = this.docService.currLink
   protected readonly navbar = this.docService.navbar
   protected readonly brand = this.docService.brand
+  protected readonly labels = this.docService.labels
 
   /** Whether the desktop sidebar is currently collapsed. */
   readonly collapsed = input(false)

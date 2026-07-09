@@ -16,6 +16,7 @@ export class SidenavComponent {
   protected readonly docService = inject(NgeDocService)
   protected readonly rootLinks = this.docService.rootLinks
   protected readonly navbar = this.docService.navbar
+  protected readonly labels = this.docService.labels
 
   /** Explicit open/closed choices, keyed by href; they win over the default. */
   private readonly overrides = signal<ReadonlyMap<string, boolean>>(new Map())

@@ -1,6 +1,6 @@
 @if (renderer().headings().length) {
-  <nav class="toc" aria-label="On this page">
-    <div class="toc-label">On this page</div>
+  <nav class="toc" [attr.aria-label]="labels.tableOfContents">
+    <div class="toc-label">{{ labels.tableOfContents }}</div>
     <ul>
       @for (heading of renderer().headings(); track heading.id) {
         <li>
@@ -20,7 +20,7 @@
         <line x1="12" y1="19" x2="12" y2="5" />
         <polyline points="5 12 12 5 19 12" />
       </svg>
-      <span>Back to top</span>
+      <span>{{ labels.backToTop }}</span>
     </button>
   </nav>
 }

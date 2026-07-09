@@ -8,7 +8,7 @@ import { NgeDocService } from '../../../nge-doc.service'
   imports: [RouterLink],
   template: `
     @if (trail().length) {
-      <nav class="breadcrumb" aria-label="Breadcrumb">
+      <nav class="breadcrumb" [attr.aria-label]="labels.breadcrumb">
         <span class="root">{{ meta().name }}</span>
         @for (link of trail(); track link.href; let last = $last) {
           <span class="sep" aria-hidden="true">/</span>
@@ -54,4 +54,5 @@ export class BreadcrumbComponent {
   private readonly docService = inject(NgeDocService)
   protected readonly trail = this.docService.breadcrumb
   protected readonly meta = this.docService.meta
+  protected readonly labels = this.docService.labels
 }
