@@ -31,31 +31,58 @@
 </nav>
 
 <ng-template #node let-link let-depth="depth">
-  @if (docService.isExpandable(link)) {
-    <div class="nav-group">
-      @if (depth === 0) {
-        <div class="nav-label">
-          @if (link.icon; as icon) {
-            <nge-doc-icon [icon]="icon" size="14px" />
-          }
-          <span>{{ link.title }}</span>
+  @if (isExpandable(link)) {
+    <div class="nav-folder" [class.depth0]="depth === 0">
+      @if (link.renderer) {
+        <div class="nav-folder-head">
+          <a
+            class="nav-link nav-folder-label"
+            [routerLink]="link.href"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            @if (link.icon; as icon) {
+              <nge-doc-icon [icon]="icon" size="16px" />
+            }
+            <span>{{ link.title }}</span>
+          </a>
+          <button
+            class="nav-toggle"
+            type="button"
+            (click)="toggle(link)"
+            [attr.aria-expanded]="isOpen(link)"
+            [attr.aria-label]="(isOpen(link) ? 'Collapse ' : 'Expand ') + link.title"
+          >
+            <svg class="chevron" [class.open]="isOpen(link)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
         </div>
       } @else {
-        <a
-          class="nav-link nav-parent"
-          [routerLink]="link.href"
-          routerLinkActive="active"
-          [style.paddingLeft.rem]="0.6 + depth * 0.75"
+        <button
+          class="nav-link nav-folder-label as-button"
+          type="button"
+          (click)="toggle(link)"
+          [attr.aria-expanded]="isOpen(link)"
         >
           @if (link.icon; as icon) {
             <nge-doc-icon [icon]="icon" size="16px" />
           }
           <span>{{ link.title }}</span>
-        </a>
+          <svg class="chevron" [class.open]="isOpen(link)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
       }
-      @for (child of link.children; track child.href) {
-        <ng-container *ngTemplateOutlet="node; context: { $implicit: child, depth: depth + 1 }" />
-      }
+      <div class="nav-collapse" [class.open]="isOpen(link)">
+        <div class="nav-collapse-inner" [attr.inert]="isOpen(link) ? null : ''">
+          <div class="nav-children">
+            @for (child of link.children; track child.href) {
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: child, depth: depth + 1 }" />
+            }
+          </div>
+        </div>
+      </div>
     </div>
   } @else {
     <a
@@ -63,7 +90,6 @@
       [routerLink]="link.href"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
-      [style.paddingLeft.rem]="0.6 + depth * 0.75"
     >
       @if (link.icon; as icon) {
         <nge-doc-icon [icon]="icon" size="16px" />

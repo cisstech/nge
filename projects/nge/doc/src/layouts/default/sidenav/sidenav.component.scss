@@ -4,45 +4,55 @@
   height: calc(100vh - var(--nge-doc-header-h));
   overflow-y: auto;
   display: block;
-  padding: 1.5rem 0.75rem 2rem 1.25rem;
-  border-right: 1px solid var(--nge-doc-border);
-  background: var(--nge-doc-bg-subtle);
+  padding: 1.5rem 0.75rem 2rem 0.65rem;
 }
 
-.nav-group {
-  margin-bottom: 1.35rem;
-}
-
-.nav-label {
+.nav {
   display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--nge-doc-fg-subtle);
-  padding: 0 0.6rem;
-  margin-bottom: 0.4rem;
+  flex-direction: column;
+  gap: 1px;
 }
 
-.drawer-navbar {
-  display: none;
-}
-
-.nav-link {
+/* Rows: leaves, folder labels and folder toggles share one look. */
+.nav-link,
+.nav-folder-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.34rem 0.6rem;
-  margin: 1px 0;
+  width: 100%;
+  margin: 0;
+  padding: 0.36rem 0.6rem;
+  border: none;
+  background: none;
   border-radius: var(--nge-doc-r-md);
   color: var(--nge-doc-fg-muted);
+  font-family: inherit;
   font-size: 0.875rem;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-link {
   transition: background 0.12s, color 0.12s;
 }
 
-.nav-link:hover {
+.nav-link nge-doc-icon {
+  flex: none;
+  color: var(--nge-doc-fg-subtle);
+}
+
+.nav-link > span,
+.nav-folder-label > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-link:hover,
+.nav-folder-label:hover {
   background: var(--nge-doc-surface-hover);
   color: var(--nge-doc-fg);
 }
@@ -53,15 +63,106 @@
   background: var(--nge-doc-primary-subtle);
 }
 
-.nav-parent {
+.nav-link.active nge-doc-icon {
+  color: var(--nge-doc-primary);
+}
+
+/* Folders */
+.nav-folder.depth0 {
+  margin-top: 0.55rem;
+}
+
+.nav-folder.depth0:first-child {
+  margin-top: 0;
+}
+
+.nav-folder.depth0 > .nav-folder-head > .nav-folder-label,
+.nav-folder.depth0 > .nav-folder-label {
+  color: var(--nge-doc-fg);
   font-weight: 600;
+}
+
+.nav-folder-head {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.nav-folder-head .nav-folder-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--nge-doc-fg-subtle);
+  border-radius: var(--nge-doc-r-sm);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.nav-toggle:hover {
+  background: var(--nge-doc-surface-hover);
   color: var(--nge-doc-fg);
 }
 
-.nav-link img {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
+.chevron {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  transition: transform 0.18s ease;
+}
+
+.chevron.open {
+  transform: rotate(90deg);
+}
+
+.as-button .chevron {
+  color: var(--nge-doc-fg-subtle);
+  margin-right: -0.15rem;
+}
+
+/* Nested items: indentation and the tree guide line. */
+.nav-children {
+  margin-left: 1.05rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--nge-doc-border);
+}
+
+/* Animated collapse driven by the grid-row track. */
+.nav-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.22s ease;
+}
+
+.nav-collapse.open {
+  grid-template-rows: 1fr;
+}
+
+.nav-collapse-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-collapse,
+  .chevron {
+    transition: none;
+  }
+}
+
+/* Header navigation repeated inside the mobile drawer. */
+.drawer-navbar {
+  display: none;
 }
 
 @media (max-width: 860px) {
@@ -72,6 +173,9 @@
     bottom: 0;
     width: min(80vw, var(--nge-doc-sidebar-w));
     z-index: 45;
+    padding: 1.25rem 1rem 2rem;
+    background: var(--nge-doc-bg);
+    border-right: 1px solid var(--nge-doc-border);
     transform: translateX(-100%);
     transition: transform 0.2s ease;
   }

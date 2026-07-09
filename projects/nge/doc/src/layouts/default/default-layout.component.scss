@@ -11,6 +11,23 @@
     align-items: start;
   }
 
+  /*
+   * Collapsed sidebar (desktop only): keep the reading measure (a wider column
+   * would hurt readability) and centre the content + table of contents as a
+   * block, so the freed space becomes balanced margins instead of a left gap.
+   */
+  @media (min-width: 861px) {
+    &.sidebar-collapsed .shell {
+      grid-template-columns: minmax(0, 1fr) var(--nge-doc-toc-w);
+      max-width: calc(var(--nge-doc-content-max) + var(--nge-doc-toc-w) + 9rem);
+      margin-inline: auto;
+    }
+
+    &.sidebar-collapsed nge-doc-sidenav {
+      display: none;
+    }
+  }
+
   main {
     padding: 2rem 3rem 4rem;
     min-width: 0;

@@ -42,6 +42,8 @@ export class DefaultLayoutComponent {
 
   protected readonly sidebarOpen = signal(false)
   protected readonly searchOpen = signal(false)
+  /** Desktop: whether the sidebar is collapsed to give the content more room. */
+  protected readonly sidebarCollapsed = signal(this.readCollapsed())
 
   /** The scroll region, focused on navigation so the keyboard scrolls the page. */
   private readonly main = viewChild<ElementRef<HTMLElement>>('main')
@@ -118,4 +120,24 @@ export class DefaultLayoutComponent {
   protected closeSidebar(): void {
     this.sidebarOpen.set(false)
   }
+
+  protected toggleCollapse(): void {
+    const collapsed = !this.sidebarCollapsed()
+    this.sidebarCollapsed.set(collapsed)
+    try {
+      localStorage?.setItem(COLLAPSE_KEY, collapsed ? '1' : '0')
+    } catch {
+      // storage may be unavailable (private mode, SSR); the choice just resets.
+    }
+  }
+
+  private readCollapsed(): boolean {
+    try {
+      return localStorage?.getItem(COLLAPSE_KEY) === '1'
+    } catch {
+      return false
+    }
+  }
 }
+
+const COLLAPSE_KEY = 'nge-doc-sidebar-collapsed'

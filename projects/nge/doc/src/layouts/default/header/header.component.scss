@@ -109,9 +109,17 @@
   display: none;
 }
 
+.sidebar-toggle {
+  display: inline-flex;
+}
+
 @media (max-width: 860px) {
   .menu {
     display: inline-flex;
+  }
+
+  .sidebar-toggle {
+    display: none;
   }
 
   .search {
