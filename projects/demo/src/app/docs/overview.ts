@@ -1,4 +1,5 @@
 import { NgeDocSettings } from '@cisstech/nge/doc'
+import { editInGithubAction } from './actions'
 
 export const NGE_OVERVIEW: NgeDocSettings = {
   meta: {
@@ -15,11 +16,13 @@ export const NGE_OVERVIEW: NgeDocSettings = {
       title: 'Introduction',
       href: 'introduction',
       renderer: 'assets/docs/overview/introduction.md',
+      actions: [editInGithubAction('assets/docs/overview/introduction.md')],
     },
     {
       title: 'Installation',
       href: 'installation',
       renderer: 'assets/docs/overview/installation.md',
+      actions: [editInGithubAction('assets/docs/overview/installation.md')],
     },
   ],
 }
