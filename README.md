@@ -35,10 +35,12 @@ you only bundle what you import.
 | [`@cisstech/nge/doc`](https://cisstech.github.io/nge/docs/nge-doc/) | Build a documentation site from a route config, Markdown files or live Angular components. |
 | [`@cisstech/nge/markdown`](https://cisstech.github.io/nge/docs/nge-markdown/) | Markdown rendering built on [Marked](https://github.com/markedjs/marked) v11, with admonitions, tabs, KaTeX and syntax highlighting. |
 | [`@cisstech/nge/monaco`](https://cisstech.github.io/nge/docs/nge-monaco/) | [Monaco editor](https://microsoft.github.io/monaco-editor/) integration: editor, diff editor and read-only viewer. |
-
-Additional entry points are available for UI and helpers: `@cisstech/nge/ui/tree`,
-`@cisstech/nge/ui/list`, `@cisstech/nge/ui/icon`, `@cisstech/nge/services`,
-`@cisstech/nge/pipes` and `@cisstech/nge/utils`.
+| [`@cisstech/nge/ui/tree`](https://cisstech.github.io/nge/docs/nge-ui/tree) | A data tree rendered from your model through an adapter, with expand/collapse, selection, filtering and keyboard actions. |
+| [`@cisstech/nge/ui/list`](https://cisstech.github.io/nge/docs/nge-ui/list) | A filterable list rendered from your items and an item template, with optional selection. |
+| [`@cisstech/nge/ui/icon`](https://cisstech.github.io/nge/docs/nge-ui/icon) | One icon component for Font Awesome, icongram, VS Code codicons, a file type or a plain image. |
+| [`@cisstech/nge/services`](https://cisstech.github.io/nge/docs/utilities/services) | Root-provided services: clipboard, compiler, resource loader and more. |
+| [`@cisstech/nge/pipes`](https://cisstech.github.io/nge/docs/utilities/pipes) | Standalone utility pipes. |
+| [`@cisstech/nge/utils`](https://cisstech.github.io/nge/docs/utilities/utils) | Framework-free helper functions for colors, dates, strings and more. |
 
 ## Compatibility
 
@@ -59,7 +61,7 @@ that matches your Angular version.
 npm install @cisstech/nge
 ```
 
-`@angular/common`, `@angular/core`, `@angular/cdk` and `@angular/material` are required
+`@angular/common`, `@angular/core` and `@angular/cdk` are required
 peer dependencies. `marked` (for `nge/markdown`), `monaco-editor` (for `nge/monaco`) and
 `ngx-pipes` are optional peers: install them only when you use the matching entry point.
 

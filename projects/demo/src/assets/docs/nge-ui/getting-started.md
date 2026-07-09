@@ -33,21 +33,8 @@ yarn add @cisstech/nge @angular/cdk
 
 ===
 
-`ui-tree`, `ui-list` and `ui-icon` use `@angular/cdk`. `ui-tree` also needs `@angular/material`:
-
-===npm
-
-```bash
-npm i @angular/material
-```
-
-=== yarn
-
-```bash
-yarn add @angular/material
-```
-
-===
+`ui-tree`, `ui-list` and `ui-icon` use `@angular/cdk`, installed above. No other UI dependency is
+required.
 
 Each component is standalone. Import the ones you use, or their `NgModule` (`NgeUiTreeModule`,
 `NgeUiListModule`, `NgeUiIconModule`).
