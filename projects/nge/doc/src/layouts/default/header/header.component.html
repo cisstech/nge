@@ -38,7 +38,7 @@
     (click)="docService.runAction(action.run)"
   >
     @if (action.icon) {
-      <img [src]="action.icon" alt="" />
+      <nge-doc-icon [icon]="action.icon" size="18px" />
     } @else {
       <span>{{ action.title }}</span>
     }
@@ -47,7 +47,7 @@
 
 @for (link of meta().links ?? []; track link.href) {
   <a class="icon-btn" [href]="link.href" target="_blank" rel="noopener">
-    <img [src]="link.icon" alt="" />
+    <nge-doc-icon [icon]="link.icon" size="18px" />
   </a>
 }
 
@@ -62,8 +62,8 @@
 }
 
 <ng-template #brand>
-  @if (meta().logo) {
-    <img [src]="meta().logo" alt="" />
+  @if (meta().logo; as logo) {
+    <nge-doc-icon [icon]="logo" [mono]="false" size="26px" />
   } @else {
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
       <path d="M16 2 4 8v10c0 6.5 5 10.5 12 12 7-1.5 12-5.5 12-12V8L16 2Z" fill="var(--nge-doc-primary)" opacity="0.16" />

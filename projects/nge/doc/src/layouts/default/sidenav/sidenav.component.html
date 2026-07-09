@@ -30,8 +30,8 @@
       [class.active]="docService.isActive(link)"
       [style.paddingLeft.rem]="0.6 + depth * 0.75"
     >
-      @if (link.icon) {
-        <img [src]="link.icon" alt="" />
+      @if (link.icon; as icon) {
+        <nge-doc-icon [icon]="icon" size="16px" />
       }
       <span>{{ link.title }}</span>
     </a>

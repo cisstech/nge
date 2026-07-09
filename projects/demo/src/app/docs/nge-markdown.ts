@@ -1,10 +1,17 @@
-import { NgeDocLinAction, NgeDocLink, NgeDocSettings } from '@cisstech/nge/doc'
+import { NgeDocIcon, NgeDocLinAction, NgeDocLink, NgeDocSettings } from '@cisstech/nge/doc'
+
+// icongr.am is cross-origin, so provide a per-scheme colored variant (a mask
+// can't recolor a cross-origin icon). Colors match the theme's muted foreground.
+const octicon = (name: string): NgeDocIcon => ({
+  light: `https://icongr.am/octicons/${name}.svg?color=52525b`,
+  dark: `https://icongr.am/octicons/${name}.svg?color=a1a1aa`,
+})
 
 const editInGithubAction = (url: string) => {
   const base = 'https://github.com/cisstech/nge/tree/main/projects/demo/src/assets/docs/nge-markdown/'
   return {
     title: 'Edit on github',
-    icon: 'https://icongr.am/octicons/mark-github.svg',
+    icon: octicon('mark-github'),
     run: base + url,
   } as NgeDocLinAction
 }
@@ -63,7 +70,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
           actions: [
             {
               title: 'View source',
-              icon: 'https://icongr.am/octicons/code.svg',
+              icon: octicon('code'),
               run: base + 'nge-markdown-' + snakecase + '.ts',
             },
             editInGithubAction('contributions/' + snakecase + '.md'),

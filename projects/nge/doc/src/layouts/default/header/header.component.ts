@@ -2,6 +2,7 @@ import { NgTemplateOutlet } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core'
 import { RouterLink } from '@angular/router'
 import { NgeDocService } from '../../../nge-doc.service'
+import { NgeDocIconComponent } from '../icon/icon.component'
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component'
 
 @Component({
@@ -9,7 +10,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component'
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, NgTemplateOutlet, ThemeToggleComponent],
+  imports: [RouterLink, NgTemplateOutlet, ThemeToggleComponent, NgeDocIconComponent],
 })
 export class HeaderComponent {
   protected readonly docService = inject(NgeDocService)
