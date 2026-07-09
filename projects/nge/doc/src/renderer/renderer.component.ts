@@ -17,6 +17,7 @@ import {
 import { ActivatedRoute } from '@angular/router'
 import { CompilerService } from '@cisstech/nge/services'
 import { Subscription, firstValueFrom } from 'rxjs'
+import { parseFrontmatter } from '../frontmatter'
 import { NGE_DOC_RENDERERS, NgeDocState } from '../nge-doc'
 import { NgeDocService } from '../nge-doc.service'
 
@@ -170,6 +171,11 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
         }
       }
 
+      // Strip an optional frontmatter block and feed its title/description to SEO.
+      const parsed = parseFrontmatter(inputs['data'])
+      inputs['data'] = parsed.content
+      this.applyFrontmatterSeo(parsed.data)
+
       let customInputs: Record<string, any> = {}
       if (typeof renderer.inputs === 'function') {
         customInputs = await renderer.inputs(this.injector)
@@ -286,6 +292,15 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private headingElementById(id: string): HTMLHeadingElement | null {
     const escaped = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(id) : id
     return this.elementRef.nativeElement.querySelector<HTMLHeadingElement>(`#${escaped}`)
+  }
+
+  /** Refines the page SEO with a title/description declared in the frontmatter. */
+  private applyFrontmatterSeo(frontmatter: Record<string, string>): void {
+    if (!frontmatter['title'] && !frontmatter['description']) {
+      return
+    }
+    const link = this.docService.currLink()
+    this.docService.setSeo(frontmatter['title'] ?? link?.title ?? '', frontmatter['description'] ?? link?.description)
   }
 
   private slugify(text: string): string {

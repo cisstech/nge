@@ -1,6 +1,7 @@
 import { Location } from '@angular/common'
 import { Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
+import { Meta, Title } from '@angular/platform-browser'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
@@ -23,6 +24,8 @@ export class NgeDocService implements OnDestroy {
   private readonly injector = inject(Injector)
   private readonly location = inject(Location)
   private readonly activatedRoute = inject(ActivatedRoute)
+  private readonly title = inject(Title)
+  private readonly metaTags = inject(Meta)
   private readonly explicitNavbar = inject(NGE_DOC_NAVBAR, { optional: true })
 
   private readonly state = new BehaviorSubject<NgeDocState>({
@@ -263,6 +266,8 @@ export class NgeDocService implements OnDestroy {
       currLink,
       nextLink,
     })
+
+    this.setSeo(currLink.title, currLink.description)
   }
 
   /**
@@ -333,6 +338,21 @@ export class NgeDocService implements OnDestroy {
       acc.pop()
     }
     return false
+  }
+
+  /**
+   * Updates the document title and meta description for the active page.
+   *
+   * Called automatically on navigation from the link's `title`/`description`;
+   * the renderer calls it again to apply values found in a page's frontmatter.
+   */
+  setSeo(title: string, description?: string): void {
+    const siteName = this.state.value.meta.name
+    const pageTitle = title?.trim()
+    this.title.setTitle(pageTitle && pageTitle !== siteName ? `${pageTitle} · ${siteName}` : pageTitle || siteName)
+    if (description?.trim()) {
+      this.metaTags.updateTag({ name: 'description', content: description.trim() })
+    }
   }
 
   /** Whether a header navigation link points to the active site. */

@@ -95,6 +95,8 @@ export interface NgeDocLink {
   href: string
   /** Title of the link */
   title: string
+  /** Optional page description, used for the `<meta name="description">` tag. */
+  description?: string
   /**
    * Content to render once the link is displayed.
    *
