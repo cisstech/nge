@@ -71,7 +71,7 @@
                 "output": "./assets/vendors/nge/ui/icon/icons/files/"
               }
             ],
-            "styles": ["node_modules/@angular/cdk/overlay-prebuilt.css", "projects/demo/src/styles.scss"],
+            "styles": ["projects/demo/src/styles.scss"],
             "scripts": [],
             "extractLicenses": false,
             "sourceMap": true,

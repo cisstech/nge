@@ -1,9 +1,7 @@
-import { Dialog, DialogRef } from '@angular/cdk/dialog'
 import {
   ChangeDetectionStrategy,
   Component,
   HostListener,
-  Injector,
   ViewEncapsulation,
   effect,
   inject,
@@ -31,16 +29,14 @@ import { TocComponent } from './toc/toc.component'
     BreadcrumbComponent,
     PagerComponent,
     TocComponent,
+    SearchPaletteComponent,
   ],
 })
 export class DefaultLayoutComponent {
   private readonly docService = inject(NgeDocService)
-  private readonly dialog = inject(Dialog)
-  private readonly injector = inject(Injector)
 
   protected readonly sidebarOpen = signal(false)
-
-  private paletteRef?: DialogRef<void, SearchPaletteComponent>
+  protected readonly searchOpen = signal(false)
 
   constructor() {
     // Close the mobile navigation drawer whenever the active page changes.
@@ -54,21 +50,16 @@ export class DefaultLayoutComponent {
   protected onDocumentKeydown(event: KeyboardEvent): void {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault()
-      this.openSearch()
+      this.searchOpen.update((open) => !open)
     }
   }
 
   protected openSearch(): void {
-    if (this.paletteRef) {
-      return
-    }
-    // Pass the current injector so the palette resolves the scoped NgeDocService.
-    this.paletteRef = this.dialog.open<void, unknown, SearchPaletteComponent>(SearchPaletteComponent, {
-      injector: this.injector,
-      panelClass: 'nge-doc-search-panel',
-      autoFocus: false,
-    })
-    this.paletteRef.closed.subscribe(() => (this.paletteRef = undefined))
+    this.searchOpen.set(true)
+  }
+
+  protected closeSearch(): void {
+    this.searchOpen.set(false)
   }
 
   protected toggleSidebar(): void {

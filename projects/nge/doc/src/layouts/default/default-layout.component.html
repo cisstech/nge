@@ -22,4 +22,10 @@
   @if (sidebarOpen()) {
     <div class="backdrop" (click)="closeSidebar()"></div>
   }
+
+  @if (searchOpen()) {
+    <div class="nge-doc-search-overlay" (click)="closeSearch()">
+      <nge-doc-search-palette (closed)="closeSearch()" (click)="$event.stopPropagation()" />
+    </div>
+  }
 </div>

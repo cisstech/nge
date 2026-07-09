@@ -1,4 +1,3 @@
-import { DialogRef } from '@angular/cdk/dialog'
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,6 +5,7 @@ import {
   afterNextRender,
   computed,
   inject,
+  output,
   signal,
   viewChild,
 } from '@angular/core'
@@ -19,11 +19,13 @@ import { NgeDocSearchResult, NgeDocService } from '../../../nge-doc.service'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchPaletteComponent {
-  private readonly dialogRef = inject<DialogRef<void>>(DialogRef)
   private readonly docService = inject(NgeDocService)
   private readonly router = inject(Router)
 
   private readonly input = viewChild.required<ElementRef<HTMLInputElement>>('input')
+
+  /** Emitted when the palette should be dismissed. */
+  readonly closed = output()
 
   protected readonly query = signal('')
   protected readonly activeIndex = signal(0)
@@ -41,6 +43,10 @@ export class SearchPaletteComponent {
   protected onKeydown(event: KeyboardEvent): void {
     const results = this.results()
     switch (event.key) {
+      case 'Escape':
+        event.preventDefault()
+        this.closed.emit()
+        break
       case 'ArrowDown':
         event.preventDefault()
         this.activeIndex.update((index) => (results.length ? (index + 1) % results.length : 0))
@@ -62,10 +68,10 @@ export class SearchPaletteComponent {
 
   protected select(result: NgeDocSearchResult): void {
     this.router.navigateByUrl(result.link.href)
-    this.dialogRef.close()
+    this.closed.emit()
   }
 
-  protected close(): void {
-    this.dialogRef.close()
+  protected dismiss(): void {
+    this.closed.emit()
   }
 }

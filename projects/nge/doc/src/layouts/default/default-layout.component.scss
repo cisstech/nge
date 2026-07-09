@@ -46,6 +46,19 @@
     display: none;
   }
 
+  .nge-doc-search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 12vh 1rem 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
   @media (max-width: 1180px) {
     .shell {
       grid-template-columns: var(--nge-doc-sidebar-w) minmax(0, 1fr);
