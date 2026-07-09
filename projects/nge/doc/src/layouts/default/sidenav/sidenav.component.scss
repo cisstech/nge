@@ -13,6 +13,31 @@
   gap: 1px;
 }
 
+/* Section separator: a non-clickable heading that groups the entries below it. */
+.nav-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.4rem 0 0.45rem;
+  padding: 0 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--nge-doc-fg-subtle);
+}
+
+.nav-section:first-child {
+  margin-top: 0;
+}
+
+.nav-section-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
 /* Rows: leaves, folder labels and folder toggles share one look. */
 .nav-link,
 .nav-folder-label {

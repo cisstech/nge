@@ -167,6 +167,9 @@ export class NgeDocService implements OnDestroy {
    * @param link The link to test.
    */
   isActive(link: NgeDocLink): boolean {
+    if (!link.href) {
+      return false
+    }
     const tree = this.location.path().split('/')
     for (let i = 0; i < tree.length; i++) {
       const path = tree.slice(0, tree.length - i).join('/')
@@ -209,10 +212,15 @@ export class NgeDocService implements OnDestroy {
 
   private resolvePageLinks(meta: NgeDocMeta, page: NgeDocLink) {
     const createLink = (link: NgeDocLink, parent: string) => {
-      link.href = this.join(parent, link.href)
+      // Separators are visual section headings: not routed, so they never join
+      // an href and the pages that follow them keep their own urls.
+      if (link.separator) {
+        return
+      }
+      link.href = this.join(parent, link.href ?? '')
       this.links.push(link)
       link.children?.forEach((child) => {
-        createLink(child, link.href)
+        createLink(child, link.href!)
       })
     }
     createLink(page, meta.root)
@@ -244,7 +252,7 @@ export class NgeDocService implements OnDestroy {
     let { currLink, prevLink, nextLink } = this.state.value
 
     // ignore same page navigation (fragment navigation)
-    if (currLink && paths.some((p) => p.endsWith(currLink!.href))) {
+    if (currLink?.href && paths.some((p) => p.endsWith(currLink!.href!))) {
       return
     }
 
@@ -256,7 +264,7 @@ export class NgeDocService implements OnDestroy {
     // calculate current, previous and next links (no wrap-around at the ends)
     for (let i = 0; i < this.links.length; i++) {
       const link = this.links[i]
-      if (paths.some((path) => path.endsWith(link.href))) {
+      if (link.href && paths.some((path) => path.endsWith(link.href!))) {
         currLink = link
         prevLink = i > 0 ? this.links[i - 1] : undefined
         nextLink = i < this.links.length - 1 ? this.links[i + 1] : undefined
@@ -264,26 +272,28 @@ export class NgeDocService implements OnDestroy {
       }
     }
 
-    // navigate to first page if currLink is not defined
+    // navigate to the first routable page if currLink is not defined
     if (!currLink) {
-      this.router.navigateByUrl(links[0].href, {
-        replaceUrl: true,
-      })
+      const firstPage = links.find((link) => !link.separator && link.href)
+      if (firstPage?.href) {
+        this.router.navigateByUrl(firstPage.href, { replaceUrl: true })
+      }
       return
     }
 
     // navigate to first children if currLink doesn't have a renderer
     if (!currLink.renderer && currLink.children?.length) {
-      this.router.navigateByUrl(currLink.children[0].href, {
-        replaceUrl: true,
-      })
+      const firstChild = currLink.children.find((child) => child.href)
+      if (firstChild?.href) {
+        this.router.navigateByUrl(firstChild.href, { replaceUrl: true })
+      }
       return
     }
 
     // expand visible links
 
     this.links.forEach((link) => {
-      if (paths.some((path) => path.endsWith(link.href))) {
+      if (link.href && paths.some((path) => path.endsWith(link.href!))) {
         link.expanded = true
       }
     })

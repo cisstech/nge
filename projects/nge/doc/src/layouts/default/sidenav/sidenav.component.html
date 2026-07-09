@@ -25,13 +25,20 @@
 }
 
 <nav class="nav">
-  @for (link of rootLinks(); track link.href) {
+  @for (link of rootLinks(); track link) {
     <ng-container *ngTemplateOutlet="node; context: { $implicit: link, depth: 0 }" />
   }
 </nav>
 
 <ng-template #node let-link let-depth="depth">
-  @if (isExpandable(link)) {
+  @if (link.separator) {
+    <div class="nav-section">
+      @if (link.color) {
+        <span class="nav-section-dot" [style.background]="link.color"></span>
+      }
+      <span>{{ link.title }}</span>
+    </div>
+  } @else if (isExpandable(link)) {
     <div class="nav-folder" [class.depth0]="depth === 0">
       @if (link.renderer) {
         <div class="nav-folder-head">
@@ -77,7 +84,7 @@
       <div class="nav-collapse" [class.open]="isOpen(link)">
         <div class="nav-collapse-inner" [attr.inert]="isOpen(link) ? null : ''">
           <div class="nav-children">
-            @for (child of link.children; track child.href) {
+            @for (child of link.children; track child) {
               <ng-container *ngTemplateOutlet="node; context: { $implicit: child, depth: depth + 1 }" />
             }
           </div>

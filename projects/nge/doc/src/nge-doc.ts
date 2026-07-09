@@ -91,8 +91,8 @@ export interface NgeDocLinAction {
  * Representation of a link in the documentation navigation.
  */
 export interface NgeDocLink {
-  /** Url to display in the browser navigation bar. */
-  href: string
+  /** Url to display in the browser navigation bar. Omitted for separators. */
+  href?: string
   /** Title of the link */
   title: string
   /** Optional page description, used for the `<meta name="description">` tag. */
@@ -142,6 +142,14 @@ export interface NgeDocLink {
   children?: NgeDocLink[]
   /** A value indicating whether the link is expanded or not. */
   expanded?: boolean
+  /**
+   * Renders this entry as a non-clickable section heading in the sidebar rather
+   * than a link. A separator groups the entries that follow it and is not routed,
+   * so the pages under it keep their own urls.
+   */
+  separator?: boolean
+  /** Accent color (any CSS color) shown as the separator's dot. */
+  color?: string
   /** Inputs to pass to the dynamic renderered component if `renderer` is a dynamic component. */
   inputs?: Record<string, any>
   /** Optional icon */

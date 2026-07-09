@@ -28,7 +28,10 @@ export class SidenavComponent {
       if (trail.length < 2) {
         return
       }
-      const ancestors = trail.slice(0, -1).map((link) => link.href)
+      const ancestors = trail
+        .slice(0, -1)
+        .map((link) => link.href)
+        .filter((href): href is string => href != null)
       this.overrides.update((prev) => {
         if (!ancestors.some((href) => prev.has(href))) {
           return prev
@@ -46,11 +49,14 @@ export class SidenavComponent {
 
   /** A folder is open by default when it holds the active page; a toggle overrides that. */
   protected isOpen(link: NgeDocLink): boolean {
-    const override = this.overrides().get(link.href)
+    const override = link.href ? this.overrides().get(link.href) : undefined
     return override ?? this.holdsActive(link)
   }
 
   protected toggle(link: NgeDocLink): void {
+    if (!link.href) {
+      return
+    }
     const next = new Map(this.overrides())
     next.set(link.href, !this.isOpen(link))
     this.overrides.set(next)

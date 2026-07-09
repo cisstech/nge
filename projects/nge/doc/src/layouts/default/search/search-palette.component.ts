@@ -67,7 +67,9 @@ export class SearchPaletteComponent {
   }
 
   protected select(result: NgeDocSearchResult): void {
-    this.router.navigateByUrl(result.link.href)
+    if (result.link.href) {
+      this.router.navigateByUrl(result.link.href)
+    }
     this.closed.emit()
   }
 
