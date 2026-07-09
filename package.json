@@ -43,6 +43,7 @@
     "release:major": "standard-version --release-as major",
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
+    "release:as": "standard-version --release-as",
     "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json"
   },
   "private": false,
