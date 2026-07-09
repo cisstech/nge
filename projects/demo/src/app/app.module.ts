@@ -2,7 +2,6 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 // LIBS
 import { provideNgeDoc, withMarkdownRenderer, withNavbar } from '@cisstech/nge/doc'
@@ -52,7 +51,6 @@ export function markdownOptions(): NgeMarkdownConfig {
       },
     }),
     AppRoutingModule,
-    BrowserAnimationsModule,
   ],
   providers: [
     NgeMarkdownConfigProvider(markdownOptions),

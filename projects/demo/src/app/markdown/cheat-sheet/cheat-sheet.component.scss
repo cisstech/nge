@@ -1,7 +1,68 @@
-section {
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-row-gap: 16px;
-  grid-column-gap: 16px;
+:host {
+  display: block;
 }
 
+.cheat-item {
+  border: 1px solid var(--nge-doc-border, #e8e8ec);
+  border-radius: var(--nge-doc-r-md, 8px);
+  margin: 0.5rem 0;
+  overflow: hidden;
+}
+
+.cheat-item > summary {
+  cursor: pointer;
+  padding: 0.7rem 1rem;
+  font-weight: 600;
+  list-style: none;
+  user-select: none;
+}
+
+.cheat-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+.cheat-item > summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 0.5rem;
+  color: var(--nge-doc-fg-subtle, #8b8b94);
+  transition: transform 0.15s;
+}
+
+.cheat-item[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.cheat-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-top: 1px solid var(--nge-doc-border, #e8e8ec);
+}
+
+.cheat-body textarea {
+  width: 100%;
+  min-height: 12rem;
+  field-sizing: content;
+  resize: vertical;
+  padding: 0.75rem;
+  border: 1px solid var(--nge-doc-border, #e8e8ec);
+  border-radius: var(--nge-doc-r-md, 8px);
+  background: var(--nge-doc-code-bg, #fafafa);
+  color: var(--nge-doc-fg-body, #27272a);
+  font-family: var(--nge-doc-font-mono, ui-monospace, monospace);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.cheat-body textarea:focus-visible {
+  outline: 2px solid var(--nge-doc-ring, rgba(91, 83, 214, 0.4));
+  outline-offset: 2px;
+}
+
+@media (max-width: 720px) {
+  .cheat-body {
+    grid-template-columns: 1fr;
+  }
+}
