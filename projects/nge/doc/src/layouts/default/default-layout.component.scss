@@ -16,6 +16,10 @@
     min-width: 0;
   }
 
+  main:focus {
+    outline: none;
+  }
+
   .content {
     max-width: var(--nge-doc-content-max);
     margin: 0 auto;

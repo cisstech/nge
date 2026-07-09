@@ -4,7 +4,7 @@
   <div class="shell">
     <nge-doc-sidenav [class.open]="sidebarOpen()" />
 
-    <main>
+    <main #main tabindex="-1">
       <div class="content">
         <nge-doc-breadcrumb />
         <nge-doc-renderer #renderer />

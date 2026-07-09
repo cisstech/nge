@@ -26,8 +26,22 @@
 }
 
 .dir {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 0.74rem;
   color: var(--nge-doc-fg-subtle);
+}
+
+.next .dir {
+  justify-content: flex-end;
+}
+
+/* Hint the keyboard shortcut only where a keyboard is expected. */
+@media (hover: none) {
+  .dir .kbd {
+    display: none;
+  }
 }
 
 .title {
