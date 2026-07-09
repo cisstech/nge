@@ -1,4 +1,4 @@
-import { FlatTreeControl } from '@angular/cdk/tree'
+import { FlatTreeControl } from './flat-tree-control'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -68,13 +68,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
   }
 
   constructor() {
-    this.controler = new FlatTreeControl<ITreeNodeHolder<T>>(
-      (node) => node.level,
-      (node) => node.expandable,
-      {
-        trackBy: (node) => node,
-      }
-    )
+    this.controler = new FlatTreeControl<ITreeNodeHolder<T>>()
 
     // Rebuild the tree whenever the adapter or nodes input changes.
     effect(() => {
