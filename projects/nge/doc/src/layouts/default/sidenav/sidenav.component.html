@@ -44,7 +44,7 @@
         <a
           class="nav-link nav-parent"
           [routerLink]="link.href"
-          [class.active]="docService.isActive(link)"
+          routerLinkActive="active"
           [style.paddingLeft.rem]="0.6 + depth * 0.75"
         >
           @if (link.icon; as icon) {
@@ -61,7 +61,8 @@
     <a
       class="nav-link"
       [routerLink]="link.href"
-      [class.active]="docService.isActive(link)"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
       [style.paddingLeft.rem]="0.6 + depth * 0.75"
     >
       @if (link.icon; as icon) {

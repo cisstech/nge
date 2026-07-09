@@ -1,6 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { RouterLink } from '@angular/router'
+import { RouterLink, RouterLinkActive } from '@angular/router'
 import { NgeDocService } from '../../../nge-doc.service'
 import { NgeDocIconComponent } from '../icon/icon.component'
 
@@ -9,7 +9,7 @@ import { NgeDocIconComponent } from '../icon/icon.component'
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgTemplateOutlet, RouterLink, NgeDocIconComponent],
+  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive, NgeDocIconComponent],
 })
 export class SidenavComponent {
   protected readonly docService = inject(NgeDocService)

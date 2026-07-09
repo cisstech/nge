@@ -6,7 +6,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
-import { NGE_DOC_NAVBAR, NgeDocNavLink } from './nge-doc.providers'
+import { NGE_DOC_BRAND, NGE_DOC_NAVBAR, NgeDocBrand, NgeDocNavLink } from './nge-doc.providers'
 
 /** A page matched by {@link NgeDocService.search}. */
 export interface NgeDocSearchResult {
@@ -27,6 +27,7 @@ export class NgeDocService implements OnDestroy {
   private readonly title = inject(Title)
   private readonly metaTags = inject(Meta)
   private readonly explicitNavbar = inject(NGE_DOC_NAVBAR, { optional: true })
+  private readonly explicitBrand = inject(NGE_DOC_BRAND, { optional: true })
 
   private readonly state = new BehaviorSubject<NgeDocState>({
     meta: {
@@ -65,6 +66,15 @@ export class NgeDocService implements OnDestroy {
       this.explicitNavbar ??
       this.sites().map((meta) => ({ title: meta.name, href: meta.root, icon: meta.logo }))
   )
+
+  /**
+   * Header brand: the one declared with `withBrand`, or the active site's name
+   * and logo as a fallback. A fixed brand keeps the header stable across sites.
+   */
+  readonly brand = computed<NgeDocBrand>(() => {
+    const meta = this.meta()
+    return this.explicitBrand ?? { title: meta.name, icon: meta.logo }
+  })
 
   /** Metadata of the active documentation site. */
   readonly meta = computed(() => this.snapshot().meta)
@@ -237,6 +247,11 @@ export class NgeDocService implements OnDestroy {
     if (currLink && paths.some((p) => p.endsWith(currLink!.href))) {
       return
     }
+
+    // Resolve from scratch: a path that matches no page (a site root reached from
+    // the navbar) must fall through to the redirect below instead of keeping the
+    // previously active link, which would leave stale content under a new sidebar.
+    currLink = prevLink = nextLink = undefined
 
     // calculate current, previous and next links (no wrap-around at the ends)
     for (let i = 0; i < this.links.length; i++) {

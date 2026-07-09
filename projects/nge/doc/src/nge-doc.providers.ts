@@ -72,6 +72,30 @@ export function withNavbar(links: NgeDocNavLink[]): NgeDocFeature {
   return { providers: [{ provide: NGE_DOC_NAVBAR, useValue: links }] }
 }
 
+/** The header brand: one logo and wordmark shared by every site. */
+export interface NgeDocBrand {
+  /** Wordmark shown next to the logo. */
+  title: string
+  /** Optional logo icon. */
+  icon?: NgeDocIcon
+  /** Where clicking the brand navigates (an Angular routerLink). Defaults to `/`. */
+  href?: string
+}
+
+/** Header brand. When absent, the default theme uses the active site's name and logo. */
+export const NGE_DOC_BRAND = new InjectionToken<NgeDocBrand>('NGE_DOC_BRAND')
+
+/**
+ * Set a single brand (logo and title) for the header, shared across every site.
+ *
+ * The default theme otherwise shows the active site's `meta.name` and `meta.logo`,
+ * so the brand width follows the current site. A fixed brand keeps the header stable
+ * while site names still drive breadcrumbs and page titles.
+ */
+export function withBrand(brand: NgeDocBrand): NgeDocFeature {
+  return { providers: [{ provide: NGE_DOC_BRAND, useValue: brand }] }
+}
+
 /** Register the component used to render markdown pages. */
 export function withMarkdownRenderer(markdown: NgeDocRenderers['markdown']): NgeDocFeature {
   return { providers: [{ provide: NGE_DOC_RENDERERS, useValue: { markdown } }] }

@@ -57,7 +57,7 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
 
     const theming = this.config?.theming
     if (theming?.light && theming?.dark) {
-      await this.startColorSchemeSync(theming.light, theming.dark, theming.darkModeClass)
+      await this.startColorSchemeSync(theming.light, theming.dark, theming.darkThemeClassName)
     } else {
       await this.setTheme(theming?.default || 'vs')
     }
@@ -70,18 +70,18 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
    * class is given, the `(prefers-color-scheme: dark)` media query. This is how
    * an app (or nge-doc) drives Monaco's theme without any coupling.
    */
-  private async startColorSchemeSync(light: string, dark: string, darkModeClass?: string): Promise<void> {
+  private async startColorSchemeSync(light: string, dark: string, darkThemeClassName?: string): Promise<void> {
     const doc = this.document
     const media = doc.defaultView?.matchMedia?.('(prefers-color-scheme: dark)')
     // Apps put the dark class on <html> or <body>, so check both roots.
     const hasDarkClass = (cls: string) =>
       doc.documentElement.classList.contains(cls) || !!doc.body?.classList.contains(cls)
-    const isDark = () => (darkModeClass ? hasDarkClass(darkModeClass) : !!media?.matches)
+    const isDark = () => (darkThemeClassName ? hasDarkClass(darkThemeClassName) : !!media?.matches)
     const apply = () => this.setTheme(isDark() ? dark : light).catch(() => undefined)
 
     await apply()
 
-    if (darkModeClass) {
+    if (darkThemeClassName) {
       this.colorSchemeObserver?.disconnect()
       this.colorSchemeObserver = new MutationObserver(() => apply())
       const options: MutationObserverInit = { attributes: true, attributeFilter: ['class'] }

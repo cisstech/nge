@@ -6,13 +6,17 @@
   </svg>
 </button>
 
-@if (meta().backUrlHref && !meta().backUrl) {
+@if (brand().href; as href) {
+  <a class="brand" [routerLink]="href">
+    <ng-container [ngTemplateOutlet]="brandContent" />
+  </a>
+} @else if (meta().backUrlHref && !meta().backUrl) {
   <a class="brand" [href]="meta().backUrlHref">
-    <ng-container [ngTemplateOutlet]="brand" />
+    <ng-container [ngTemplateOutlet]="brandContent" />
   </a>
 } @else {
   <a class="brand" [routerLink]="meta().backUrl ?? meta().root">
-    <ng-container [ngTemplateOutlet]="brand" />
+    <ng-container [ngTemplateOutlet]="brandContent" />
   </a>
 }
 
@@ -83,8 +87,8 @@
   </a>
 }
 
-<ng-template #brand>
-  @if (meta().logo; as logo) {
+<ng-template #brandContent>
+  @if (brand().icon; as logo) {
     <nge-doc-icon [icon]="logo" [mono]="false" size="26px" />
   } @else {
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
@@ -93,5 +97,5 @@
       <path d="M16 9v14M10 12l6 3 6-3" stroke="var(--nge-doc-primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   }
-  <span>{{ meta().name }}</span>
+  <span>{{ brand().title }}</span>
 </ng-template>

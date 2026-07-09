@@ -17,6 +17,7 @@ export class HeaderComponent {
   protected readonly meta = this.docService.meta
   protected readonly currLink = this.docService.currLink
   protected readonly navbar = this.docService.navbar
+  protected readonly brand = this.docService.brand
 
   /** Emitted when the mobile navigation toggle is pressed. */
   readonly toggleSidebar = output()

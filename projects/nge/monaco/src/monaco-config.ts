@@ -40,8 +40,11 @@ export interface NgeMonacoConfig {
      * - a class name that means "dark" when present on the document root
      *   (e.g. `nge-doc-dark` or `dark`), observed live
      * - omit to follow the `(prefers-color-scheme: dark)` media query
+     *
+     * Named to mirror `NgeMarkdownConfig.darkThemeClassName` so both libraries
+     * read the same class.
      */
-    darkModeClass?: string
+    darkThemeClassName?: string
   }
 }
 
