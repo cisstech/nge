@@ -7,7 +7,7 @@
     display: grid;
     grid-template-columns: var(--nge-doc-sidebar-w) minmax(0, 1fr) var(--nge-doc-toc-w);
     max-width: var(--nge-doc-shell-max);
-    margin: 0 auto;
+    margin: 0;
     align-items: start;
   }
 

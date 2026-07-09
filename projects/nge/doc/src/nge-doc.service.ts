@@ -96,7 +96,7 @@ export class NgeDocService implements OnDestroy {
       for (const item of setting.pages) {
         const pages: NgeDocLink[] = []
 
-        let object: any
+        let object: NgeDocLink | NgeDocLink[]
         if (typeof item === 'function') {
           object = await item(this.injector)
         } else {
@@ -202,21 +202,13 @@ export class NgeDocService implements OnDestroy {
       return
     }
 
-    // calculate current, previous and next links
-
-    // https://stackoverflow.com/questions/4467539/javascript-modulo-gives-a-negative-result-for-negative-numbers
-    const modulo = (a: number, n: number) => {
-      return ((a % n) + n) % n
-    }
-
+    // calculate current, previous and next links (no wrap-around at the ends)
     for (let i = 0; i < this.links.length; i++) {
       const link = this.links[i]
       if (paths.some((path) => path.endsWith(link.href))) {
-        const prevIndex = modulo(i - 1, this.links.length)
-        const nextIndex = modulo(i + 1, this.links.length)
         currLink = link
-        nextLink = this.links[nextIndex]
-        prevLink = this.links[prevIndex]
+        prevLink = i > 0 ? this.links[i - 1] : undefined
+        nextLink = i < this.links.length - 1 ? this.links[i + 1] : undefined
         break
       }
     }
