@@ -15,9 +15,8 @@ one package split into secondary entry points, so you only bundle what you actua
 | [nge/doc](/docs/nge-doc/) | Turn a route config, Markdown files or live Angular components into a documentation site (the site you are reading). |
 | [nge/markdown](/docs/nge-markdown/) | Markdown rendering built on [Marked](https://github.com/markedjs/marked), with admonitions, tabs, KaTeX and syntax highlighting. |
 | [nge/monaco](/docs/nge-monaco/) | [Monaco editor](https://microsoft.github.io/monaco-editor/) integration: editor, diff editor and read-only viewer. |
-
-Smaller helpers round it out: `nge/ui/tree`, `nge/ui/list`, `nge/ui/icon`, `nge/services`,
-`nge/pipes` and `nge/utils`.
+| [nge/ui](/docs/nge-ui/getting-started) | Standalone UI building blocks: a data tree, a filterable virtual list and a multi-source icon. |
+| [Utilities](/docs/utilities/getting-started) | Root-provided services, standalone pipes and framework-free helper functions (`nge/services`, `nge/pipes`, `nge/utils`). |
 
 ## Why it exists
 
