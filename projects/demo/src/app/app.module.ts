@@ -70,10 +70,10 @@ export function markdownOptions(): NgeMarkdownConfig {
     provideNgeDoc(
       withBrand({ title: 'NG Essentials', icon: 'assets/images/nge.svg', href: '/' }),
       withNavbar([
-        { title: 'Overview', href: '/docs/overview/' },
-        { title: 'nge/doc', href: '/docs/nge-doc/' },
-        { title: 'nge/markdown', href: '/docs/nge-markdown/' },
-        { title: 'nge/monaco', href: '/docs/nge-monaco/' },
+        { title: 'Overview', href: '/docs/overview/', icon: 'assets/icons/nav/overview.svg' },
+        { title: 'nge/doc', href: '/docs/nge-doc/', icon: 'assets/icons/nav/doc.svg' },
+        { title: 'nge/markdown', href: '/docs/nge-markdown/', icon: 'assets/icons/nav/markdown.svg' },
+        { title: 'nge/monaco', href: '/docs/nge-monaco/', icon: 'assets/icons/nav/monaco.svg' },
       ]),
       withMarkdownRenderer({
         component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),

@@ -105,6 +105,12 @@ through its `theming.darkThemeClassName` option.
 The default theme includes a command palette. Press `Cmd/Ctrl+K` (or the header search box) to
 search page titles and jump with the keyboard. Nothing to configure.
 
+## Keyboard
+
+The default theme is navigable from the keyboard. `Cmd/Ctrl+K` opens search, and `←` / `→` move
+to the previous and next page in reading order. On navigation, focus moves to the content so the
+page scrolls with the keyboard right away. Shortcuts stay out of the way while you type in a field.
+
 ## Frontmatter and SEO
 
 On every navigation the engine sets the document title (`Page · Site`) and the meta description,
