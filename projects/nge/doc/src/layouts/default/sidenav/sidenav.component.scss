@@ -14,6 +14,9 @@
 }
 
 .nav-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 0.68rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -21,6 +24,10 @@
   color: var(--nge-doc-fg-subtle);
   padding: 0 0.6rem;
   margin-bottom: 0.4rem;
+}
+
+.drawer-navbar {
+  display: none;
 }
 
 .nav-link {
@@ -72,5 +79,30 @@
   :host(.open) {
     transform: translateX(0);
     box-shadow: var(--nge-doc-shadow-lg);
+  }
+
+  .drawer-navbar {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--nge-doc-border);
+  }
+
+  .drawer-navbar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.34rem 0.6rem;
+    border-radius: var(--nge-doc-r-md);
+    color: var(--nge-doc-fg-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .drawer-navbar-link.active {
+    color: var(--nge-doc-primary);
+    background: var(--nge-doc-primary-subtle);
   }
 }

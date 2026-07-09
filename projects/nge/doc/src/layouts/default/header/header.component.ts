@@ -16,6 +16,7 @@ export class HeaderComponent {
   protected readonly docService = inject(NgeDocService)
   protected readonly meta = this.docService.meta
   protected readonly currLink = this.docService.currLink
+  protected readonly navbar = this.docService.navbar
 
   /** Emitted when the mobile navigation toggle is pressed. */
   readonly toggleSidebar = output()

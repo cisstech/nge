@@ -15,4 +15,11 @@ export class TocComponent {
     event.preventDefault()
     this.renderer().scrollToHeading(id)
   }
+
+  protected scrollToTop(): void {
+    const options: ScrollToOptions = { top: 0, behavior: 'smooth' }
+    // scrollingElement is the viewport scroller (document root or body).
+    document.scrollingElement?.scrollTo(options)
+    window.scrollTo(options)
+  }
 }

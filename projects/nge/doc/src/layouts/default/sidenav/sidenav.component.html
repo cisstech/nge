@@ -1,3 +1,29 @@
+@if (navbar().length > 1) {
+  <nav class="drawer-navbar" aria-label="Documentation sections">
+    @for (link of navbar(); track link.href) {
+      @if (link.external) {
+        <a class="drawer-navbar-link" [href]="link.href" target="_blank" rel="noopener">
+          @if (link.icon; as icon) {
+            <nge-doc-icon [icon]="icon" size="16px" />
+          }
+          <span>{{ link.title }}</span>
+        </a>
+      } @else {
+        <a
+          class="drawer-navbar-link"
+          [routerLink]="link.href"
+          [class.active]="docService.isNavLinkActive(link)"
+        >
+          @if (link.icon; as icon) {
+            <nge-doc-icon [icon]="icon" size="16px" />
+          }
+          <span>{{ link.title }}</span>
+        </a>
+      }
+    }
+  </nav>
+}
+
 <nav class="nav">
   @for (link of rootLinks(); track link.href) {
     <ng-container *ngTemplateOutlet="node; context: { $implicit: link, depth: 0 }" />
@@ -8,7 +34,12 @@
   @if (docService.isExpandable(link)) {
     <div class="nav-group">
       @if (depth === 0) {
-        <div class="nav-label">{{ link.title }}</div>
+        <div class="nav-label">
+          @if (link.icon; as icon) {
+            <nge-doc-icon [icon]="icon" size="14px" />
+          }
+          <span>{{ link.title }}</span>
+        </div>
       } @else {
         <a
           class="nav-link nav-parent"
@@ -16,7 +47,10 @@
           [class.active]="docService.isActive(link)"
           [style.paddingLeft.rem]="0.6 + depth * 0.75"
         >
-          {{ link.title }}
+          @if (link.icon; as icon) {
+            <nge-doc-icon [icon]="icon" size="16px" />
+          }
+          <span>{{ link.title }}</span>
         </a>
       }
       @for (child of link.children; track child.href) {

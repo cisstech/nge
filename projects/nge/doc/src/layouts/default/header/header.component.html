@@ -16,6 +16,28 @@
   </a>
 }
 
+@if (navbar().length > 1) {
+  <nav class="navbar" aria-label="Documentation sections">
+    @for (link of navbar(); track link.href) {
+      @if (link.external) {
+        <a class="navbar-link" [href]="link.href" target="_blank" rel="noopener">
+          @if (link.icon) {
+            <nge-doc-icon [icon]="link.icon" size="16px" />
+          }
+          <span>{{ link.title }}</span>
+        </a>
+      } @else {
+        <a class="navbar-link" [routerLink]="link.href" [class.active]="docService.isNavLinkActive(link)">
+          @if (link.icon) {
+            <nge-doc-icon [icon]="link.icon" size="16px" />
+          }
+          <span>{{ link.title }}</span>
+        </a>
+      }
+    }
+  </nav>
+}
+
 <span class="spacer"></span>
 
 <button class="search" type="button" aria-label="Search documentation" (click)="openSearch.emit()">

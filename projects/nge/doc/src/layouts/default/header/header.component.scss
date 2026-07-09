@@ -30,8 +30,44 @@
   display: block;
 }
 
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  margin-left: 0.5rem;
+}
+
+.navbar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--nge-doc-r-md);
+  color: var(--nge-doc-fg-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+
+.navbar-link:hover {
+  background: var(--nge-doc-surface-hover);
+  color: var(--nge-doc-fg);
+}
+
+.navbar-link.active {
+  color: var(--nge-doc-fg);
+  font-weight: 600;
+}
+
 .spacer {
   flex: 1;
+}
+
+@media (max-width: 860px) {
+  .navbar {
+    display: none;
+  }
 }
 
 .search {

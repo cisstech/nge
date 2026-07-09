@@ -48,6 +48,30 @@ a.sub {
   font-size: 0.95em;
 }
 
+.toc-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--nge-doc-fg-subtle);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: color 0.12s;
+}
+
+.toc-top:hover {
+  color: var(--nge-doc-primary);
+}
+
+.toc-top svg {
+  width: 13px;
+  height: 13px;
+}
+
 @media (max-width: 1180px) {
   :host {
     display: none;
