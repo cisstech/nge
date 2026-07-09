@@ -35,12 +35,8 @@ you only bundle what you import.
 | [`@cisstech/nge/doc`](https://cisstech.github.io/nge/docs/nge-doc/) | Build a documentation site from a route config, Markdown files or live Angular components. |
 | [`@cisstech/nge/markdown`](https://cisstech.github.io/nge/docs/nge-markdown/) | Markdown rendering built on [Marked](https://github.com/markedjs/marked) v11, with admonitions, tabs, KaTeX and syntax highlighting. |
 | [`@cisstech/nge/monaco`](https://cisstech.github.io/nge/docs/nge-monaco/) | [Monaco editor](https://microsoft.github.io/monaco-editor/) integration: editor, diff editor and read-only viewer. |
-| [`@cisstech/nge/ui/tree`](https://cisstech.github.io/nge/docs/nge-ui/tree) | A data tree rendered from your model through an adapter, with expand/collapse, selection, filtering and keyboard actions. |
-| [`@cisstech/nge/ui/list`](https://cisstech.github.io/nge/docs/nge-ui/list) | A filterable list rendered from your items and an item template, with optional selection. |
-| [`@cisstech/nge/ui/icon`](https://cisstech.github.io/nge/docs/nge-ui/icon) | One icon component for Font Awesome, icongram, VS Code codicons, a file type or a plain image. |
-| [`@cisstech/nge/services`](https://cisstech.github.io/nge/docs/utilities/services) | Root-provided services: clipboard, compiler, resource loader and more. |
-| [`@cisstech/nge/pipes`](https://cisstech.github.io/nge/docs/utilities/pipes) | Standalone utility pipes. |
-| [`@cisstech/nge/utils`](https://cisstech.github.io/nge/docs/utilities/utils) | Framework-free helper functions for colors, dates, strings and more. |
+| [`@cisstech/nge/ui`](https://cisstech.github.io/nge/docs/nge-ui/getting-started) | Standalone UI building blocks: a data tree, a filterable list and a multi-source icon. |
+| [Utilities](https://cisstech.github.io/nge/docs/utilities/getting-started) | Root-provided services, standalone pipes and framework-free helper functions (`nge/services`, `nge/pipes`, `nge/utils`). |
 
 ## Compatibility
 
