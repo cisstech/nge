@@ -1,132 +1,74 @@
-# Katex
+---
+title: KaTeX
+description: Render mathematical and chemical expressions in Markdown with KaTeX.
+---
 
-**Katex** contribution add the possibility to write mathematical and chemical expressions from your markdown files.
+# KaTeX
 
-## Configuration
+Write math and chemistry in your pages. Expressions render with [KaTeX](https://katex.org).
 
-```typescript highlights="6-9 18 21"
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+## Register
 
-import {
-  NgeMarkdownModule,
-  NgeMarkdownKatexProvider,
-} from '@cisstech/nge/markdown';
+```typescript
+import { NgeMarkdownKatexProvider } from '@cisstech/nge/markdown'
 
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgeMarkdownModule,
-    BrowserAnimationsModule,
-  ],
-  providers: [NgeMarkdownKatexProvider],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
+// add to your app providers (see Usage for the full setup)
+providers: [NgeMarkdownKatexProvider]
 ```
+
+## Syntax
+
+A display block sits between `$$` fences on their own lines:
+
+```plaintext
+$$
+f(x) = \int_{-\infty}^{\infty} \hat f(\xi)\, e^{2 \pi i \xi x} \,d\xi
+$$
+```
+
+$$
+f(x) = \int_{-\infty}^{\infty} \hat f(\xi)\, e^{2 \pi i \xi x} \,d\xi
+$$
+
+Inline math sits between single `$`:
+
+```plaintext
+$c = \pm\sqrt{a^2 + b^2}$
+```
+
+Result: $c = \pm\sqrt{a^2 + b^2}$
+
+Chemistry uses [mhchem](https://mhchem.github.io/MathJax-mhchem/) notation:
+
+```plaintext
+$\ce{CO2 + C -> 2 CO}$
+```
+
+Result: $\ce{CO2 + C -> 2 CO}$
 
 ## Options
 
-The contribution use [Katex](https://katex.org) to render the expressions. The library is loaded from a cdn
-with the default options but you can load it from another domain using the **NGE_MARKDOWN_KATEX_OPTIONS** token.
+KaTeX loads from a CDN by default. Override the source, delimiters or extensions with
+`NgeMarkdownKatexOptionsProvider`:
 
-```typescript lines="1" highlights="6-10 23-36"
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+```typescript
+import { NgeMarkdownKatexProvider, NgeMarkdownKatexOptionsProvider } from '@cisstech/nge/markdown'
 
-import {
-  NgeMarkdownModule,
+providers: [
   NgeMarkdownKatexProvider,
-  NgeMarkdownKatexOptionsProvider
-} from '@cisstech/nge/markdown';
-
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgeMarkdownModule,
-    BrowserAnimationsModule,
-  ],
-  providers: [
-    NgeMarkdownKatexProvider,
-    NgeMarkdownKatexOptionsProvider({
-      baseUrl: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/',
-      options: {
-          delimiters: [
-              { left: '$$', right: '$$', display: true },
-              { left: '$', right: '$', display: false },
-          ],
-      },
-      extensions: {
-        mhchem: true,
-        copyTex: true
-      }
-    })
-  ],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
+  NgeMarkdownKatexOptionsProvider({
+    options: {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+    },
+    extensions: { mhchem: true, copyTex: true },
+  }),
+]
 ```
-
-## Usage
-
-Blocks must be enclosed in `$$`...`$$` on separate lines:
-
-Example
-
-```plaintext
-$$
-f(x) = \int_&#123;-\infty&#125;^\infty \hat f(\xi) e^&#123;2 \pi i \xi x&#125; d\xi
-$$
-```
-
-Result
-
-$$
-f(x) = \int_&#123;-\infty&#125;^\infty \hat f(\xi) e^&#123;2 \pi i \xi x&#125; d\xi
-$$
-
-Inline blocks must be enclosed in `$`...`$`:
-
-Example
-
-```plaintext
-$c = \\pm\\sqrt&#123;a^2 + b^2&#125;$
-```
-
-Result
-
-$c = \\pm\\sqrt&#123;a^2 + b^2&#125;$
-
-Chemical expression can be used in the same way as the mathematical expressions using the syntax
-described here <https://mhchem.github.io/MathJax-mhchem/>:
-
-Example
-
-```plaintext
-$\ce{CO2 + C -> 2 CO}$
-```
-
-Result
-
-$\ce{CO2 + C -> 2 CO}$
-
-:::+ warning
-Chemical expressions are rendered only if `extensions.mhchem` is set to `true` in the options.
-This is the case by default.
-:::
 
 :::+ note Copy as source
-When `extensions.copyTex` is set to `true` (this is the case by default), selecting and copying KaTeX-rendered elements, copies their LaTeX source to the clipboard
+With `extensions.copyTex` on (the default), copying a rendered expression puts its LaTeX source on
+the clipboard. `extensions.mhchem` (also on by default) enables the chemistry notation above.
 :::
