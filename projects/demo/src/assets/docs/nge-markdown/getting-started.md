@@ -1,3 +1,8 @@
+---
+title: Getting started with nge-markdown
+description: nge-markdown is an Angular markdown parser library based on Marked, with themes, syntax highlighting and extensible contributions.
+---
+
 # Getting started
 
 **nge-markdown** is an [Angular](https://angular.io) markdown parser library based on [Marked](https://github.com/markedjs/marked) project.
