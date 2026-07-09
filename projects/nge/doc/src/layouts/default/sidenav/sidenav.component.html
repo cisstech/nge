@@ -1,32 +1,39 @@
-@if (state$ | async; as state) {
-  <header>
-    @if (state.meta.logo) {
-      <img [src]="state.meta.logo" alt="Documentation Logo" />
-    } @else {
-      <img src="https://icongr.am/octicons/book.svg?size=48&color=34495e" />
-    }
-    <h1>{{ state.meta.name }}</h1>
-  </header>
-  @if (state.links.length) {
-    <nav>
-      <ng-container *ngTemplateOutlet="template; context: { $implicit: state.links }"></ng-container>
-    </nav>
+<nav class="nav">
+  @for (link of rootLinks(); track link.href) {
+    <ng-container *ngTemplateOutlet="node; context: { $implicit: link, depth: 0 }" />
   }
-}
-<ng-template #template let-links>
-  <ul>
-    @for (link of links; track link.href) {
-      <li [class.caption]="docService.isExpandable(link)">
-        <a [routerLink]="link.href" [class.active]="docService.isActive(link)">
-          @if (link.icon) {
-            <img [src]="link.icon" />
-          }
+</nav>
+
+<ng-template #node let-link let-depth="depth">
+  @if (docService.isExpandable(link)) {
+    <div class="nav-group">
+      @if (depth === 0) {
+        <div class="nav-label">{{ link.title }}</div>
+      } @else {
+        <a
+          class="nav-link nav-parent"
+          [routerLink]="link.href"
+          [class.active]="docService.isActive(link)"
+          [style.paddingLeft.rem]="0.6 + depth * 0.75"
+        >
           {{ link.title }}
         </a>
-      </li>
-      @if (docService.isExpandable(link)) {
-        <ng-container *ngTemplateOutlet="template; context: { $implicit: link.children }"> </ng-container>
       }
-    }
-  </ul>
+      @for (child of link.children; track child.href) {
+        <ng-container *ngTemplateOutlet="node; context: { $implicit: child, depth: depth + 1 }" />
+      }
+    </div>
+  } @else {
+    <a
+      class="nav-link"
+      [routerLink]="link.href"
+      [class.active]="docService.isActive(link)"
+      [style.paddingLeft.rem]="0.6 + depth * 0.75"
+    >
+      @if (link.icon) {
+        <img [src]="link.icon" alt="" />
+      }
+      <span>{{ link.title }}</span>
+    </a>
+  }
 </ng-template>

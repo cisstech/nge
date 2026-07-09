@@ -1,30 +1,75 @@
-@if (state$ | async; as state) {
-  <header>
-    <div class="action" aria-label="Menu" (click)="toggle.emit()">
-      <img src="https://icongr.am/octicons/three-bars.svg?size=24&color=currentColor" />
-    </div>
-    @if (state.meta.backUrl) {
-      <a class="action" aria-label="Back" [routerLink]="state.meta.backUrl">
-        <img [src]="state.meta.backIconUrl ?? 'https://icongr.am/octicons/home.svg?size=24&color=currentColor'" />
-      </a>
-    }
-    @if (state.meta.backUrlHref) {
-      <a class="action" aria-label="Back" [href]="state.meta.backUrlHref">
-        <img [src]="state.meta.backIconUrl ?? 'https://icongr.am/octicons/home.svg?size=24&color=currentColor'" />
-      </a>
-    }
-    <div class="spacer"></div>
-    @if (state.currLink?.actions) {
-      @for (action of state.currLink?.actions || []; track action) {
-        <div class="action" [attr.aria-label]="action.title" [title]="action.tooltip" (click)="invoke(action.run)">
-          @if (action.title) {
-            <span>{{ action.title }}</span>
-          }
-          @if (action.icon) {
-            <img [src]="action.icon" />
-          }
-        </div>
-      }
-    }
-  </header>
+<button class="icon-btn menu" type="button" aria-label="Toggle navigation" (click)="toggleSidebar.emit()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+</button>
+
+@if (meta().backUrlHref && !meta().backUrl) {
+  <a class="brand" [href]="meta().backUrlHref">
+    <ng-container [ngTemplateOutlet]="brand" />
+  </a>
+} @else {
+  <a class="brand" [routerLink]="meta().backUrl ?? meta().root">
+    <ng-container [ngTemplateOutlet]="brand" />
+  </a>
 }
+
+<span class="spacer"></span>
+
+<button class="search" type="button" aria-label="Search documentation" (click)="openSearch.emit()">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+  <span class="label">Search documentation</span>
+  <span class="kbd">⌘K</span>
+</button>
+
+<nge-doc-theme-toggle />
+
+@for (action of currLink()?.actions ?? []; track action) {
+  <button
+    class="icon-btn"
+    type="button"
+    [title]="action.tooltip ?? action.title ?? ''"
+    [attr.aria-label]="action.title ?? action.tooltip ?? 'Action'"
+    (click)="docService.runAction(action.run)"
+  >
+    @if (action.icon) {
+      <img [src]="action.icon" alt="" />
+    } @else {
+      <span>{{ action.title }}</span>
+    }
+  </button>
+}
+
+@for (link of meta().links ?? []; track link.href) {
+  <a class="icon-btn" [href]="link.href" target="_blank" rel="noopener">
+    <img [src]="link.icon" alt="" />
+  </a>
+}
+
+@if (meta().repo; as repo) {
+  <a class="icon-btn" [href]="repo.url" target="_blank" rel="noopener" [attr.aria-label]="repo.name || 'Repository'">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path
+        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+      />
+    </svg>
+  </a>
+}
+
+<ng-template #brand>
+  @if (meta().logo) {
+    <img [src]="meta().logo" alt="" />
+  } @else {
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M16 2 4 8v10c0 6.5 5 10.5 12 12 7-1.5 12-5.5 12-12V8L16 2Z" fill="var(--nge-doc-primary)" opacity="0.16" />
+      <path d="M16 2 4 8v10c0 6.5 5 10.5 12 12 7-1.5 12-5.5 12-12V8L16 2Z" stroke="var(--nge-doc-primary)" stroke-width="1.6" />
+      <path d="M16 9v14M10 12l6 3 6-3" stroke="var(--nge-doc-primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  }
+  <span>{{ meta().name }}</span>
+</ng-template>

@@ -1,0 +1,46 @@
+:host {
+  display: block;
+}
+
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 3.5rem;
+}
+
+.pager a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border: 1px solid var(--nge-doc-border);
+  border-radius: var(--nge-doc-r-lg);
+  padding: 0.9rem 1.1rem;
+  background: var(--nge-doc-surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.pager a:hover {
+  border-color: var(--nge-doc-primary);
+  box-shadow: var(--nge-doc-shadow-md);
+}
+
+.dir {
+  font-size: 0.74rem;
+  color: var(--nge-doc-fg-subtle);
+}
+
+.title {
+  font-weight: 640;
+  color: var(--nge-doc-fg);
+}
+
+.next {
+  text-align: right;
+}
+
+@media (max-width: 560px) {
+  .pager {
+    grid-template-columns: 1fr;
+  }
+}

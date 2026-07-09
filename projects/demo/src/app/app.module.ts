@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 // LIBS
-import { NGE_DOC_RENDERERS } from '@cisstech/nge/doc'
+import { NGE_DOC_RENDERERS, provideNgeDoc } from '@cisstech/nge/doc'
 import {
   NgeMarkdownAdmonitionsProvider,
   NgeMarkdownConfig,
@@ -28,7 +28,8 @@ import { AppComponent } from './app.component'
 
 export function markdownOptions(): NgeMarkdownConfig {
   return {
-    darkThemeClassName: 'dark-theme',
+    // Align nge-markdown's dark detection with the class NgeDocThemeService toggles.
+    darkThemeClassName: 'nge-doc-dark',
   }
 }
 
@@ -71,6 +72,7 @@ export function markdownOptions(): NgeMarkdownConfig {
       },
     },
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
+    provideNgeDoc(),
   ],
 })
 export class AppModule {}

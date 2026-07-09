@@ -1,0 +1,246 @@
+/*
+ * Default theme design tokens, base styles and markdown re-skin.
+ *
+ * Loaded with ViewEncapsulation.None so it can (a) declare global CSS custom
+ * properties on :root and (b) reach the markdown output, which is rendered as
+ * light DOM inside the renderer. Everything that is not a token declaration is
+ * scoped under .nge-doc-theme so a host application is never affected.
+ *
+ * Dark values live on the `nge-doc-dark` class that NgeDocThemeService stamps on
+ * the document root. Because every token flips there, the markdown re-skin below
+ * needs a single block: it points GitHub's own variables at our tokens, which
+ * already resolve to the right value in both schemes, so dark mode needs no
+ * re-render and no dependency on nge-markdown's own dark class.
+ */
+
+:root {
+  --nge-doc-bg: #ffffff;
+  --nge-doc-bg-subtle: #fafafa;
+  --nge-doc-surface: #ffffff;
+  --nge-doc-surface-hover: #f4f4f5;
+  --nge-doc-fg: #18181b;
+  --nge-doc-fg-body: #27272a;
+  --nge-doc-fg-muted: #52525b;
+  --nge-doc-fg-subtle: #8b8b94;
+  --nge-doc-border: #e8e8ec;
+  --nge-doc-border-strong: #d4d4d8;
+  --nge-doc-primary: #5b53d6;
+  --nge-doc-primary-fg: #ffffff;
+  --nge-doc-primary-subtle: rgba(91, 83, 214, 0.09);
+  --nge-doc-ring: rgba(91, 83, 214, 0.4);
+  --nge-doc-code-bg: #fafafa;
+  --nge-doc-shadow-md: 0 4px 14px rgba(24, 24, 40, 0.06);
+  --nge-doc-shadow-lg: 0 16px 40px rgba(24, 24, 40, 0.14);
+
+  --nge-doc-s-comment: #8b8b94;
+  --nge-doc-s-keyword: #7c3aed;
+  --nge-doc-s-string: #0f7d3d;
+  --nge-doc-s-fn: #2563eb;
+  --nge-doc-s-const: #b45309;
+
+  --nge-doc-header-h: 3.5rem;
+  --nge-doc-sidebar-w: 16.5rem;
+  --nge-doc-toc-w: 15rem;
+  --nge-doc-content-max: 46rem;
+  --nge-doc-shell-max: 90rem;
+  --nge-doc-scroll-margin: calc(var(--nge-doc-header-h) + 1.5rem);
+
+  --nge-doc-r-sm: 6px;
+  --nge-doc-r-md: 8px;
+  --nge-doc-r-lg: 12px;
+
+  --nge-doc-font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --nge-doc-font-mono: ui-monospace, 'JetBrains Mono', 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+:root.nge-doc-dark {
+  --nge-doc-bg: #0b0b0d;
+  --nge-doc-bg-subtle: #0f0f12;
+  --nge-doc-surface: #161619;
+  --nge-doc-surface-hover: #1e1e23;
+  --nge-doc-fg: #fafafa;
+  --nge-doc-fg-body: #e4e4e7;
+  --nge-doc-fg-muted: #a1a1aa;
+  --nge-doc-fg-subtle: #71717a;
+  --nge-doc-border: #26262b;
+  --nge-doc-border-strong: #3a3a42;
+  --nge-doc-primary: #8b8bf5;
+  --nge-doc-primary-fg: #0b0b0d;
+  --nge-doc-primary-subtle: rgba(139, 139, 245, 0.15);
+  --nge-doc-ring: rgba(139, 139, 245, 0.55);
+  --nge-doc-code-bg: #121215;
+  --nge-doc-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --nge-doc-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+
+  --nge-doc-s-comment: #6b7280;
+  --nge-doc-s-keyword: #c4b5fd;
+  --nge-doc-s-string: #7ee787;
+  --nge-doc-s-fn: #93c5fd;
+  --nge-doc-s-const: #fbbf24;
+}
+
+.nge-doc-theme {
+  background: var(--nge-doc-bg);
+  color: var(--nge-doc-fg-body);
+  font-family: var(--nge-doc-font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Monaco-highlighted code blocks read these vscode variables inline; point
+     them at our tokens so the code chrome follows the scheme instead of
+     falling back to a hard-coded light value. */
+  --vscode-editor-background: var(--nge-doc-code-bg);
+  --vscode-editor-foreground: var(--nge-doc-fg-body);
+  --vscode-dropdown-border: var(--nge-doc-border);
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--nge-doc-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* shared chrome */
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--nge-doc-r-md);
+    color: var(--nge-doc-fg-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .icon-btn:hover {
+    background: var(--nge-doc-surface-hover);
+    color: var(--nge-doc-fg);
+  }
+
+  .icon-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .pill {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--nge-doc-fg-muted);
+    border: 1px solid var(--nge-doc-border-strong);
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+  }
+
+  .kbd {
+    font-family: var(--nge-doc-font-mono);
+    font-size: 0.7rem;
+    color: var(--nge-doc-fg-subtle);
+    border: 1px solid var(--nge-doc-border-strong);
+    border-radius: 4px;
+    padding: 0.05rem 0.35rem;
+  }
+}
+
+/* ---------- markdown re-skin ---------- */
+/* Re-point GitHub's design tokens at ours (one block covers both schemes). */
+.nge-doc-theme .nge-markdown-theme--github {
+  --color-canvas-default: transparent;
+  --color-canvas-subtle: var(--nge-doc-code-bg);
+  --color-fg-default: var(--nge-doc-fg-body);
+  --color-fg-muted: var(--nge-doc-fg-muted);
+  --color-fg-subtle: var(--nge-doc-fg-subtle);
+  --color-border-default: var(--nge-doc-border);
+  --color-border-muted: var(--nge-doc-border);
+  --color-neutral-muted: var(--nge-doc-surface-hover);
+  --color-accent-fg: var(--nge-doc-primary);
+  --color-accent-emphasis: var(--nge-doc-primary);
+
+  --color-prettylights-syntax-comment: var(--nge-doc-s-comment);
+  --color-prettylights-syntax-keyword: var(--nge-doc-s-keyword);
+  --color-prettylights-syntax-string: var(--nge-doc-s-string);
+  --color-prettylights-syntax-string-regexp: var(--nge-doc-s-string);
+  --color-prettylights-syntax-entity: var(--nge-doc-s-fn);
+  --color-prettylights-syntax-constant: var(--nge-doc-s-const);
+  --color-prettylights-syntax-variable: var(--nge-doc-s-const);
+
+  font-family: var(--nge-doc-font-sans);
+
+  /* mockup refinements over GitHub's base prose */
+  h1,
+  h2,
+  h3,
+  h4 {
+    scroll-margin-top: var(--nge-doc-scroll-margin);
+  }
+
+  h1 {
+    font-size: 2.1rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    font-weight: 680;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 650;
+  }
+
+  a {
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, var(--nge-doc-primary) 40%, transparent);
+  }
+
+  a:hover {
+    text-decoration-color: var(--nge-doc-primary);
+  }
+
+  pre {
+    border: 1px solid var(--nge-doc-border);
+    border-radius: var(--nge-doc-r-lg);
+  }
+}
+
+/* Monaco defines its vscode variables on `.monaco-editor` itself and sets the
+   border inline, so re-point them here (higher specificity + !important) to make
+   the whole code block, including its toolbar, follow the scheme. */
+.nge-doc-theme pre.monaco-editor {
+  --vscode-editor-background: var(--nge-doc-code-bg) !important;
+  --vscode-editor-foreground: var(--nge-doc-fg-body) !important;
+  --vscode-dropdown-border: var(--nge-doc-border) !important;
+  border: 1px solid var(--nge-doc-border) !important;
+  border-radius: var(--nge-doc-r-lg) !important;
+  outline: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nge-doc-theme *,
+  .nge-doc-theme *::before,
+  .nge-doc-theme *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

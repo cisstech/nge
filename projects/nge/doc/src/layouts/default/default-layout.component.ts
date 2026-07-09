@@ -1,41 +1,45 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, inject } from '@angular/core'
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout'
-import { Subscription } from 'rxjs'
-import { ChangeDetectorRef } from '@angular/core'
-import { SidenavComponent } from './sidenav/sidenav.component'
-import { HeaderComponent } from './header/header.component'
+import { ChangeDetectionStrategy, Component, ViewEncapsulation, effect, inject, signal } from '@angular/core'
 import { NgeDocRendererComponent } from '../../renderer/renderer.component'
-import { NgeDocTocDirective } from '../../renderer/toc.directive'
-import { FooterComponent } from './footer/footer.component'
+import { NgeDocService } from '../../nge-doc.service'
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component'
+import { HeaderComponent } from './header/header.component'
+import { PagerComponent } from './pager/pager.component'
+import { SidenavComponent } from './sidenav/sidenav.component'
+import { TocComponent } from './toc/toc.component'
 
 @Component({
   selector: 'nge-doc-default-layout',
   templateUrl: './default-layout.component.html',
-  styleUrls: ['./default-layout.component.scss'],
+  styleUrls: ['./default-layout.component.scss', './theme.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SidenavComponent, HeaderComponent, NgeDocRendererComponent, NgeDocTocDirective, FooterComponent],
+  encapsulation: ViewEncapsulation.None,
+  imports: [
+    HeaderComponent,
+    SidenavComponent,
+    NgeDocRendererComponent,
+    BreadcrumbComponent,
+    PagerComponent,
+    TocComponent,
+  ],
 })
-export class DefaultLayoutComponent implements OnInit, OnDestroy {
-  private readonly observer = inject(BreakpointObserver)
-  private readonly changeDetectorRef = inject(ChangeDetectorRef)
+export class DefaultLayoutComponent {
+  private readonly docService = inject(NgeDocService)
 
-  private subscription?: Subscription
-  sidebarOpened = true
-  showTableOfContents = true
+  protected readonly sidebarOpen = signal(false)
 
-  ngOnInit(): void {
-    this.observer.observe([Breakpoints.XSmall, Breakpoints.Small]).subscribe((result) => {
-      this.sidebarOpened = true
-      this.showTableOfContents = true
-      if (result.matches) {
-        this.sidebarOpened = false
-        this.showTableOfContents = false
-      }
-      this.changeDetectorRef.markForCheck()
+  constructor() {
+    // Close the mobile navigation drawer whenever the active page changes.
+    effect(() => {
+      this.docService.currLink()
+      this.sidebarOpen.set(false)
     })
   }
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe()
+  protected toggleSidebar(): void {
+    this.sidebarOpen.update((open) => !open)
+  }
+
+  protected closeSidebar(): void {
+    this.sidebarOpen.set(false)
   }
 }

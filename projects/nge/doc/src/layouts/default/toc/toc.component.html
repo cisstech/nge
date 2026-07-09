@@ -1,0 +1,19 @@
+@if (renderer().headings().length) {
+  <nav class="toc" aria-label="On this page">
+    <div class="toc-label">On this page</div>
+    <ul>
+      @for (heading of renderer().headings(); track heading.id) {
+        <li>
+          <a
+            [attr.href]="'#' + heading.id"
+            [class.active]="renderer().activeHeadingId() === heading.id"
+            [class.sub]="heading.level >= 3"
+            (click)="onSelect($event, heading.id)"
+          >
+            {{ heading.label }}
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+}

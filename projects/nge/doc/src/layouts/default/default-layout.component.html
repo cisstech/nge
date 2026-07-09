@@ -1,15 +1,25 @@
-<main>
-  <aside class="sidebar" [class.opened]="sidebarOpened">
-    <nge-doc-sidenav />
-  </aside>
-  <section>
-    <nge-doc-header (toggle)="sidebarOpened = !sidebarOpened" />
-    <article>
-      <nge-doc-renderer #renderer />
-      @if (showTableOfContents) {
-        <aside [ngeDocToc]="renderer.componentRef"></aside>
-      }
-    </article>
-  </section>
-</main>
-<nge-doc-footer />
+<div class="nge-doc-theme">
+  <nge-doc-header (toggleSidebar)="toggleSidebar()" />
+
+  <div class="shell">
+    <nge-doc-sidenav [class.open]="sidebarOpen()" />
+
+    <main>
+      <div class="content">
+        <nge-doc-breadcrumb />
+        <nge-doc-renderer #renderer />
+        <nge-doc-pager />
+        <footer class="doc-footer">
+          <span>Powered by</span>
+          <a href="https://cisstech.github.io/nge/docs/nge-doc/" target="_blank" rel="noopener">ngedoc</a>
+        </footer>
+      </div>
+    </main>
+
+    <nge-doc-toc [renderer]="renderer" />
+  </div>
+
+  @if (sidebarOpen()) {
+    <div class="backdrop" (click)="closeSidebar()"></div>
+  }
+</div>

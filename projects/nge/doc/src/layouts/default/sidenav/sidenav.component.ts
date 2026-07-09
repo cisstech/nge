@@ -1,17 +1,16 @@
+import { NgTemplateOutlet } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { NgeDocService } from '../../../nge-doc.service'
-import { NgTemplateOutlet, AsyncPipe } from '@angular/common'
 import { RouterLink } from '@angular/router'
+import { NgeDocService } from '../../../nge-doc.service'
 
 @Component({
   selector: 'nge-doc-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgTemplateOutlet, RouterLink, AsyncPipe],
+  imports: [NgTemplateOutlet, RouterLink],
 })
 export class SidenavComponent {
-  readonly docService = inject(NgeDocService)
-
-  state$ = this.docService.stateChanges
+  protected readonly docService = inject(NgeDocService)
+  protected readonly rootLinks = this.docService.rootLinks
 }
