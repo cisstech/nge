@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 // LIBS
-import { NGE_DOC_RENDERERS, provideNgeDoc } from '@cisstech/nge/doc'
+import { provideNgeDoc, withMarkdownRenderer, withNavbar } from '@cisstech/nge/doc'
 import {
   NgeMarkdownAdmonitionsProvider,
   NgeMarkdownConfig,
@@ -68,16 +68,17 @@ export function markdownOptions(): NgeMarkdownConfig {
     NgeMarkdownAdmonitionsProvider,
     NgeMarkdownHighlighterProvider,
     NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
-    {
-      provide: NGE_DOC_RENDERERS,
-      useValue: {
-        markdown: {
-          component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),
-        },
-      },
-    },
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
-    provideNgeDoc(),
+    provideNgeDoc(
+      withNavbar([
+        { title: 'nge/doc', href: '/docs/nge-doc/' },
+        { title: 'nge/markdown', href: '/docs/nge-markdown/' },
+        { title: 'nge/monaco', href: '/docs/nge-monaco/' },
+      ]),
+      withMarkdownRenderer({
+        component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),
+      })
+    ),
   ],
 })
 export class AppModule {}
