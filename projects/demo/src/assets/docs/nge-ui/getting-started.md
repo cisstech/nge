@@ -1,6 +1,6 @@
 ---
 title: Getting started with nge/ui
-description: Standalone Angular UI building blocks — a data tree, a filterable virtual list, and a multi-source icon component.
+description: Standalone Angular UI building blocks: a data tree, a filterable list, and a multi-source icon component.
 ---
 
 # nge/ui
@@ -12,8 +12,8 @@ entry point, so you only bundle what you import.
 
 - **[Tree](/docs/nge-ui/tree)** (`ui-tree`) renders a data tree from your own model through an
   adapter, with expand/collapse, selection, filtering and keyboard and mouse actions.
-- **[List](/docs/nge-ui/list)** (`ui-list`) renders a virtual list that stays smooth over large
-  collections, with optional selection and text filtering.
+- **[List](/docs/nge-ui/list)** (`ui-list`) renders a list from your items and an item template,
+  with optional selection and text filtering.
 - **[Icon](/docs/nge-ui/icon)** (`ui-icon`) renders an icon from Font Awesome, icongram, VS Code
   codicons, a file or folder type, or a plain image, behind one component.
 

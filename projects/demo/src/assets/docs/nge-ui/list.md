@@ -1,13 +1,16 @@
 ---
 title: List
-description: Render a virtual, filterable list of items with your own item template or a ready-made article layout.
+description: Render a filterable list of items with your own item template or a ready-made article layout.
 ---
 
 # List
 
-`ui-list` renders a list that stays smooth over large collections through virtual scrolling. You
-supply the items and an item template; the component handles windowing, optional selection and text
-filtering.
+`ui-list` renders a list from your items and an item template, with optional selection and text
+filtering built in.
+
+## Live example
+
+<ui-list-demo></ui-list-demo>
 
 ## Usage
 
@@ -16,7 +19,7 @@ template with `ui-list-template`.
 
 ```html
 <ui-list [idField]="'id'" [items]="articles" [filter]="query" [filterBy]="['title', 'summary']">
-  <ui-list-template>
+  <ui-list-template slot="row">
     <ng-template let-item="item">
       <ui-list-item-article [articleTitle]="item.title" [articleDescription]="item.summary" />
     </ng-template>
@@ -35,7 +38,7 @@ template with `ui-list-template`.
 
 ## Item templates
 
-`ui-list-template` projects a template into a slot of the list; use `slot` to target the item,
-selection or empty states, and `when` to pick a template conditionally. `ui-list-item-article` is a
-ready-made row layout with a title, description, banner, icon and tags, so common lists need no
-custom markup.
+`ui-list-template` projects a template into a slot of the list. `slot` targets where it renders:
+`row` for each item, plus `selection`, `header`, `empty` and `noresult`. Use `when` to pick a
+template conditionally. `ui-list-item-article` is a ready-made row layout with a title, description,
+banner, icon and tags, so common lists need no custom markup.

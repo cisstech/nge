@@ -1,6 +1,6 @@
 ---
 title: Getting started with the utilities
-description: The small building blocks the rest of nge is built on — services, standalone pipes, and framework-free helper functions.
+description: The small building blocks the rest of nge is built on: services, standalone pipes, and framework-free helper functions.
 ---
 
 # Utilities

@@ -8,6 +8,10 @@ description: Render an icon from Font Awesome, icongram, VS Code codicons, a fil
 `ui-icon` renders an icon from several sources behind a single component. You pass an `Icon`
 instance and the component draws the right thing.
 
+## Live example
+
+<ui-icon-demo></ui-icon-demo>
+
 ## Usage
 
 ```html

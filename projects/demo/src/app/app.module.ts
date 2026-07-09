@@ -69,6 +69,9 @@ export function markdownOptions(): NgeMarkdownConfig {
     NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
     NgeMarkdownComponentsProvider({
       'demo-counter': () => import('./markdown/embed-demo/embed-demo.component').then((m) => m.EmbedDemoComponent),
+      'ui-tree-demo': () => import('./ui-demos/ui-tree-demo.component').then((m) => m.UiTreeDemoComponent),
+      'ui-list-demo': () => import('./ui-demos/ui-list-demo.component').then((m) => m.UiListDemoComponent),
+      'ui-icon-demo': () => import('./ui-demos/ui-icon-demo.component').then((m) => m.UiIconDemoComponent),
     }),
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideNgeDoc(

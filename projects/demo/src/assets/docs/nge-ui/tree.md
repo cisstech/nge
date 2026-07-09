@@ -8,12 +8,20 @@ description: Render a data tree from your own model with an adapter, with expand
 `ui-tree` renders a tree from any data model. You describe how to read your nodes through an
 adapter, and the component handles expansion, selection, filtering and interaction.
 
+## Live example
+
+<ui-tree-demo></ui-tree-demo>
+
 ## Usage
 
-Pass the root `nodes` and an `adapter`.
+Pass the root `nodes` and an `adapter`, and project a node template with the `treeNode` directive.
+The template receives an `ITreeNodeHolder`: `node.name` is the display name (from `nameProvider`)
+and `node.data` is your original object. Import `TreeComponent` and `TreeNodeDirective`.
 
 ```html
-<ui-tree [nodes]="nodes" [adapter]="adapter" />
+<ui-tree [nodes]="nodes" [adapter]="adapter">
+  <ng-template treeNode let-node>{{ node.name }}</ng-template>
+</ui-tree>
 ```
 
 The adapter (`ITreeAdapter<T>`) tells the tree how to read a node. `id`, `idProvider`,
@@ -57,5 +65,5 @@ tree?.expandAll()
 tree?.search({ term: 'readme' })
 ```
 
-`treeHeight` and `itemHeight` tune the virtual scroll, and the `actions` mapping binds keyboard and
-mouse handlers (`click`, `rightClick`, key bindings) to your own callbacks.
+`treeHeight` and `itemHeight` set the tree's overall height and its row height, and the `actions`
+mapping binds keyboard and mouse handlers (`click`, `rightClick`, key bindings) to your own callbacks.
