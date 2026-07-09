@@ -27,22 +27,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
   <link rel="icon" type="image/svg" href="assets/images/nge.svg">
-
-  <!-- Apply the documentation color scheme before first paint to avoid a flash. -->
-  <script>
-    (function () {
-      try {
-        var stored = localStorage.getItem('nge-doc-color-scheme')
-        var dark =
-          stored === 'dark' ||
-          ((!stored || stored === 'auto') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        if (dark) {
-          document.documentElement.classList.add('nge-doc-dark')
-          document.documentElement.style.colorScheme = 'dark'
-        }
-      } catch (e) {}
-    })()
-  </script>
 </head>
 <body class="mat-app-background">
   <app-root></app-root>
