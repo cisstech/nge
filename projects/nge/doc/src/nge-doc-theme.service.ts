@@ -24,6 +24,7 @@ export class NgeDocThemeService {
   private readonly defaultScheme = inject(NGE_DOC_DEFAULT_COLOR_SCHEME, { optional: true }) ?? 'auto'
 
   private readonly systemPrefersDark = signal(this.matchSystemDark())
+  private readonly active = signal(false)
 
   /** The user preference. Defaults to `auto` (follows the OS). */
   readonly scheme = signal<NgeDocColorScheme>(this.readStoredScheme())
@@ -38,11 +39,23 @@ export class NgeDocThemeService {
     query?.addEventListener?.('change', (event) => this.systemPrefersDark.set(event.matches))
 
     effect(() => {
+      // Only own the document root while a documentation page is mounted, so the
+      // scheme never leaks to the rest of the application once the user leaves.
       const root = this.document.documentElement
-      const dark = this.isDark()
-      root.classList.toggle(NgeDocThemeService.DARK_CLASS, dark)
-      root.style.colorScheme = dark ? 'dark' : 'light'
+      const active = this.active()
+      root.classList.toggle(NgeDocThemeService.DARK_CLASS, active && this.isDark())
+      root.style.colorScheme = active ? (this.isDark() ? 'dark' : 'light') : ''
     })
+  }
+
+  /**
+   * Enables or disables scheme management on the document root.
+   *
+   * Called by the documentation host on mount/unmount so the `nge-doc-dark`
+   * class and `color-scheme` are removed when navigating away from the docs.
+   */
+  setActive(active: boolean): void {
+    this.active.set(active)
   }
 
   /** Sets the color scheme preference and persists it. */
