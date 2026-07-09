@@ -1,205 +1,96 @@
+---
+title: Admonitions
+description: Styled call-out blocks (note, tip, warning, danger and more) with an optional title and arbitrary nested content.
+---
+
 # Admonitions
 
-**Admonitions**, also known as call-outs, are an excellent choice for including side content without significantly interrupting the document flow. nge-markdown provides several different types of admonitions and allows for the inclusion and nesting of arbitrary content.
+Admonitions, also called call-outs, add side content without breaking the flow of the page. They
+come in several types, take an optional title, and can hold nested content.
 
-> The examples from this page are based on <https://squidfunk.github.io/mkdocs-material/reference/admonitions/>
+> Examples on this page follow the [Material for MkDocs](https://squidfunk.github.io/mkdocs-material/reference/admonitions/) reference.
 
-## Configuration
+## Register
 
-```typescript highlights="6-9 18 21"
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+```typescript
+import { NgeMarkdownAdmonitionsProvider } from '@cisstech/nge/markdown'
 
-import {
-  NgeMarkdownModule,
-  NgeMarkdownAdmonitionsProvider,
-} from '@cisstech/nge/markdown';
-
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgeMarkdownModule,
-    BrowserAnimationsModule,
-  ],
-  providers: [NgeMarkdownAdmonitionsProvider],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
+// add to your app providers (see Usage for the full setup)
+providers: [NgeMarkdownAdmonitionsProvider]
 ```
 
-## Usage
+## Syntax
 
-**Admonitions** follow a simple syntax: a block must start with `:::` followed by a single keyword which is used as the type qualifier of the block.
-The content of the block then follows on the next line, then a closing block `:::`
-
-Example
+A block starts with `:::` followed by a type keyword, then the content, then a closing `:::`.
 
 ```plaintext
 ::: note
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-massa, nec semper lorem quam in massa.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 :::
 ```
 
-Result
-
 ::: note
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-massa, nec semper lorem quam in massa.
-
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 :::
 
-## Adding a title
+## Title
 
-A title can be added to the admonition by adding a string containing valid Markdown (including links, formatting, ...) after the type qualifier.
-
-> Adding a **+** after **:::** will open the admonition by default
-
-Example
+Add a title after the type. Use `:::+` to make the block open by default. The title accepts inline
+Markdown.
 
 ```plaintext
 :::+ note Phasellus **posuere** in sem ut cursus
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-massa, nec semper lorem quam in massa.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 :::
 ```
 
-Result
-
 :::+ note Phasellus **posuere** in sem ut cursus
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-massa, nec semper lorem quam in massa.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 :::
 
-## Embedded content
+## Nested content
 
-Admonitions can contain all kinds of text content, including headlines, lists, paragraphs and other blocks. While the parser from the standard Markdown library doesn't account for nested blocks, the Admonition contribution adds the ability to nest arbitrary content inside admonitions.
-
-Example:
+A block can hold headings, lists, code and other blocks.
 
 ````plaintext
-:::+ note Phasellus **posuere** in sem ut cursus
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-massa, nec semper lorem quam in massa.
+:::+ note With a code block
+Lorem ipsum dolor sit amet.
 
-``` python
+```python
 def bubble_sort(items):
     for i in range(len(items)):
         for j in range(len(items) - 1 - i):
             if items[j] > items[j + 1]:
                 items[j], items[j + 1] = items[j + 1], items[j]
 ```
-
-Nunc eu odio eleifend, blandit leo a, volutpat sapien. Phasellus posuere in
-sem ut cursus. Nullam sit amet tincidunt ipsum, sit amet elementum turpis.
-Etiam ipsum quam, mattis in purus vitae, lacinia fermentum enim.
 :::
 ````
 
-Result:
+:::+ note With a code block
+Lorem ipsum dolor sit amet.
 
-:::+ note Phasellus **posuere** in sem ut cursus
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
-nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
-massa, nec semper lorem quam in massa.
-
-``` python
+```python
 def bubble_sort(items):
     for i in range(len(items)):
         for j in range(len(items) - 1 - i):
             if items[j] > items[j + 1]:
                 items[j], items[j + 1] = items[j + 1], items[j]
 ```
-
-Nunc eu odio eleifend, blandit leo a, volutpat sapien. Phasellus posuere in
-sem ut cursus. Nullam sit amet tincidunt ipsum, sit amet elementum turpis.
-Etiam ipsum quam, mattis in purus vitae, lacinia fermentum enim.
 :::
 
-## Supported types
+## Types
 
-Following is a list of type qualifiers provided ***Admonitions***:
+`note`, `abstract`, `info`, `tip`, `success`, `question`, `warning`, `failure`, `danger`, `bug`,
+`example` and `quote`.
 
-`note`
-
-:::+ note Phasellus posuere in sem ut cursus
+:::+ tip tip
 Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
 :::
 
-`abstract`
-
-:::+ abstract Phasellus posuere in sem ut cursus
+:::+ warning warning
 Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
 :::
 
-`info`
-
-:::+ info Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`tip`
-
-:::+ tip Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`success`
-
-:::+ success Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`question`
-
-:::+ question Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`warning`
-
-:::+ warning Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`failure`
-
-:::+ failure Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`danger`
-
-:::+ danger Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`bug`
-
-:::+ bug Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`example`
-
-:::+ example Phasellus posuere in sem ut cursus
-Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
-:::
-
-`quote`
-
-:::+ quote Phasellus posuere in sem ut cursus
+:::+ danger danger
 Lorem **ipsum** dolor sit amet, consectetur adipiscing elit.
 :::
