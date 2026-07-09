@@ -6,6 +6,16 @@ import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
 
+/** A page matched by {@link NgeDocService.search}. */
+export interface NgeDocSearchResult {
+  /** The matched link. */
+  link: NgeDocLink
+  /** Title of the matched link. */
+  title: string
+  /** Titles of the ancestor links, from the top of the tree down (excludes the match). */
+  path: string[]
+}
+
 @Injectable()
 export class NgeDocService implements OnDestroy {
   private readonly router = inject(Router)
@@ -259,6 +269,61 @@ export class NgeDocService implements OnDestroy {
       return
     }
     await run(this.injector)
+  }
+
+  /**
+   * Searches the registered pages by title.
+   * @param query Free text to match against link titles (case-insensitive).
+   * @returns Up to 20 renderable pages, best matches first.
+   */
+  search(query: string): NgeDocSearchResult[] {
+    const needle = query.trim().toLowerCase()
+    if (!needle) {
+      return []
+    }
+
+    const scored: { result: NgeDocSearchResult; score: number }[] = []
+    for (const link of this.links) {
+      // Skip pure grouping links that cannot be rendered on their own.
+      if (!link.renderer && link.children?.length) {
+        continue
+      }
+      const title = link.title ?? ''
+      const index = title.toLowerCase().indexOf(needle)
+      if (index >= 0) {
+        scored.push({ result: { link, title, path: this.trailTitles(link) }, score: index })
+      }
+    }
+
+    return scored
+      .sort((a, b) => a.score - b.score || a.result.title.length - b.result.title.length)
+      .slice(0, 20)
+      .map((entry) => entry.result)
+  }
+
+  /** Site name then a link's ancestor titles across the navigation trees, target excluded. */
+  private trailTitles(target: NgeDocLink): string[] {
+    for (const { meta, links } of this.pages.values()) {
+      const trail: string[] = []
+      if (this.collectTitles(links, target, trail)) {
+        return [meta.name, ...trail.slice(0, -1)].filter(Boolean)
+      }
+    }
+    return []
+  }
+
+  private collectTitles(nodes: NgeDocLink[], target: NgeDocLink, acc: string[]): boolean {
+    for (const node of nodes) {
+      acc.push(node.title)
+      if (node.href === target.href) {
+        return true
+      }
+      if (node.children?.length && this.collectTitles(node.children, target, acc)) {
+        return true
+      }
+      acc.pop()
+    }
+    return false
   }
 
   /** Walks the navigation tree to the active link, collecting its ancestors. */
