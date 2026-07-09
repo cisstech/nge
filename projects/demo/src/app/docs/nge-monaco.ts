@@ -2,7 +2,7 @@ import { NgeDocSettings } from '@cisstech/nge/doc'
 
 export const NGE_MONACO: NgeDocSettings = {
   meta: {
-    name: 'Nge monaco',
+    name: 'nge/monaco',
     root: '/docs/nge-monaco/',
     logo: 'assets/images/nge.svg',
     backUrl: '/',

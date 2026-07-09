@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
 
 // LIBS
-import { provideNgeDoc, withMarkdownRenderer, withNavbar } from '@cisstech/nge/doc'
+import { provideNgeDoc, withBrand, withMarkdownRenderer, withNavbar } from '@cisstech/nge/doc'
 import {
   NgeMarkdownAdmonitionsProvider,
   NgeMarkdownConfig,
@@ -47,7 +47,7 @@ export function markdownOptions(): NgeMarkdownConfig {
         // on <html>, and Monaco switches themes accordingly (no coupling).
         light: 'github',
         dark: 'tomorrow-night',
-        darkModeClass: 'nge-doc-dark',
+        darkThemeClassName: 'nge-doc-dark',
       },
     }),
     AppRoutingModule,
@@ -68,6 +68,7 @@ export function markdownOptions(): NgeMarkdownConfig {
     NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideNgeDoc(
+      withBrand({ title: 'NG Essentials', icon: 'assets/images/nge.svg', href: '/' }),
       withNavbar([
         { title: 'Overview', href: '/docs/overview/' },
         { title: 'nge/doc', href: '/docs/nge-doc/' },

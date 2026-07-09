@@ -5,9 +5,19 @@ description: Install @cisstech/nge, its peer dependencies, and pick the Angular-
 
 # Installation
 
+===npm
+
 ```bash
-npm install @cisstech/nge
+npm i @cisstech/nge
 ```
+
+=== yarn
+
+```bash
+yarn add @cisstech/nge
+```
+
+===
 
 ## Peer dependencies
 

@@ -1,194 +1,100 @@
+---
+title: Usage
+description: Declare your pages, register the route and configure the engine with provideNgeDoc.
+---
+
 # Usage
 
-nge-doc usage is based on Angular router module.
-As for the router module, you define the routes (pages) of your documentation site
-using a configuration object then nge-doc will handle the navigation between the pages.
+A documentation site is a set of links. Each link points to a Markdown file, an inline
+Markdown string, or an Angular component. You declare them once, lazy-load the engine on a
+route, and configure it with `provideNgeDoc()`.
 
-## Create one project called my-doc
+## Declare the pages
 
-```bash
-ng new my-doc --routing
-```
-
-This command will generate an Angular project with the following generated files.
-
-===app.module.ts
+A site is described by an `NgeDocSettings` object: some `meta` and a list of `pages`. Page
+`renderer` values are relative to `meta.root`.
 
 ```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+// docs.ts
+import { NgeDocSettings } from '@cisstech/nge/doc'
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [
-    AppComponent,
+export const DOCS: NgeDocSettings = {
+  meta: {
+    name: 'My library',
+    root: '/docs/',
+    logo: 'assets/logo.svg',
+    repo: { name: 'my-lib', url: 'https://github.com/me/my-lib' },
+  },
+  pages: [
+    { title: 'Getting started', href: 'getting-started', renderer: 'assets/docs/getting-started.md' },
+    { title: 'Installation', href: 'installation', renderer: 'assets/docs/installation.md' },
+    { title: 'Usage', href: 'usage', renderer: 'assets/docs/usage.md' },
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+}
 ```
 
-=== app-routing.module.ts
+## Register the route and configure the engine
+
+Lazy-load `NGE_DOC_ROUTES` on a path and pass your settings through the route `data`. Then
+register a Markdown renderer with `withMarkdownRenderer()`.
+
+===app.routes.ts
 
 ```typescript
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { DOC } from './doc';
+import { Routes } from '@angular/router'
+import { DOCS } from './docs'
 
-const routes: Routes = [];
-
-@NgModule({
-    imports: [
-        CommonModule,
-        RouterModule.forRoot(routes),
-    ],
-    exports: [RouterModule]
-})
-export class AppRoutingModule {}
+export const routes: Routes = [
+  {
+    path: 'docs',
+    loadChildren: () => import('@cisstech/nge/doc').then((m) => m.NGE_DOC_ROUTES),
+    data: DOCS,
+  },
+  { path: '**', redirectTo: 'docs' },
+]
 ```
 
-=== app.component.html
-
-```html
-<router-outlet></router-outlet>
-```
-
-===
-
-## Add nge-doc dependencies to the project
-
-### Angular Material
-
-This library use some of Angular CDK apis so you must integrate it in your application by using
-the following command.
-
-```bash
-npm i @angular/cdk
-```
-
-### nge-markdown
-
-As the library is intended to render markdown content you must install a markdown renderer library. Here
-we will install [nge-markdown](https://cisstech.github.io/nge/docs/nge-markdown/) and we will see later how to integrate
-it to the library and how to use another markdown renderer library if you don't like this one.
-
-```bash
-npm i marked
-```
-
-### nge
-
-Now that the dependencies of the nge-doc are installed, you can install the library itself from npm.
-
-```bash
-npm i @cisstech/nge
-```
-
-## Register the documentation pages
-
-A documentation site in nge-doc is a collection of links. Each link can refer either to a static page (Markdown file) or a dynamic page (Angular component).
-
-To define the links of the site, you must register new route in the `routes` array of one of the router modules of your application like `app-routing.module.ts`. This route should lazy load `NgeDocModule` from `@cisstech/nge/doc` and use the `data` property of the route to define the links.
-
-=== app-routings.module.ts
+=== app.config.ts
 
 ```typescript
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { NgeDocSettings } from 'nge-doc';
+import { ApplicationConfig } from '@angular/core'
+import { provideHttpClient, withFetch } from '@angular/common/http'
+import { provideRouter, withInMemoryScrolling } from '@angular/router'
+import { provideNgeDoc, withMarkdownRenderer } from '@cisstech/nge/doc'
+import { routes } from './app.routes'
 
-const routes: Routes = [
-    {
-        path: 'docs',
-        loadChildren: () => import('@cisstech/nge/doc').then(m => m.NgeDocModule),
-        data: {
-          meta: {
-              name: 'nge-doc',
-              logo: 'assets/images/nge.svg',
-              root: '/docs/',
-              repo: {
-                  name: 'nge-doc',
-                  url: 'https://github.com/cisstech/nge-doc',
-              },
-          },
-          pages: [
-              { title: 'Getting Started', href: 'getting-started', renderer: 'assets/docs/getting-started' },
-              { title: 'Installation', href: 'installation', renderer: 'assets/docs/installation' },
-              { title: 'Usage', href: 'usage', renderer: 'assets/docs/usage' },
-              { title: 'Advanced Usage', href: 'advanced-usage', renderer: 'assets/docs/advanced-usage.md' },
-          ],
-        } as NgeDocSettings,
-    },
-    { path: '**', redirectTo: 'docs', pathMatch: 'full' }
-];
-
-@NgModule({
-    imports: [
-        RouterModule.forRoot(routes, , {
-            anchorScrolling: 'enabled',
-            scrollPositionRestoration: 'enabled',
-            preloadingStrategy: PreloadAllModules
-        }),
-    ],
-    exports: [RouterModule]
-})
-export class AppRoutingModule {}
-```
-
-=== app.module.ts
-
-```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-
-import { NGE_DOC_RENDERERS } from '@cisstech/nge/doc';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule
-  ],
+export const appConfig: ApplicationConfig = {
   providers: [
-     // provide NgeMarkdownComponent as a markdown renderer for nge-doc.
-      {
-          provide: NGE_DOC_RENDERERS,
-          useValue: {
-              markdown: {
-                  component: () => import('@cisstech/nge/markdown').then(m => m.NgeMarkdownComponent),
-              }
-          }
-      }
+    provideRouter(routes, withInMemoryScrolling({ anchorScrolling: 'enabled', scrollPositionRestoration: 'enabled' })),
+    provideHttpClient(withFetch()),
+    provideNgeDoc(
+      withMarkdownRenderer({
+        component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),
+      })
+    ),
   ],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+}
 ```
 
 ===
 
-In this example, the `renderer` property of the links refers to markdown files placed in assets folder.
+That is the whole setup. Navigating to `/docs` redirects to the first page, and the sidebar,
+table of contents, breadcrumbs and previous/next links are generated from your page tree.
 
-Since we want to render markdown files, we must provide a markdown renderer component to the library.
-`NgeMarkdownComponent` from [nge-markdown](https://cisstech.github.io/nge/docs/nge-markdown/) library is a component that can render markdown and it's the library used to render the markdown files of this documentation site.
+## Multiple sites
 
-You are free to use the markdown renderer you want by referencing another component that expose a `file` @Input() to render markdown from an url and a `data` @Input() to render a markdown from a string.
+The route `data` also accepts an **array** of `NgeDocSettings`. Each entry is a separate site
+reachable from its own `meta.root`, which is how this documentation hosts `nge/doc`,
+`nge/markdown` and `nge/monaco` side by side. Link them in the header with
+[withNavbar](/docs/nge-doc/advanced-usage).
 
-> The `data` property of the `Router` config accepts also an array of `NgeDocSettings`. In such case, item of the array will refers to a page accessible from `item.meta.root` url.
+## Using another Markdown renderer
+
+`withMarkdownRenderer()` accepts any component that exposes a `data` input (a Markdown string)
+and a `file` input (a URL). Point it at your own component to swap `nge/markdown` for something
+else.
+
+## NgModule apps
+
+`provideNgeDoc()` returns `EnvironmentProviders`, so it also works in an `NgModule`'s
+`providers`. Load the routes with `NGE_DOC_ROUTES` exactly as in a standalone app.

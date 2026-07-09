@@ -18,7 +18,7 @@ const editInGithubAction = (url: string) => {
 
 export const NGE_MARKDOWN: NgeDocSettings = {
   meta: {
-    name: 'Nge markdown',
+    name: 'nge/markdown',
     root: '/docs/nge-markdown/',
     logo: 'assets/images/nge.svg',
     backUrl: '/',

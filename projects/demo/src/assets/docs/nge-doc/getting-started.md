@@ -1,41 +1,34 @@
-# Getting started
+---
+title: Getting started with nge/doc
+description: Build a documentation site for Angular from a route config, Markdown files or live components, with dark mode, search and navigation handled for you.
+---
 
-**nge-doc** is a documentation tool for [Angular](https://angular.io) applications.
-Using nge-doc, you can create a branded static site from a set from Markdown files or a dynamic Angular components to host the documentation of your projects.
+# nge/doc
 
-## Features
+**nge/doc** turns a route configuration into a documentation site, like the one you are
+reading. Pages come from Markdown files, inline Markdown, or live Angular components. The
+engine takes care of navigation, the table of contents, breadcrumbs, previous/next links,
+dark mode and search, so you focus on writing.
 
-* Documentation from markdown files
-* Documentation from Angular dynamically lazy loaded component
-* Depends on only Angular CDK
-* Fully customizable
-* Automatic table of content generation
-* Automatic previous and next link generation
-* Integrated with Angular router
-* Comes with a default styles
+## What you get
 
-## Contribution
+- **Markdown or components.** A page is a Markdown file, a Markdown string, or a lazy-loaded
+  Angular component or module. Mix them freely.
+- **Pluggable themes.** The default theme is a clean light/dark layout. Ship your own with
+  `withTheme()`; each theme is a standalone component with its own layout.
+- **Dark mode.** Light, dark or auto (follows the OS), remembered across visits, with a toggle
+  in the header.
+- **Command palette.** Search pages with `Cmd/Ctrl+K` and navigate with the keyboard.
+- **Header navigation.** Link related sites (packages, versions) in the top bar with `withNavbar()`,
+  and set a fixed logo and title with `withBrand()`.
+- **Reading aids.** Table of contents with scroll spy, breadcrumbs, and previous/next cards,
+  all generated from your page tree.
+- **SEO.** The page title and meta description are set on every navigation, from the link or
+  from Markdown frontmatter.
+- **Standalone and signal based.** Configured through `provideNgeDoc()` and tree-shakeable.
 
-Contributions are always welcome. <br/>
+## Next steps
 
-Please read our [CONTRIBUTING.md](https://github.com/cisstech/nge/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/cisstech/nge/pulls) or as [GitHub issues](https://github.com/cisstech/nge/issues).
-
-Please just make sure that ...
-
-Your code style matches with the rest of the project
-
-Unit tests pass
-
-Linter passes
-
-## Support Development
-
-The use of this library is totally free.
-
-As the owner and primary maintainer of this project, I am putting a lot of time and effort beside my job, my family and my private time to bring the best support I can by answering questions, addressing issues and improving the library to provide more and more features over time.
-
-If this project has been useful, that it helped you or your business to save precious time, don't hesitate to give it a star to support its maintenance and future development.
-
-## License
-
-MIT © [Mamadou Cisse](https://github.com/cisstech)
+- [Installation](/docs/nge-doc/installation) to add it to a project.
+- [Usage](/docs/nge-doc/usage) to render your first pages.
+- [Advanced usage](/docs/nge-doc/advanced-usage) for components, actions, theming and search.
