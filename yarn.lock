@@ -496,13 +496,6 @@
     tslib "^2.3.0"
     zod "^4.0.10"
 
-"@angular/material@^22.0.4":
-  version "22.0.4"
-  resolved "https://registry.yarnpkg.com/@angular/material/-/material-22.0.4.tgz#13d1c9b5af875d4e4f5a4d74127376d2fddf90c4"
-  integrity sha512-htOFlTwMtcB9J4q6yPD9jJIQVJ5LfRub+KAiD4D7UU1iaCknpNuQKRfLrZh/mEdOVACI52jHAOXS3+eTkloXcQ==
-  dependencies:
-    tslib "^2.3.0"
-
 "@angular/platform-browser-dynamic@^22.0.5":
   version "22.0.5"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-22.0.5.tgz#0d811191a9e82ae4d3ab70c79823113575700c1e"

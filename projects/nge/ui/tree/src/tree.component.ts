@@ -12,7 +12,6 @@ import {
   contentChild,
   input,
 } from '@angular/core'
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { BehaviorSubject } from 'rxjs'
 import { CURRENT_VISIBLE_TREES } from './internal'
 import { TreeNodeDirective } from './tree-node.directive'
@@ -48,9 +47,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
 
   private readonly DATA_TREE_NODE_ID = 'data-tree-node-id'
 
-  private readonly flattener: MatTreeFlattener<T, ITreeNodeHolder<T>>
-  private readonly dataSource: MatTreeFlatDataSource<T, ITreeNodeHolder<T>>
-
   private readonly nodesIndex = new Map<string, ITreeNodeHolder<T>>()
   private readonly parentsIndex = new Map<string, string>()
   private readonly hiddenNodes = new Map<string, ITreeNodeHolder<T>>()
@@ -79,15 +75,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
         trackBy: (node) => node,
       }
     )
-
-    this.flattener = new MatTreeFlattener<T, ITreeNodeHolder<T>>(
-      (node, level) => this.transformer(node, level),
-      (node) => node.level,
-      (node) => node.expandable,
-      (node) => this.children(node)
-    )
-
-    this.dataSource = new MatTreeFlatDataSource(this.controler, this.flattener)
 
     // Rebuild the tree whenever the adapter or nodes input changes.
     effect(() => {
@@ -745,7 +732,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
   private buildIndexes(): void {
     this.nodesIndex.clear()
     this.parentsIndex.clear()
-    this.dataSource.data = this.nodes()
+    this.controler.dataNodes = this.flattenNodes(this.nodes())
     this.controler.dataNodes?.forEach((node) => {
       this.nodesIndex.set(node.id, node)
     })
@@ -1006,6 +993,22 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
 
     // instance of T
     return this.findHolderFromData(node as T)
+  }
+
+  /**
+   * Flattens the nested `nodes` into a depth-first list of holders, recursing into
+   * the children of expandable nodes (mirrors the former MatTreeFlattener). The flat
+   * list is what `FlatTreeControl` and the rest of the component operate on.
+   */
+  private flattenNodes(nodes: T[], level = 0, accumulator: ITreeNodeHolder<T>[] = []): ITreeNodeHolder<T>[] {
+    for (const node of nodes) {
+      const holder = this.transformer(node, level)
+      accumulator.push(holder)
+      if (holder.expandable) {
+        this.flattenNodes(this.children(node), level + 1, accumulator)
+      }
+    }
+    return accumulator
   }
 
   private children(node: T): T[] {
