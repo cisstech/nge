@@ -1,3 +1,4 @@
+import { Location } from '@angular/common'
 import { HttpClient } from '@angular/common/http'
 import {
   ChangeDetectionStrategy,
@@ -14,7 +15,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 import { CompilerService } from '@cisstech/nge/services'
 import { Subscription, firstValueFrom } from 'rxjs'
 import { parseFrontmatter } from '../frontmatter'
@@ -36,6 +37,9 @@ export interface NgeDocHeading {
   templateUrl: 'renderer.component.html',
   styleUrls: ['renderer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(click)': 'onHostClick($event)',
+  },
 })
 export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private readonly injector = inject(Injector)
@@ -45,6 +49,8 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
   private readonly activatedRoute = inject(ActivatedRoute)
+  private readonly router = inject(Router)
+  private readonly location = inject(Location)
 
   private subscriptions: Subscription[] = []
   protected readonly loading = signal(false)
@@ -86,6 +92,56 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   scrollToHeading(id: string): void {
     this.headingElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     this.activeHeadingId.set(id)
+  }
+
+  /**
+   * Routes clicks on internal links through the Angular router. Authored Markdown
+   * links are plain anchors (for example `/docs/getting-started`); left to the
+   * browser they trigger a full-page load to an absolute path that ignores the
+   * deployed `<base href>`, so under a base href such as `/nge/` the segment is
+   * dropped. Routing them keeps navigation in the SPA and re-applies the base href.
+   */
+  protected onHostClick(event: MouseEvent): void {
+    // Let the browser handle modified clicks (new tab, download, ...).
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return
+    }
+
+    const anchor = (event.target as HTMLElement | null)?.closest('a')
+    if (!anchor) {
+      return
+    }
+
+    const target = anchor.getAttribute('target')
+    if ((target && target !== '_self') || anchor.hasAttribute('download')) {
+      return
+    }
+
+    let url: URL
+    try {
+      url = new URL(anchor.href)
+    } catch {
+      return
+    }
+
+    // Leave links to other origins to the browser.
+    if (url.origin !== window.location.origin) {
+      return
+    }
+
+    event.preventDefault()
+
+    // `normalize` strips the base href, giving a path the router understands; the
+    // router re-applies the base href when it updates the address bar.
+    const path = this.location.normalize(url.pathname)
+    const fragment = url.hash.replace(/^#/, '')
+
+    if (fragment && path === this.location.path().split('?')[0]) {
+      this.scrollToHeading(fragment)
+      return
+    }
+
+    this.router.navigateByUrl(path + url.search + url.hash)
   }
 
   private showLoading(): void {
