@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser'
 import { provideNgeDoc, withBrand, withMarkdownRenderer, withNavbar } from '@cisstech/nge/doc'
 import {
   NgeMarkdownAdmonitionsProvider,
+  NgeMarkdownComponentsProvider,
   NgeMarkdownConfig,
   NgeMarkdownConfigProvider,
   NgeMarkdownEmojiProvider,
@@ -66,6 +67,9 @@ export function markdownOptions(): NgeMarkdownConfig {
     NgeMarkdownAdmonitionsProvider,
     NgeMarkdownHighlighterProvider,
     NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
+    NgeMarkdownComponentsProvider({
+      'demo-counter': () => import('./markdown/embed-demo/embed-demo.component').then((m) => m.EmbedDemoComponent),
+    }),
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideNgeDoc(
       withBrand({ title: 'NG Essentials', icon: 'assets/images/nge.svg', href: '/' }),

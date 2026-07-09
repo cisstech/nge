@@ -47,6 +47,12 @@ export const NGE_MARKDOWN: NgeDocSettings = {
       renderer: `assets/docs/nge-markdown/usage.md`,
       actions: [editInGithubAction('usage.md')],
     },
+    {
+      title: 'Embedding components',
+      href: 'embedding',
+      renderer: `assets/docs/nge-markdown/embedding.md`,
+      actions: [editInGithubAction('embedding.md')],
+    },
     { separator: true, title: 'Reference', color: '#8b5cf6' },
     () => {
       const link = {

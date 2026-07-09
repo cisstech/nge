@@ -18,6 +18,8 @@ contribution API to extend both the syntax and the generated HTML.
 - **Contributions.** Admonitions, tabbed sets, KaTeX math, emoji, inline icons, router-aware
   links, and syntax highlighting through [nge/monaco](/docs/nge-monaco/getting-started). Add
   only the ones you use.
+- **Embed components.** Drop live Angular components into Markdown by keyword with a small
+  registry. See [Embedding components](/docs/nge-markdown/embedding).
 - **Full access to Marked.** Bring your own `renderer` and `tokenizer`, and read the token list
   after each render with `(render)`.
 - **Your own extensions.** A contribution can transform the raw Markdown, the tokens, the Marked
