@@ -1,17 +1,24 @@
-import { NgeDocLinAction, NgeDocLink, NgeDocSettings } from '@cisstech/nge/doc'
+import { NgeDocIcon, NgeDocLinAction, NgeDocLink, NgeDocSettings } from '@cisstech/nge/doc'
+
+// icongr.am is cross-origin, so provide a per-scheme colored variant (a mask
+// can't recolor a cross-origin icon). Colors match the theme's muted foreground.
+const octicon = (name: string): NgeDocIcon => ({
+  light: `https://icongr.am/octicons/${name}.svg?color=52525b`,
+  dark: `https://icongr.am/octicons/${name}.svg?color=a1a1aa`,
+})
 
 const editInGithubAction = (url: string) => {
   const base = 'https://github.com/cisstech/nge/tree/main/projects/demo/src/assets/docs/nge-markdown/'
   return {
     title: 'Edit on github',
-    icon: 'https://icongr.am/octicons/mark-github.svg',
+    icon: octicon('pencil'),
     run: base + url,
   } as NgeDocLinAction
 }
 
 export const NGE_MARKDOWN: NgeDocSettings = {
   meta: {
-    name: 'Nge markdown',
+    name: 'nge/markdown',
     root: '/docs/nge-markdown/',
     logo: 'assets/images/nge.svg',
     backUrl: '/',
@@ -21,6 +28,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
     },
   },
   pages: [
+    { separator: true, title: 'Guides', color: '#10b981' },
     {
       title: 'Getting Started',
       href: 'getting-started',
@@ -39,6 +47,13 @@ export const NGE_MARKDOWN: NgeDocSettings = {
       renderer: `assets/docs/nge-markdown/usage.md`,
       actions: [editInGithubAction('usage.md')],
     },
+    {
+      title: 'Embedding components',
+      href: 'embedding',
+      renderer: `assets/docs/nge-markdown/embedding.md`,
+      actions: [editInGithubAction('embedding.md')],
+    },
+    { separator: true, title: 'Reference', color: '#8b5cf6' },
     () => {
       const link = {
         title: 'Contributions',
@@ -63,7 +78,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
           actions: [
             {
               title: 'View source',
-              icon: 'https://icongr.am/octicons/code.svg',
+              icon: octicon('code'),
               run: base + 'nge-markdown-' + snakecase + '.ts',
             },
             editInGithubAction('contributions/' + snakecase + '.md'),

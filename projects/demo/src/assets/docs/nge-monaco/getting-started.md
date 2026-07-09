@@ -1,41 +1,29 @@
-# Getting started
+---
+title: Getting started with nge/monaco
+description: Embed the Monaco editor in Angular with editor, diff editor and read-only viewer components, a theming API with automatic light/dark switching, and full control over the editor instance.
+---
 
-**nge-monaco** is an [Angular](https://angular.io) library that allow you to use [Monaco Editor](https://microsoft.github.io/monaco-editor/) in your projects.
+# nge/monaco
 
-## Features
+**nge/monaco** brings the [Monaco editor](https://microsoft.github.io/monaco-editor/), the editor
+that powers VS Code, into Angular. It wraps Monaco in components while leaving the editor instance
+fully in your hands.
 
-- nge-monaco-editor component to display an instance of monaco editor.
-- nge-monaco-diff-editor component to display an instance of monaco diff editor.
-- nge-monaco-viewer to highlight a code block.
-- expose a theming api to easily create new themes and change the editor theme.
-- comes with a set of ready to use themes.
-- contribution system to extends monaco editor api.
-- full control over the monaco editor instances.
-- ability to localize the editor user interface.
-- load from a cdn by default.
+## What you get
 
-## Contribution
+- **Three components.** An editor, a side-by-side diff editor, and a read-only viewer for
+  highlighting a code block.
+- **Theming.** A set of ready-to-use themes, an API to switch at runtime, and automatic
+  light/dark switching driven by a CSS class or the OS preference.
+- **Full control.** You create and own the `ITextModel`, so binding, languages and disposal work
+  exactly the way Monaco intends.
+- **Extensible.** Register contributions to add languages, completions or any Monaco API once the
+  editor loads.
+- **Loads from a CDN by default.** Point it at your own server to self-host, and localize the
+  editor UI.
 
-Contributions are always welcome. <br/>
+## Next steps
 
-Please read our [CONTRIBUTING.md](https://github.com/cisstech/nge-monaco/blob/master/CONTRIBUTING.md) first. You can submit any ideas as [pull requests](https://github.com/cisstech/nge-monaco/pulls) or as [GitHub issues](https://github.com/cisstech/nge-monaco/issues).
-
-Please just make sure that ...
-
-Your code style matches with the rest of the project
-
-Unit tests pass
-
-Linter passes
-
-## Support Development
-
-The use of this library is totally free.
-
-As the owner and primary maintainer of this project, I am putting a lot of time and effort beside my job, my family and my private time to bring the best support I can by answering questions, addressing issues and improving the library to provide more and more features over time.
-
-If this project has been useful, that it helped you or your business to save precious time, don't hesitate to give it a star to support its maintenance and future development.
-
-## License
-
-MIT © [Mamadou Cisse](https://github.com/cisstech)
+- [Installation](/docs/nge-monaco/installation) to add it to a project.
+- [Usage](/docs/nge-monaco/usage) for the components, theming and extensions.
+- [Showcase](/docs/nge-monaco/showcase) to see the components running.

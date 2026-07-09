@@ -1,45 +1,26 @@
-# TabbetSet
+---
+title: TabbedSet
+description: Group alternative content, such as code for several languages, under tabs.
+---
 
-Sometimes, it's desirable to group alternative content under different tabs. **TabbetSet** contribution allows for beautiful and functional tabs, grouping code blocks and other content.
+# TabbedSet
 
-## Configuration
+Group alternative content under tabs, for example the same setup shown for npm and yarn, or a
+snippet in several languages.
 
-```typescript highlights="6-9 18 21"
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+## Register
 
-import {
-  NgeMarkdownModule,
-  NgeMarkdownTabbetSetProvider,
-} from '@cisstech/nge/markdown';
+```typescript
+import { NgeMarkdownTabbedSetProvider } from '@cisstech/nge/markdown'
 
-import { AppComponent } from './app.component';
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    NgeMarkdownModule,
-    BrowserAnimationsModule,
-  ],
-  providers: [NgeMarkdownTabbetSetProvider],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
+// add to your app providers (see Usage for the full setup)
+providers: [NgeMarkdownTabbedSetProvider]
 ```
 
-## Usage
+## Syntax
 
-**TabbetSet** follow a simple syntax:
-
-* Each tab must start with `===` followed by a text which is used as the title of the tab then a blank line.
-* The content can contain arbitrary nested content, except further content tabs.
-* The set must end with a blank line followed by `===` .
-
-Example:
+Each tab starts with `===` followed by its title, then a blank line and the content. Close the set
+with a line holding only `===`.
 
 ````plaintext
 === Code
@@ -55,9 +36,9 @@ int main(void) {
 
 === List
 
-* Sed sagittis eleifend rutrum
-* Donec vitae suscipit est
-* Nulla tempor lobortis orci
+- Sed sagittis eleifend rutrum
+- Donec vitae suscipit est
+- Nulla tempor lobortis orci
 
 ===
 ````
@@ -77,12 +58,13 @@ int main(void) {
 
 === List
 
-* Sed sagittis eleifend rutrum
-* Donec vitae suscipit est
-* Nulla tempor lobortis orci
+- Sed sagittis eleifend rutrum
+- Donec vitae suscipit est
+- Nulla tempor lobortis orci
 
 ===
 
 :::+ note
-Tabs can contain arbitrary nested content, except further content tabs, and can be nested in other blocks like admonitions, details or blockquotes.
+A tab can hold arbitrary content and nest inside other blocks (admonitions, blockquotes), but it
+cannot contain another tab set.
 :::

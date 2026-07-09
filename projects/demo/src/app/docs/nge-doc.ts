@@ -2,7 +2,7 @@ import { NgeDocSettings } from '@cisstech/nge/doc'
 
 export const NGE_DOC: NgeDocSettings = {
   meta: {
-    name: 'Nge doc',
+    name: 'nge/doc',
     root: '/docs/nge-doc/',
     logo: 'assets/images/nge.svg',
     backUrl: '/',

@@ -1,1 +1,5 @@
-<nge-doc-default-layout />
+@if (layout(); as layout) {
+  <ng-container *ngComponentOutlet="layout" />
+} @else {
+  <div class="nge-doc-booting" role="status" aria-label="Loading documentation"></div>
+}

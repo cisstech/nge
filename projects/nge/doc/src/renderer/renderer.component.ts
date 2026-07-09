@@ -4,18 +4,32 @@ import {
   ChangeDetectorRef,
   Component,
   ComponentRef,
+  ElementRef,
   Injector,
   OnDestroy,
   OnInit,
   Type,
   ViewContainerRef,
   inject,
+  signal,
   viewChild,
 } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 import { CompilerService } from '@cisstech/nge/services'
 import { Subscription, firstValueFrom } from 'rxjs'
+import { parseFrontmatter } from '../frontmatter'
 import { NGE_DOC_RENDERERS, NgeDocState } from '../nge-doc'
 import { NgeDocService } from '../nge-doc.service'
+
+/** A heading extracted from the rendered page, used to build a table of contents. */
+export interface NgeDocHeading {
+  /** Slug assigned to the heading element, usable as a url fragment. */
+  id: string
+  /** Text content of the heading. */
+  label: string
+  /** Heading level (2 for `h2`, 3 for `h3`). */
+  level: number
+}
 
 @Component({
   selector: 'nge-doc-renderer',
@@ -29,33 +43,59 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private readonly docService = inject(NgeDocService)
   private readonly compilerService = inject(CompilerService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef)
+  private readonly activatedRoute = inject(ActivatedRoute)
 
   private subscriptions: Subscription[] = []
-  protected loading = false
-  protected noFound = false
+  protected readonly loading = signal(false)
+  protected readonly notFound = signal(false)
   protected componentRefByTypes = new Map<Type<any>, ComponentRef<any>>()
 
   componentRef?: ComponentRef<any>
 
+  /** Headings of the current page, in document order. */
+  readonly headings = signal<NgeDocHeading[]>([])
+  /** Id of the heading currently in view, driven by scroll position. */
+  readonly activeHeadingId = signal<string | null>(null)
+
   readonly container = viewChild.required('container', { read: ViewContainerRef })
+
+  private contentObserver?: MutationObserver
+  private headingObserver?: IntersectionObserver
+  private headingElements: HTMLHeadingElement[] = []
+  private readonly visibility = new Map<Element, boolean>()
+  private syncScheduled = false
 
   ngOnInit(): void {
     this.subscriptions.push(this.docService.stateChanges.subscribe(this.onChangeState.bind(this)))
+
+    // Markdown renders asynchronously, so watch the host for content mutations
+    // and rebuild the heading list once the page settles.
+    this.contentObserver = new MutationObserver(() => this.scheduleSync())
+    this.contentObserver.observe(this.elementRef.nativeElement, { childList: true, subtree: true })
   }
 
   ngOnDestroy(): void {
     this.clearViewContainer()
+    this.contentObserver?.disconnect()
+    this.headingObserver?.disconnect()
     this.subscriptions.forEach((s) => s.unsubscribe())
   }
 
+  /** Scrolls a heading into view, offset by the sticky header via `scroll-margin-top`. */
+  scrollToHeading(id: string): void {
+    this.headingElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    this.activeHeadingId.set(id)
+  }
+
   private showLoading(): void {
-    this.loading = true
+    this.loading.set(true)
 
     // if loading is still true after 1s then we force change detection
     // This is useful to show the loading indicator only if the loading is not too fast
     // so that the loading indicator does not blink.
     setTimeout(() => {
-      if (this.loading) {
+      if (this.loading()) {
         this.changeDetectorRef.markForCheck()
       }
     }, 1000)
@@ -97,9 +137,10 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.error(error)
     } finally {
-      this.loading = false
-      this.noFound = !this.componentRef
+      this.loading.set(false)
+      this.notFound.set(!this.componentRef)
       this.changeDetectorRef.markForCheck()
+      this.scheduleSync()
     }
   }
 
@@ -129,6 +170,11 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
           data: await firstValueFrom(http.get(data, { responseType: 'text' })),
         }
       }
+
+      // Strip an optional frontmatter block and feed its title/description to SEO.
+      const parsed = parseFrontmatter(inputs['data'])
+      inputs['data'] = parsed.content
+      this.applyFrontmatterSeo(parsed.data)
 
       let customInputs: Record<string, any> = {}
       if (typeof renderer.inputs === 'function') {
@@ -165,5 +211,105 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     })
 
     componentRef.changeDetectorRef.markForCheck()
+  }
+
+  /** Debounces heading extraction so a burst of DOM mutations rebuilds the list once. */
+  private scheduleSync(): void {
+    if (this.syncScheduled) {
+      return
+    }
+    this.syncScheduled = true
+    setTimeout(() => {
+      this.syncScheduled = false
+      this.syncHeadings()
+    }, 50)
+  }
+
+  private syncHeadings(): void {
+    const host = this.elementRef.nativeElement
+    const elements = Array.from(host.querySelectorAll<HTMLHeadingElement>('h2, h3')).filter((el) =>
+      el.textContent?.trim()
+    )
+
+    const used = new Set<string>()
+    const headings = elements.map((el) => {
+      const label = el.textContent!.trim()
+      const base = el.id || this.slugify(label) || 'section'
+      let id = base
+      let index = 2
+      while (used.has(id)) {
+        id = `${base}-${index++}`
+      }
+      used.add(id)
+
+      el.id = id
+      el.style.scrollMarginTop = 'var(--nge-doc-scroll-margin, 5rem)'
+      return { id, label, level: el.tagName === 'H2' ? 2 : 3 }
+    })
+
+    this.headingElements = elements
+    this.headings.set(headings)
+    this.observeHeadings()
+    this.scrollToInitialFragment()
+  }
+
+  private observeHeadings(): void {
+    this.headingObserver?.disconnect()
+    this.visibility.clear()
+    if (!this.headingElements.length || typeof IntersectionObserver === 'undefined') {
+      return
+    }
+
+    this.headingObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          this.visibility.set(entry.target, entry.isIntersecting)
+        }
+        const active = this.headingElements.find((el) => this.visibility.get(el))
+        if (active) {
+          this.activeHeadingId.set(active.id)
+        }
+      },
+      { rootMargin: '-80px 0px -66% 0px', threshold: 0 }
+    )
+
+    this.headingElements.forEach((el) => this.headingObserver!.observe(el))
+  }
+
+  /** Re-applies the url fragment once the (async) content that owns it exists. */
+  private scrollToInitialFragment(): void {
+    const fragment = this.activatedRoute.snapshot.fragment
+    if (!fragment) {
+      return
+    }
+    const target = this.headingElementById(fragment)
+    if (target) {
+      target.scrollIntoView({ block: 'start' })
+      this.activeHeadingId.set(fragment)
+    }
+  }
+
+  private headingElementById(id: string): HTMLHeadingElement | null {
+    const escaped = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(id) : id
+    return this.elementRef.nativeElement.querySelector<HTMLHeadingElement>(`#${escaped}`)
+  }
+
+  /** Refines the page SEO with a title/description declared in the frontmatter. */
+  private applyFrontmatterSeo(frontmatter: Record<string, string>): void {
+    if (!frontmatter['title'] && !frontmatter['description']) {
+      return
+    }
+    const link = this.docService.currLink()
+    this.docService.setSeo(frontmatter['title'] ?? link?.title ?? '', frontmatter['description'] ?? link?.description)
+  }
+
+  private slugify(text: string): string {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_]+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
   }
 }

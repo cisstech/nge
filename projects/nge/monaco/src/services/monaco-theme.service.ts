@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http'
-import { Injectable, inject } from '@angular/core'
+import { DOCUMENT, Injectable, inject } from '@angular/core'
 import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { NgeMonacoContribution } from '../contributions/monaco-contribution'
@@ -10,11 +10,13 @@ import { NGE_MONACO_CONFIG, NgeMonacoConfig } from '../monaco-config'
 export class NgeMonacoThemeService implements NgeMonacoContribution {
   private readonly http = inject(HttpClient, { optional: true })
   private readonly config = inject<NgeMonacoConfig>(NGE_MONACO_CONFIG, { optional: true })
+  private readonly document = inject(DOCUMENT)
 
   private readonly themes = new BehaviorSubject<string[]>([])
   private readonly activeTheme = new BehaviorSubject<NgeMonacoTheme | undefined>(undefined)
 
   private themeService: any
+  private colorSchemeObserver?: MutationObserver
 
   /**
    * Gets the current active theme of monaco editor (undefined if monaco editor is not loaded).
@@ -53,8 +55,43 @@ export class NgeMonacoThemeService implements NgeMonacoContribution {
 
     this.retrieveThemes()
 
-    await this.setTheme(this.config?.theming?.default || 'vs')
+    const theming = this.config?.theming
+    if (theming?.light && theming?.dark) {
+      await this.startColorSchemeSync(theming.light, theming.dark, theming.darkThemeClassName)
+    } else {
+      await this.setTheme(theming?.default || 'vs')
+    }
     node.remove()
+  }
+
+  /**
+   * Applies the light/dark theme according to the current color scheme and keeps
+   * it in sync. Detection is either a class on the document root or, when no
+   * class is given, the `(prefers-color-scheme: dark)` media query. This is how
+   * an app (or nge-doc) drives Monaco's theme without any coupling.
+   */
+  private async startColorSchemeSync(light: string, dark: string, darkThemeClassName?: string): Promise<void> {
+    const doc = this.document
+    const media = doc.defaultView?.matchMedia?.('(prefers-color-scheme: dark)')
+    // Apps put the dark class on <html> or <body>, so check both roots.
+    const hasDarkClass = (cls: string) =>
+      doc.documentElement.classList.contains(cls) || !!doc.body?.classList.contains(cls)
+    const isDark = () => (darkThemeClassName ? hasDarkClass(darkThemeClassName) : !!media?.matches)
+    const apply = () => this.setTheme(isDark() ? dark : light).catch(() => undefined)
+
+    await apply()
+
+    if (darkThemeClassName) {
+      this.colorSchemeObserver?.disconnect()
+      this.colorSchemeObserver = new MutationObserver(() => apply())
+      const options: MutationObserverInit = { attributes: true, attributeFilter: ['class'] }
+      this.colorSchemeObserver.observe(doc.documentElement, options)
+      if (doc.body) {
+        this.colorSchemeObserver.observe(doc.body, options)
+      }
+    } else {
+      media?.addEventListener?.('change', () => apply())
+    }
   }
 
   /**

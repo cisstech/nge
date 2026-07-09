@@ -1,10 +1,10 @@
-@if (loading) {
+@if (loading()) {
   <div class="loading-container">
     <div class="loading-spinner"></div>
     <div class="loading-text">Loading...</div>
   </div>
 }
-@if (noFound) {
+@if (notFound()) {
   <div>
     <h1>Ooops!</h1>
     <hr />

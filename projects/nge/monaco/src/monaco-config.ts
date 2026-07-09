@@ -25,6 +25,26 @@ export interface NgeMonacoConfig {
     themes?: string[]
     /** default theme 'vs' */
     default?: string
+    /**
+     * Theme to apply when the color scheme is light.
+     *
+     * Setting both `light` and `dark` enables automatic switching: Monaco picks
+     * the matching theme and updates whenever the scheme changes. This lets any
+     * app (or nge-doc, without depending on it) drive Monaco's theme.
+     */
+    light?: string
+    /** Theme to apply when the color scheme is dark (see {@link light}). */
+    dark?: string
+    /**
+     * How dark mode is detected for automatic switching:
+     * - a class name that means "dark" when present on the document root
+     *   (e.g. `nge-doc-dark` or `dark`), observed live
+     * - omit to follow the `(prefers-color-scheme: dark)` media query
+     *
+     * Named to mirror `NgeMarkdownConfig.darkThemeClassName` so both libraries
+     * read the same class.
+     */
+    darkThemeClassName?: string
   }
 }
 

@@ -43,6 +43,7 @@
     "release:major": "standard-version --release-as major",
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
+    "release:as": "standard-version --release-as",
     "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json"
   },
   "private": false,
@@ -85,7 +86,7 @@
     "@types/jest": "^30.0.0",
     "@types/marked": "^4.0.1",
     "@types/mime-db": "^1.43.5",
-    "@types/node": "^22.0.0",
+    "@types/node": "^24",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",

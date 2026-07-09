@@ -1,0 +1,18 @@
+@if (prev() || next()) {
+  <nav class="pager" [attr.aria-label]="labels.pagination">
+    @if (prev(); as p) {
+      <a class="prev" [routerLink]="p.href">
+        <span class="dir"><kbd class="kbd" aria-hidden="true">←</kbd> {{ labels.previous }}</span>
+        <span class="title">{{ p.title }}</span>
+      </a>
+    } @else {
+      <span></span>
+    }
+    @if (next(); as n) {
+      <a class="next" [routerLink]="n.href">
+        <span class="dir">{{ labels.next }} <kbd class="kbd" aria-hidden="true">→</kbd></span>
+        <span class="title">{{ n.title }}</span>
+      </a>
+    }
+  </nav>
+}

@@ -27,6 +27,16 @@ export declare type NgeDocRenderers = {
 
 export declare type NgeDocLinkActionHandler = string | ((injector: Injector) => void | Promise<void>)
 
+/**
+ * An icon reference.
+ *
+ * - A single url is rendered as-is (and, for monochrome chrome icons, recolored
+ *   to the current text color by the theme so it works in light and dark).
+ * - A `{ light, dark }` pair lets you provide a distinct asset per color scheme,
+ *   useful for multicolor icons or logos that cannot be recolored.
+ */
+export declare type NgeDocIcon = string | { light: string; dark: string }
+
 /** Documentation site config. */
 export interface NgeDocSettings {
   /** Metadata informations about a documentation site. */
@@ -41,8 +51,8 @@ export interface NgeDocMeta {
   name: string
   /** Root url of the documentation site. (absolute url starting with `/`)  */
   root: string
-  /** Url to the logo to the documentation logo. */
-  logo?: string
+  /** Icon of the documentation logo. */
+  logo?: NgeDocIcon
   /** Optional back url (use of Angular [routerLink]) */
   backUrl?: string
 
@@ -62,13 +72,13 @@ export interface NgeDocMeta {
   /** social links to show insides the footer */
   links?: {
     href: string
-    icon: string
+    icon: NgeDocIcon
   }[]
 }
 
 export interface NgeDocLinAction {
-  /** Url to an icon to render. */
-  icon?: string
+  /** Icon to render for the action. */
+  icon?: NgeDocIcon
   /** Title of the action. */
   title?: string
   /** Action tooltip */
@@ -81,10 +91,12 @@ export interface NgeDocLinAction {
  * Representation of a link in the documentation navigation.
  */
 export interface NgeDocLink {
-  /** Url to display in the browser navigation bar. */
-  href: string
+  /** Url to display in the browser navigation bar. Omitted for separators. */
+  href?: string
   /** Title of the link */
   title: string
+  /** Optional page description, used for the `<meta name="description">` tag. */
+  description?: string
   /**
    * Content to render once the link is displayed.
    *
@@ -130,10 +142,18 @@ export interface NgeDocLink {
   children?: NgeDocLink[]
   /** A value indicating whether the link is expanded or not. */
   expanded?: boolean
+  /**
+   * Renders this entry as a non-clickable section heading in the sidebar rather
+   * than a link. A separator groups the entries that follow it and is not routed,
+   * so the pages under it keep their own urls.
+   */
+  separator?: boolean
+  /** Accent color (any CSS color) shown as the separator's dot. */
+  color?: string
   /** Inputs to pass to the dynamic renderered component if `renderer` is a dynamic component. */
   inputs?: Record<string, any>
   /** Optional icon */
-  icon?: string
+  icon?: NgeDocIcon
   /** Custom actions */
   actions?: NgeDocLinAction[]
 }

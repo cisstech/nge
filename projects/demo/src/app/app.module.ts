@@ -2,12 +2,12 @@
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http'
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 // LIBS
-import { NGE_DOC_RENDERERS } from '@cisstech/nge/doc'
+import { provideNgeDoc, withBrand, withMarkdownRenderer, withNavbar } from '@cisstech/nge/doc'
 import {
   NgeMarkdownAdmonitionsProvider,
+  NgeMarkdownComponentsProvider,
   NgeMarkdownConfig,
   NgeMarkdownConfigProvider,
   NgeMarkdownEmojiProvider,
@@ -28,7 +28,8 @@ import { AppComponent } from './app.component'
 
 export function markdownOptions(): NgeMarkdownConfig {
   return {
-    darkThemeClassName: 'dark-theme',
+    // Align nge-markdown's dark detection with the class NgeDocThemeService toggles.
+    darkThemeClassName: 'nge-doc-dark',
   }
 }
 
@@ -43,10 +44,14 @@ export function markdownOptions(): NgeMarkdownConfig {
       theming: {
         themes: NGE_MONACO_THEMES.map((theme) => 'assets/nge/monaco/themes/' + theme),
         default: 'github',
+        // Follow the documentation color scheme: nge-doc toggles `nge-doc-dark`
+        // on <html>, and Monaco switches themes accordingly (no coupling).
+        light: 'github',
+        dark: 'tomorrow-night',
+        darkThemeClassName: 'nge-doc-dark',
       },
     }),
     AppRoutingModule,
-    BrowserAnimationsModule,
   ],
   providers: [
     NgeMarkdownConfigProvider(markdownOptions),
@@ -62,15 +67,27 @@ export function markdownOptions(): NgeMarkdownConfig {
     NgeMarkdownAdmonitionsProvider,
     NgeMarkdownHighlighterProvider,
     NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
-    {
-      provide: NGE_DOC_RENDERERS,
-      useValue: {
-        markdown: {
-          component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),
-        },
-      },
-    },
+    NgeMarkdownComponentsProvider({
+      'demo-counter': () => import('./markdown/embed-demo/embed-demo.component').then((m) => m.EmbedDemoComponent),
+      'ui-tree-demo': () => import('./ui-demos/ui-tree-demo.component').then((m) => m.UiTreeDemoComponent),
+      'ui-list-demo': () => import('./ui-demos/ui-list-demo.component').then((m) => m.UiListDemoComponent),
+      'ui-icon-demo': () => import('./ui-demos/ui-icon-demo.component').then((m) => m.UiIconDemoComponent),
+    }),
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
+    provideNgeDoc(
+      withBrand({ title: 'NG Essentials', icon: 'assets/images/nge.svg', href: '/' }),
+      withNavbar([
+        { title: 'Overview', href: '/docs/overview/', icon: 'assets/icons/nav/overview.svg' },
+        { title: 'nge/doc', href: '/docs/nge-doc/', icon: 'assets/icons/nav/doc.svg' },
+        { title: 'nge/markdown', href: '/docs/nge-markdown/', icon: 'assets/icons/nav/markdown.svg' },
+        { title: 'nge/monaco', href: '/docs/nge-monaco/', icon: 'assets/icons/nav/monaco.svg' },
+        { title: 'nge/ui', href: '/docs/nge-ui/', icon: 'assets/icons/nav/ui.svg' },
+        { title: 'Utilities', href: '/docs/utilities/', icon: 'assets/icons/nav/utils.svg' },
+      ]),
+      withMarkdownRenderer({
+        component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),
+      })
+    ),
   ],
 })
 export class AppModule {}

@@ -1,21 +1,22 @@
 <h1>Cheatsheet</h1>
 <p>
   The following examples are intended as a quick markdown reference and showcase. Some of the examples are based on
-  <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Adam Pritchard work</a>
-  of Markdown Cheat Sheet.
+  <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank" rel="noopener"
+    >Adam Pritchard's Markdown Cheat Sheet</a
+  >.
 </p>
-<mat-accordion multi>
-  @for (item of titles; track $index) {
-    <mat-expansion-panel (opened)="load(item)">
-      <mat-expansion-panel-header>{{ item }}</mat-expansion-panel-header>
-      <ng-template matExpansionPanelContent>
-        <section>
-          <mat-form-field appearance="fill">
-            <textarea cdkTextareaAutosize matInput [(ngModel)]="contents[item].markdown"></textarea>
-          </mat-form-field>
-          <nge-markdown [data]="contents[item].markdown"></nge-markdown>
-        </section>
-      </ng-template>
-    </mat-expansion-panel>
-  }
-</mat-accordion>
+
+@for (item of titles; track item) {
+  <details class="cheat-item" (toggle)="onToggle(item, $event)">
+    <summary>{{ item }}</summary>
+    <div class="cheat-body">
+      <textarea
+        [ngModel]="contents()[item].markdown"
+        (ngModelChange)="onEdit(item, $event)"
+        spellcheck="false"
+        aria-label="Markdown source"
+      ></textarea>
+      <nge-markdown [data]="contents()[item].markdown" />
+    </div>
+  </details>
+}

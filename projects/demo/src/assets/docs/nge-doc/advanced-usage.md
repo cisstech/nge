@@ -1,135 +1,185 @@
+---
+title: Advanced usage
+description: Page renderers, dynamic and nested pages, actions and icons, the header navbar, dark mode, search, frontmatter and custom themes.
+---
+
 # Advanced usage
 
-The full list of properties supported by NgeDoc configuration object can be found [here](https://github.com/cisstech/nge-doc/blob/69e02ae21e37fc75345b5cba537233930d2bd388/projects/nge-doc/src/lib/nge-doc.ts#L13).
+## Page renderers
 
-=== app-routing.module.ts
+A page's `renderer` can be any of:
+
+- **A file URL** (a single-line string): loaded and rendered as Markdown.
+- **Inline Markdown** (a multi-line string): rendered as-is.
+- **A component**: `() => import('./demo.component').then((m) => m.DemoComponent)`.
+- **A module**: `() => import('./demo.module').then((m) => m.DemoModule)`, where the module
+  exposes a `component` field. Use a module when the rendered component needs its own imports.
+
+Pass inputs to a component page with `inputs`.
 
 ```typescript
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { NgeDocSettings, NgeDocLink, NgeDocSettings } from '@cisstech/nge/doc';
-
-const routes: Routes = [
-    {
-        path: 'docs',
-        loadChildren: () => import('@cisstech/nge/doc').then(m => m.NgeDocModule),
-        data: {
-          meta: {
-              name: 'Ngedoc',
-              root: '/docs/',
-              repo: {
-                  name: 'nge-doc',
-                  url: 'https://github.com/cisstech/nge-doc',
-              },
-          },
-          pages: [
-            { title: 'Markdown from fIle', href: 'md-from-file', renderer: 'assets/docs/getting-started' },
-            {
-              title: 'Inline markdown',
-              href: 'inline-markdown',
-              renderer: `
-              # H1
-              ## H2
-              ....
-              `
-            },
-            {
-              title: 'MyComponent',
-              href: 'my-component',
-              renderer: () => import('./my-component').then(m => m.MyComponent),
-              actions: [
-                { title: 'MyActionToOpenAnUrl', run: 'https://github.com/cisstech/nge-doc' }, // action to open an url
-                { title: 'MyDynamicAction', icon: 'https://....', run: injector => alert('My Action Handler') }
-              ]
-            },
-            {
-              title: 'MyModule',
-              href: 'my-module',
-              renderer: () => import('./my-module').then(m => m.MyModule)
-            },
-            (injector) => {
-              const random = () => {
-                  const pages: NgeDocLink[] = [];
-                  for (let i = 0; i < 15; i++) {
-                      const renderer = (i % 2 == 0)
-                        ? 'LINK TO A MARKDOWN FILE'
-                        : `
-                        # Inline Markdown
-                        lorem ipsum
-                        `
-                      ;
-                      pages.push({
-                          title: 'Dynamic ' + i,
-                          href: 'dynamic_' + i,
-                          renderer,
-                      });
-                  }
-                  return pages;
-              };
-              return Promise.resolve({
-                  title: 'Dynamic',
-                  href: 'dynamic',
-                  renderer: 'assets/docs/getting-started',
-                  children: random()
-              });
-            }
-          ],
-        } as NgeDocSettings,
-    },
-    { path: '**', redirectTo: 'docs', pathMatch: 'full' }
-];
-
-@NgModule({
-    imports: [
-        RouterModule.forRoot(routes, , {
-            anchorScrolling: 'enabled',
-            scrollPositionRestoration: 'enabled',
-            preloadingStrategy: PreloadAllModules
-        }),
-    ],
-    exports: [RouterModule]
-})
-export class AppRoutingModule {}
+{ title: 'Playground', href: 'playground', renderer: () => import('./playground.component').then((m) => m.PlaygroundComponent), inputs: { theme: 'dark' } }
 ```
 
-=== my-component.ts
+## Dynamic and nested pages
+
+A page entry can be a function of the environment injector, sync or async, returning one link
+or many. Return `children` to build a nested section (rendered as a group in the sidebar).
 
 ```typescript
-import { Component } from '@angular/core';
+pages: [
+  (injector) => {
+    const api = injector.get(ApiService)
+    return api.listGuides().then((guides) => ({
+      title: 'Guides',
+      href: 'guides',
+      children: guides.map((g) => ({ title: g.title, href: g.slug, renderer: g.url })),
+    }))
+  },
+]
+```
 
-@Component({
-  selector: 'app-my-component',
-  template: `
-    <h1 *ngIf="name; else: noName">hello {{name}}</h1>
-    <ng-template #noName>
-    hello world
-    </ng-template>
-  `
-})
-export class MyComponent {
-  @Input()
-  name: string;
-}
-````
+## Section separators
 
-=== my-module.ts
-
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+Group the sidebar with headings. A separator is a flat entry, not a parent, so the pages that
+follow it keep their own urls. Add `color` for a small accent dot next to the heading.
 
 ```typescript
-@NgModule({
-  imports: [
-    CommonModule
+pages: [
+  { separator: true, title: 'Guides', color: '#10b981' },
+  { title: 'Getting started', href: 'getting-started', renderer: 'assets/docs/getting-started.md' },
+  { title: 'Installation', href: 'installation', renderer: 'assets/docs/installation.md' },
+  { separator: true, title: 'Reference' },
+  { title: 'API', href: 'api', renderer: 'assets/docs/api.md' },
+]
+```
+
+## Actions and icons
+
+Each page can declare header `actions`. A string handler opens a URL in a new tab; a function
+handler receives the injector.
+
+```typescript
+{
+  title: 'API',
+  href: 'api',
+  renderer: 'assets/docs/api.md',
+  icon: 'assets/icons/api.svg',
+  actions: [
+    { title: 'Edit on GitHub', icon: editIcon, run: 'https://github.com/me/my-lib/edit/main/docs/api.md' },
+    { title: 'Copy link', run: (injector) => injector.get(ClipboardService).copy(location.href) },
   ],
-  declarations: [
-    MyComponent
-  ]
-})
-export class MyModule {
-  // REGISTER MyComponent as the component to lazy load.
-  component = MyComponent;
 }
 ```
 
-===
+Any `icon` (on a link, an action, a nav item or the logo) is an `NgeDocIcon`: a single URL,
+or a `{ light, dark }` pair for a different asset per color scheme. The default theme recolors
+monochrome same-origin icons to the current text color automatically.
+
+## Brand
+
+The header shows the active site's `name` and `logo`, so the brand width follows the current
+site. Set one brand for the whole documentation with `withBrand()` to keep the header stable;
+site names still drive breadcrumbs and page titles.
+
+```typescript
+provideNgeDoc(
+  withBrand({ title: 'NG Essentials', icon: 'assets/logo.svg', href: '/' })
+)
+```
+
+`icon` is an `NgeDocIcon` (a URL, or a `{ light, dark }` pair) and `href` is where clicking the
+brand navigates (defaults to `/`).
+
+## Header navigation
+
+Link related sites (packages, versions, external pages) in the top bar. Without it, the theme
+lists the registered sites automatically.
+
+```typescript
+provideNgeDoc(
+  withNavbar([
+    { title: 'Docs', href: '/docs/' },
+    { title: 'Changelog', href: 'https://github.com/me/my-lib/releases', external: true },
+  ])
+)
+```
+
+## Dark mode
+
+The default theme ships a light/dark toggle. Set the initial scheme with `withDarkMode('auto' | 'dark' | 'light')`
+(defaults to `auto`, which follows the OS and is remembered across visits).
+
+`NgeDocThemeService` owns the scheme: read `isDark()`, call `toggle()` or `setScheme()`, and it
+reflects the result as a `nge-doc-dark` class on the document root while the docs are on screen.
+Other libraries can follow that class; for example `nge/monaco` can switch its editor theme
+through its `theming.darkThemeClassName` option.
+
+## Search
+
+The default theme includes a command palette. Press `Cmd/Ctrl+K` (or the header search box) to
+search page titles and jump with the keyboard. Nothing to configure.
+
+## Keyboard
+
+The default theme is navigable from the keyboard. `Cmd/Ctrl+K` opens search, and `←` / `→` move
+to the previous and next page in reading order. On navigation, focus moves to the content so the
+page scrolls with the keyboard right away. Shortcuts stay out of the way while you type in a field.
+
+## Frontmatter and SEO
+
+On every navigation the engine sets the document title (`Page · Site`) and the meta description,
+from the link's `title`/`description`. A Markdown page can also carry a small frontmatter block,
+which overrides them and is stripped before rendering:
+
+```markdown
+---
+title: Configuring the router
+description: How the docs engine plugs into the Angular router.
+---
+
+# Configuring the router
+```
+
+## Custom theme
+
+The default theme is a standalone component mounted by the engine. Ship your own layout with
+`withTheme()`; it receives the engine services (`NgeDocService`, `NgeDocThemeService`) through
+dependency injection and renders the content with `<nge-doc-renderer>`.
+
+```typescript
+provideNgeDoc(withTheme(() => import('./my-theme.component').then((m) => m.MyThemeComponent)))
+```
+
+## Labels and i18n
+
+Every string the default theme shows (search, table of contents, previous and next, and so on) can
+be translated or reworded with `withLabels()`. Pass a ready-made set, or only the keys you want to
+change; anything you leave out keeps its English default.
+
+```typescript
+import { provideNgeDoc, withLabels, NGE_DOC_LABELS_FR } from '@cisstech/nge/doc'
+
+provideNgeDoc(
+  withLabels(NGE_DOC_LABELS_FR), // ready-made French
+  // or reword a few keys:
+  // withLabels({ search: 'Search the docs', poweredBy: 'Built with' }),
+)
+```
+
+`NGE_DOC_LABELS_EN` and `NGE_DOC_LABELS_FR` ship with the library, and `NgeDocLabels` is the full
+list of keys for supplying another language.
+
+## Deploying under a base href
+
+The engine uses the Angular router and relative asset urls, so it works unchanged when the site is
+served from a sub-path (GitHub Pages, a reverse proxy). Two things to set up:
+
+- Build with the sub-path as the base href so `<base href>` is correct, for example
+  `ng build --base-href=/my-repo/`. Router links and relative `assets/...` urls then resolve
+  against it.
+- Give the static host an SPA fallback so a refresh on a deep link serves `index.html`. On GitHub
+  Pages, copy `index.html` to `404.html` (`angular-cli-ghpages` does this for you).
+
+Keep page `renderer` urls relative (`assets/docs/page.md`, not `/assets/docs/page.md`) so they
+follow the base href.

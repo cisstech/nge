@@ -1,32 +1,107 @@
-@if (state$ | async; as state) {
-  <header>
-    @if (state.meta.logo) {
-      <img [src]="state.meta.logo" alt="Documentation Logo" />
-    } @else {
-      <img src="https://icongr.am/octicons/book.svg?size=48&color=34495e" />
-    }
-    <h1>{{ state.meta.name }}</h1>
-  </header>
-  @if (state.links.length) {
-    <nav>
-      <ng-container *ngTemplateOutlet="template; context: { $implicit: state.links }"></ng-container>
-    </nav>
-  }
-}
-<ng-template #template let-links>
-  <ul>
-    @for (link of links; track link.href) {
-      <li [class.caption]="docService.isExpandable(link)">
-        <a [routerLink]="link.href" [class.active]="docService.isActive(link)">
-          @if (link.icon) {
-            <img [src]="link.icon" />
+@if (navbar().length > 1) {
+  <nav class="drawer-navbar" [attr.aria-label]="labels.sections">
+    @for (link of navbar(); track link.href) {
+      @if (link.external) {
+        <a class="drawer-navbar-link" [href]="link.href" target="_blank" rel="noopener">
+          @if (link.icon; as icon) {
+            <nge-doc-icon [icon]="icon" size="16px" />
           }
-          {{ link.title }}
+          <span>{{ link.title }}</span>
         </a>
-      </li>
-      @if (docService.isExpandable(link)) {
-        <ng-container *ngTemplateOutlet="template; context: { $implicit: link.children }"> </ng-container>
+      } @else {
+        <a
+          class="drawer-navbar-link"
+          [routerLink]="link.href"
+          [class.active]="docService.isNavLinkActive(link)"
+        >
+          @if (link.icon; as icon) {
+            <nge-doc-icon [icon]="icon" size="16px" />
+          }
+          <span>{{ link.title }}</span>
+        </a>
       }
     }
-  </ul>
+  </nav>
+}
+
+<nav class="nav">
+  @for (link of rootLinks(); track link) {
+    <ng-container *ngTemplateOutlet="node; context: { $implicit: link, depth: 0 }" />
+  }
+</nav>
+
+<ng-template #node let-link let-depth="depth">
+  @if (link.separator) {
+    <div class="nav-section">
+      @if (link.color) {
+        <span class="nav-section-dot" [style.background]="link.color"></span>
+      }
+      <span>{{ link.title }}</span>
+    </div>
+  } @else if (isExpandable(link)) {
+    <div class="nav-folder" [class.depth0]="depth === 0">
+      @if (link.renderer) {
+        <div class="nav-folder-head">
+          <a
+            class="nav-link nav-folder-label"
+            [routerLink]="link.href"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            @if (link.icon; as icon) {
+              <nge-doc-icon [icon]="icon" size="16px" />
+            }
+            <span>{{ link.title }}</span>
+          </a>
+          <button
+            class="nav-toggle"
+            type="button"
+            (click)="toggle(link)"
+            [attr.aria-expanded]="isOpen(link)"
+            [attr.aria-label]="(isOpen(link) ? labels.collapse : labels.expand) + ' ' + link.title"
+          >
+            <svg class="chevron" [class.open]="isOpen(link)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+      } @else {
+        <button
+          class="nav-link nav-folder-label as-button"
+          type="button"
+          (click)="toggle(link)"
+          [attr.aria-expanded]="isOpen(link)"
+        >
+          @if (link.icon; as icon) {
+            <nge-doc-icon [icon]="icon" size="16px" />
+          }
+          <span>{{ link.title }}</span>
+          <svg class="chevron" [class.open]="isOpen(link)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      }
+      <div class="nav-collapse" [class.open]="isOpen(link)">
+        <div class="nav-collapse-inner" [attr.inert]="isOpen(link) ? null : ''">
+          <div class="nav-children">
+            @for (child of link.children; track child) {
+              <ng-container *ngTemplateOutlet="node; context: { $implicit: child, depth: depth + 1 }" />
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <a
+      class="nav-link"
+      [routerLink]="link.href"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      @if (link.icon; as icon) {
+        <nge-doc-icon [icon]="icon" size="16px" />
+      }
+      <span>{{ link.title }}</span>
+    </a>
+  }
 </ng-template>

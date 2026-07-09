@@ -1,33 +1,20 @@
 import { HttpClient } from '@angular/common/http'
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core'
-import { lastValueFrom } from 'rxjs'
-import {
-  MatAccordion,
-  MatExpansionPanel,
-  MatExpansionPanelHeader,
-  MatExpansionPanelContent,
-} from '@angular/material/expansion'
-import { MatFormField, MatInput } from '@angular/material/input'
-import { CdkTextareaAutosize } from '@angular/cdk/text-field'
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
+import { lastValueFrom } from 'rxjs'
 import { NgeMarkdownComponent } from '../../../../../nge/markdown/src/nge-markdown.component'
+
+interface CheatEntry {
+  loaded: boolean
+  markdown: string
+}
 
 @Component({
   selector: 'app-markdown-cheat-sheet',
   templateUrl: './cheat-sheet.component.html',
   styleUrls: ['./cheat-sheet.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelContent,
-    MatFormField,
-    CdkTextareaAutosize,
-    MatInput,
-    FormsModule,
-    NgeMarkdownComponent,
-  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [FormsModule, NgeMarkdownComponent],
 })
 export class CheatSheetComponent implements OnInit {
   private readonly http = inject(HttpClient)
@@ -43,43 +30,44 @@ export class CheatSheetComponent implements OnInit {
     'Tables',
     'Blockquotes',
     'Horizontal Rule',
-
     'Admonitions',
     'Emoji',
     'Icons',
     'Latex',
-    'Admonitions',
     'TabbedSet',
   ]
 
-  readonly contents: Record<
-    string,
-    {
-      expanded: boolean
-      markdown: string
-    }
-  > = {}
+  // A signal so async loads and edits reflect reliably (works with OnPush and
+  // whatever change detection the host app uses).
+  protected readonly contents = signal<Record<string, CheatEntry>>({})
 
-  ngOnInit() {
-    this.titles.forEach((e) => {
-      this.contents[e] = {
-        expanded: false,
-        markdown: '',
-      }
-    })
+  ngOnInit(): void {
+    const initial: Record<string, CheatEntry> = {}
+    this.titles.forEach((title) => (initial[title] = { loaded: false, markdown: '' }))
+    this.contents.set(initial)
   }
 
-  load(title: string) {
-    const record = this.contents[title]
-    if (record.expanded) {
+  onToggle(title: string, event: Event): void {
+    if ((event.target as HTMLDetailsElement).open) {
+      this.load(title)
+    }
+  }
+
+  onEdit(title: string, markdown: string): void {
+    this.patch(title, { markdown })
+  }
+
+  private load(title: string): void {
+    if (this.contents()[title]?.loaded) {
       return
     }
-    record.expanded = true
+    this.patch(title, { loaded: true })
 
     const url = 'assets/docs/nge-markdown/cheatsheet/' + title.toLowerCase().replace(' ', '-') + '.md'
+    lastValueFrom(this.http.get(url, { responseType: 'text' })).then((markdown) => this.patch(title, { markdown }))
+  }
 
-    lastValueFrom(this.http.get(url, { responseType: 'text' })).then((markdown) => {
-      record.markdown = markdown
-    })
+  private patch(title: string, changes: Partial<CheatEntry>): void {
+    this.contents.update((contents) => ({ ...contents, [title]: { ...contents[title], ...changes } }))
   }
 }

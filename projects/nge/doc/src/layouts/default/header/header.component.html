@@ -1,30 +1,114 @@
-@if (state$ | async; as state) {
-  <header>
-    <div class="action" aria-label="Menu" (click)="toggle.emit()">
-      <img src="https://icongr.am/octicons/three-bars.svg?size=24&color=currentColor" />
-    </div>
-    @if (state.meta.backUrl) {
-      <a class="action" aria-label="Back" [routerLink]="state.meta.backUrl">
-        <img [src]="state.meta.backIconUrl ?? 'https://icongr.am/octicons/home.svg?size=24&color=currentColor'" />
-      </a>
-    }
-    @if (state.meta.backUrlHref) {
-      <a class="action" aria-label="Back" [href]="state.meta.backUrlHref">
-        <img [src]="state.meta.backIconUrl ?? 'https://icongr.am/octicons/home.svg?size=24&color=currentColor'" />
-      </a>
-    }
-    <div class="spacer"></div>
-    @if (state.currLink?.actions) {
-      @for (action of state.currLink?.actions || []; track action) {
-        <div class="action" [attr.aria-label]="action.title" [title]="action.tooltip" (click)="invoke(action.run)">
-          @if (action.title) {
-            <span>{{ action.title }}</span>
+<button class="icon-btn menu" type="button" [attr.aria-label]="labels.toggleNavigation" (click)="toggleSidebar.emit()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <line x1="3" y1="6" x2="21" y2="6" />
+    <line x1="3" y1="12" x2="21" y2="12" />
+    <line x1="3" y1="18" x2="21" y2="18" />
+  </svg>
+</button>
+
+<button
+  class="icon-btn sidebar-toggle"
+  type="button"
+  [attr.aria-label]="collapsed() ? labels.showSidebar : labels.hideSidebar"
+  [attr.aria-pressed]="collapsed()"
+  (click)="toggleCollapse.emit()"
+>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="3" y="4" width="18" height="16" rx="2" />
+    <line x1="9" y1="4" x2="9" y2="20" />
+  </svg>
+</button>
+
+@if (brand().href; as href) {
+  <a class="brand" [routerLink]="href">
+    <ng-container [ngTemplateOutlet]="brandContent" />
+  </a>
+} @else if (meta().backUrlHref && !meta().backUrl) {
+  <a class="brand" [href]="meta().backUrlHref">
+    <ng-container [ngTemplateOutlet]="brandContent" />
+  </a>
+} @else {
+  <a class="brand" [routerLink]="meta().backUrl ?? meta().root">
+    <ng-container [ngTemplateOutlet]="brandContent" />
+  </a>
+}
+
+@if (navbar().length > 1) {
+  <nav class="navbar" [attr.aria-label]="labels.sections">
+    @for (link of navbar(); track link.href) {
+      @if (link.external) {
+        <a class="navbar-link" [href]="link.href" target="_blank" rel="noopener">
+          @if (link.icon) {
+            <nge-doc-icon [icon]="link.icon" size="16px" />
           }
-          @if (action.icon) {
-            <img [src]="action.icon" />
+          <span>{{ link.title }}</span>
+        </a>
+      } @else {
+        <a class="navbar-link" [routerLink]="link.href" [class.active]="docService.isNavLinkActive(link)">
+          @if (link.icon) {
+            <nge-doc-icon [icon]="link.icon" size="16px" />
           }
-        </div>
+          <span>{{ link.title }}</span>
+        </a>
       }
     }
-  </header>
+  </nav>
 }
+
+<span class="spacer"></span>
+
+<button class="search" type="button" [attr.aria-label]="labels.search" (click)="openSearch.emit()">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+  </svg>
+  <span class="label">{{ labels.search }}</span>
+  <span class="kbd">⌘K</span>
+</button>
+
+<nge-doc-theme-toggle />
+
+@for (action of currLink()?.actions ?? []; track action) {
+  <button
+    class="icon-btn"
+    type="button"
+    [title]="action.tooltip ?? action.title ?? ''"
+    [attr.aria-label]="action.title ?? action.tooltip ?? labels.action"
+    (click)="docService.runAction(action.run)"
+  >
+    @if (action.icon) {
+      <nge-doc-icon [icon]="action.icon" size="18px" />
+    } @else {
+      <span>{{ action.title }}</span>
+    }
+  </button>
+}
+
+@for (link of meta().links ?? []; track link.href) {
+  <a class="icon-btn" [href]="link.href" target="_blank" rel="noopener">
+    <nge-doc-icon [icon]="link.icon" size="18px" />
+  </a>
+}
+
+@if (meta().repo; as repo) {
+  <a class="icon-btn" [href]="repo.url" target="_blank" rel="noopener" [attr.aria-label]="repo.name || labels.repository">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path
+        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+      />
+    </svg>
+  </a>
+}
+
+<ng-template #brandContent>
+  @if (brand().icon; as logo) {
+    <nge-doc-icon [icon]="logo" [mono]="false" size="26px" />
+  } @else {
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M16 2 4 8v10c0 6.5 5 10.5 12 12 7-1.5 12-5.5 12-12V8L16 2Z" fill="var(--nge-doc-primary)" opacity="0.16" />
+      <path d="M16 2 4 8v10c0 6.5 5 10.5 12 12 7-1.5 12-5.5 12-12V8L16 2Z" stroke="var(--nge-doc-primary)" stroke-width="1.6" />
+      <path d="M16 9v14M10 12l6 3 6-3" stroke="var(--nge-doc-primary)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  }
+  <span>{{ brand().title }}</span>
+</ng-template>

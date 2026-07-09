@@ -4,14 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Select version type'
+        description: 'Bump keyword (patch | minor | major) or an explicit version such as 22.0.0'
         required: true
         default: 'patch'
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
+        type: string
 
 env:
   NODE_VERSION: 22
