@@ -28,6 +28,8 @@ dark mode and search, so you focus on writing.
   all generated from your page tree.
 - **SEO.** The page title and meta description are set on every navigation, from the link or
   from Markdown frontmatter.
+- **Translatable.** Every theme string is overridable with `withLabels()`; English and French
+  ship in the box.
 - **Standalone and signal based.** Configured through `provideNgeDoc()` and tree-shakeable.
 
 ## Next steps

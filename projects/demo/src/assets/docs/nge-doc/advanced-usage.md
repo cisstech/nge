@@ -151,6 +151,25 @@ dependency injection and renders the content with `<nge-doc-renderer>`.
 provideNgeDoc(withTheme(() => import('./my-theme.component').then((m) => m.MyThemeComponent)))
 ```
 
+## Labels and i18n
+
+Every string the default theme shows (search, table of contents, previous and next, and so on) can
+be translated or reworded with `withLabels()`. Pass a ready-made set, or only the keys you want to
+change; anything you leave out keeps its English default.
+
+```typescript
+import { provideNgeDoc, withLabels, NGE_DOC_LABELS_FR } from '@cisstech/nge/doc'
+
+provideNgeDoc(
+  withLabels(NGE_DOC_LABELS_FR), // ready-made French
+  // or reword a few keys:
+  // withLabels({ search: 'Search the docs', poweredBy: 'Built with' }),
+)
+```
+
+`NGE_DOC_LABELS_EN` and `NGE_DOC_LABELS_FR` ship with the library, and `NgeDocLabels` is the full
+list of keys for supplying another language.
+
 ## Deploying under a base href
 
 The engine uses the Angular router and relative asset urls, so it works unchanged when the site is
