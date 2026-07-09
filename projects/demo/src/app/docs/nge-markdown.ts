@@ -1,20 +1,5 @@
-import { NgeDocIcon, NgeDocLinAction, NgeDocLink, NgeDocSettings } from '@cisstech/nge/doc'
-
-// icongr.am is cross-origin, so provide a per-scheme colored variant (a mask
-// can't recolor a cross-origin icon). Colors match the theme's muted foreground.
-const octicon = (name: string): NgeDocIcon => ({
-  light: `https://icongr.am/octicons/${name}.svg?color=52525b`,
-  dark: `https://icongr.am/octicons/${name}.svg?color=a1a1aa`,
-})
-
-const editInGithubAction = (url: string) => {
-  const base = 'https://github.com/cisstech/nge/tree/main/projects/demo/src/assets/docs/nge-markdown/'
-  return {
-    title: 'Edit on github',
-    icon: octicon('pencil'),
-    run: base + url,
-  } as NgeDocLinAction
-}
+import { NgeDocLink, NgeDocSettings } from '@cisstech/nge/doc'
+import { editInGithubAction, octicon } from './actions'
 
 export const NGE_MARKDOWN: NgeDocSettings = {
   meta: {
@@ -33,25 +18,25 @@ export const NGE_MARKDOWN: NgeDocSettings = {
       title: 'Getting Started',
       href: 'getting-started',
       renderer: `assets/docs/nge-markdown/getting-started.md`,
-      actions: [editInGithubAction('getting-started.md')],
+      actions: [editInGithubAction('assets/docs/nge-markdown/getting-started.md')],
     },
     {
       title: 'Installation',
       href: 'installation',
       renderer: `assets/docs/nge-markdown/installation.md`,
-      actions: [editInGithubAction('installation.md')],
+      actions: [editInGithubAction('assets/docs/nge-markdown/installation.md')],
     },
     {
       title: 'Usage',
       href: 'usage',
       renderer: `assets/docs/nge-markdown/usage.md`,
-      actions: [editInGithubAction('usage.md')],
+      actions: [editInGithubAction('assets/docs/nge-markdown/usage.md')],
     },
     {
       title: 'Embedding components',
       href: 'embedding',
       renderer: `assets/docs/nge-markdown/embedding.md`,
-      actions: [editInGithubAction('embedding.md')],
+      actions: [editInGithubAction('assets/docs/nge-markdown/embedding.md')],
     },
     { separator: true, title: 'Reference', color: '#8b5cf6' },
     () => {
@@ -59,7 +44,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
         title: 'Contributions',
         href: 'contributions',
         renderer: 'assets/docs/nge-markdown/contributions/contributions.md',
-        actions: [editInGithubAction('contributions/contributions.md')],
+        actions: [editInGithubAction('assets/docs/nge-markdown/contributions/contributions.md')],
       } as NgeDocLink
 
       const contributions = ['Admonitions', 'Emoji', 'Highlighter', 'Icons', 'Katex', 'LinkAnchor', 'TabbedSet']
@@ -81,7 +66,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
               icon: octicon('code'),
               run: base + 'nge-markdown-' + snakecase + '.ts',
             },
-            editInGithubAction('contributions/' + snakecase + '.md'),
+            editInGithubAction('assets/docs/nge-markdown/contributions/' + snakecase + '.md'),
           ],
         }
       })

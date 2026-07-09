@@ -1,4 +1,5 @@
 import { NgeDocSettings } from '@cisstech/nge/doc'
+import { editInGithubAction } from './actions'
 
 export const NGE_MONACO: NgeDocSettings = {
   meta: {
@@ -16,16 +17,19 @@ export const NGE_MONACO: NgeDocSettings = {
       title: 'Getting Started',
       href: 'getting-started',
       renderer: `assets/docs/nge-monaco/getting-started.md`,
+      actions: [editInGithubAction('assets/docs/nge-monaco/getting-started.md')],
     },
     {
       title: 'Installation',
       href: 'installation',
       renderer: `assets/docs/nge-monaco/installation.md`,
+      actions: [editInGithubAction('assets/docs/nge-monaco/installation.md')],
     },
     {
       title: 'Usage',
       href: 'usage',
       renderer: `assets/docs/nge-monaco/usage.md`,
+      actions: [editInGithubAction('assets/docs/nge-monaco/usage.md')],
     },
     {
       title: 'Showcase',
