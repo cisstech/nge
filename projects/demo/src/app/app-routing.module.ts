@@ -3,18 +3,16 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router'
 import { NGE_DOC } from './docs/nge-doc'
 import { NGE_MARKDOWN } from './docs/nge-markdown'
 import { NGE_MONACO } from './docs/nge-monaco'
+import { NGE_OVERVIEW } from './docs/overview'
 
 const routes: Routes = [
-  {
-    path: '',
-    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
-  },
+  { path: '', redirectTo: 'docs/overview', pathMatch: 'full' },
   {
     path: 'docs',
     loadChildren: () => import('@cisstech/nge/doc').then((m) => m.NgeDocModule),
-    data: [NGE_DOC, NGE_MONACO, NGE_MARKDOWN],
+    data: [NGE_OVERVIEW, NGE_DOC, NGE_MONACO, NGE_MARKDOWN],
   },
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  { path: '**', redirectTo: 'docs/overview' },
 ]
 
 @NgModule({

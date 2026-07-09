@@ -69,6 +69,7 @@ export function markdownOptions(): NgeMarkdownConfig {
     provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideNgeDoc(
       withNavbar([
+        { title: 'Overview', href: '/docs/overview/' },
         { title: 'nge/doc', href: '/docs/nge-doc/' },
         { title: 'nge/markdown', href: '/docs/nge-markdown/' },
         { title: 'nge/monaco', href: '/docs/nge-monaco/' },
