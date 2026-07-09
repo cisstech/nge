@@ -2,7 +2,7 @@ import { Location } from '@angular/common'
 import { TestBed } from '@angular/core/testing'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Subject } from 'rxjs'
-import { NgeDocSettings, NgeDocState } from './nge-doc'
+import { NgeDocLink, NgeDocSettings, NgeDocState } from './nge-doc'
 import { NgeDocService } from './nge-doc.service'
 
 // The engine resolves hrefs by mutating the links in
@@ -30,14 +30,16 @@ function makeSettings(): NgeDocSettings[] {
 describe('NgeDocService', () => {
   let service: NgeDocService
   let currentPath: string
+  let settings: NgeDocSettings[]
 
   beforeEach(() => {
     currentPath = '/docs/alpha/intro'
+    settings = makeSettings()
     TestBed.configureTestingModule({
       providers: [
         NgeDocService,
         { provide: Router, useValue: { events: new Subject(), navigateByUrl: jest.fn(), url: '/' } },
-        { provide: ActivatedRoute, useValue: { snapshot: { data: makeSettings(), fragment: null } } },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: settings, fragment: null } } },
         { provide: Location, useValue: { path: () => currentPath } },
       ],
     })
@@ -98,6 +100,15 @@ describe('NgeDocService', () => {
     expect(service.isNavLinkActive({ title: 'Alpha', href: '/docs/alpha/' })).toBe(true)
     expect(service.isNavLinkActive({ title: 'Beta', href: '/docs/beta/' })).toBe(false)
     expect(service.isNavLinkActive({ title: 'Ext', href: 'https://x.dev', external: true })).toBe(false)
+  })
+
+  it('does not mutate the input settings and can be set up repeatedly', async () => {
+    await service.setup()
+    // The consumer's link hrefs stay relative (resolution works on a copy).
+    expect((settings[0].pages[0] as NgeDocLink).href).toBe('intro')
+    // A second setup (e.g. re-navigating to the docs) still resolves correctly.
+    await service.setup()
+    expect(latestState().currLink?.title).toBe('Intro')
   })
 
   it('updates the document title and meta description', async () => {

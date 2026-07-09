@@ -127,9 +127,13 @@ export class NgeDocService implements OnDestroy {
           pages.push(object)
         }
 
+        // Work on a copy: href resolution and expansion mutate links in place,
+        // and the consumer's settings objects must stay pristine (and reusable
+        // across navigations, otherwise hrefs would be prefixed twice).
         pages.forEach((page) => {
-          links.push(page)
-          this.resolvePageLinks(meta!, page)
+          const link = this.cloneLink(page)
+          links.push(link)
+          this.resolvePageLinks(meta!, link)
         })
 
         this.pages.set(meta.root, {
@@ -179,6 +183,18 @@ export class NgeDocService implements OnDestroy {
       b = b.slice(1)
     }
     return a + '/' + b
+  }
+
+  /**
+   * Deep-copies a link's structure (its `children` tree) while sharing functions
+   * and options (`renderer`, `actions`, `inputs`) by reference, so href resolution
+   * and expansion never mutate the consumer's settings objects.
+   */
+  private cloneLink(link: NgeDocLink): NgeDocLink {
+    return {
+      ...link,
+      children: link.children?.map((child) => this.cloneLink(child)),
+    }
   }
 
   private resolvePageLinks(meta: NgeDocMeta, page: NgeDocLink) {
