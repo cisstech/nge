@@ -39,6 +39,21 @@ pages: [
 ]
 ```
 
+## Section separators
+
+Group the sidebar with headings. A separator is a flat entry, not a parent, so the pages that
+follow it keep their own urls. Add `color` for a small accent dot next to the heading.
+
+```typescript
+pages: [
+  { separator: true, title: 'Guides', color: '#10b981' },
+  { title: 'Getting started', href: 'getting-started', renderer: 'assets/docs/getting-started.md' },
+  { title: 'Installation', href: 'installation', renderer: 'assets/docs/installation.md' },
+  { separator: true, title: 'Reference' },
+  { title: 'API', href: 'api', renderer: 'assets/docs/api.md' },
+]
+```
+
 ## Actions and icons
 
 Each page can declare header `actions`. A string handler opens a URL in a new tab; a function

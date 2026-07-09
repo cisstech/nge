@@ -18,9 +18,12 @@ dark mode and search, so you focus on writing.
   `withTheme()`; each theme is a standalone component with its own layout.
 - **Dark mode.** Light, dark or auto (follows the OS), remembered across visits, with a toggle
   in the header.
-- **Command palette.** Search pages with `Cmd/Ctrl+K` and navigate with the keyboard.
+- **Command palette and keyboard.** Search pages with `Cmd/Ctrl+K`, and move to the previous or
+  next page with `←` / `→`.
 - **Header navigation.** Link related sites (packages, versions) in the top bar with `withNavbar()`,
   and set a fixed logo and title with `withBrand()`.
+- **Sidebar.** Collapsible sections that open to the active page, optional section separators with
+  accent dots, and a header toggle that collapses the sidebar to widen the content.
 - **Reading aids.** Table of contents with scroll spy, breadcrumbs, and previous/next cards,
   all generated from your page tree.
 - **SEO.** The page title and meta description are set on every navigation, from the link or

@@ -11,7 +11,7 @@ const editInGithubAction = (url: string) => {
   const base = 'https://github.com/cisstech/nge/tree/main/projects/demo/src/assets/docs/nge-markdown/'
   return {
     title: 'Edit on github',
-    icon: octicon('mark-github'),
+    icon: octicon('pencil'),
     run: base + url,
   } as NgeDocLinAction
 }
@@ -28,6 +28,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
     },
   },
   pages: [
+    { separator: true, title: 'Guides', color: '#10b981' },
     {
       title: 'Getting Started',
       href: 'getting-started',
@@ -46,6 +47,7 @@ export const NGE_MARKDOWN: NgeDocSettings = {
       renderer: `assets/docs/nge-markdown/usage.md`,
       actions: [editInGithubAction('usage.md')],
     },
+    { separator: true, title: 'Reference', color: '#8b5cf6' },
     () => {
       const link = {
         title: 'Contributions',
