@@ -150,3 +150,17 @@ dependency injection and renders the content with `<nge-doc-renderer>`.
 ```typescript
 provideNgeDoc(withTheme(() => import('./my-theme.component').then((m) => m.MyThemeComponent)))
 ```
+
+## Deploying under a base href
+
+The engine uses the Angular router and relative asset urls, so it works unchanged when the site is
+served from a sub-path (GitHub Pages, a reverse proxy). Two things to set up:
+
+- Build with the sub-path as the base href so `<base href>` is correct, for example
+  `ng build --base-href=/my-repo/`. Router links and relative `assets/...` urls then resolve
+  against it.
+- Give the static host an SPA fallback so a refresh on a deep link serves `index.html`. On GitHub
+  Pages, copy `index.html` to `404.html` (`angular-cli-ghpages` does this for you).
+
+Keep page `renderer` urls relative (`assets/docs/page.md`, not `/assets/docs/page.md`) so they
+follow the base href.
