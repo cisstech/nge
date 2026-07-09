@@ -12,3 +12,31 @@
     box-sizing: border-box;
   }
 }
+
+/* Shown while the engine resolves navigation and the theme is loaded. */
+.nge-doc-booting {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.nge-doc-booting::after {
+  content: '';
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid rgba(127, 127, 127, 0.25);
+  border-top-color: rgba(127, 127, 127, 0.7);
+  animation: nge-doc-spin 0.7s linear infinite;
+}
+@keyframes nge-doc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nge-doc-booting::after {
+    animation: none;
+  }
+}
+
