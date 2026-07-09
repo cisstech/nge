@@ -44,6 +44,11 @@ export function markdownOptions(): NgeMarkdownConfig {
       theming: {
         themes: NGE_MONACO_THEMES.map((theme) => 'assets/nge/monaco/themes/' + theme),
         default: 'github',
+        // Follow the documentation color scheme: nge-doc toggles `nge-doc-dark`
+        // on <html>, and Monaco switches themes accordingly (no coupling).
+        light: 'github',
+        dark: 'tomorrow-night',
+        darkModeClass: 'nge-doc-dark',
       },
     }),
     AppRoutingModule,

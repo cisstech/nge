@@ -89,13 +89,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Monaco-highlighted code blocks read these vscode variables inline; point
-     them at our tokens so the code chrome follows the scheme instead of
-     falling back to a hard-coded light value. */
-  --vscode-editor-background: var(--nge-doc-code-bg);
-  --vscode-editor-foreground: var(--nge-doc-fg-body);
-  --vscode-dropdown-border: var(--nge-doc-border);
-
   *,
   *::before,
   *::after {
@@ -224,13 +217,11 @@
   }
 }
 
-/* Monaco defines its vscode variables on `.monaco-editor` itself and sets the
-   border inline, so re-point them here (higher specificity + !important) to make
-   the whole code block, including its toolbar, follow the scheme. */
+/* Code colors follow the active Monaco theme (synced with the scheme via
+   nge-monaco config). Here we only frame the block: the Monaco highlighter sets
+   a light border and a 2px radius inline, so override the chrome to match the
+   theme. No Monaco color is touched. */
 .nge-doc-theme pre.monaco-editor {
-  --vscode-editor-background: var(--nge-doc-code-bg) !important;
-  --vscode-editor-foreground: var(--nge-doc-fg-body) !important;
-  --vscode-dropdown-border: var(--nge-doc-border) !important;
   border: 1px solid var(--nge-doc-border) !important;
   border-radius: var(--nge-doc-r-lg) !important;
   outline: none !important;
