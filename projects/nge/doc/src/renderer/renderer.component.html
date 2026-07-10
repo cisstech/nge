@@ -1,9 +1,27 @@
-@if (loading()) {
-  <div class="loading-container">
-    <div class="loading-spinner"></div>
-    <div class="loading-text">Loading...</div>
-  </div>
-}
+<div class="doc-content" [class.doc-content--loading]="loading()">
+  @if (loading()) {
+    <!--
+      A generic doc-page skeleton shown while the page loads and its Markdown
+      renders. It does not mirror the real content (unknown until parsed); it
+      overlays the content area so the incremental render underneath is hidden
+      and the reader sees no blank flash or jump.
+    -->
+    <div class="doc-skeleton" role="status" aria-label="Loading page" aria-live="polite">
+      <div class="sk sk-title"></div>
+      <div class="sk sk-line sk-line--lead"></div>
+      <div class="sk sk-line"></div>
+      <div class="sk sk-line sk-line--short"></div>
+      <div class="sk sk-block"></div>
+      <div class="sk sk-line"></div>
+      <div class="sk sk-line sk-line--short"></div>
+      <div class="sk sk-heading"></div>
+      <div class="sk sk-line"></div>
+      <div class="sk sk-line sk-line--lead"></div>
+      <div class="sk sk-line sk-line--short"></div>
+    </div>
+  }
+  <div #container></div>
+</div>
 @if (notFound()) {
   <div>
     <h1>Ooops!</h1>
@@ -11,4 +29,3 @@
     <p>It looks like this page doesn't exist.</p>
   </div>
 }
-<div #container></div>

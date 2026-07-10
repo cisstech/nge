@@ -32,6 +32,17 @@ export interface NgeDocHeading {
   level: number
 }
 
+/** An observable-like output a rendered component may expose to signal readiness. */
+interface RenderSignal {
+  subscribe(next: (value?: unknown) => void): { unsubscribe(): void }
+}
+
+/** Minimal shape of a markdown component that reports when its content is painted. */
+interface MarkdownRenderSource {
+  rendered?: RenderSignal
+  render?: RenderSignal
+}
+
 @Component({
   selector: 'nge-doc-renderer',
   templateUrl: 'renderer.component.html',
@@ -179,6 +190,8 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
         const renderer = await state.currLink.renderer
         switch (typeof renderer) {
           case 'string':
+            // Markdown paints asynchronously; renderMarkdown keeps the skeleton
+            // up until it has rendered so the reader never sees the render shift.
             await this.renderMarkdown(renderer)
             break
           case 'function':
@@ -187,13 +200,16 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
               inputs: state.currLink.inputs,
               container: this.container(),
             })
+            this.loading.set(false)
             break
         }
+      } else {
+        this.loading.set(false)
       }
     } catch (error) {
       console.error(error)
-    } finally {
       this.loading.set(false)
+    } finally {
       this.notFound.set(!this.componentRef)
       this.changeDetectorRef.markForCheck()
       this.scheduleSync()
@@ -245,6 +261,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     const markdownComponent = this.componentRefByTypes.get(type)
     if (markdownComponent) {
       this.attachComponent(markdownComponent, await createInputs())
+      this.awaitMarkdownRender(markdownComponent)
       return
     }
 
@@ -256,6 +273,36 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
 
     this.componentRef = componentRef
     this.componentRefByTypes.set(type, componentRef)
+    this.awaitMarkdownRender(componentRef)
+  }
+
+  /**
+   * Hides the loading skeleton once the markdown content has painted. It prefers
+   * the component's `rendered` output (emitted after the content is revealed) and
+   * falls back to `render` (emitted after compile) for a custom renderer that
+   * lacks it. The guard ignores stale emits from a previous navigation, and the
+   * timeout is a safety net for a renderer that never emits (for example when
+   * compilation throws).
+   */
+  private awaitMarkdownRender(componentRef: ComponentRef<unknown>): void {
+    const done = () => {
+      if (this.componentRef === componentRef) {
+        this.loading.set(false)
+        this.changeDetectorRef.markForCheck()
+      }
+    }
+
+    const instance = componentRef.instance as MarkdownRenderSource | null
+    const ready = instance?.rendered ?? instance?.render
+    if (ready && typeof ready.subscribe === 'function') {
+      const subscription = ready.subscribe(() => {
+        done()
+        subscription.unsubscribe()
+      })
+      setTimeout(done, 5000)
+    } else {
+      done()
+    }
   }
 
   private attachComponent(componentRef: ComponentRef<any>, inputs: Record<string, any>): void {

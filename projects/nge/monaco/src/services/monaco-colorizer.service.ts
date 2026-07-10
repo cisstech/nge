@@ -8,13 +8,13 @@ export class NgeMonacoColorizerService {
   private readonly theming = inject(NgeMonacoThemeService)
 
   async colorizeElement(options: NgeMonacoColorizeOptions) {
-    await this.loader.loadAsync()
-    if (options.theme) {
-      await this.theming.defineTheme(options.theme)
-    }
-
     const { element } = options
 
+    // Prepare the DOM synchronously (raw code, host classes and the file tab)
+    // before loading monaco and colorizing. Those steps are asynchronous, so
+    // reserving the final layout up front avoids the file tab being inserted
+    // only once colorization resolves, which lands after a visible delay and
+    // shifts the surrounding content down.
     element.innerHTML = this.escapeHtml(options.code || '')
     element.style.padding = '4px'
     element.style.display = 'block'
@@ -31,6 +31,13 @@ export class NgeMonacoColorizerService {
 
     element.className = ''
 
+    this.addFileTab(options)
+
+    await this.loader.loadAsync()
+    if (options.theme) {
+      await this.theming.defineTheme(options.theme)
+    }
+
     const languages = monaco.languages.getLanguages()
     const language = languages.find((e) => {
       return e.id === options.language || e.aliases?.find((a) => a === options.language)
@@ -43,8 +50,6 @@ export class NgeMonacoColorizerService {
 
     this.highlightLines(options)
     this.showLineNumbers(options)
-
-    this.addFileTab(options)
   }
 
   private escapeHtml(input: string): string {
@@ -148,6 +153,10 @@ export class NgeMonacoColorizerService {
     const { element, code, filename } = options
     const container = element.parentElement as HTMLElement
 
+    // Drop the tab from a previous pass so re-colorizing the same element (for
+    // example when an input changes) does not stack duplicate tabs.
+    container?.querySelector(':scope > .nge-monaco-file-tab')?.remove()
+
     // Force remove padding from pre element
     if (container) {
       container.style.padding = '0'
@@ -157,6 +166,7 @@ export class NgeMonacoColorizerService {
 
     // Create tab container that takes full width
     const tabContainer = document.createElement('div')
+    tabContainer.className = 'nge-monaco-file-tab'
     tabContainer.style.display = 'flex'
     tabContainer.style.justifyContent = 'space-between'
     tabContainer.style.alignItems = 'center'

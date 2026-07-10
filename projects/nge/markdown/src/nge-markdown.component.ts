@@ -75,6 +75,14 @@ export class NgeMarkdownComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   readonly render = output<TokensList>()
 
+  /**
+   * An event that emits once the content has been mounted and revealed (the host
+   * opacity is set to `1`), i.e. after `render` and after embedded components are
+   * mounted. Use it to know the page has actually painted, for example to hide a
+   * loading placeholder without a flash.
+   */
+  readonly rendered = output<void>()
+
   constructor() {
     this.themes = this.themes || []
 
@@ -117,6 +125,7 @@ export class NgeMarkdownComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     await this.mountEmbeddedComponents()
     this.el.nativeElement.style.opacity = '1'
+    this.rendered.emit()
   }
 
   private async renderFromFile(file: string): Promise<void> {
