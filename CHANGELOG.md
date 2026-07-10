@@ -2,9 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### 22.0.1 (2026-07-09)
+### [22.0.1](https://github.com/cisstech/nge/compare/v22.0.0...v22.0.1) (2026-07-09)
 
-## 22.0.0 (2026-07-09)
+
+### Bug Fixes
+
+* **doc:** route internal Markdown links through the router ([85d57ff](https://github.com/cisstech/nge/commit/85d57ffdab6a1d329611d3bd760af90d8133fe23))
+
+## [22.0.0](https://github.com/cisstech/nge/compare/v18.3.0...v22.0.0) (2026-07-09)
+
+Angular 22 release: a rebuilt `nge/doc` engine (pluggable theming, light/dark default theme, command palette, keyboard navigation) and a signal-first rewrite across the libraries.
+
+### Features
+
+* **doc:** new minimal default theme with light and dark support ([ed3beef](https://github.com/cisstech/nge/commit/ed3beef045224c4d4da0caf2a7683706970f02cd))
+* **doc:** add a command-palette search (Cmd/Ctrl+K) ([b535194](https://github.com/cisstech/nge/commit/b535194959e3c1b918eb25ffe6784008c9fb6c9e))
+* **doc:** make consumer icons theme-aware in light and dark ([e6e3ea2](https://github.com/cisstech/nge/commit/e6e3ea2632f7333ea05dc69ef05d708dfe584025))
+* **monaco:** auto-switch the theme from a light/dark color scheme ([be51305](https://github.com/cisstech/nge/commit/be51305062ea6ac174b9b4d79b462b73136da863))
+* **doc:** navbar, markdown-renderer and dark-mode provide features ([771e8b2](https://github.com/cisstech/nge/commit/771e8b2a1079fc789796210793e11dbd043fbb58))
+* **doc:** render header navbar, sidebar group icons and a TOC back-to-top ([a0b9c77](https://github.com/cisstech/nge/commit/a0b9c77e73b816476e4fd2567b1ba4ce264db2e6))
+* **doc:** per-page SEO (title + meta description) with frontmatter support ([38160a2](https://github.com/cisstech/nge/commit/38160a24425171176f8fd92de698e90c7467874a))
+* **doc:** fixed brand, in-sync navigation, aligned monaco dark class ([a0f0c51](https://github.com/cisstech/nge/commit/a0f0c5180a92b11ab207e9b7fb86e442ab78baa9))
+* **doc:** keyboard page navigation with discoverable hints ([c7463c3](https://github.com/cisstech/nge/commit/c7463c33fd2458ac7114b2d9e4aa9a6dc4f93a02))
+* **doc:** redesign the default theme sidebar ([64904fd](https://github.com/cisstech/nge/commit/64904fd88e46b77e19742e7e53f9099810da8378))
+* **doc:** section separators in the sidebar ([a8dba41](https://github.com/cisstech/nge/commit/a8dba41e239889751473cb742c912827f4ac13e2))
+* **doc:** translatable theme wording via withLabels ([56f2f7c](https://github.com/cisstech/nge/commit/56f2f7c94252d1d05e681d55813fbe266469727e))
+* **markdown:** embed components in Markdown by keyword ([8615239](https://github.com/cisstech/nge/commit/86152391a74cd66e332e81be6e80cd73826992a6))
+
+### Bug Fixes
+
+* **monaco:** ship the global monaco types reference and widen the editor peer ([19b4306](https://github.com/cisstech/nge/commit/19b4306e2735380864f8c8770a68503a5b6515ba))
+* **doc:** only manage the document color scheme while the docs are mounted ([9d2fca0](https://github.com/cisstech/nge/commit/9d2fca02e4ad6a2606f25cd9936c2fb3c6430ba1))
+* **doc:** resolve links on a copy so consumer settings are not mutated ([1bcee72](https://github.com/cisstech/nge/commit/1bcee728a50dd4b56bec22fe4ec8f0378ebe5df0))
+* **doc:** drive Monaco code colors through nge-monaco color-scheme sync ([3d034f6](https://github.com/cisstech/nge/commit/3d034f696af5d721d0c2f47c106663e02fe34c61))
 
 ## 18.3.0 (2025-11-07)
 
