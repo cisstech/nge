@@ -29,7 +29,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "yarn build:lib && yarn build:demo",
-    "build:lib": "ng build nge --configuration production",
+    "build:lib": "ng build nge --configuration production && yarn postbuild:lib",
     "postbuild:lib": "./scripts/postbuild.sh && yarn sync-version",
     "build:demo": "ng build demo --configuration production --base-href='https://cisstech.github.io/nge/'",
     "test": "jest --coverage=true --watch=false --coverageReporters=lcov  --browsers=ChromeHeadless && node coverage-merger.js",
