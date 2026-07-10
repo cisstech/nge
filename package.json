@@ -46,7 +46,6 @@
     "release:as": "standard-version --release-as",
     "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json"
   },
-  "private": false,
   "dependencies": {
     "@angular/animations": "^22.0.5",
     "@angular/cdk": "^22.0.4",

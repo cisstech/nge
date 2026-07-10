@@ -10,14 +10,15 @@ on:
         type: string
 
 env:
-  NODE_VERSION: 22
+  NODE_VERSION: 24.18.0
 
 jobs:
   prepare:
       name: Prepare
       runs-on: ubuntu-latest
       steps:
-        - uses: DerYeger/yarn-setup-action@master
+        - uses: actions/checkout@v4
+        - uses: ./.github/actions/setup
           with:
             node-version: ${{ env.NODE_VERSION }}
 
@@ -30,7 +31,8 @@ jobs:
       id-token: write  # Permission to create releases
       pull-requests: write  # Permission to create pull requests
     steps:
-      - uses: DerYeger/yarn-setup-action@master
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
         with:
           node-version: ${{ env.NODE_VERSION }}
 
