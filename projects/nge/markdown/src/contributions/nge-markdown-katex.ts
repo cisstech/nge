@@ -62,9 +62,32 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
   }
 
   contribute(transformer: NgeMarkdownTransformer) {
-    // pattern to search multiline latex between $$...$$ or inline latex between $...$
-    // const pattern = /(\$\$\n((.|\s|\n)+?)\n\$\$)|(\$([^\s][^$\n]+?[^\s])\$)/gm;
+    // Display math ($$...$$ and \[...\]) spans several lines, so protect it from
+    // the markdown parser before lexing. Otherwise a line that starts with "- "
+    // (a negative term in an equation, for instance) is turned into a bullet list
+    // before KaTeX ever sees it. Each block is stashed and restored verbatim just
+    // before rendering. See https://github.com/cisstech/nge/issues/335.
+    const mathBlocks: string[] = []
+    transformer.addMarkdownTransformer((markdown) =>
+      // The first branch matches (and preserves) fenced or inline code, so a `$$`
+      // shown as an example inside code is left untouched.
+      markdown.replace(
+        /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)|(\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\])/g,
+        (match, code: string | undefined, math: string | undefined) => {
+          if (code != null) return code
+          const index = mathBlocks.push(math as string) - 1
+          return `\n\n<div class="nge-markdown-math" data-math="${index}"></div>\n\n`
+        }
+      )
+    )
+
     transformer.addHtmlTransformer((element) => {
+      element.querySelectorAll<HTMLElement>('.nge-markdown-math').forEach((placeholder) => {
+        const holder = element.ownerDocument.createElement('div')
+        holder.textContent = mathBlocks[Number(placeholder.dataset['math'])] ?? ''
+        placeholder.replaceWith(holder)
+      })
+
       const { renderMathInElement } = window as any
       try {
         renderMathInElement(
