@@ -231,6 +231,7 @@ export const NGE_MONACO_THEMES = [
   'eiffel.json',
   'espresso-libre.json',
   'github.json',
+  'github-dark.json',
   'idle-fingers.json',
   'idle.json',
   'iplastic.json',
