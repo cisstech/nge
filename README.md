@@ -35,10 +35,8 @@ you only bundle what you import.
 | [`@cisstech/nge/doc`](https://cisstech.github.io/nge/docs/nge-doc/) | Build a documentation site from a route config, Markdown files or live Angular components. |
 | [`@cisstech/nge/markdown`](https://cisstech.github.io/nge/docs/nge-markdown/) | Markdown rendering built on [Marked](https://github.com/markedjs/marked) v11, with admonitions, tabs, KaTeX and syntax highlighting. |
 | [`@cisstech/nge/monaco`](https://cisstech.github.io/nge/docs/nge-monaco/) | [Monaco editor](https://microsoft.github.io/monaco-editor/) integration: editor, diff editor and read-only viewer. |
-
-Additional entry points are available for UI and helpers: `@cisstech/nge/ui/tree`,
-`@cisstech/nge/ui/list`, `@cisstech/nge/ui/icon`, `@cisstech/nge/services`,
-`@cisstech/nge/pipes` and `@cisstech/nge/utils`.
+| [`@cisstech/nge/ui`](https://cisstech.github.io/nge/docs/nge-ui/getting-started) | Standalone UI building blocks: a data tree, a filterable list and a multi-source icon. |
+| [Utilities](https://cisstech.github.io/nge/docs/utilities/getting-started) | Root-provided services, standalone pipes and framework-free helper functions (`nge/services`, `nge/pipes`, `nge/utils`). |
 
 ## Compatibility
 
@@ -59,7 +57,7 @@ that matches your Angular version.
 npm install @cisstech/nge
 ```
 
-`@angular/common`, `@angular/core`, `@angular/cdk` and `@angular/material` are required
+`@angular/common`, `@angular/core` and `@angular/cdk` are required
 peer dependencies. `marked` (for `nge/markdown`), `monaco-editor` (for `nge/monaco`) and
 `ngx-pipes` are optional peers: install them only when you use the matching entry point.
 

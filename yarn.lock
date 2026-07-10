@@ -776,22 +776,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/material@npm:^22.0.4":
-  version: 22.0.4
-  resolution: "@angular/material@npm:22.0.4"
-  dependencies:
-    tslib: "npm:^2.3.0"
-  peerDependencies:
-    "@angular/cdk": 22.0.4
-    "@angular/common": ^22.0.0 || ^23.0.0
-    "@angular/core": ^22.0.0 || ^23.0.0
-    "@angular/forms": ^22.0.0 || ^23.0.0
-    "@angular/platform-browser": ^22.0.0 || ^23.0.0
-    rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10c0/c5e7328a05b41d3c075cb5e042377a5bf09c9b945f0369b86576e17e79af8a72193b8ac2b741063db7c55414987e7f41c0d71a5c05cc0312ce5496416fdd2b0d
-  languageName: node
-  linkType: hard
-
 "@angular/platform-browser-dynamic@npm:^22.0.5":
   version: 22.0.5
   resolution: "@angular/platform-browser-dynamic@npm:22.0.5"
@@ -2503,7 +2487,6 @@ __metadata:
     "@angular/core": "npm:^22.0.5"
     "@angular/elements": "npm:^22.0.5"
     "@angular/forms": "npm:^22.0.5"
-    "@angular/material": "npm:^22.0.4"
     "@angular/platform-browser": "npm:^22.0.5"
     "@angular/platform-browser-dynamic": "npm:^22.0.5"
     "@angular/router": "npm:^22.0.5"

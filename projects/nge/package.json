@@ -26,7 +26,6 @@
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
     "@angular/cdk": "^22.0.0",
-    "@angular/material": "^22.0.0",
     "rxjs": "^7.5.2",
     "marked": "^11.0.1",
     "monaco-editor": ">=0.43.0 <0.55.0",

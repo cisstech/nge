@@ -22,7 +22,7 @@ yarn add @cisstech/nge
 ## Peer dependencies
 
 - **Required:** `@angular/common`, `@angular/core`.
-- **UI entry points** (`nge/ui/tree`, `nge/ui/list`, `nge/ui/icon`): `@angular/cdk`, plus `@angular/material` for `nge/ui/tree`.
+- **UI entry points** (`nge/ui/tree`, `nge/ui/list`, `nge/ui/icon`): `@angular/cdk`.
 - **Optional, per entry point:** `marked` for `nge/markdown`, `monaco-editor` for `nge/monaco`, `ngx-pipes` for `nge/pipes`.
 
 Install the optional peers only when you use the matching entry point.

@@ -1,6 +1,9 @@
 :host {
   position: relative;
-  --tree-selection-color: #bae7ff;
+  // Theme-adaptive tint: a fraction of the current text colour, so selection and
+  // hover stay sober and legible on both light and dark themes with no forced
+  // label colours. Override this variable to theme the selection.
+  --tree-selection-color: color-mix(in srgb, currentColor 12%, transparent);
 }
 
 /* TREE */
@@ -30,7 +33,7 @@
 .tree-node:hover,
 .tree-node.focused,
 .tree-node.selected {
-  background-color: rgba(66, 66, 66, 0.04);
+  background-color: color-mix(in srgb, currentColor 6%, transparent);
 }
 
 .tree-node,
@@ -74,7 +77,7 @@
 
 /* FILTER */
 .tree-filter {
-  background-color: #efc1ad;
+  background-color: color-mix(in srgb, currentColor 14%, transparent);
   display: flex;
   align-items: center;
   position: absolute;
