@@ -1,0 +1,2 @@
+import {am as Wv}from'./main-J7W2INRH.js';var y=(()=>{let r=class r{transform(s){let i=/(\w+)\s+([\w-]+)((\s+(?:color|size)=[^\s]+)*)?/gm;return s.replace(i,(f,o,c,t)=>(t=(t!=null?t:"").trim().split(" ").filter(a=>a.trim()).join("&"),t=t?"?"+t:"",`https://icongr.am/${o.trim()}/${c.trim()}.svg${t}`))}};r.\u0275fac=function(i){return new(i||r)},r.\u0275pipe=Wv({name:"icongr",type:r,pure:true});let e=r;return e})();
+export{y};
