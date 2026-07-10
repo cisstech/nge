@@ -1,10 +1,19 @@
+:host {
+  display: block;
+  position: relative;
+}
+
 pre {
-  /* padding: 1em;  */
   margin: 0.5em 0;
   overflow: auto;
   border: 1px solid var(--nge-monaco-editor-border, #f2f2f2);
 }
 
+// The placeholder overlays the code while monaco loads and colorizes, then is
+// removed once ready. The code is laid out underneath from the first paint, so
+// revealing it never shifts the surrounding content.
 nge-monaco-placeholder {
-  max-height: 200px;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
