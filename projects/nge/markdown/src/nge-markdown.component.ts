@@ -151,9 +151,10 @@ export class NgeMarkdownComponent implements OnInit, AfterViewInit, OnDestroy {
     const { darkThemeClassName } = this.markdownService.config
     if (darkThemeClassName) {
       // TODO: support angular universal
-      this.isDark =
-        document.querySelector(darkThemeClassName.startsWith('.') ? darkThemeClassName : `.${darkThemeClassName}`) !=
-        null
+      const classNames = Array.isArray(darkThemeClassName) ? darkThemeClassName : [darkThemeClassName]
+      this.isDark = classNames.some(
+        (name) => document.querySelector(name.startsWith('.') ? name : `.${name}`) != null
+      )
     }
   }
 

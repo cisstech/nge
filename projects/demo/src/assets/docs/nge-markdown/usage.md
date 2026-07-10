@@ -169,6 +169,11 @@ variant when that class is present on `<html>` or `<body>`.
 NgeMarkdownConfigProvider({ darkThemeClassName: 'dark-theme' })
 ```
 
+Inside an [nge/doc](/docs/nge-doc/getting-started) site, use its class:
+`darkThemeClassName: 'nge-doc-dark'`. This is the same option as in
+[nge/monaco](/docs/nge-monaco/usage), so one class drives both. It also accepts an array
+(`['dark-theme', 'nge-doc-dark']`) for apps whose pages toggle different dark classes.
+
 ## Compile Markdown yourself
 
 `NgeMarkdownComponent` wraps `NgeMarkdownService`. Inject the service to render into an element

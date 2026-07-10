@@ -112,8 +112,10 @@ The default theme ships a light/dark toggle. Set the initial scheme with `withDa
 
 `NgeDocThemeService` owns the scheme: read `isDark()`, call `toggle()` or `setScheme()`, and it
 reflects the result as a `nge-doc-dark` class on the document root while the docs are on screen.
-Other libraries can follow that class; for example `nge/monaco` can switch its editor theme
-through its `theming.darkThemeClassName` option.
+Other libraries can follow that class: point [nge/monaco](/docs/nge-monaco/usage) and
+[nge/markdown](/docs/nge-markdown/usage) at `darkThemeClassName: 'nge-doc-dark'` and their editors
+and rendered Markdown switch with the site. Both options also accept an array, so a page that
+toggles its own dark class as well can pass `['dark-theme', 'nge-doc-dark']`.
 
 ## Search
 
