@@ -179,6 +179,8 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
         const renderer = await state.currLink.renderer
         switch (typeof renderer) {
           case 'string':
+            // Markdown paints asynchronously; renderMarkdown keeps the skeleton
+            // up until it has rendered so the reader never sees the render shift.
             await this.renderMarkdown(renderer)
             break
           case 'function':
@@ -187,13 +189,16 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
               inputs: state.currLink.inputs,
               container: this.container(),
             })
+            this.loading.set(false)
             break
         }
+      } else {
+        this.loading.set(false)
       }
     } catch (error) {
       console.error(error)
-    } finally {
       this.loading.set(false)
+    } finally {
       this.notFound.set(!this.componentRef)
       this.changeDetectorRef.markForCheck()
       this.scheduleSync()
@@ -245,6 +250,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     const markdownComponent = this.componentRefByTypes.get(type)
     if (markdownComponent) {
       this.attachComponent(markdownComponent, await createInputs())
+      this.awaitMarkdownRender(markdownComponent)
       return
     }
 
@@ -256,6 +262,33 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
 
     this.componentRef = componentRef
     this.componentRefByTypes.set(type, componentRef)
+    this.awaitMarkdownRender(componentRef)
+  }
+
+  /**
+   * Hides the loading skeleton once the markdown component has painted. The
+   * component exposes a `render` output that fires after each pass; the guard
+   * ignores stale emits from a previous navigation, and the timeout is a safety
+   * net for a renderer that never emits (for example when compilation throws).
+   */
+  private awaitMarkdownRender(componentRef: ComponentRef<any>): void {
+    const done = () => {
+      if (this.componentRef === componentRef) {
+        this.loading.set(false)
+        this.changeDetectorRef.markForCheck()
+      }
+    }
+
+    const render = componentRef.instance?.render
+    if (render && typeof render.subscribe === 'function') {
+      const subscription = render.subscribe(() => {
+        done()
+        subscription.unsubscribe()
+      })
+      setTimeout(done, 5000)
+    } else {
+      done()
+    }
   }
 
   private attachComponent(componentRef: ComponentRef<any>, inputs: Record<string, any>): void {

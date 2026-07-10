@@ -4,38 +4,87 @@
   position: relative;
 }
 
-.loading-container {
+.doc-content {
+  position: relative;
+}
+
+// Give the overlay room even before the content underneath has grown.
+.doc-content--loading {
+  min-height: 60vh;
+}
+
+// Skeleton placeholder shown while the page loads. It overlays the content area
+// (opaque) so the Markdown render underneath, which shifts as it computes, stays
+// hidden until it settles. Colors come from theme tokens, so it follows
+// light/dark without extra rules.
+.doc-skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--nge-doc-bg, #fff);
   display: flex;
-  align-items: center;
   flex-direction: column;
-  justify-content: center;
-  padding: 4rem 0;
-  gap: 1rem;
+  gap: 0.9rem;
+  max-width: var(--nge-doc-content-max, 48rem);
+  padding: 0.5rem 0 2rem;
 }
 
-.loading-spinner {
-  border: 3px solid var(--nge-doc-border, rgba(127, 127, 127, 0.25));
-  border-top-color: var(--nge-doc-primary, rgba(127, 127, 127, 0.7));
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  animation: nge-doc-renderer-spin 0.7s linear infinite;
+.sk {
+  position: relative;
+  overflow: hidden;
+  height: 0.85rem;
+  border-radius: var(--nge-doc-r-sm, 6px);
+  background: var(--nge-doc-bg-subtle, rgba(127, 127, 127, 0.12));
 }
 
-@keyframes nge-doc-renderer-spin {
-  to {
-    transform: rotate(360deg);
+// A sheen sweeps across each bar to signal activity.
+.sk::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--nge-doc-surface-hover, rgba(127, 127, 127, 0.18)), transparent);
+  animation: nge-doc-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes nge-doc-shimmer {
+  100% {
+    transform: translateX(100%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .loading-spinner {
+  .sk::after {
     animation: none;
   }
 }
 
-.loading-text {
-  font-family: var(--nge-doc-font-sans, sans-serif);
-  font-size: 0.9rem;
-  color: var(--nge-doc-fg-muted, #666);
+.sk-title {
+  height: 2.1rem;
+  width: 55%;
+  margin-bottom: 0.6rem;
+  border-radius: var(--nge-doc-r-md, 8px);
+}
+
+.sk-heading {
+  height: 1.4rem;
+  width: 38%;
+  margin-top: 1.4rem;
+  border-radius: var(--nge-doc-r-md, 8px);
+}
+
+.sk-line--lead {
+  width: 92%;
+}
+
+.sk-line--short {
+  width: 60%;
+}
+
+.sk-block {
+  height: 8rem;
+  width: 100%;
+  margin: 0.6rem 0;
+  border-radius: var(--nge-doc-r-md, 8px);
+  background: var(--nge-doc-code-bg, rgba(127, 127, 127, 0.12));
 }
