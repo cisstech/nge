@@ -9,9 +9,13 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v5
       with:
         node-version: ${{ inputs.node-version }}
+        # Yarn is Corepack-managed and enabled in the next step; setup-node's own
+        # dependency cache probes yarn too early (global yarn 1 vs packageManager
+        # yarn 4) and fails, so leave it off. Yarn's global cache covers this.
+        package-manager-cache: false
     - name: Enable Corepack
       shell: bash
       run: corepack enable

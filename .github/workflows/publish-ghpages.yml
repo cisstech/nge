@@ -13,7 +13,7 @@ jobs:
       name: Prepare
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v5
         - uses: ./.github/actions/setup
           with:
             node-version: ${{ env.NODE_VERSION }}
@@ -25,7 +25,7 @@ jobs:
       contents: write  # Write access to repository content
       pages: write  # Write access to publish pages
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
         with:
           node-version: ${{ env.NODE_VERSION }}
