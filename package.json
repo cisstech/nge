@@ -37,7 +37,7 @@
     "lint:fix": "ng lint --fix",
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",
-    "publish:lib": "yarn publish ./dist/nge --provenance --access public",
+    "publish:lib": "npm publish ./dist/nge --provenance --access public",
     "publish:demo": "ng deploy demo --no-silent",
     "release": "standard-version",
     "release:major": "standard-version --release-as major",
@@ -46,7 +46,6 @@
     "release:as": "standard-version --release-as",
     "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json"
   },
-  "private": false,
   "dependencies": {
     "@angular/animations": "^22.0.5",
     "@angular/cdk": "^22.0.4",
@@ -143,5 +142,5 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "packageManager": "yarn@4.12.0+sha256.1fe4e1193cbcd13a48d8f436bb17d3c672b049a5e32a758aab9866a073db1702"
 }

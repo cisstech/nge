@@ -6,14 +6,15 @@ on:
       - main
 
 env:
-  NODE_VERSION: 22
+  NODE_VERSION: 24.18.0
 
 jobs:
   prepare:
       name: Prepare
       runs-on: ubuntu-latest
       steps:
-        - uses: DerYeger/yarn-setup-action@master
+        - uses: actions/checkout@v4
+        - uses: ./.github/actions/setup
           with:
             node-version: ${{ env.NODE_VERSION }}
 
@@ -24,7 +25,8 @@ jobs:
       contents: write  # Write access to repository content
       pages: write  # Write access to publish pages
     steps:
-      - uses: DerYeger/yarn-setup-action@master
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
         with:
           node-version: ${{ env.NODE_VERSION }}
 
