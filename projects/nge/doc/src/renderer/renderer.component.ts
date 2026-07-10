@@ -32,6 +32,17 @@ export interface NgeDocHeading {
   level: number
 }
 
+/** An observable-like output a rendered component may expose to signal readiness. */
+interface RenderSignal {
+  subscribe(next: (value?: unknown) => void): { unsubscribe(): void }
+}
+
+/** Minimal shape of a markdown component that reports when its content is painted. */
+interface MarkdownRenderSource {
+  rendered?: RenderSignal
+  render?: RenderSignal
+}
+
 @Component({
   selector: 'nge-doc-renderer',
   templateUrl: 'renderer.component.html',
@@ -273,7 +284,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
    * timeout is a safety net for a renderer that never emits (for example when
    * compilation throws).
    */
-  private awaitMarkdownRender(componentRef: ComponentRef<any>): void {
+  private awaitMarkdownRender(componentRef: ComponentRef<unknown>): void {
     const done = () => {
       if (this.componentRef === componentRef) {
         this.loading.set(false)
@@ -281,7 +292,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
       }
     }
 
-    const instance = componentRef.instance
+    const instance = componentRef.instance as MarkdownRenderSource | null
     const ready = instance?.rendered ?? instance?.render
     if (ready && typeof ready.subscribe === 'function') {
       const subscription = ready.subscribe(() => {
