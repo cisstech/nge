@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.1.0](https://github.com/cisstech/nge/compare/v22.0.1...v22.1.0) (2026-07-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **ui:** 21.0.0 note in favour of levelAccessor/childrenAccessor). The
+tree uses it only as a standalone expansion control (it renders its own flat
+list, not via cdk-tree), so replace it with a tiny local FlatTreeControl backed
+by a SelectionModel (identity-keyed, matching the previous trackBy). No
+behaviour change; build:lib and the tests (21/21) pass.
+
+### Bug Fixes
+
+* **ci:** run CI on yarn 4 via corepack ([9413637](https://github.com/cisstech/nge/commit/9413637d4f6638cba673aea3ddea69dfa45d885f))
+* **release:** build the GitHub release notes from the changelog ([c023429](https://github.com/cisstech/nge/commit/c023429f5fc9273663aea238f1442a53dc7cd65f))
+* **release:** deepen the release checkout and run the post-build version sync ([dc01d26](https://github.com/cisstech/nge/commit/dc01d26e371e78acc67ad4796d283ce37233e3e2))
+* **release:** push the release tag so the GitHub release can be created ([8d660cb](https://github.com/cisstech/nge/commit/8d660cb00adf317e634399111937ab57b4b3337b))
+* **ui:** use a sober, theme-adaptive tree selection ([ead3c7e](https://github.com/cisstech/nge/commit/ead3c7e9c2c2822ce1edd3fd5c56ae498ee6302b))
+
+
+* **ui:** replace the deprecated CDK FlatTreeControl with a local control ([708893b](https://github.com/cisstech/nge/commit/708893b4e8d70322dadf790d648a8af2b0501583))
+
 ### [22.0.1](https://github.com/cisstech/nge/compare/v22.0.0...v22.0.1) (2026-07-09)
 
 
