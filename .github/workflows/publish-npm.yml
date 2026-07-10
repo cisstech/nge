@@ -17,7 +17,7 @@ jobs:
       name: Prepare
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v5
         - uses: ./.github/actions/setup
           with:
             node-version: ${{ env.NODE_VERSION }}
@@ -31,7 +31,7 @@ jobs:
       id-token: write  # Permission to create releases
       pull-requests: write  # Permission to create pull requests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup
@@ -45,33 +45,34 @@ jobs:
 
       - name: Bump version and generate changelog
         id: release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npx standard-version --skip.commit --skip.tag --release-as ${{ inputs.version }}
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           awk '/^#{2,3} \[?[0-9]+\.[0-9]+\.[0-9]+/{c++} c==1{print} c==2{exit}' CHANGELOG.md > RELEASE_NOTES.md
-          git checkout -b release/v$VERSION
-          git add package.json CHANGELOG.md
-          git commit -m "[no-ci] chore(release): v$VERSION"
-          git tag -a v$VERSION -m "v$VERSION"
-          git push origin release/v$VERSION
-          git push origin "v$VERSION"
-          gh pr create --title "Release: v$VERSION" --body "Automated release: updated package.json and CHANGELOG for v$VERSION." --base main --head release/v$VERSION
 
-      - name: Publish GitHub release
-        if: success()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release create v${{ steps.release.outputs.version }} --title "v${{ steps.release.outputs.version }}" --notes-file RELEASE_NOTES.md
-
-      - name: Publish to npm
-        if: success()
+      # npm publish is the one step that is hard to undo, so it runs first.
+      # If it fails, the tag / branch / GitHub release / PR below are skipped
+      # and nothing points at a version that is not on npm.
+      - name: Build and publish to npm
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLIC_TOKEN }}" > ~/.npmrc
           yarn build:lib
           npm publish ./dist/nge --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLIC_TOKEN }}
-        shell: bash
+
+      - name: Tag, push and publish the GitHub release
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION=${{ steps.release.outputs.version }}
+          git checkout -b release/v$VERSION
+          git add package.json CHANGELOG.md
+          git commit -m "[no-ci] chore(release): v$VERSION"
+          git tag -a v$VERSION -m "v$VERSION"
+          git push origin release/v$VERSION
+          git push origin "v$VERSION"
+          gh release create v$VERSION --title "v$VERSION" --notes-file RELEASE_NOTES.md
+          gh pr create --title "Release: v$VERSION" --body "Automated release for v$VERSION (already published to npm and released on GitHub in this run). Merges the version bump and CHANGELOG into main." --base main --head release/v$VERSION
