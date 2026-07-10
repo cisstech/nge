@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.3.0](https://github.com/cisstech/nge/compare/v22.2.1...v22.3.0) (2026-07-10)
+
+
+### Features
+
+* **doc,markdown:** lift the skeleton exactly when content paints ([eee6df9](https://github.com/cisstech/nge/commit/eee6df9efbcc8c9b2fd94dd63b65a059a500ef96))
+* **doc:** show a skeleton while a page loads and renders ([e2cdde9](https://github.com/cisstech/nge/commit/e2cdde9abbfbee0edbc9e1646586848b2113fd49))
+* **monaco,markdown:** accept an array of darkThemeClassName values ([f43dc97](https://github.com/cisstech/nge/commit/f43dc97a80860a9e5f5c7410ce1da503798c49fc))
+
+
+### Bug Fixes
+
+* **ci:** disable setup-node's package-manager cache ([998da57](https://github.com/cisstech/nge/commit/998da576d7d88501c30c3eb23d93a11f6224d17a))
+* **doc:** type awaitMarkdownRender without explicit any ([1fa2706](https://github.com/cisstech/nge/commit/1fa27068aaad819833a91b66a42056ca39d2306a))
+* **markdown:** stop parsing LaTeX display math as markdown ([6bbb0da](https://github.com/cisstech/nge/commit/6bbb0da3c062808768fed94b4f68ba9043dddafc)), closes [#335](https://github.com/cisstech/nge/issues/335)
+* **monaco:** overlay the loading placeholder instead of stacking it ([12bf293](https://github.com/cisstech/nge/commit/12bf293414a1f06b7bdf1f4a23108d40ccaadae2))
+* **monaco:** reserve the code file tab before colorizing ([a239049](https://github.com/cisstech/nge/commit/a2390494d0e6c1eae3456cf4596ffa6cea5a7b0d))
+
 ### [22.2.1](https://github.com/cisstech/nge/compare/v22.2.0...v22.2.1) (2026-07-10)
 
 
