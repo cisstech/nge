@@ -266,10 +266,12 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Hides the loading skeleton once the markdown component has painted. The
-   * component exposes a `render` output that fires after each pass; the guard
-   * ignores stale emits from a previous navigation, and the timeout is a safety
-   * net for a renderer that never emits (for example when compilation throws).
+   * Hides the loading skeleton once the markdown content has painted. It prefers
+   * the component's `rendered` output (emitted after the content is revealed) and
+   * falls back to `render` (emitted after compile) for a custom renderer that
+   * lacks it. The guard ignores stale emits from a previous navigation, and the
+   * timeout is a safety net for a renderer that never emits (for example when
+   * compilation throws).
    */
   private awaitMarkdownRender(componentRef: ComponentRef<any>): void {
     const done = () => {
@@ -279,9 +281,10 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
       }
     }
 
-    const render = componentRef.instance?.render
-    if (render && typeof render.subscribe === 'function') {
-      const subscription = render.subscribe(() => {
+    const instance = componentRef.instance
+    const ready = instance?.rendered ?? instance?.render
+    if (ready && typeof ready.subscribe === 'function') {
+      const subscription = ready.subscribe(() => {
         done()
         subscription.unsubscribe()
       })
