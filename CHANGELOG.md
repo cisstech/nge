@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.2.1](https://github.com/cisstech/nge/compare/v22.2.0...v22.2.1) (2026-07-10)
+
+
+### Features
+
+* **monaco:** add the github-dark editor theme ([357752a](https://github.com/cisstech/nge/commit/357752afa7bc3ad2bce648f8103b063e65037021)), closes [#0d1117](https://github.com/cisstech/nge/issues/0d1117)
+* **monaco:** make the editor border themeable ([b8d8cec](https://github.com/cisstech/nge/commit/b8d8cecb64aefb63b4ac34a68d4638bde63bd862))
+
 ## [22.2.0](https://github.com/cisstech/nge/compare/v22.1.0...v22.2.0) (2026-07-10)
 
 ## [22.1.0](https://github.com/cisstech/nge/compare/v22.0.1...v22.1.0) (2026-07-10)
