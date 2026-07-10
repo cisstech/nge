@@ -215,6 +215,11 @@ This is how these docs keep the editors in step with the site: nge/doc toggles a
 mode, and Monaco reads the same class. `darkThemeClassName` matches the option of the same name in
 [nge/markdown](/docs/nge-markdown/usage), so a single class drives both.
 
+Inside an [nge/doc](/docs/nge-doc/getting-started) site, set `darkThemeClassName: 'nge-doc-dark'`,
+the class nge/doc toggles on `<html>`. `darkThemeClassName` also accepts an array, so an app whose
+pages use different dark classes can pass `['dark-theme', 'nge-doc-dark']` and Monaco follows
+whichever one is present.
+
 ## Extensions
 
 Register a contribution to run code once Monaco is available, for example to add a language. Bind

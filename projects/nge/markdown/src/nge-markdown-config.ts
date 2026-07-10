@@ -6,9 +6,10 @@ import { MarkedOptions } from 'marked'
  */
 export declare type NgeMarkdownConfig = MarkedOptions & {
   /**
-   * Class name indicating that the page is currently in dark mode
+   * Class name (or names) indicating that the page is currently in dark mode.
+   * Pass an array to match any of several dark classes across a multi-page app.
    */
-  darkThemeClassName?: string
+  darkThemeClassName?: string | string[]
 }
 
 /**
