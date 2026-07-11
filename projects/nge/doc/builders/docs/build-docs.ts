@@ -14,7 +14,10 @@ export interface DocsBuildResult {
  * Core of the builder: runs {@link buildDocs} and reports the outcome. Kept free
  * of architect so it can be unit-tested directly (real fs or an injected one).
  */
-export function runDocsBuild(options: DocsBuilderOptions, deps: { fs?: DocFs; writer?: DocFsWriter } = {}): DocsBuildResult {
+export function runDocsBuild(
+  options: DocsBuilderOptions,
+  deps: { fs?: DocFs; writer?: DocFsWriter } = {}
+): DocsBuildResult {
   try {
     const manifest = buildDocs({
       dir: options.docsDir,

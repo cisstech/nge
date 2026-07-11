@@ -30,9 +30,7 @@ export class NgeDocThemeService {
   readonly scheme = signal<NgeDocColorScheme>(this.readStoredScheme())
 
   /** Whether dark mode is currently active once `auto` is resolved. */
-  readonly isDark = computed(() =>
-    this.scheme() === 'auto' ? this.systemPrefersDark() : this.scheme() === 'dark'
-  )
+  readonly isDark = computed(() => (this.scheme() === 'auto' ? this.systemPrefersDark() : this.scheme() === 'dark'))
 
   constructor() {
     const query = this.window?.matchMedia?.('(prefers-color-scheme: dark)')

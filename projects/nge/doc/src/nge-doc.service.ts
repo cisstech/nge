@@ -8,7 +8,12 @@ import { BehaviorSubject, Subscription, firstValueFrom } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
 import { NgeDocManifest, extractManifestSources, flattenPages, settingsToManifest } from './manifest'
-import { DefaultNgeDocSearchProvider, NGE_DOC_SEARCH_PROVIDER, NgeDocSearchProvider, NgeDocSearchResult } from './search'
+import {
+  DefaultNgeDocSearchProvider,
+  NGE_DOC_SEARCH_PROVIDER,
+  NgeDocSearchProvider,
+  NgeDocSearchResult,
+} from './search'
 import {
   DEFAULT_NGE_DOC_LABELS,
   NGE_DOC_BRAND,
@@ -65,8 +70,7 @@ export class NgeDocService implements OnDestroy {
    * registered site (its name and root) as a sensible default.
    */
   readonly navbar = computed<NgeDocNavLink[]>(
-    () =>
-      this.explicitNavbar ?? this.sites().map((meta) => ({ title: meta.name, href: meta.root, icon: meta.logo }))
+    () => this.explicitNavbar ?? this.sites().map((meta) => ({ title: meta.name, href: meta.root, icon: meta.logo }))
   )
 
   /**

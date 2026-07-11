@@ -56,9 +56,7 @@ export function docsFromManifest(url: string): NgeDocManifestSource {
 
 /** Type guard for a {@link NgeDocManifestSource}. */
 export function isNgeDocManifestSource(value: unknown): value is NgeDocManifestSource {
-  return (
-    !!value && typeof value === 'object' && typeof (value as NgeDocManifestSource).ngeDocManifestUrl === 'string'
-  )
+  return !!value && typeof value === 'object' && typeof (value as NgeDocManifestSource).ngeDocManifestUrl === 'string'
 }
 
 /** Collects manifest sources from route data (mirrors `extractNgeDocSettings`). */

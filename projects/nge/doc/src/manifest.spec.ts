@@ -54,7 +54,10 @@ describe('settingsToManifest', () => {
     const manifest = await settingsToManifest(
       {
         meta: { name: 'Docs', root: '/docs' },
-        pages: [{ title: 'Section', separator: true }, { title: 'A', href: 'a' }],
+        pages: [
+          { title: 'Section', separator: true },
+          { title: 'A', href: 'a' },
+        ],
       },
       injector
     )
