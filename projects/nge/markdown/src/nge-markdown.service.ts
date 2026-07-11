@@ -6,8 +6,6 @@ import { NgeMarkdownTransformer } from './nge-markdown-transformer'
 import { ResourceLoaderService } from '@cisstech/nge/services'
 import { lastValueFrom } from 'rxjs'
 
-const WINDOW = window as any
-
 /**
  * Markdown compiler service.
  */
@@ -55,7 +53,7 @@ export class NgeMarkdownService {
   private async createTransformer(options: NgeMarkdownCompileOptions) {
     const contributions = [...(options.contributions || [])]
     const transformer = new NgeMarkdownTransformer(this.config)
-    const dependencies: any[] = []
+    const dependencies: ['style' | 'script', string][] = []
     for (const contrib of contributions) {
       if (contrib.dependencies) {
         dependencies.push(...contrib.dependencies())
@@ -68,10 +66,18 @@ export class NgeMarkdownService {
     // https://stackoverflow.com/a/33635881
     // https://github.com/microsoft/monaco-editor/issues/662
     // https://github.com/microsoft/monaco-editor/issues/1249
-    const define = WINDOW.define
-    WINDOW.define = undefined
+    // Monaco's AMD loader clobbers a global `define`; neutralize it while the
+    // dependency scripts load, then restore. Browser-only and a no-op on the
+    // server (no window), which also keeps this module importable at prerender.
+    const scope = typeof window !== 'undefined' ? (window as unknown as Record<string, unknown>) : undefined
+    const define = scope?.['define']
+    if (scope) {
+      scope['define'] = undefined
+    }
     await lastValueFrom(this.resourceLoader.loadAllSync(dependencies))
-    WINDOW.define = define
+    if (scope) {
+      scope['define'] = define
+    }
     return transformer
   }
 
@@ -106,7 +112,7 @@ export class NgeMarkdownService {
         if (isNaN(indentStart)) {
           indentStart = lineIdentStart
         }
-        return !!lineIdentStart ? line.substring(lineIdentStart) : line
+        return lineIdentStart ? line.substring(lineIdentStart) : line
       })
       .join('\n')
   }
