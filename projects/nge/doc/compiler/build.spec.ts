@@ -38,40 +38,26 @@ function memWriter(): { writer: DocFsWriter; written: Record<string, string> } {
 const meta = { name: 'Docs', root: '/docs' }
 
 describe('buildDocs', () => {
-  it('writes manifest.json to the output folder', () => {
+  it('writes nge-doc.json next to the sources, and copies no markdown (served in place)', () => {
     const { writer, written } = memWriter()
     const fs = memFs({ 'docs/index.md': '---\ntitle: Home\n---\n# Home', 'docs/guide.md': '# Guide' })
 
-    const manifest = buildDocs({ dir: 'docs', meta, outDir: 'out', assetsBase: 'assets/docs', fs, writer })
+    const manifest = buildDocs({ dir: 'docs', meta, outDir: 'out', fs, writer })
 
-    expect(written['out/manifest.json']).toBeDefined()
-    expect(JSON.parse(written['out/manifest.json'])).toEqual(manifest)
+    expect(written['docs/nge-doc.json']).toBeDefined()
+    expect(JSON.parse(written['docs/nge-doc.json'])).toEqual(manifest)
     expect(manifest.pages.map((p) => p.title)).toEqual(['Home', 'Guide'])
+    // Sources are served in place; the builder never copies markdown.
+    expect(Object.keys(written).filter((path) => path.endsWith('.md'))).toEqual([])
   })
 
-  it('copies every markdown file, preserving the folder structure', () => {
-    const { writer, written } = memWriter()
-    const fs = memFs({
-      'docs/index.md': '# Home',
-      'docs/guides/theming.md': '# Theming',
-      'docs/_meta.json': '{}',
-    })
-
-    buildDocs({ dir: 'docs', meta, outDir: 'out', fs, writer })
-
-    expect(written['out/index.md']).toBe('# Home')
-    expect(written['out/guides/theming.md']).toBe('# Theming')
-    // Only markdown is copied; _meta.json stays a build-time input.
-    expect(written['out/_meta.json']).toBeUndefined()
-  })
-
-  it('emits sitemap.xml and robots.txt only when a siteUrl is given', () => {
+  it('emits the AI/SEO files only when a siteUrl is given, and honors the opt-out flags', () => {
     const files = { 'docs/index.md': '# Home', 'docs/guide.md': '# Guide' }
 
     const withoutUrl = memWriter()
     buildDocs({ dir: 'docs', meta, outDir: 'out', fs: memFs(files), writer: withoutUrl.writer })
     expect(withoutUrl.written['out/sitemap.xml']).toBeUndefined()
-    expect(withoutUrl.written['out/robots.txt']).toBeUndefined()
+    expect(withoutUrl.written['out/llms.txt']).toBeUndefined()
 
     const withUrl = memWriter()
     buildDocs({
@@ -84,5 +70,21 @@ describe('buildDocs', () => {
     })
     expect(withUrl.written['out/sitemap.xml']).toContain('<loc>https://example.com/docs/guide</loc>')
     expect(withUrl.written['out/robots.txt']).toContain('Sitemap: https://example.com/sitemap.xml')
+    expect(withUrl.written['out/llms.txt']).toContain('# Docs')
+
+    const optedOut = memWriter()
+    buildDocs({
+      dir: 'docs',
+      meta,
+      outDir: 'out',
+      siteUrl: 'https://example.com',
+      robots: false,
+      llms: false,
+      fs: memFs(files),
+      writer: optedOut.writer,
+    })
+    expect(optedOut.written['out/sitemap.xml']).toBeDefined()
+    expect(optedOut.written['out/robots.txt']).toBeUndefined()
+    expect(optedOut.written['out/llms.txt']).toBeUndefined()
   })
 })

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { RenderMode, ServerRoute } from '@angular/ssr'
 
 /** Built manifest for the `/guide` site, read at prerender to enumerate pages. */
-const GUIDE_MANIFEST = 'projects/demo/src/assets/guide/manifest.json'
+const GUIDE_MANIFEST = 'projects/demo/public/guide/nge-doc.json'
 
 interface ManifestLink {
   href: string

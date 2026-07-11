@@ -16,6 +16,7 @@ import { NgeDocLink } from '../../nge-doc'
 import { NgeDocService } from '../../nge-doc.service'
 import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component'
 import { HeaderComponent } from './header/header.component'
+import { PageActionsComponent } from './page-actions/page-actions.component'
 import { PagerComponent } from './pager/pager.component'
 import { SearchPaletteComponent } from './search/search-palette.component'
 import { SidenavComponent } from './sidenav/sidenav.component'
@@ -33,6 +34,7 @@ import { TocComponent } from './toc/toc.component'
     SidenavComponent,
     NgeDocRendererComponent,
     BreadcrumbComponent,
+    PageActionsComponent,
     PagerComponent,
     TocComponent,
     SearchPaletteComponent,

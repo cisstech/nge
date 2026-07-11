@@ -59,21 +59,23 @@ Declare a target in `angular.json`:
   "builder": "@cisstech/nge:docs",
   "options": {
     "docsDir": "docs",
-    "outputPath": "src/assets/docs",
+    "outputPath": "public",
     "name": "My library",
     "root": "/docs",
-    "assetsBase": "assets/docs"
+    "siteUrl": "https://example.com"
   }
 }
 ```
 
-Run it with `ng run <project>:docs` (add `--watch` to rebuild on change), then
-point the route at the emitted manifest:
+`outputPath` is a directory the app serves at its site root (Angular's `public/`).
+The builder writes one tree there: `<root>/manifest.json`, each page's markdown at
+its page-adjacent url (`docs/getting-started.md`), and, with a `siteUrl`,
+`sitemap.xml` / `robots.txt` / `llms.txt` / `llms-full.txt` at the root. Because it
+all lands in `public/`, `ng serve` and `ng build` serve it with no postbuild.
+
+Run it with `ng run <project>:docs` (add `--watch` to rebuild on change) before
+`ng build` / `ng serve`, then point the route at the emitted manifest:
 
 ```ts
-{ path: 'docs', loadChildren: () => NgeDocModule, data: docsFromManifest('assets/docs/manifest.json') }
+{ path: 'docs', loadChildren: () => NGE_DOC_ROUTES, data: docsFromManifest('docs/manifest.json') }
 ```
-
-`outputPath` is where the manifest and copied markdown land (usually an assets
-folder). `assetsBase` is the url those files are served from at runtime, so it
-must match how `outputPath` is exposed by the app.

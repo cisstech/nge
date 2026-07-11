@@ -56,6 +56,7 @@
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": [
               "projects/demo/src/assets",
+              { "glob": "**/*", "input": "projects/demo/public", "output": "." },
               { "glob": "**/*", "input": "./node_modules/monaco-editor/min", "output": "./assets/nge/monaco/min" },
               {
                 "glob": "**/*",
@@ -138,11 +139,9 @@
         "docs": {
           "builder": "./dist/nge:docs",
           "options": {
-            "docsDir": "projects/demo/docs",
-            "outputPath": "projects/demo/src/assets/guide",
+            "publicDir": "projects/demo/public",
             "name": "Guide",
             "root": "/guide",
-            "assetsBase": "assets/guide",
             "siteUrl": "https://cisstech.github.io/nge"
           }
         }

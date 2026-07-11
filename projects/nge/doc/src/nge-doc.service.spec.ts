@@ -202,4 +202,10 @@ describe('NgeDocService SEO (withSeo)', () => {
     service.setSeo('Title', 'Desc', 'https://cdn.example.com/x.png')
     expect(content('meta[property="og:image"]')).toBe('https://cdn.example.com/x.png')
   })
+
+  it('exposes the raw markdown url and its absolute page.md variant', async () => {
+    await service.setup()
+    expect(service.markdownUrl()).toBe('intro.md')
+    expect(service.markdownAbsoluteUrl()).toBe('https://example.com/docs/alpha/intro.md')
+  })
 })

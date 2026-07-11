@@ -1,17 +1,19 @@
 /** Options for the `@cisstech/nge:docs` architect builder. */
 export interface DocsBuilderOptions {
-  /** Path to the docs folder, relative to the workspace root. */
-  docsDir: string
-  /** Output folder for manifest.json and the copied markdown (served as `assetsBase`). */
-  outputPath: string
+  /** The served public dir (site root), relative to the workspace. Markdown is authored under `<publicDir>/<root>`. */
+  publicDir: string
+  /** Site root url, e.g. `/guide`. Sources live at `<publicDir>/<root>` and are served there. */
+  root: string
   /** Site name. */
   name: string
-  /** Site root url. */
-  root: string
-  /** Base url the markdown is served from at runtime. Default: `assets/docs`. */
-  assetsBase?: string
-  /** Absolute site url. When set, emits `sitemap.xml` and `robots.txt`. */
+  /** Absolute site url. When set, emits the AI/SEO files. */
   siteUrl?: string
+  /** Emit `sitemap.xml` when `siteUrl` is set. Default: true. */
+  sitemap?: boolean
+  /** Emit `robots.txt` when `siteUrl` is set. Default: true. */
+  robots?: boolean
+  /** Emit `llms.txt` and `llms-full.txt` when `siteUrl` is set. Default: true. */
+  llms?: boolean
   /** Rebuild on change. */
   watch?: boolean
 }

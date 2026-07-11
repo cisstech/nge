@@ -184,6 +184,14 @@ export interface NgeDocLabels {
   editThisPage: string
   /** Prefix for the date the current page was last updated. */
   lastUpdated: string
+  /** Action that copies the page's markdown to the clipboard. */
+  copyAsMarkdown: string
+  /** Confirmation shown briefly after copying. */
+  copied: string
+  /** Action that opens the page in ChatGPT. */
+  openInChatGpt: string
+  /** Action that opens the page in Claude. */
+  openInClaude: string
 }
 
 /** Default (English) theme wording. */
@@ -209,6 +217,10 @@ export const DEFAULT_NGE_DOC_LABELS: NgeDocLabels = {
   action: 'Action',
   editThisPage: 'Edit this page',
   lastUpdated: 'Last updated',
+  copyAsMarkdown: 'Copy as Markdown',
+  copied: 'Copied!',
+  openInChatGpt: 'Open in ChatGPT',
+  openInClaude: 'Open in Claude',
 }
 
 /** Ready-made English wording, an alias of {@link DEFAULT_NGE_DOC_LABELS}. */
@@ -237,6 +249,10 @@ export const NGE_DOC_LABELS_FR: NgeDocLabels = {
   action: 'Action',
   editThisPage: 'Modifier cette page',
   lastUpdated: 'Dernière mise à jour',
+  copyAsMarkdown: 'Copier en Markdown',
+  copied: 'Copié !',
+  openInChatGpt: 'Ouvrir dans ChatGPT',
+  openInClaude: 'Ouvrir dans Claude',
 }
 
 /** Overridden theme wording. Merged over {@link DEFAULT_NGE_DOC_LABELS}. */

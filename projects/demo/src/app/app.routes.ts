@@ -18,7 +18,7 @@ export const routes: Routes = [
     // Manifest-driven docs, compiled from projects/demo/docs and prerendered (SSG).
     path: 'guide',
     loadChildren: () => import('@cisstech/nge/doc').then((m) => m.NGE_DOC_ROUTES),
-    data: docsFromManifest('assets/guide/manifest.json'),
+    data: docsFromManifest('guide/nge-doc.json'),
   },
   { path: '**', redirectTo: 'docs/overview' },
 ]

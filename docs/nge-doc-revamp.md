@@ -68,11 +68,13 @@ SSR hazards fixed along the way (nge is now SSR-safe): import-time `window` in t
 - [x] `sitemap.xml` + `robots.txt` from the compiler (builder `siteUrl`, moved to the site root in the demo).
 - [x] "Edit on GitHub" (`sourcePath`) + "Last updated" (`git log -1`) in the manifest; shown by the default layout via `withEditLink`.
 
-### M5 - AI outputs (needs M2)
+### M5 - AI outputs (needs M2) ✅
 
-- [ ] `llms.txt` + `llms-full.txt` from the manifest.
-- [ ] Raw `.md` served next to each HTML page.
-- [ ] "Copy as Markdown" + "Open in ChatGPT / Claude" in the page header.
+- [x] `llms.txt` + `llms-full.txt` from the compiler.
+- [x] Raw `.md` served next to each HTML page (`<page>.md`).
+- [x] "Copy as Markdown" + "Open in ChatGPT / Claude" in the page header (via `nge-doc-page-actions`).
+
+Output reworked for DX: the builder writes one tree into the app's `public/` dir (manifest under the site path, each page's markdown at its page-adjacent url which the renderer fetches, and sitemap/robots/llms at the root). `ng serve` and `ng build` serve it as-is, so `/llms.txt` and `/guide/getting-started.md` work in dev with no consumer postbuild (only the GitHub Pages CSR fallback remains, and that is deploy-host specific). `assetsBase` is gone.
 
 ### M6 - Build-time search (needs M2)
 

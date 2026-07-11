@@ -1,18 +1,14 @@
 import { watch } from 'node:fs'
 import { resolve } from 'node:path'
 import { BuilderContext, BuilderOutput, createBuilder } from '@angular-devkit/architect'
-import { runDocsBuild } from './build-docs'
+import { docsDirOf, runDocsBuild } from './build-docs'
 import { DocsBuilderOptions } from './schema'
 
-/** Runs one build, resolving paths against the workspace and logging the result. */
+/** Runs one build, resolving the public dir against the workspace and logging the result. */
 function build(options: DocsBuilderOptions, context: BuilderContext): BuilderOutput {
-  const result = runDocsBuild({
-    ...options,
-    docsDir: resolve(context.workspaceRoot, options.docsDir),
-    outputPath: resolve(context.workspaceRoot, options.outputPath),
-  })
+  const result = runDocsBuild({ ...options, publicDir: resolve(context.workspaceRoot, options.publicDir) })
   if (result.success) {
-    context.logger.info(`[nge-doc] built ${result.pages} page(s) into ${options.outputPath}`)
+    context.logger.info(`[nge-doc] built ${result.pages} page(s) for ${options.root}`)
     return { success: true }
   }
   const error = result.error ?? 'nge-doc build failed'
@@ -20,13 +16,14 @@ function build(options: DocsBuilderOptions, context: BuilderContext): BuilderOut
   return { success: false, error }
 }
 
-/** Rebuilds on every change under the docs folder until the build is torn down. */
+/** Rebuilds on every change under the markdown source folder until the build is torn down. */
 async function* watchBuilds(options: DocsBuilderOptions, context: BuilderContext): AsyncIterable<BuilderOutput> {
   yield build(options, context)
 
   let wake: (() => void) | null = null
   let dirty = false
-  const watcher = watch(resolve(context.workspaceRoot, options.docsDir), { recursive: true }, () => {
+  const dir = docsDirOf({ publicDir: resolve(context.workspaceRoot, options.publicDir), root: options.root })
+  const watcher = watch(dir, { recursive: true }, () => {
     dirty = true
     wake?.()
   })
@@ -43,7 +40,7 @@ async function* watchBuilds(options: DocsBuilderOptions, context: BuilderContext
   }
 }
 
-/** `@cisstech/nge:docs` - compiles a `docs/` folder into a manifest + copied markdown. */
+/** `@cisstech/nge:docs` - compiles markdown authored under `public/` into a manifest + AI/SEO files, in place. */
 export default createBuilder((raw, context: BuilderContext) => {
   const options = raw as unknown as DocsBuilderOptions
   return options.watch ? watchBuilds(options, context) : build(options, context)

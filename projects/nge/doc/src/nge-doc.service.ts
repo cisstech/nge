@@ -106,6 +106,16 @@ export class NgeDocService implements OnDestroy {
   })
   /** ISO date the active page was last updated, when the compiler recorded it. */
   readonly lastUpdated = computed(() => this.currLink()?.lastUpdated)
+  /** Relative url of the active page's raw markdown, used by "copy as markdown". */
+  readonly markdownUrl = computed(() => {
+    const renderer = this.currLink()?.renderer
+    return typeof renderer === 'string' ? renderer : undefined
+  })
+  /** Absolute url of the active page's raw markdown (`<page>.md`), when `withSeo` is set. */
+  readonly markdownAbsoluteUrl = computed(() => {
+    const link = this.currLink()
+    return this.seo?.url && link?.href ? joinUrl(this.seo.url, `${link.href}.md`) : undefined
+  })
 
   /** documentation state */
   get stateChanges() {

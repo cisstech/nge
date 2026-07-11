@@ -4,11 +4,11 @@ import { buildRobots, buildSitemap } from './seo'
 const manifest: NgeDocManifest = {
   meta: { name: 'Docs', root: '/guide' },
   pages: [
-    { title: 'Intro', href: '/guide', renderer: 'assets/guide/index.md' },
+    { title: 'Intro', href: '/guide', renderer: 'guide.md' },
     {
       title: 'Group',
       href: '/guide/group',
-      children: [{ title: 'Child', href: '/guide/group/child', renderer: 'assets/guide/group/child.md' }],
+      children: [{ title: 'Child', href: '/guide/group/child', renderer: 'guide/group/child.md' }],
     },
     { title: 'External', href: 'https://x.dev' },
   ],

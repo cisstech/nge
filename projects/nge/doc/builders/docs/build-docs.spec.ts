@@ -14,28 +14,23 @@ describe('runDocsBuild', () => {
     rmSync(dir, { recursive: true, force: true })
   })
 
-  it('builds a docs folder into a manifest and copied markdown', () => {
-    mkdirSync(join(dir, 'docs'))
-    writeFileSync(join(dir, 'docs', 'index.md'), '---\ntitle: Home\n---\n# Home')
-    writeFileSync(join(dir, 'docs', 'guide.md'), '# Guide')
-    const out = join(dir, 'out')
+  it('compiles markdown authored under public/<root> into nge-doc.json, in place', () => {
+    mkdirSync(join(dir, 'public', 'docs'), { recursive: true })
+    writeFileSync(join(dir, 'public', 'docs', 'index.md'), '---\ntitle: Home\n---\n# Home')
+    writeFileSync(join(dir, 'public', 'docs', 'guide.md'), '# Guide')
 
-    const result = runDocsBuild({
-      docsDir: join(dir, 'docs'),
-      outputPath: out,
-      name: 'Docs',
-      root: '/docs',
-      assetsBase: 'assets/docs',
-    })
+    const result = runDocsBuild({ publicDir: join(dir, 'public'), root: '/docs', name: 'Docs' })
 
     expect(result).toEqual({ success: true, pages: 2 })
-    const manifest = JSON.parse(readFileSync(join(out, 'manifest.json'), 'utf8'))
+    const manifest = JSON.parse(readFileSync(join(dir, 'public', 'docs', 'nge-doc.json'), 'utf8'))
     expect(manifest.pages.map((p: { title: string }) => p.title)).toEqual(['Home', 'Guide'])
-    expect(existsSync(join(out, 'guide.md'))).toBe(true)
+    // The renderer points at the served source; the builder copies no markdown.
+    expect(manifest.pages[1].renderer).toBe('docs/guide.md')
+    expect(existsSync(join(dir, 'public', 'docs', 'guide.md'))).toBe(true)
   })
 
   it('reports a failure instead of throwing when the docs folder is missing', () => {
-    const result = runDocsBuild({ docsDir: join(dir, 'missing'), outputPath: join(dir, 'out'), name: 'X', root: '/x' })
+    const result = runDocsBuild({ publicDir: join(dir, 'missing'), root: '/x', name: 'X' })
 
     expect(result.success).toBe(false)
     expect(result.error).toBeTruthy()

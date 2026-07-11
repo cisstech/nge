@@ -3,28 +3,22 @@
   "title": "nge-doc builder options",
   "type": "object",
   "properties": {
-    "docsDir": {
+    "publicDir": {
       "type": "string",
-      "default": "docs",
-      "description": "Path to the docs folder, relative to the workspace root."
+      "default": "public",
+      "description": "The served public dir (site root). Markdown is authored under <publicDir>/<root>."
     },
-    "outputPath": {
-      "type": "string",
-      "description": "Output folder for manifest.json and the copied markdown (served as assetsBase)."
-    },
+    "root": { "type": "string", "description": "Site root url, e.g. /guide. Sources live at <publicDir>/<root>." },
     "name": { "type": "string", "description": "Site name." },
-    "root": { "type": "string", "description": "Site root url." },
-    "assetsBase": {
-      "type": "string",
-      "default": "assets/docs",
-      "description": "Base url the markdown is served from at runtime."
-    },
     "siteUrl": {
       "type": "string",
-      "description": "Absolute site url. When set, emits sitemap.xml and robots.txt."
+      "description": "Absolute site url. When set, emits sitemap.xml, robots.txt and the llms*.txt files."
     },
+    "sitemap": { "type": "boolean", "default": true, "description": "Emit sitemap.xml when siteUrl is set." },
+    "robots": { "type": "boolean", "default": true, "description": "Emit robots.txt when siteUrl is set." },
+    "llms": { "type": "boolean", "default": true, "description": "Emit llms.txt and llms-full.txt when siteUrl is set." },
     "watch": { "type": "boolean", "default": false, "description": "Rebuild on change." }
   },
-  "required": ["outputPath", "name", "root"],
+  "required": ["publicDir", "name", "root"],
   "additionalProperties": false
 }

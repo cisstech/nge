@@ -6,17 +6,17 @@ import { Observable, of } from 'rxjs'
 import { assetResponse, docsAssetStateKey, isDocsAsset } from './docs-transfer-cache.interceptor'
 
 /**
- * Serves `assets/*` from the filesystem during prerendering, and records each
- * asset in transfer state. There is no HTTP server at build time, so relative
- * asset requests (the docs manifest and its markdown) would otherwise never
- * resolve; reading from disk lets pages render fully, and the transferred
- * content lets the browser skip the request after hydration.
+ * Serves the docs manifest and markdown from the filesystem during prerendering,
+ * and records each in transfer state. There is no HTTP server at build time, so
+ * these relative requests would otherwise never resolve; reading from disk lets
+ * pages render fully, and the transferred content lets the browser skip the
+ * request after hydration.
  */
 @Injectable()
 export class PrerenderAssetsInterceptor implements HttpInterceptor {
   private readonly transferState = inject(TransferState)
-  // Candidate roots, relative to the build working directory (the workspace root).
-  private readonly roots = ['dist/demo/browser', 'projects/demo/src']
+  // Candidate roots (public dir), relative to the build working directory (the workspace root).
+  private readonly roots = ['dist/demo/browser', 'projects/demo/public']
 
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (isDocsAsset(req)) {

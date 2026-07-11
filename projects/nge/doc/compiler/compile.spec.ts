@@ -38,8 +38,7 @@ function memFs(files: Record<string, string>): DocFs {
 }
 
 const meta = { name: 'Docs', root: '/docs' }
-const compile = (files: Record<string, string>) =>
-  compileDocs({ dir: 'docs', meta, assetsBase: 'assets/docs', fs: memFs(files) })
+const compile = (files: Record<string, string>) => compileDocs({ dir: 'docs', meta, fs: memFs(files) })
 
 describe('compileDocs', () => {
   it('creates one page per markdown file, alphabetical by default', () => {
@@ -47,7 +46,7 @@ describe('compileDocs', () => {
 
     expect(manifest.pages.map((p) => p.title)).toEqual(['Alpha', 'Beta'])
     expect(manifest.pages.map((p) => p.href)).toEqual(['/docs/alpha', '/docs/beta'])
-    expect(manifest.pages[0].renderer).toBe('assets/docs/alpha.md')
+    expect(manifest.pages[0].renderer).toBe('docs/alpha.md')
   })
 
   it('humanizes filenames into titles', () => {
@@ -92,14 +91,14 @@ describe('compileDocs', () => {
     })
 
     const guides = manifest.pages.find((p) => p.title === 'Guides')
-    expect(guides?.renderer).toBe('assets/docs/guides/index.md')
+    expect(guides?.renderer).toBe('docs/guides/index.md')
     expect(guides?.children?.map((c) => c.title)).toEqual(['Theming'])
   })
 
   it('puts a root index.md at the site root as the first page', () => {
     const manifest = compile({ 'docs/index.md': '---\ntitle: Home\n---\n# H', 'docs/guide.md': '# G' })
 
-    expect(manifest.pages[0]).toMatchObject({ title: 'Home', href: '/docs', renderer: 'assets/docs/index.md' })
+    expect(manifest.pages[0]).toMatchObject({ title: 'Home', href: '/docs', renderer: 'docs/index.md' })
   })
 
   it('excludes _meta hidden entries and draft pages', () => {
@@ -151,7 +150,6 @@ describe('compileDocs', () => {
     const manifest = compileDocs({
       dir: 'docs',
       meta,
-      assetsBase: 'assets/docs',
       fs: memFs({ 'docs/setup.md': '# Setup' }),
       git: { lastCommitDate: (path) => (path === 'docs/setup.md' ? '2026-07-01T12:00:00Z' : undefined) },
     })

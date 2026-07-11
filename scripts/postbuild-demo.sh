@@ -5,6 +5,7 @@ set -euo pipefail
 # The prerendered /guide pages are served directly; the code-first /docs routes
 # render on the client, so the root and any unmatched path must serve the CSR
 # shell. Angular emits it as index.csr.html; expose it as index.html and 404.html.
+# (Deploy-host specific; everything else the docs builder already places under public/.)
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BROWSER="$ROOT/dist/demo/browser"
@@ -18,13 +19,4 @@ fi
 cp -f "$SHELL_HTML" "$BROWSER/index.html"
 cp -f "$SHELL_HTML" "$BROWSER/404.html"
 
-# The docs builder emits sitemap.xml and robots.txt next to the manifest; move
-# them to the site root where crawlers expect them.
-GUIDE_ASSETS="$BROWSER/assets/guide"
-for file in sitemap.xml robots.txt; do
-  if [[ -f "$GUIDE_ASSETS/$file" ]]; then
-    mv -f "$GUIDE_ASSETS/$file" "$BROWSER/$file"
-  fi
-done
-
-echo "postbuild-demo: wrote index.html and 404.html from the CSR shell, moved sitemap.xml/robots.txt to root"
+echo "postbuild-demo: staged the GitHub Pages CSR fallback (index.html, 404.html)"

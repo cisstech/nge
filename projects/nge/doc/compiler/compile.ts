@@ -25,8 +25,6 @@ export interface CompileDocsOptions {
   dir: string
   /** Site metadata (name, root, ...). */
   meta: NgeDocMeta
-  /** Base url the markdown files are served from at runtime. Default: `assets/docs`. */
-  assetsBase?: string
   /** Filesystem to read from. Default: the real Node filesystem. */
   fs?: DocFs
   /** Source-control reader for `lastUpdated`. Default: no dates. */
@@ -36,7 +34,6 @@ export interface CompileDocsOptions {
 interface Ctx {
   root: string
   meta: NgeDocMeta
-  assetsBase: string
   fs: DocFs
   git: DocGit
 }
@@ -51,7 +48,6 @@ export function compileDocs(options: CompileDocsOptions): NgeDocManifest {
   const ctx: Ctx = {
     root: options.dir,
     meta: options.meta,
-    assetsBase: options.assetsBase ?? 'assets/docs',
     fs: options.fs ?? nodeFs,
     git: options.git ?? noopGit,
   }
@@ -65,7 +61,7 @@ export function compileDocs(options: CompileDocsOptions): NgeDocManifest {
       prune({
         title: fm['title'] ?? 'Introduction',
         href: ctx.meta.root,
-        renderer: assetUrl(ctx, 'index.md'),
+        renderer: servedMarkdown(ctx, 'index.md'),
         description: fm['description'],
         icon: fm['icon'],
         ...sourceMeta(ctx, 'index.md'),
@@ -92,13 +88,14 @@ function buildDir(ctx: Ctx, rel: string): NgeDocLink[] {
       const children = buildDir(ctx, childRel)
       const hasIndex = ctx.fs.exists(fsJoin(ctx.root, childRel, 'index.md'))
       const fm = hasIndex ? frontmatterOf(ctx, joinRel(childRel, 'index.md')) : {}
+      const href = routeUrl(ctx, childRel)
       items.push({
         key: entry,
         order: num(fm['order']),
         link: prune({
           title: label(meta, entry, fm['title']) ?? humanize(entry),
-          href: routeUrl(ctx, childRel),
-          renderer: hasIndex ? assetUrl(ctx, joinRel(childRel, 'index.md')) : undefined,
+          href,
+          renderer: hasIndex ? servedMarkdown(ctx, joinRel(childRel, 'index.md')) : undefined,
           description: fm['description'],
           icon: meta.byKey[entry]?.icon ?? fm['icon'],
           children: children.length ? children : undefined,
@@ -111,13 +108,14 @@ function buildDir(ctx: Ctx, rel: string): NgeDocLink[] {
       if (fm['draft'] === 'true') {
         continue
       }
+      const href = routeUrl(ctx, joinRel(rel, key))
       items.push({
         key,
         order: num(fm['order']),
         link: prune({
           title: label(meta, key, fm['title']) ?? humanize(key),
-          href: routeUrl(ctx, joinRel(rel, key)),
-          renderer: assetUrl(ctx, joinRel(rel, entry)),
+          href,
+          renderer: servedMarkdown(ctx, joinRel(rel, entry)),
           description: fm['description'],
           icon: meta.byKey[key]?.icon ?? fm['icon'],
           ...sourceMeta(ctx, joinRel(rel, entry)),
@@ -198,8 +196,9 @@ function routeUrl(ctx: Ctx, rel: string): string {
   return urlJoin(ctx.meta.root, rel)
 }
 
-function assetUrl(ctx: Ctx, rel: string): string {
-  return urlJoin(ctx.assetsBase, rel)
+/** The served url of a source markdown file (authored under the site root), e.g. `index.md` -> `guide/index.md`. */
+function servedMarkdown(ctx: Ctx, rel: string): string {
+  return urlJoin(ctx.meta.root, rel).replace(/^\/+/, '')
 }
 
 function urlJoin(base: string, rel: string): string {

@@ -8,9 +8,9 @@ export function docsAssetStateKey(url: string) {
   return makeStateKey<string>('docs-asset:' + url)
 }
 
-/** A GET for a docs asset (the manifest or a markdown page). */
+/** A GET for a docs asset served from the site root (the manifest or a markdown page). */
 export function isDocsAsset(req: HttpRequest<unknown>): boolean {
-  return req.method === 'GET' && req.url.startsWith('assets/')
+  return req.method === 'GET' && (req.url.endsWith('.md') || req.url.endsWith('nge-doc.json'))
 }
 
 /** Builds the response from raw file content, parsing JSON assets. */
