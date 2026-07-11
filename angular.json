@@ -130,10 +130,9 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "dir": "./dist/demo",
+            "dir": "./dist/demo/browser",
             "repo": "https://github.com/cisstech/nge.git",
-            "buildTarget": "demo:build:production",
-            "baseHref": "https://cisstech.github.io/nge/"
+            "noBuild": true
           }
         },
         "docs": {

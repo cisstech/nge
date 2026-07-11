@@ -54,11 +54,13 @@ Ordered. `M1` is a gate - do not start `M3`+ before it passes.
 - [x] `docsFromManifest('assets/docs/manifest.json')` runtime source.
 - [x] Document the convention (`docs/nge-doc-authoring.md`).
 
-### M3 - SSG (needs M1 = go, M2)
+### M3 - SSG (needs M1 = go, M2) ✅
 
-- [ ] Migrate the demo to the `application` builder; prerender routes from the manifest.
-- [ ] Read `.md` from the filesystem at prerender; hydrate via transfer state (no client re-fetch).
-- [ ] CI builds the static site → GitHub Pages.
+- [x] Migrate the demo to the `application` builder; prerender routes from the manifest.
+- [x] Read `.md` from the filesystem at prerender; hydrate via transfer state (no client re-fetch).
+- [x] CI builds the static site → GitHub Pages (`yarn build` prerenders, `404.html` fallback for the client-rendered showcase, base href `/nge/`).
+
+SSR hazards fixed along the way (nge is now SSR-safe): import-time `window` in the monaco loader; `MutationObserver` / `window` / `document` / `NodeList` in the doc renderer and markdown contributions; a resource loader that never resolved under SSR; KaTeX and emoji guarded for the server; a `PendingTasks` gate so prerender waits for the markdown to paint. Still open: Shiki static highlight (code blocks highlight on the client for now).
 
 ### M4 - SEO (needs M3)
 

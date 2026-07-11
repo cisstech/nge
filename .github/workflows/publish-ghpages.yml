@@ -35,8 +35,11 @@ jobs:
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
+      - name: Build library and prerendered demo
+        run: yarn build
+
       - name: Publish to gh-pages
         if: success()
-        run:  yarn publish:demo
+        run: yarn publish:demo
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAGE_TOKEN }}
