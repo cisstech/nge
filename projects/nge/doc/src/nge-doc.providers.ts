@@ -121,6 +121,17 @@ export function withSeo(config: NgeDocSeoConfig): NgeDocFeature {
   return { providers: [{ provide: NGE_DOC_SEO, useValue: config }] }
 }
 
+/** Base url a page's `sourcePath` is appended to for the "Edit this page" link. */
+export const NGE_DOC_EDIT_URL = new InjectionToken<string>('NGE_DOC_EDIT_URL')
+
+/**
+ * Show an "Edit this page" link built from `baseUrl` and each page's compiler
+ * `sourcePath`, e.g. `https://github.com/org/repo/edit/main/docs`.
+ */
+export function withEditLink(baseUrl: string): NgeDocFeature {
+  return { providers: [{ provide: NGE_DOC_EDIT_URL, useValue: baseUrl }] }
+}
+
 /**
  * Set the default color scheme applied before the user picks one.
  * @param mode `auto` (follow the OS, default), `dark` or `light`.
@@ -169,6 +180,10 @@ export interface NgeDocLabels {
   repository: string
   /** Header action label, used when an action has no title. */
   action: string
+  /** Link to edit the current page's source. */
+  editThisPage: string
+  /** Prefix for the date the current page was last updated. */
+  lastUpdated: string
 }
 
 /** Default (English) theme wording. */
@@ -192,6 +207,8 @@ export const DEFAULT_NGE_DOC_LABELS: NgeDocLabels = {
   switchToDark: 'Switch to dark theme',
   repository: 'Repository',
   action: 'Action',
+  editThisPage: 'Edit this page',
+  lastUpdated: 'Last updated',
 }
 
 /** Ready-made English wording, an alias of {@link DEFAULT_NGE_DOC_LABELS}. */
@@ -218,6 +235,8 @@ export const NGE_DOC_LABELS_FR: NgeDocLabels = {
   switchToDark: 'Passer au thème sombre',
   repository: 'Dépôt',
   action: 'Action',
+  editThisPage: 'Modifier cette page',
+  lastUpdated: 'Dernière mise à jour',
 }
 
 /** Overridden theme wording. Merged over {@link DEFAULT_NGE_DOC_LABELS}. */

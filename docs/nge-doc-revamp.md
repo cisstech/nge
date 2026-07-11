@@ -62,11 +62,11 @@ Ordered. `M1` is a gate - do not start `M3`+ before it passes.
 
 SSR hazards fixed along the way (nge is now SSR-safe): import-time `window` in the monaco loader; `MutationObserver` / `window` / `document` / `NodeList` in the doc renderer and markdown contributions; a resource loader that never resolved under SSR; KaTeX and emoji guarded for the server; a `PendingTasks` gate so prerender waits for the markdown to paint. Still open: Shiki static highlight (code blocks highlight on the client for now).
 
-### M4 - SEO (needs M3)
+### M4 - SEO (needs M3) ✅
 
-- [ ] Per-page `<title>`, description, canonical, OG / Twitter (from frontmatter, at prerender).
-- [ ] `sitemap.xml` + `robots.txt` from the compiler.
-- [ ] "Edit on GitHub" (`sourcePath`) + "Last updated" (`git log -1`), carried in the manifest.
+- [x] Per-page `<title>`, description, canonical, OG / Twitter (from frontmatter, at prerender) via `withSeo`.
+- [x] `sitemap.xml` + `robots.txt` from the compiler (builder `siteUrl`, moved to the site root in the demo).
+- [x] "Edit on GitHub" (`sourcePath`) + "Last updated" (`git log -1`) in the manifest; shown by the default layout via `withEditLink`.
 
 ### M5 - AI outputs (needs M2)
 

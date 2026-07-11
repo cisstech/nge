@@ -13,6 +13,18 @@
       <div class="content">
         <nge-doc-breadcrumb />
         <nge-doc-renderer #renderer />
+        @if (editUrl(); as url) {
+          <div class="page-meta">
+            <a class="edit-link" [href]="url" target="_blank" rel="noopener">{{ labels.editThisPage }}</a>
+            @if (lastUpdated(); as date) {
+              <span class="last-updated">{{ labels.lastUpdated }} {{ date | date: 'mediumDate' }}</span>
+            }
+          </div>
+        } @else if (lastUpdated(); as date) {
+          <div class="page-meta">
+            <span class="last-updated">{{ labels.lastUpdated }} {{ date | date: 'mediumDate' }}</span>
+          </div>
+        }
         <nge-doc-pager />
         <footer class="doc-footer">
           <span>{{ labels.poweredBy }}</span>

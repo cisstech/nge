@@ -1,4 +1,5 @@
 export * from './build'
 export * from './compile'
 export * from './fs'
+export * from './git'
 export * from './seo'

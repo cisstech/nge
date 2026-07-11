@@ -151,11 +151,15 @@ export interface NgeDocLink {
   /** Accent color (any CSS color) shown as the separator's dot. */
   color?: string
   /** Inputs to pass to the dynamic renderered component if `renderer` is a dynamic component. */
-  inputs?: Record<string, any>
+  inputs?: Record<string, unknown>
   /** Optional icon */
   icon?: NgeDocIcon
   /** Custom actions */
   actions?: NgeDocLinAction[]
+  /** Source markdown file, relative to the docs folder. Set by the compiler. */
+  sourcePath?: string
+  /** ISO date of the last commit that touched the source. Set by the compiler. */
+  lastUpdated?: string
 }
 
 /** Representation of the documentation state. */
@@ -175,15 +179,15 @@ export interface NgeDocState {
 /** Custom renderers components */
 export const NGE_DOC_RENDERERS = new InjectionToken<NgeDocRenderers>('NGE_DOC_RENDERERS')
 
-export const isNgeDocSettings = (v: any): v is NgeDocSettings =>
-  !!v && typeof v === 'object' && !Array.isArray(v) && !!v.meta && !!v.pages
+export const isNgeDocSettings = (v: unknown): v is NgeDocSettings =>
+  !!v && typeof v === 'object' && !Array.isArray(v) && 'meta' in v && 'pages' in v
 
-export const extractNgeDocSettings = (v: any): NgeDocSettings[] => {
-  let settings: NgeDocSettings[] = []
+export const extractNgeDocSettings = (v: unknown): NgeDocSettings[] => {
+  const settings: NgeDocSettings[] = []
 
   if (isNgeDocSettings(v)) {
     settings.push(v)
-  } else if (typeof v === 'object') {
+  } else if (v && typeof v === 'object') {
     settings.push(
       ...Object.values(v)
         .map((v) => extractNgeDocSettings(v))

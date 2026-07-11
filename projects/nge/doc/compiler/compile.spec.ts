@@ -129,4 +129,33 @@ describe('compileDocs', () => {
 
     expect(manifest.meta).toEqual({ name: 'Docs', root: '/docs' })
   })
+
+  it('records the source path of files, folder indexes and the root, relative to the docs folder', () => {
+    const manifest = compile({
+      'docs/index.md': '# Home',
+      'docs/setup.md': '# Setup',
+      'docs/guide/index.md': '# Guide',
+      'docs/guide/deep.md': '# Deep',
+    })
+
+    expect(manifest.pages.find((p) => p.href === '/docs')?.sourcePath).toBe('index.md')
+    expect(manifest.pages.find((p) => p.title === 'Setup')?.sourcePath).toBe('setup.md')
+    const guide = manifest.pages.find((p) => p.title === 'Guide')
+    expect(guide?.sourcePath).toBe('guide/index.md')
+    expect(guide?.children?.find((c) => c.title === 'Deep')?.sourcePath).toBe('guide/deep.md')
+    // No git reader wired in, so no lastUpdated.
+    expect(manifest.pages.find((p) => p.title === 'Setup')?.lastUpdated).toBeUndefined()
+  })
+
+  it('records lastUpdated from the git reader, keyed by the source file path', () => {
+    const manifest = compileDocs({
+      dir: 'docs',
+      meta,
+      assetsBase: 'assets/docs',
+      fs: memFs({ 'docs/setup.md': '# Setup' }),
+      git: { lastCommitDate: (path) => (path === 'docs/setup.md' ? '2026-07-01T12:00:00Z' : undefined) },
+    })
+
+    expect(manifest.pages[0].lastUpdated).toBe('2026-07-01T12:00:00Z')
+  })
 })

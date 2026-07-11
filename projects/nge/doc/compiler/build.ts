@@ -4,6 +4,7 @@ import type { NgeDocMeta } from '../src/nge-doc'
 import type { NgeDocManifest } from '../src/manifest'
 import { compileDocs } from './compile'
 import { DocFs, nodeFs } from './fs'
+import { DocGit, nodeGit } from './git'
 import { buildRobots, buildSitemap } from './seo'
 
 /** Write side of the filesystem, abstracted so `buildDocs` is tested in memory. */
@@ -32,6 +33,8 @@ export interface BuildDocsOptions {
   siteUrl?: string
   fs?: DocFs
   writer?: DocFsWriter
+  /** Source-control reader for `lastUpdated`. Default: the local git CLI. */
+  git?: DocGit
 }
 
 /**
@@ -43,7 +46,13 @@ export function buildDocs(options: BuildDocsOptions): NgeDocManifest {
   const fs = options.fs ?? nodeFs
   const writer = options.writer ?? nodeFsWriter
 
-  const manifest = compileDocs({ dir: options.dir, meta: options.meta, assetsBase: options.assetsBase, fs })
+  const manifest = compileDocs({
+    dir: options.dir,
+    meta: options.meta,
+    assetsBase: options.assetsBase,
+    fs,
+    git: options.git ?? nodeGit,
+  })
 
   writer.writeFile(join(options.outDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`)
   for (const rel of listMarkdown(fs, options.dir, '')) {

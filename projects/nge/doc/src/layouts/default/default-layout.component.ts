@@ -9,6 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core'
+import { DatePipe } from '@angular/common'
 import { Router } from '@angular/router'
 import { NgeDocRendererComponent } from '../../renderer/renderer.component'
 import { NgeDocLink } from '../../nge-doc'
@@ -27,6 +28,7 @@ import { TocComponent } from './toc/toc.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   imports: [
+    DatePipe,
     HeaderComponent,
     SidenavComponent,
     NgeDocRendererComponent,
@@ -41,6 +43,10 @@ export class DefaultLayoutComponent {
   private readonly router = inject(Router)
 
   protected readonly labels = this.docService.labels
+  /** "Edit this page" url for the active page, when `withEditLink` is set. */
+  protected readonly editUrl = this.docService.editUrl
+  /** ISO date the active page was last updated, when the compiler recorded it. */
+  protected readonly lastUpdated = this.docService.lastUpdated
   protected readonly sidebarOpen = signal(false)
   protected readonly searchOpen = signal(false)
   /** Desktop: whether the sidebar is collapsed to give the content more room. */

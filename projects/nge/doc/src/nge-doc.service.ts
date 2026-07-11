@@ -17,6 +17,7 @@ import {
 import {
   DEFAULT_NGE_DOC_LABELS,
   NGE_DOC_BRAND,
+  NGE_DOC_EDIT_URL,
   NGE_DOC_LABELS,
   NGE_DOC_NAVBAR,
   NGE_DOC_SEO,
@@ -36,6 +37,7 @@ export class NgeDocService implements OnDestroy {
   private readonly metaTags = inject(Meta)
   private readonly document = inject(DOCUMENT)
   private readonly seo = inject(NGE_DOC_SEO, { optional: true })
+  private readonly editUrlBase = inject(NGE_DOC_EDIT_URL, { optional: true })
   private readonly explicitNavbar = inject(NGE_DOC_NAVBAR, { optional: true })
   private readonly explicitBrand = inject(NGE_DOC_BRAND, { optional: true })
   private readonly searchProvider: NgeDocSearchProvider =
@@ -97,6 +99,13 @@ export class NgeDocService implements OnDestroy {
   readonly nextLink = computed(() => this.snapshot().nextLink)
   /** Ancestor chain from a root link down to the active one, inclusive. */
   readonly breadcrumb = computed(() => this.trailTo(this.snapshot()))
+  /** "Edit this page" url for the active page, when `withEditLink` is set and the page has a source. */
+  readonly editUrl = computed(() => {
+    const link = this.currLink()
+    return this.editUrlBase && link?.sourcePath ? joinUrl(this.editUrlBase, link.sourcePath) : undefined
+  })
+  /** ISO date the active page was last updated, when the compiler recorded it. */
+  readonly lastUpdated = computed(() => this.currLink()?.lastUpdated)
 
   /** documentation state */
   get stateChanges() {

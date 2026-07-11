@@ -42,6 +42,27 @@
     margin: 0 auto;
   }
 
+  .page-meta {
+    max-width: var(--nge-doc-content-max);
+    margin: 2.5rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--nge-doc-fg-subtle);
+  }
+
+  .page-meta .edit-link {
+    color: var(--nge-doc-fg-muted);
+    transition: color 0.12s;
+  }
+
+  .page-meta .edit-link:hover {
+    color: var(--nge-doc-primary);
+  }
+
   .doc-footer {
     max-width: var(--nge-doc-content-max);
     margin: 3rem auto 0;

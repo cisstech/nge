@@ -2,6 +2,7 @@ import type { NgeDocLink, NgeDocMeta } from '../src/nge-doc'
 import type { NgeDocManifest } from '../src/manifest'
 import { parseFrontmatter } from '../src/frontmatter'
 import { DocFs, nodeFs } from './fs'
+import { DocGit, noopGit } from './git'
 
 /** Per-entry configuration read from a folder's `_meta.json`. */
 interface MetaEntry {
@@ -28,6 +29,8 @@ export interface CompileDocsOptions {
   assetsBase?: string
   /** Filesystem to read from. Default: the real Node filesystem. */
   fs?: DocFs
+  /** Source-control reader for `lastUpdated`. Default: no dates. */
+  git?: DocGit
 }
 
 interface Ctx {
@@ -35,6 +38,7 @@ interface Ctx {
   meta: NgeDocMeta
   assetsBase: string
   fs: DocFs
+  git: DocGit
 }
 
 /**
@@ -49,6 +53,7 @@ export function compileDocs(options: CompileDocsOptions): NgeDocManifest {
     meta: options.meta,
     assetsBase: options.assetsBase ?? 'assets/docs',
     fs: options.fs ?? nodeFs,
+    git: options.git ?? noopGit,
   }
 
   const pages = buildDir(ctx, '')
@@ -63,6 +68,7 @@ export function compileDocs(options: CompileDocsOptions): NgeDocManifest {
         renderer: assetUrl(ctx, 'index.md'),
         description: fm['description'],
         icon: fm['icon'],
+        ...sourceMeta(ctx, 'index.md'),
       })
     )
   }
@@ -96,6 +102,7 @@ function buildDir(ctx: Ctx, rel: string): NgeDocLink[] {
           description: fm['description'],
           icon: meta.byKey[entry]?.icon ?? fm['icon'],
           children: children.length ? children : undefined,
+          ...(hasIndex ? sourceMeta(ctx, joinRel(childRel, 'index.md')) : {}),
         }),
       })
     } else if (entry.endsWith('.md')) {
@@ -113,6 +120,7 @@ function buildDir(ctx: Ctx, rel: string): NgeDocLink[] {
           renderer: assetUrl(ctx, joinRel(rel, entry)),
           description: fm['description'],
           icon: meta.byKey[key]?.icon ?? fm['icon'],
+          ...sourceMeta(ctx, joinRel(rel, entry)),
         }),
       })
     }
@@ -151,6 +159,11 @@ function readMeta(ctx: Ctx, rel: string, entries: string[]): MetaConfig {
 
 function frontmatterOf(ctx: Ctx, rel: string): Record<string, string> {
   return parseFrontmatter(ctx.fs.readFile(fsJoin(ctx.root, rel))).data
+}
+
+/** `sourcePath` (relative to the docs folder) and `lastUpdated` for a markdown file. */
+function sourceMeta(ctx: Ctx, rel: string): { sourcePath: string; lastUpdated: string | undefined } {
+  return { sourcePath: rel, lastUpdated: ctx.git.lastCommitDate(fsJoin(ctx.root, rel)) }
 }
 
 function compare(a: { key: string; order: number }, b: { key: string; order: number }, order: string[]): number {
