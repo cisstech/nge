@@ -1,9 +1,8 @@
-// ANGULAR
-import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http'
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http'
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core'
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser'
+import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router'
 
-// LIBS
 import { provideNgeDoc, withBrand, withMarkdownRenderer, withNavbar } from '@cisstech/nge/doc'
 import {
   NgeMarkdownAdmonitionsProvider,
@@ -22,9 +21,7 @@ import {
 } from '@cisstech/nge/markdown'
 import { NGE_MONACO_THEMES, NgeMonacoColorizerService, NgeMonacoModule } from '@cisstech/nge/monaco'
 
-// MODULE
-import { AppRoutingModule } from './app-routing.module'
-import { AppComponent } from './app.component'
+import { routes } from './app.routes'
 
 export function markdownOptions(): NgeMarkdownConfig {
   return {
@@ -33,27 +30,31 @@ export function markdownOptions(): NgeMarkdownConfig {
   }
 }
 
-@NgModule({
-  declarations: [AppComponent],
-  bootstrap: [AppComponent],
-  imports: [
-    BrowserModule,
-    NgeMarkdownModule,
-    NgeMonacoModule.forRoot({
-      locale: 'fr',
-      theming: {
-        themes: NGE_MONACO_THEMES.map((theme) => 'assets/nge/monaco/themes/' + theme),
-        default: 'github',
-        // Follow the documentation color scheme: nge-doc toggles `nge-doc-dark`
-        // on <html>, and Monaco switches themes accordingly (no coupling).
-        light: 'github',
-        dark: 'tomorrow-night',
-        darkThemeClassName: 'nge-doc-dark',
-      },
-    }),
-    AppRoutingModule,
-  ],
+export const appConfig: ApplicationConfig = {
   providers: [
+    provideZoneChangeDetection(),
+    provideClientHydration(withEventReplay()),
+    provideRouter(
+      routes,
+      withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
+      withPreloading(PreloadAllModules)
+    ),
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    importProvidersFrom(
+      NgeMarkdownModule,
+      NgeMonacoModule.forRoot({
+        locale: 'fr',
+        theming: {
+          themes: NGE_MONACO_THEMES.map((theme) => 'assets/nge/monaco/themes/' + theme),
+          default: 'github',
+          // Follow the documentation color scheme: nge-doc toggles `nge-doc-dark`
+          // on <html>, and Monaco switches themes accordingly (no coupling).
+          light: 'github',
+          dark: 'tomorrow-night',
+          darkThemeClassName: 'nge-doc-dark',
+        },
+      })
+    ),
     NgeMarkdownConfigProvider(markdownOptions),
     NgeMarkdownThemeProvider({
       name: 'github',
@@ -73,7 +74,6 @@ export function markdownOptions(): NgeMarkdownConfig {
       'ui-list-demo': () => import('./ui-demos/ui-list-demo.component').then((m) => m.UiListDemoComponent),
       'ui-icon-demo': () => import('./ui-demos/ui-icon-demo.component').then((m) => m.UiIconDemoComponent),
     }),
-    provideHttpClient(withXhr(), withInterceptorsFromDi()),
     provideNgeDoc(
       withBrand({ title: 'NG Essentials', icon: 'assets/images/nge.svg', href: '/' }),
       withNavbar([
@@ -89,5 +89,4 @@ export function markdownOptions(): NgeMarkdownConfig {
       })
     ),
   ],
-})
-export class AppModule {}
+}

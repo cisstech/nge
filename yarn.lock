@@ -806,6 +806,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/platform-server@npm:22.0.5":
+  version: 22.0.5
+  resolution: "@angular/platform-server@npm:22.0.5"
+  dependencies:
+    tslib: "npm:^2.3.0"
+    xhr2: "npm:^0.2.0"
+  peerDependencies:
+    "@angular/common": 22.0.5
+    "@angular/compiler": 22.0.5
+    "@angular/core": 22.0.5
+    "@angular/platform-browser": 22.0.5
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: 10c0/412a9201b86fb47e33b25ba80fcbc67cb4b5686bb09ec6ee52f26aa8d662334a8f44388e84c68cbd4e4371c51a6d2420eeb0898a354407ae6206332a43d635ed
+  languageName: node
+  linkType: hard
+
 "@angular/router@npm:^22.0.5":
   version: 22.0.5
   resolution: "@angular/router@npm:22.0.5"
@@ -817,6 +833,23 @@ __metadata:
     "@angular/platform-browser": 22.0.5
     rxjs: ^6.5.3 || ^7.4.0
   checksum: 10c0/4c62773f51d63736cb47c0d224ca39cce0b9c2fb663dc0c251f82ebde72b1dfb5c8e83ac18b27168f42700bcee60a9516a827aa62e121c60ac74f70c18999e81
+  languageName: node
+  linkType: hard
+
+"@angular/ssr@npm:22.0.5":
+  version: 22.0.5
+  resolution: "@angular/ssr@npm:22.0.5"
+  dependencies:
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    "@angular/common": ^22.0.0
+    "@angular/core": ^22.0.0
+    "@angular/platform-server": ^22.0.0
+    "@angular/router": ^22.0.0
+  peerDependenciesMeta:
+    "@angular/platform-server":
+      optional: true
+  checksum: 10c0/5a3d493772a1c1ac6d2a349ce60c428b6c8fa8f4d287f88231b27540fd5778491fe0d3a2a9fb4ec7dc4810078a24bb187816b7e68aabe47b60b888be2907f13c
   languageName: node
   linkType: hard
 
@@ -2489,7 +2522,9 @@ __metadata:
     "@angular/forms": "npm:^22.0.5"
     "@angular/platform-browser": "npm:^22.0.5"
     "@angular/platform-browser-dynamic": "npm:^22.0.5"
+    "@angular/platform-server": "npm:22.0.5"
     "@angular/router": "npm:^22.0.5"
+    "@angular/ssr": "npm:22.0.5"
     "@commitlint/cli": "npm:^19.4.0"
     "@commitlint/config-conventional": "npm:^19.2.2"
     "@eslint/js": "npm:^9.28.0"
@@ -19868,6 +19903,13 @@ __metadata:
     is-wsl: "npm:^3.1.0"
     powershell-utils: "npm:^0.1.0"
   checksum: 10c0/b3ba99cc6b71f66457eef598d529beeb8cb57a72646877fe25993894b808c60b82f6d47df5463f0b6e54632272f62f5eaea105c12784fd09b06f500f3f53aa2e
+  languageName: node
+  linkType: hard
+
+"xhr2@npm:^0.2.0":
+  version: 0.2.1
+  resolution: "xhr2@npm:0.2.1"
+  checksum: 10c0/eebe95bd0ae9087da9b4dda636abee1f30cf9b424fbe8ebd0c7dcfd9be5db3e4aa634cf1837fa3e82b486aace9396a2dbf6be2dc8084862c8239dccec4e16dca
   languageName: node
   linkType: hard
 

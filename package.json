@@ -78,6 +78,8 @@
     "@angular-eslint/template-parser": "22.0.0",
     "@angular/cli": "^22.0.5",
     "@angular/compiler-cli": "^22.0.5",
+    "@angular/platform-server": "22.0.5",
+    "@angular/ssr": "22.0.5",
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@eslint/js": "^9.28.0",

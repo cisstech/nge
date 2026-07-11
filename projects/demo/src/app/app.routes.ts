@@ -1,5 +1,4 @@
-import { NgModule } from '@angular/core'
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router'
+import { Routes } from '@angular/router'
 import { NGE_DOC } from './docs/nge-doc'
 import { NGE_MARKDOWN } from './docs/nge-markdown'
 import { NGE_MONACO } from './docs/nge-monaco'
@@ -7,7 +6,7 @@ import { NGE_OVERVIEW } from './docs/overview'
 import { NGE_UI } from './docs/nge-ui'
 import { NGE_UTILITIES } from './docs/utilities'
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: 'docs/overview', pathMatch: 'full' },
   {
     path: 'docs',
@@ -16,16 +15,3 @@ const routes: Routes = [
   },
   { path: '**', redirectTo: 'docs/overview' },
 ]
-
-@NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      scrollOffset: [0, 64],
-      anchorScrolling: 'enabled',
-      scrollPositionRestoration: 'enabled',
-      preloadingStrategy: PreloadAllModules,
-    }),
-  ],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
