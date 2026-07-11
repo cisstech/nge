@@ -38,13 +38,14 @@ Ordered. `M1` is a gate — do not start `M3`+ before it passes.
 - [x] Service resolves settings through the manifest; `stateChanges` and `NgeDocLink` unchanged.
 - [x] `NgeDocSearchProvider` / `NgeDocSearchDocument` contract + in-memory default provider; search moved behind it (now async, slug-based).
 
-### M1 — SSR spike (decision gate)
+### M1 — SSR feasibility ✅ (go)
 
-- [ ] Prerender one page with the `application` builder + `@angular/ssr`.
-- [ ] Shiki highlight in the render pipeline for that page.
-- [ ] Guard `nge/markdown` contributions (KaTeX, emoji, anchors) for the server (`isPlatformBrowser` / `afterNextRender`).
-- [ ] Pass condition: `curl` returns full content + correct `<title>` / meta, zero hydration errors.
-- [ ] Decision: go → M2; no-go → ship compiler + AI outputs SPA-only, defer SSG.
+- [x] Audit `nge/markdown` for SSR hazards (window / DOM / Monaco).
+- [x] Fix the import-time `window` crash in the compiler service.
+- [x] Decision: **go**. No architectural blocker — the core pipeline uses standard DOM APIs (domino-compatible) and every `window` use is guarded or in an opt-in contribution. The only real SSG work is Monaco→Shiki. The empirical prerender is validated in M3 (real `@angular/ssr` infra, not a throwaway harness), where the remaining SSR tasks live:
+  - Shiki highlight in the render pipeline.
+  - Guard the KaTeX / emoji contributions for the server.
+  - Prerender a page; `curl` returns full content + meta, zero hydration errors.
 
 ### M2 — Compiler (`docs/` → manifest)
 
