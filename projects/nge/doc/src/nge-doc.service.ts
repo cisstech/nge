@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http'
 import { Location } from '@angular/common'
-import { Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
+import { DOCUMENT, Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { Meta, Title } from '@angular/platform-browser'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription, firstValueFrom } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
-import { NgeDocManifest, extractManifestSources, flattenPages, settingsToManifest } from './manifest'
+import { NgeDocManifest, extractManifestSources, flattenPages, joinUrl, settingsToManifest } from './manifest'
 import {
   DefaultNgeDocSearchProvider,
   NGE_DOC_SEARCH_PROVIDER,
@@ -19,6 +19,7 @@ import {
   NGE_DOC_BRAND,
   NGE_DOC_LABELS,
   NGE_DOC_NAVBAR,
+  NGE_DOC_SEO,
   NgeDocBrand,
   NgeDocLabels,
   NgeDocNavLink,
@@ -33,6 +34,8 @@ export class NgeDocService implements OnDestroy {
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly title = inject(Title)
   private readonly metaTags = inject(Meta)
+  private readonly document = inject(DOCUMENT)
+  private readonly seo = inject(NGE_DOC_SEO, { optional: true })
   private readonly explicitNavbar = inject(NGE_DOC_NAVBAR, { optional: true })
   private readonly explicitBrand = inject(NGE_DOC_BRAND, { optional: true })
   private readonly searchProvider: NgeDocSearchProvider =
@@ -269,18 +272,57 @@ export class NgeDocService implements OnDestroy {
   }
 
   /**
-   * Updates the document title and meta description for the active page.
+   * Updates the document title, meta description and social tags for the active
+   * page (canonical, Open Graph, Twitter). Canonical and `og:url` need `withSeo`.
    *
    * Called automatically on navigation from the link's `title`/`description`;
    * the renderer calls it again to apply values found in a page's frontmatter.
    */
-  setSeo(title: string, description?: string): void {
+  setSeo(title: string, description?: string, image?: string): void {
     const siteName = this.state.value.meta.name
     const pageTitle = title?.trim()
-    this.title.setTitle(pageTitle && pageTitle !== siteName ? `${pageTitle} · ${siteName}` : pageTitle || siteName)
-    if (description?.trim()) {
-      this.metaTags.updateTag({ name: 'description', content: description.trim() })
+    const fullTitle = pageTitle && pageTitle !== siteName ? `${pageTitle} · ${siteName}` : pageTitle || siteName
+    this.title.setTitle(fullTitle)
+
+    const description_ = description?.trim()
+    if (description_) {
+      this.metaTags.updateTag({ name: 'description', content: description_ })
     }
+
+    this.metaTags.updateTag({ property: 'og:title', content: fullTitle })
+    this.metaTags.updateTag({ property: 'og:type', content: 'article' })
+    this.metaTags.updateTag({ property: 'og:site_name', content: siteName })
+    this.metaTags.updateTag({ name: 'twitter:card', content: 'summary_large_image' })
+    this.metaTags.updateTag({ name: 'twitter:title', content: fullTitle })
+    if (description_) {
+      this.metaTags.updateTag({ property: 'og:description', content: description_ })
+      this.metaTags.updateTag({ name: 'twitter:description', content: description_ })
+    }
+
+    const href = this.state.value.currLink?.href
+    if (this.seo?.url && href) {
+      const canonical = joinUrl(this.seo.url, href)
+      this.metaTags.updateTag({ property: 'og:url', content: canonical })
+      this.setCanonical(canonical)
+    }
+
+    const source = image?.trim() || this.seo?.image
+    const resolved = source && this.seo?.url && !/^https?:\/\//.test(source) ? joinUrl(this.seo.url, source) : source
+    if (resolved) {
+      this.metaTags.updateTag({ property: 'og:image', content: resolved })
+      this.metaTags.updateTag({ name: 'twitter:image', content: resolved })
+    }
+  }
+
+  /** Points the `<link rel="canonical">` at the active page, creating it once. */
+  private setCanonical(url: string): void {
+    let link = this.document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    if (!link) {
+      link = this.document.createElement('link')
+      link.setAttribute('rel', 'canonical')
+      this.document.head.appendChild(link)
+    }
+    link.setAttribute('href', url)
   }
 
   /** Whether a header navigation link points to the active site. */

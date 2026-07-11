@@ -101,6 +101,26 @@ export function withMarkdownRenderer(markdown: NgeDocRenderers['markdown']): Nge
   return { providers: [{ provide: NGE_DOC_RENDERERS, useValue: { markdown } }] }
 }
 
+/** Site-wide SEO settings used to build canonical, Open Graph and Twitter tags. */
+export interface NgeDocSeoConfig {
+  /** Absolute site url (no trailing slash), e.g. `https://example.com/docs`. Enables canonical and `og:url`. */
+  url?: string
+  /** Default social image; relative paths resolve against `url`. Overridable per page via frontmatter `image`. */
+  image?: string
+}
+
+/** Site-wide SEO settings. */
+export const NGE_DOC_SEO = new InjectionToken<NgeDocSeoConfig>('NGE_DOC_SEO')
+
+/**
+ * Enable per-page canonical, Open Graph and Twitter tags. Titles and descriptions
+ * come from each page (frontmatter overrides the manifest); `url` builds the
+ * canonical and `og:url`, and `image` sets the default social card.
+ */
+export function withSeo(config: NgeDocSeoConfig): NgeDocFeature {
+  return { providers: [{ provide: NGE_DOC_SEO, useValue: config }] }
+}
+
 /**
  * Set the default color scheme applied before the user picks one.
  * @param mode `auto` (follow the OS, default), `dark` or `light`.

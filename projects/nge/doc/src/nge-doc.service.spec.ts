@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { Subject, of } from 'rxjs'
 import { NgeDocLink, NgeDocSettings, NgeDocState } from './nge-doc'
 import { docsFromManifest } from './manifest'
+import { NGE_DOC_SEO } from './nge-doc.providers'
 import { NgeDocService } from './nge-doc.service'
 
 // The engine resolves hrefs by mutating the links in
@@ -163,5 +164,42 @@ describe('NgeDocService with a manifest source (docsFromManifest)', () => {
     service.stateChanges.subscribe((s) => (state = s)).unsubscribe()
     expect(state.currLink?.title).toBe('Home')
     expect(state.nextLink?.title).toBe('Next')
+  })
+})
+
+describe('NgeDocService SEO (withSeo)', () => {
+  let service: NgeDocService
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        NgeDocService,
+        { provide: Router, useValue: { events: new Subject(), navigateByUrl: jest.fn(), url: '/' } },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: makeSettings(), fragment: null } } },
+        { provide: Location, useValue: { path: () => '/docs/alpha/intro' } },
+        { provide: NGE_DOC_SEO, useValue: { url: 'https://example.com', image: 'assets/og.png' } },
+      ],
+    })
+    service = TestBed.inject(NgeDocService)
+  })
+
+  const content = (selector: string) => document.querySelector(selector)?.getAttribute('content')
+
+  it('emits canonical, Open Graph and Twitter tags from the active page', async () => {
+    await service.setup()
+
+    expect(document.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(
+      'https://example.com/docs/alpha/intro'
+    )
+    expect(content('meta[property="og:url"]')).toBe('https://example.com/docs/alpha/intro')
+    expect(content('meta[property="og:title"]')).toBe('Intro · Alpha')
+    expect(content('meta[property="og:image"]')).toBe('https://example.com/assets/og.png')
+    expect(content('meta[name="twitter:card"]')).toBe('summary_large_image')
+  })
+
+  it('keeps an absolute frontmatter image url as-is', async () => {
+    await service.setup()
+    service.setSeo('Title', 'Desc', 'https://cdn.example.com/x.png')
+    expect(content('meta[property="og:image"]')).toBe('https://cdn.example.com/x.png')
   })
 })

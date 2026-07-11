@@ -425,13 +425,17 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     return this.elementRef.nativeElement.querySelector<HTMLHeadingElement>(`#${escaped}`)
   }
 
-  /** Refines the page SEO with a title/description declared in the frontmatter. */
+  /** Refines the page SEO with a title/description/image declared in the frontmatter. */
   private applyFrontmatterSeo(frontmatter: Record<string, string>): void {
-    if (!frontmatter['title'] && !frontmatter['description']) {
+    if (!frontmatter['title'] && !frontmatter['description'] && !frontmatter['image']) {
       return
     }
     const link = this.docService.currLink()
-    this.docService.setSeo(frontmatter['title'] ?? link?.title ?? '', frontmatter['description'] ?? link?.description)
+    this.docService.setSeo(
+      frontmatter['title'] ?? link?.title ?? '',
+      frontmatter['description'] ?? link?.description,
+      frontmatter['image']
+    )
   }
 
   private slugify(text: string): string {

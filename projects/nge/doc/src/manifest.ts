@@ -108,11 +108,11 @@ function resolveHrefs(parent: string, link: NgeDocLink): void {
   if (link.separator) {
     return
   }
-  link.href = join(parent, link.href ?? '')
+  link.href = joinUrl(parent, link.href ?? '')
   link.children?.forEach((child) => resolveHrefs(link.href as string, child))
 }
 
 /** Joins two url segments with exactly one slash between them. */
-function join(a: string, b: string): string {
+export function joinUrl(a: string, b: string): string {
   return `${a.replace(/\/$/, '')}/${b.replace(/^\//, '')}`
 }

@@ -3,7 +3,7 @@ import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } fr
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser'
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router'
 
-import { provideNgeDoc, withBrand, withMarkdownRenderer, withNavbar } from '@cisstech/nge/doc'
+import { provideNgeDoc, withBrand, withMarkdownRenderer, withNavbar, withSeo } from '@cisstech/nge/doc'
 import {
   NgeMarkdownAdmonitionsProvider,
   NgeMarkdownComponentsProvider,
@@ -88,7 +88,8 @@ export const appConfig: ApplicationConfig = {
       ]),
       withMarkdownRenderer({
         component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),
-      })
+      }),
+      withSeo({ url: 'https://cisstech.github.io/nge', image: 'assets/images/nge.svg' })
     ),
   ],
 }
