@@ -1,12 +1,13 @@
+import { HttpClient } from '@angular/common/http'
 import { Location } from '@angular/common'
 import { Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { Meta, Title } from '@angular/platform-browser'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
-import { BehaviorSubject, Subscription } from 'rxjs'
+import { BehaviorSubject, Subscription, firstValueFrom } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
-import { NgeDocManifest, flattenPages, settingsToManifest } from './manifest'
+import { NgeDocManifest, extractManifestSources, flattenPages, settingsToManifest } from './manifest'
 import { DefaultNgeDocSearchProvider, NGE_DOC_SEARCH_PROVIDER, NgeDocSearchProvider, NgeDocSearchResult } from './search'
 import {
   DEFAULT_NGE_DOC_LABELS,
@@ -22,6 +23,7 @@ import {
 export class NgeDocService implements OnDestroy {
   private readonly router = inject(Router)
   private readonly injector = inject(Injector)
+  private readonly http = inject(HttpClient, { optional: true })
   private readonly location = inject(Location)
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly title = inject(Title)
@@ -105,9 +107,15 @@ export class NgeDocService implements OnDestroy {
   async setup(): Promise<void> {
     this.reset()
 
-    const settings = extractNgeDocSettings(this.activatedRoute.snapshot.data)
-    for (const setting of settings) {
+    const data = this.activatedRoute.snapshot.data
+
+    // Code-first: settings resolved to manifests.
+    for (const setting of extractNgeDocSettings(data)) {
       this.manifests.push(await settingsToManifest(setting, this.injector))
+    }
+    // File-first: manifests emitted by the build, fetched at runtime.
+    for (const source of extractManifestSources(data)) {
+      this.manifests.push(await this.fetchManifest(source.ngeDocManifestUrl))
     }
 
     this.routable = this.manifests.flatMap((manifest) => flattenPages(manifest.pages))
@@ -119,6 +127,16 @@ export class NgeDocService implements OnDestroy {
     )
 
     this.onChangeRoute()
+  }
+
+  /** Fetches a build-time manifest for a `docsFromManifest()` source. */
+  private async fetchManifest(url: string): Promise<NgeDocManifest> {
+    if (!this.http) {
+      throw new Error(
+        '[nge-doc]: docsFromManifest() needs HttpClient. Add provideHttpClient() to your application providers.'
+      )
+    }
+    return firstValueFrom(this.http.get<NgeDocManifest>(url))
   }
 
   /**

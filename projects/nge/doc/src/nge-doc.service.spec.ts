@@ -1,8 +1,10 @@
+import { HttpClient } from '@angular/common/http'
 import { Location } from '@angular/common'
 import { TestBed } from '@angular/core/testing'
 import { ActivatedRoute, Router } from '@angular/router'
-import { Subject } from 'rxjs'
+import { Subject, of } from 'rxjs'
 import { NgeDocLink, NgeDocSettings, NgeDocState } from './nge-doc'
+import { docsFromManifest } from './manifest'
 import { NgeDocService } from './nge-doc.service'
 
 // The engine resolves hrefs by mutating the links in
@@ -120,5 +122,46 @@ describe('NgeDocService', () => {
     service.setSeo('Custom', 'A description')
     expect(document.title).toBe('Custom · Alpha')
     expect(document.querySelector('meta[name="description"]')?.getAttribute('content')).toBe('A description')
+  })
+})
+
+describe('NgeDocService with a manifest source (docsFromManifest)', () => {
+  const manifest = {
+    meta: { name: 'Built', root: '/built' },
+    pages: [
+      { title: 'Home', href: '/built/home', renderer: 'assets/built/home.md' },
+      { title: 'Next', href: '/built/next', renderer: 'assets/built/next.md' },
+    ],
+  }
+  let service: NgeDocService
+  let get: jest.Mock
+
+  beforeEach(() => {
+    get = jest.fn().mockReturnValue(of(manifest))
+    TestBed.configureTestingModule({
+      providers: [
+        NgeDocService,
+        { provide: Router, useValue: { events: new Subject(), navigateByUrl: jest.fn(), url: '/' } },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { data: [docsFromManifest('assets/docs/manifest.json')], fragment: null } },
+        },
+        { provide: Location, useValue: { path: () => '/built/home' } },
+        { provide: HttpClient, useValue: { get } },
+      ],
+    })
+    service = TestBed.inject(NgeDocService)
+  })
+
+  it('fetches the manifest and resolves navigation from it', async () => {
+    await service.setup()
+
+    expect(get).toHaveBeenCalledWith('assets/docs/manifest.json')
+    expect(service.sites().map((m) => m.name)).toEqual(['Built'])
+
+    let state!: NgeDocState
+    service.stateChanges.subscribe((s) => (state = s)).unsubscribe()
+    expect(state.currLink?.title).toBe('Home')
+    expect(state.nextLink?.title).toBe('Next')
   })
 })

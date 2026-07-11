@@ -42,6 +42,37 @@ export async function settingsToManifest(settings: NgeDocSettings, injector: Inj
 }
 
 /**
+ * A file-first source: the url of a manifest emitted by the build. Declared in a
+ * route's `data` next to (or instead of) code-first {@link NgeDocSettings}.
+ */
+export interface NgeDocManifestSource {
+  ngeDocManifestUrl: string
+}
+
+/** Declares a documentation site loaded at runtime from a build-time manifest. */
+export function docsFromManifest(url: string): NgeDocManifestSource {
+  return { ngeDocManifestUrl: url }
+}
+
+/** Type guard for a {@link NgeDocManifestSource}. */
+export function isNgeDocManifestSource(value: unknown): value is NgeDocManifestSource {
+  return (
+    !!value && typeof value === 'object' && typeof (value as NgeDocManifestSource).ngeDocManifestUrl === 'string'
+  )
+}
+
+/** Collects manifest sources from route data (mirrors `extractNgeDocSettings`). */
+export function extractManifestSources(value: unknown): NgeDocManifestSource[] {
+  if (isNgeDocManifestSource(value)) {
+    return [value]
+  }
+  if (value && typeof value === 'object') {
+    return Object.values(value).flatMap(extractManifestSources)
+  }
+  return []
+}
+
+/**
  * Routable links of a manifest in reading order (depth-first, a parent before
  * its children). Separators, being visual headings, are skipped along with their
  * subtree. Used to compute prev/next and to feed search.

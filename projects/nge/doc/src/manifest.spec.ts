@@ -1,6 +1,6 @@
 import { Injector } from '@angular/core'
 import { NgeDocSettings } from './nge-doc'
-import { flattenPages, settingsToManifest } from './manifest'
+import { docsFromManifest, extractManifestSources, flattenPages, settingsToManifest } from './manifest'
 
 // Static settings never touch the injector; dynamic factories receive it but the
 // tests don't need a real one.
@@ -98,6 +98,26 @@ describe('settingsToManifest', () => {
 
   it('rejects when the resolved meta is missing', async () => {
     await expect(settingsToManifest({ meta: () => undefined as never, pages: [] }, injector)).rejects.toThrow(/meta/i)
+  })
+})
+
+describe('docsFromManifest / extractManifestSources', () => {
+  it('wraps a url as a manifest source', () => {
+    expect(docsFromManifest('assets/docs/manifest.json')).toEqual({ ngeDocManifestUrl: 'assets/docs/manifest.json' })
+  })
+
+  it('extracts manifest sources from route data, ignoring plain settings', () => {
+    const data = [
+      { meta: { name: 'Code', root: '/code' }, pages: [] },
+      docsFromManifest('assets/a.json'),
+      docsFromManifest('assets/b.json'),
+    ]
+
+    expect(extractManifestSources(data).map((s) => s.ngeDocManifestUrl)).toEqual(['assets/a.json', 'assets/b.json'])
+  })
+
+  it('finds no sources in settings-only data', () => {
+    expect(extractManifestSources([{ meta: { name: 'X', root: '/x' }, pages: [] }])).toEqual([])
   })
 })
 
