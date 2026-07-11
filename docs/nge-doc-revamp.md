@@ -31,12 +31,12 @@ Missing (blocks the rest):
 
 Ordered. `M1` is a gate — do not start `M3`+ before it passes.
 
-### M0 — Manifest foundation (non-breaking)
+### M0 — Manifest foundation (non-breaking) ✅
 
-- [ ] `NgeDocManifest` / `NgeDocPage` model in core.
-- [ ] `settingsToManifest()` adapter + unit tests.
-- [ ] Service refactored onto the manifest; `stateChanges` and `NgeDocLink` unchanged.
-- [ ] `NgeDocSearchProvider` + `NgeDocSearchDocument` contract; move the current search behind it.
+- [x] `NgeDocManifest` model + `flattenPages` (pages reuse `NgeDocLink`; the compiler emits that shape in M2, no separate serializable type needed yet).
+- [x] `settingsToManifest()` adapter + unit tests.
+- [x] Service resolves settings through the manifest; `stateChanges` and `NgeDocLink` unchanged.
+- [x] `NgeDocSearchProvider` / `NgeDocSearchDocument` contract + in-memory default provider; search moved behind it (now async, slug-based).
 
 ### M1 — SSR spike (decision gate)
 
