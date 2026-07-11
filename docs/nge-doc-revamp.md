@@ -1,6 +1,6 @@
 # nge-doc revamp
 
-> The Nextra of Angular: document a library with live Angular demos — embedded in an app as a `/docs` route, or shipped as a static site. No other doc framework runs Angular components; that gap is the product.
+> The Nextra of Angular: document a library with live Angular demos - embedded in an app as a `/docs` route, or shipped as a static site. No other doc framework runs Angular components; that gap is the product.
 
 Scope: `projects/nge/doc` (+ `nge/markdown`, `nge/monaco`). Single source of truth for this work.
 
@@ -13,8 +13,8 @@ Done, on `main`:
 
 Missing (blocks the rest):
 
-- `NgeDocManifest` model + `settingsToManifest()` — the service still runs directly on `NgeDocSettings`.
-- Pluggable `NgeDocSearchProvider` contract — only an inline `search()` on the service exists.
+- `NgeDocManifest` model + `settingsToManifest()` - the service still runs directly on `NgeDocSettings`.
+- Pluggable `NgeDocSearchProvider` contract - only an inline `search()` on the service exists.
 
 ## Settled decisions
 
@@ -29,66 +29,66 @@ Missing (blocks the rest):
 
 ## Plan
 
-Ordered. `M1` is a gate — do not start `M3`+ before it passes.
+Ordered. `M1` is a gate - do not start `M3`+ before it passes.
 
-### M0 — Manifest foundation (non-breaking) ✅
+### M0 - Manifest foundation (non-breaking) ✅
 
 - [x] `NgeDocManifest` model + `flattenPages` (pages reuse `NgeDocLink`; the compiler emits that shape in M2, no separate serializable type needed yet).
 - [x] `settingsToManifest()` adapter + unit tests.
 - [x] Service resolves settings through the manifest; `stateChanges` and `NgeDocLink` unchanged.
 - [x] `NgeDocSearchProvider` / `NgeDocSearchDocument` contract + in-memory default provider; search moved behind it (now async, slug-based).
 
-### M1 — SSR feasibility ✅ (go)
+### M1 - SSR feasibility ✅ (go)
 
 - [x] Audit `nge/markdown` for SSR hazards (window / DOM / Monaco).
 - [x] Fix the import-time `window` crash in the compiler service.
-- [x] Decision: **go**. No architectural blocker — the core pipeline uses standard DOM APIs (domino-compatible) and every `window` use is guarded or in an opt-in contribution. The only real SSG work is Monaco→Shiki. The empirical prerender is validated in M3 (real `@angular/ssr` infra, not a throwaway harness), where the remaining SSR tasks live:
+- [x] Decision: **go**. No architectural blocker - the core pipeline uses standard DOM APIs (domino-compatible) and every `window` use is guarded or in an opt-in contribution. The only real SSG work is Monaco→Shiki. The empirical prerender is validated in M3 (real `@angular/ssr` infra, not a throwaway harness), where the remaining SSR tasks live:
   - Shiki highlight in the render pipeline.
   - Guard the KaTeX / emoji contributions for the server.
   - Prerender a page; `curl` returns full content + meta, zero hydration errors.
 
-### M2 — Compiler (`docs/` → manifest)
+### M2 - Compiler (`docs/` → manifest) ✅
 
-- [ ] Node lib `@cisstech/nge/doc/compiler`: scan `docs/`, parse frontmatter + `_meta.json` (`.ts` opt-in) → `manifest.json` (+ fixtures, tests).
-- [ ] Angular builder wrapping the compiler; watch mode under 500 ms on ~100 pages.
-- [ ] `docsFromManifest('assets/docs/manifest.json')` runtime source.
-- [ ] Document the convention.
+- [x] Node lib `@cisstech/nge/doc/compiler`: scan `docs/`, parse frontmatter + `_meta.json` → `manifest.json` (+ in-memory fixtures, tests).
+- [x] Angular builder (`@cisstech/nge:docs`) wrapping the compiler; watch via a native async generator over `fs.watch`. Packaged to `dist/nge/node` (CommonJS) during `postbuild:lib`; demo target verified through `./dist/nge:docs`.
+- [x] `docsFromManifest('assets/docs/manifest.json')` runtime source.
+- [x] Document the convention (`docs/nge-doc-authoring.md`).
 
-### M3 — SSG (needs M1 = go, M2)
+### M3 - SSG (needs M1 = go, M2)
 
 - [ ] Migrate the demo to the `application` builder; prerender routes from the manifest.
 - [ ] Read `.md` from the filesystem at prerender; hydrate via transfer state (no client re-fetch).
 - [ ] CI builds the static site → GitHub Pages.
 
-### M4 — SEO (needs M3)
+### M4 - SEO (needs M3)
 
 - [ ] Per-page `<title>`, description, canonical, OG / Twitter (from frontmatter, at prerender).
 - [ ] `sitemap.xml` + `robots.txt` from the compiler.
 - [ ] "Edit on GitHub" (`sourcePath`) + "Last updated" (`git log -1`), carried in the manifest.
 
-### M5 — AI outputs (needs M2)
+### M5 - AI outputs (needs M2)
 
 - [ ] `llms.txt` + `llms-full.txt` from the manifest.
 - [ ] Raw `.md` served next to each HTML page.
 - [ ] "Copy as Markdown" + "Open in ChatGPT / Claude" in the page header.
 
-### M6 — Build-time search (needs M2)
+### M6 - Build-time search (needs M2)
 
 - [ ] Compiler emits the search index (chunked by heading) as JSON.
 - [ ] `NgeDocSearchProvider` loads the prebuilt index; contract unchanged from M0.
 
-### M7 — ng add + schematics (needs M2)
+### M7 - ng add + schematics (needs M2)
 
 - [ ] `ng add @cisstech/nge`: scaffold `docs/`, wire the builder + route + `provideNgeDoc()`.
 - [ ] `ng g @cisstech/nge:doc-page <path>`.
 - [ ] Rewrite README / site around the 5-minute path.
 
-### M8 — Differentiation (independent, minor releases; needs M2)
+### M8 - Differentiation (independent, minor releases; needs M2)
 
 - [ ] Playground: `:::playground` contribution + `withPlaygrounds()` + preview/source tabs; compiler extracts sources.
 - [ ] API reference: ts-morph → `api-manifest.json`, generated pages, `{@link}` resolved at build (broken link fails the build).
 - [ ] Ask AI: `withAiAssistant({ endpoint })`, chunk selection via the search provider, streaming; reference edge function in the docs.
-- [ ] MCP server: `npx @cisstech/nge-doc mcp` — `search_docs` / `read_page` / `list_pages`.
+- [ ] MCP server: `npx @cisstech/nge-doc mcp` - `search_docs` / `read_page` / `list_pages`.
 
 ## Done means
 
