@@ -139,6 +139,16 @@
             "buildTarget": "demo:build:production",
             "baseHref": "https://cisstech.github.io/nge/"
           }
+        },
+        "docs": {
+          "builder": "./dist/nge:docs",
+          "options": {
+            "docsDir": "projects/demo/docs",
+            "outputPath": "dist/demo-docs",
+            "name": "Demo",
+            "root": "/docs",
+            "assetsBase": "assets/docs"
+          }
         }
       }
     }
