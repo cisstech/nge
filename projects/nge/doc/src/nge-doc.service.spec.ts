@@ -74,12 +74,13 @@ describe('NgeDocService', () => {
 
   it('searches pages by title and exposes their site/section path', async () => {
     await service.setup()
-    const setup = service.search('set').find((r) => r.title === 'Setup')
+    const setup = (await service.search('set')).find((r) => r.title === 'Setup')
     expect(setup).toBeDefined()
+    expect(setup?.slug).toBe('/docs/alpha/guide/setup')
     expect(setup?.path).toEqual(['Alpha', 'Guide'])
     // Pure grouping links (no renderer) are excluded from results.
-    expect(service.search('guide').some((r) => r.title === 'Guide')).toBe(false)
-    expect(service.search('   ')).toEqual([])
+    expect((await service.search('guide')).some((r) => r.title === 'Guide')).toBe(false)
+    expect(await service.search('   ')).toEqual([])
   })
 
   it('builds the breadcrumb trail down to the active page', async () => {

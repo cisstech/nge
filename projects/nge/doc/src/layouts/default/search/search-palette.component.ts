@@ -3,14 +3,16 @@ import {
   Component,
   ElementRef,
   afterNextRender,
-  computed,
   inject,
   output,
   signal,
   viewChild,
 } from '@angular/core'
+import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { Router } from '@angular/router'
-import { NgeDocSearchResult, NgeDocService } from '../../../nge-doc.service'
+import { switchMap } from 'rxjs'
+import { NgeDocService } from '../../../nge-doc.service'
+import { NgeDocSearchResult } from '../../../search'
 
 @Component({
   selector: 'nge-doc-search-palette',
@@ -30,7 +32,10 @@ export class SearchPaletteComponent {
   protected readonly labels = this.docService.labels
   protected readonly query = signal('')
   protected readonly activeIndex = signal(0)
-  protected readonly results = computed<NgeDocSearchResult[]>(() => this.docService.search(this.query()))
+  protected readonly results = toSignal(
+    toObservable(this.query).pipe(switchMap((query) => this.docService.search(query))),
+    { initialValue: [] as NgeDocSearchResult[] }
+  )
 
   constructor() {
     afterNextRender(() => this.input().nativeElement.focus())
@@ -68,9 +73,7 @@ export class SearchPaletteComponent {
   }
 
   protected select(result: NgeDocSearchResult): void {
-    if (result.link.href) {
-      this.router.navigateByUrl(result.link.href)
-    }
+    this.router.navigateByUrl(result.slug)
     this.closed.emit()
   }
 

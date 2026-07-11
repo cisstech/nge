@@ -6,6 +6,8 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
+import { NgeDocManifest, flattenPages, settingsToManifest } from './manifest'
+import { DefaultNgeDocSearchProvider, NGE_DOC_SEARCH_PROVIDER, NgeDocSearchProvider, NgeDocSearchResult } from './search'
 import {
   DEFAULT_NGE_DOC_LABELS,
   NGE_DOC_BRAND,
@@ -15,16 +17,6 @@ import {
   NgeDocLabels,
   NgeDocNavLink,
 } from './nge-doc.providers'
-
-/** A page matched by {@link NgeDocService.search}. */
-export interface NgeDocSearchResult {
-  /** The matched link. */
-  link: NgeDocLink
-  /** Title of the matched link. */
-  title: string
-  /** Titles of the ancestor links, from the top of the tree down (excludes the match). */
-  path: string[]
-}
 
 @Injectable()
 export class NgeDocService implements OnDestroy {
@@ -36,6 +28,8 @@ export class NgeDocService implements OnDestroy {
   private readonly metaTags = inject(Meta)
   private readonly explicitNavbar = inject(NGE_DOC_NAVBAR, { optional: true })
   private readonly explicitBrand = inject(NGE_DOC_BRAND, { optional: true })
+  private readonly searchProvider: NgeDocSearchProvider =
+    inject(NGE_DOC_SEARCH_PROVIDER, { optional: true }) ?? new DefaultNgeDocSearchProvider()
 
   /** Resolved theme wording: the English defaults merged with any `withLabels` overrides. */
   readonly labels: NgeDocLabels = { ...DEFAULT_NGE_DOC_LABELS, ...inject(NGE_DOC_LABELS, { optional: true }) }
@@ -51,15 +45,11 @@ export class NgeDocService implements OnDestroy {
     currLink: undefined,
   })
 
-  private readonly pages = new Map<
-    string,
-    {
-      meta: NgeDocMeta
-      links: NgeDocLink[]
-    }
-  >()
+  /** Resolved documentation sites, in declaration order. */
+  private manifests: NgeDocManifest[] = []
 
-  private readonly links: NgeDocLink[] = []
+  /** Routable links across every site, in reading order (used for prev/next). */
+  private routable: NgeDocLink[] = []
 
   private readonly subscriptions: Subscription[] = []
 
@@ -74,8 +64,7 @@ export class NgeDocService implements OnDestroy {
    */
   readonly navbar = computed<NgeDocNavLink[]>(
     () =>
-      this.explicitNavbar ??
-      this.sites().map((meta) => ({ title: meta.name, href: meta.root, icon: meta.logo }))
+      this.explicitNavbar ?? this.sites().map((meta) => ({ title: meta.name, href: meta.root, icon: meta.logo }))
   )
 
   /**
@@ -110,61 +99,20 @@ export class NgeDocService implements OnDestroy {
   }
 
   /**
-   * Loads navigation from the router configuration.
+   * Loads navigation from the router configuration: resolves each settings object
+   * into a manifest, flattens it for prev/next, and hands the set to search.
    */
   async setup(): Promise<void> {
     this.reset()
 
-    const { data } = this.activatedRoute.snapshot
-    const settings = extractNgeDocSettings(data)
-
+    const settings = extractNgeDocSettings(this.activatedRoute.snapshot.data)
     for (const setting of settings) {
-      const links: NgeDocLink[] = []
-
-      let meta: NgeDocMeta | undefined
-      if (typeof setting.meta === 'function') {
-        meta = await setting.meta(this.injector)
-      } else {
-        meta = setting.meta
-      }
-
-      if (!meta) {
-        throw new Error('[nge-doc]: Missing setting.meta')
-      }
-
-      for (const item of setting.pages) {
-        const pages: NgeDocLink[] = []
-
-        let object: NgeDocLink | NgeDocLink[]
-        if (typeof item === 'function') {
-          object = await item(this.injector)
-        } else {
-          object = item
-        }
-
-        if (Array.isArray(object)) {
-          pages.push(...object)
-        } else {
-          pages.push(object)
-        }
-
-        // Work on a copy: href resolution and expansion mutate links in place,
-        // and the consumer's settings objects must stay pristine (and reusable
-        // across navigations, otherwise hrefs would be prefixed twice).
-        pages.forEach((page) => {
-          const link = this.cloneLink(page)
-          links.push(link)
-          this.resolvePageLinks(meta!, link)
-        })
-
-        this.pages.set(meta.root, {
-          meta,
-          links: links,
-        })
-      }
+      this.manifests.push(await settingsToManifest(setting, this.injector))
     }
 
-    this.sites.set(Array.from(this.pages.values()).map((page) => page.meta))
+    this.routable = this.manifests.flatMap((manifest) => flattenPages(manifest.pages))
+    this.sites.set(this.manifests.map((manifest) => manifest.meta))
+    await this.searchProvider.index(this.manifests)
 
     this.subscriptions.push(
       this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(this.onChangeRoute.bind(this))
@@ -199,68 +147,21 @@ export class NgeDocService implements OnDestroy {
     return !!link.children?.length
   }
 
-  private join(a: string, b: string): string {
-    if (a.endsWith('/')) {
-      a = a.slice(0, a.length - 1)
-    }
-    if (b.startsWith('/')) {
-      b = b.slice(1)
-    }
-    return a + '/' + b
-  }
-
-  /**
-   * Deep-copies a link's structure (its `children` tree) while sharing functions
-   * and options (`renderer`, `actions`, `inputs`) by reference, so href resolution
-   * and expansion never mutate the consumer's settings objects.
-   */
-  private cloneLink(link: NgeDocLink): NgeDocLink {
-    return {
-      ...link,
-      children: link.children?.map((child) => this.cloneLink(child)),
-    }
-  }
-
-  private resolvePageLinks(meta: NgeDocMeta, page: NgeDocLink) {
-    const createLink = (link: NgeDocLink, parent: string) => {
-      // Separators are visual section headings: not routed, so they never join
-      // an href and the pages that follow them keep their own urls.
-      if (link.separator) {
-        return
-      }
-      link.href = this.join(parent, link.href ?? '')
-      this.links.push(link)
-      link.children?.forEach((child) => {
-        createLink(child, link.href!)
-      })
-    }
-    createLink(page, meta.root)
-  }
-
   private async onChangeRoute(): Promise<void> {
-    if (!this.pages.size) {
+    if (!this.manifests.length) {
       return
     }
 
     const path = this.location.path()
     const paths = [path, path + '/']
 
-    let meta: NgeDocMeta | undefined
-    let links: NgeDocLink[] = []
-
-    for (const [k, v] of this.pages) {
-      if (paths.some((path) => path.includes(k))) {
-        meta = v.meta
-        links = v.links
-        break
-      }
+    const active = this.manifests.find((manifest) => paths.some((p) => p.includes(manifest.meta.root)))
+    if (!active) {
+      throw new Error('[nge-doc]: Unregistered page ' + path)
     }
+    const { meta, pages: links } = active
 
-    if (!meta) {
-      throw new Error('[nge-doc]: Unregisted page ' + path)
-    }
-
-    let { currLink, prevLink, nextLink } = this.state.value
+    let { currLink } = this.state.value
 
     // ignore same page navigation (fragment navigation)
     if (currLink?.href && paths.some((p) => p.endsWith(currLink!.href!))) {
@@ -270,15 +171,17 @@ export class NgeDocService implements OnDestroy {
     // Resolve from scratch: a path that matches no page (a site root reached from
     // the navbar) must fall through to the redirect below instead of keeping the
     // previously active link, which would leave stale content under a new sidebar.
-    currLink = prevLink = nextLink = undefined
+    let prevLink: NgeDocLink | undefined
+    let nextLink: NgeDocLink | undefined
+    currLink = undefined
 
     // calculate current, previous and next links (no wrap-around at the ends)
-    for (let i = 0; i < this.links.length; i++) {
-      const link = this.links[i]
-      if (link.href && paths.some((path) => path.endsWith(link.href!))) {
+    for (let i = 0; i < this.routable.length; i++) {
+      const link = this.routable[i]
+      if (link.href && paths.some((p) => p.endsWith(link.href!))) {
         currLink = link
-        prevLink = i > 0 ? this.links[i - 1] : undefined
-        nextLink = i < this.links.length - 1 ? this.links[i + 1] : undefined
+        prevLink = i > 0 ? this.routable[i - 1] : undefined
+        nextLink = i < this.routable.length - 1 ? this.routable[i + 1] : undefined
         break
       }
     }
@@ -302,15 +205,13 @@ export class NgeDocService implements OnDestroy {
     }
 
     // expand visible links
-
-    this.links.forEach((link) => {
-      if (link.href && paths.some((path) => path.endsWith(link.href!))) {
+    this.routable.forEach((link) => {
+      if (link.href && paths.some((p) => p.endsWith(link.href!))) {
         link.expanded = true
       }
     })
 
     // notify state change
-
     this.state.next({
       meta,
       links,
@@ -338,58 +239,11 @@ export class NgeDocService implements OnDestroy {
   }
 
   /**
-   * Searches the registered pages by title.
-   * @param query Free text to match against link titles (case-insensitive).
-   * @returns Up to 20 renderable pages, best matches first.
+   * Searches the registered pages through the configured search provider.
+   * @param query Free text to match (case-insensitive).
    */
-  search(query: string): NgeDocSearchResult[] {
-    const needle = query.trim().toLowerCase()
-    if (!needle) {
-      return []
-    }
-
-    const scored: { result: NgeDocSearchResult; score: number }[] = []
-    for (const link of this.links) {
-      // Skip pure grouping links that cannot be rendered on their own.
-      if (!link.renderer && link.children?.length) {
-        continue
-      }
-      const title = link.title ?? ''
-      const index = title.toLowerCase().indexOf(needle)
-      if (index >= 0) {
-        scored.push({ result: { link, title, path: this.trailTitles(link) }, score: index })
-      }
-    }
-
-    return scored
-      .sort((a, b) => a.score - b.score || a.result.title.length - b.result.title.length)
-      .slice(0, 20)
-      .map((entry) => entry.result)
-  }
-
-  /** Site name then a link's ancestor titles across the navigation trees, target excluded. */
-  private trailTitles(target: NgeDocLink): string[] {
-    for (const { meta, links } of this.pages.values()) {
-      const trail: string[] = []
-      if (this.collectTitles(links, target, trail)) {
-        return [meta.name, ...trail.slice(0, -1)].filter(Boolean)
-      }
-    }
-    return []
-  }
-
-  private collectTitles(nodes: NgeDocLink[], target: NgeDocLink, acc: string[]): boolean {
-    for (const node of nodes) {
-      acc.push(node.title)
-      if (node.href === target.href) {
-        return true
-      }
-      if (node.children?.length && this.collectTitles(node.children, target, acc)) {
-        return true
-      }
-      acc.pop()
-    }
-    return false
+  search(query: string): Promise<NgeDocSearchResult[]> {
+    return this.searchProvider.search(query)
   }
 
   /**
@@ -447,7 +301,7 @@ export class NgeDocService implements OnDestroy {
   private reset(): void {
     this.subscriptions.forEach((s) => s.unsubscribe())
     this.subscriptions.splice(0, this.subscriptions.length)
-    this.pages.clear()
-    this.links.splice(0, this.links.length)
+    this.manifests = []
+    this.routable = []
   }
 }

@@ -21,7 +21,7 @@
     @if (query() && !results().length) {
       <div class="palette-empty">{{ labels.searchEmpty }} “{{ query() }}”</div>
     }
-    @for (result of results(); track result.link.href; let i = $index) {
+    @for (result of results(); track result.slug; let i = $index) {
       <button
         type="button"
         role="option"
