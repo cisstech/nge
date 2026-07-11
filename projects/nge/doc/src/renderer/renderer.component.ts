@@ -9,6 +9,7 @@ import {
   Injector,
   OnDestroy,
   OnInit,
+  PendingTasks,
   Type,
   ViewContainerRef,
   inject,
@@ -62,6 +63,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly location = inject(Location)
+  private readonly pendingTasks = inject(PendingTasks)
 
   private subscriptions: Subscription[] = []
   protected readonly loading = signal(false)
@@ -87,9 +89,12 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.docService.stateChanges.subscribe(this.onChangeState.bind(this)))
 
     // Markdown renders asynchronously, so watch the host for content mutations
-    // and rebuild the heading list once the page settles.
-    this.contentObserver = new MutationObserver(() => this.scheduleSync())
-    this.contentObserver.observe(this.elementRef.nativeElement, { childList: true, subtree: true })
+    // and rebuild the heading list once the page settles. Browser-only: the
+    // server has no MutationObserver, and headings are rebuilt after hydration.
+    if (typeof MutationObserver !== 'undefined') {
+      this.contentObserver = new MutationObserver(() => this.scheduleSync())
+      this.contentObserver.observe(this.elementRef.nativeElement, { childList: true, subtree: true })
+    }
   }
 
   ngOnDestroy(): void {
@@ -114,7 +119,14 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
    */
   protected onHostClick(event: MouseEvent): void {
     // Let the browser handle modified clicks (new tab, download, ...).
-    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey
+    ) {
       return
     }
 
@@ -182,6 +194,9 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
   }
 
   private async onChangeState(state: NgeDocState): Promise<void> {
+    // Block application stability until the page has painted, so server-side
+    // rendering waits for the markdown instead of snapshotting an empty shell.
+    const removePendingTask = this.pendingTasks.add()
     try {
       this.showLoading()
       this.clearViewContainer()
@@ -210,6 +225,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
       console.error(error)
       this.loading.set(false)
     } finally {
+      removePendingTask()
       this.notFound.set(!this.componentRef)
       this.changeDetectorRef.markForCheck()
       this.scheduleSync()
@@ -261,7 +277,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     const markdownComponent = this.componentRefByTypes.get(type)
     if (markdownComponent) {
       this.attachComponent(markdownComponent, await createInputs())
-      this.awaitMarkdownRender(markdownComponent)
+      await this.awaitMarkdownRender(markdownComponent)
       return
     }
 
@@ -273,7 +289,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
 
     this.componentRef = componentRef
     this.componentRefByTypes.set(type, componentRef)
-    this.awaitMarkdownRender(componentRef)
+    await this.awaitMarkdownRender(componentRef)
   }
 
   /**
@@ -284,25 +300,37 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
    * timeout is a safety net for a renderer that never emits (for example when
    * compilation throws).
    */
-  private awaitMarkdownRender(componentRef: ComponentRef<unknown>): void {
-    const done = () => {
-      if (this.componentRef === componentRef) {
-        this.loading.set(false)
-        this.changeDetectorRef.markForCheck()
+  private awaitMarkdownRender(componentRef: ComponentRef<unknown>): Promise<void> {
+    return new Promise<void>((resolve) => {
+      let settled = false
+      let timer: ReturnType<typeof setTimeout> | undefined
+      const done = () => {
+        if (settled) {
+          return
+        }
+        settled = true
+        if (timer) {
+          clearTimeout(timer)
+        }
+        if (this.componentRef === componentRef) {
+          this.loading.set(false)
+          this.changeDetectorRef.markForCheck()
+        }
+        resolve()
       }
-    }
 
-    const instance = componentRef.instance as MarkdownRenderSource | null
-    const ready = instance?.rendered ?? instance?.render
-    if (ready && typeof ready.subscribe === 'function') {
-      const subscription = ready.subscribe(() => {
+      const instance = componentRef.instance as MarkdownRenderSource | null
+      const ready = instance?.rendered ?? instance?.render
+      if (ready && typeof ready.subscribe === 'function') {
+        const subscription = ready.subscribe(() => {
+          subscription.unsubscribe()
+          done()
+        })
+        timer = setTimeout(done, 5000)
+      } else {
         done()
-        subscription.unsubscribe()
-      })
-      setTimeout(done, 5000)
-    } else {
-      done()
-    }
+      }
+    })
   }
 
   private attachComponent(componentRef: ComponentRef<any>, inputs: Record<string, any>): void {

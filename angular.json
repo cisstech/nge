@@ -140,10 +140,10 @@
           "builder": "./dist/nge:docs",
           "options": {
             "docsDir": "projects/demo/docs",
-            "outputPath": "dist/demo-docs",
-            "name": "Demo",
-            "root": "/docs",
-            "assetsBase": "assets/docs"
+            "outputPath": "projects/demo/src/assets/guide",
+            "name": "Guide",
+            "root": "/guide",
+            "assetsBase": "assets/guide"
           }
         }
       }

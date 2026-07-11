@@ -6,6 +6,7 @@ import {
   ChangeDetectorRef,
   Component,
   ComponentRef,
+  DOCUMENT,
   ElementRef,
   EnvironmentInjector,
   HostBinding,
@@ -34,6 +35,7 @@ import { NgeMarkdownService } from './nge-markdown.service'
 })
 export class NgeMarkdownComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly el: ElementRef<HTMLElement> = inject(ElementRef)
+  private readonly document = inject(DOCUMENT)
   private readonly http = inject(HttpClient, { optional: true })
   private readonly markdownService = inject(NgeMarkdownService)
   private readonly resourceLoader = inject(ResourceLoaderService)
@@ -159,10 +161,9 @@ export class NgeMarkdownComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const { darkThemeClassName } = this.markdownService.config
     if (darkThemeClassName) {
-      // TODO: support angular universal
       const classNames = Array.isArray(darkThemeClassName) ? darkThemeClassName : [darkThemeClassName]
       this.isDark = classNames.some(
-        (name) => document.querySelector(name.startsWith('.') ? name : `.${name}`) != null
+        (name) => this.document.querySelector(name.startsWith('.') ? name : `.${name}`) != null
       )
     }
   }

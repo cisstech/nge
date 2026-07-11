@@ -1,5 +1,5 @@
-
-import { Injectable, inject, DOCUMENT } from '@angular/core'
+import { isPlatformBrowser } from '@angular/common'
+import { Injectable, PLATFORM_ID, inject, DOCUMENT, Provider } from '@angular/core'
 import { Observable, forkJoin, from, of } from 'rxjs'
 import { concatMap, shareReplay, take } from 'rxjs/operators'
 
@@ -29,6 +29,7 @@ class LoadRequest {
   constructor(
     private readonly asset: ResourceInfo,
     private readonly document: Document,
+    private readonly isBrowser: boolean,
     private readonly config?: ResourceLoaderConfig | null
   ) {}
 
@@ -48,25 +49,33 @@ class LoadRequest {
         style.href = url
         style.rel = 'stylesheet'
 
-        style.onload = () => {
-          observer.next(this.asset)
-          observer.complete()
-          this.finished = true
-        }
-        style.onerror = (err) => {
-          observer.error(err)
-          this.finished = true
+        if (this.isBrowser) {
+          style.onload = () => {
+            observer.next(this.asset)
+            observer.complete()
+            this.finished = true
+          }
+          style.onerror = (err) => {
+            observer.error(err)
+            this.finished = true
+          }
         }
 
         const attributes = this.asset[2]
         if (attributes) {
-          for (const key in attributes) {
-            if (attributes.hasOwnProperty(key)) {
-              style.setAttribute(key, attributes[key])
-            }
+          for (const [key, value] of Object.entries(attributes)) {
+            style.setAttribute(key, value)
           }
         }
         this.document.head.appendChild(style)
+
+        if (!this.isBrowser) {
+          // No load events fire under SSR; the browser fetches the stylesheet from
+          // the prerendered <head>. Resolve now so rendering is not blocked.
+          observer.next(this.asset)
+          observer.complete()
+          this.finished = true
+        }
       }).pipe(take(1), shareReplay(1)))
     )
   }
@@ -75,6 +84,14 @@ class LoadRequest {
     return (
       this.request ??
       (this.request = new Observable<ResourceInfo>((observer) => {
+        if (!this.isBrowser) {
+          // Scripts only have an effect in the browser; skip injecting them under
+          // SSR and resolve immediately so rendering is not blocked.
+          observer.next(this.asset)
+          observer.complete()
+          this.finished = true
+          return
+        }
         const url = this.buildUrl(this.asset[1])
         const script: HTMLScriptElement = this.document.createElement('script')
         script.src = url
@@ -91,10 +108,8 @@ class LoadRequest {
 
         const attributes = this.asset[2]
         if (attributes) {
-          for (const key in attributes) {
-            if (attributes.hasOwnProperty(key)) {
-              script.setAttribute(key, attributes[key])
-            }
+          for (const [key, value] of Object.entries(attributes)) {
+            script.setAttribute(key, value)
           }
         }
 
@@ -130,6 +145,7 @@ class LoadRequest {
 export class ResourceLoaderService {
   private readonly document = inject(DOCUMENT)
   private readonly config = inject(ResourceLoaderConfig, { optional: true })
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID))
   private readonly requests = new Map<string, LoadRequest>()
 
   waitForPendings(): Promise<void> {
@@ -192,14 +208,14 @@ export class ResourceLoaderService {
       const url = asset[1]
       let request = this.requests.get(url)
       if (!request) {
-        this.requests.set(url, (request = new LoadRequest(asset, this.document, this.config)))
+        this.requests.set(url, (request = new LoadRequest(asset, this.document, this.isBrowser, this.config)))
       }
       return request
     })
   }
 }
 
-export const ResourceLoaderConfigProvider = (config: Partial<ResourceLoaderConfig>): any => ({
+export const ResourceLoaderConfigProvider = (config: Partial<ResourceLoaderConfig>): Provider => ({
   provide: ResourceLoaderConfig,
   useValue: config,
 })
