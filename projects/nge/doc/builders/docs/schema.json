@@ -19,6 +19,10 @@
       "default": "assets/docs",
       "description": "Base url the markdown is served from at runtime."
     },
+    "siteUrl": {
+      "type": "string",
+      "description": "Absolute site url. When set, emits sitemap.xml and robots.txt."
+    },
     "watch": { "type": "boolean", "default": false, "description": "Rebuild on change." }
   },
   "required": ["outputPath", "name", "root"],

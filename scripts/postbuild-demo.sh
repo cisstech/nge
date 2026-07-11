@@ -18,4 +18,13 @@ fi
 cp -f "$SHELL_HTML" "$BROWSER/index.html"
 cp -f "$SHELL_HTML" "$BROWSER/404.html"
 
-echo "postbuild-demo: wrote index.html and 404.html from the CSR shell"
+# The docs builder emits sitemap.xml and robots.txt next to the manifest; move
+# them to the site root where crawlers expect them.
+GUIDE_ASSETS="$BROWSER/assets/guide"
+for file in sitemap.xml robots.txt; do
+  if [[ -f "$GUIDE_ASSETS/$file" ]]; then
+    mv -f "$GUIDE_ASSETS/$file" "$BROWSER/$file"
+  fi
+done
+
+echo "postbuild-demo: wrote index.html and 404.html from the CSR shell, moved sitemap.xml/robots.txt to root"

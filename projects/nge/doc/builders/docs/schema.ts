@@ -10,6 +10,8 @@ export interface DocsBuilderOptions {
   root: string
   /** Base url the markdown is served from at runtime. Default: `assets/docs`. */
   assetsBase?: string
+  /** Absolute site url. When set, emits `sitemap.xml` and `robots.txt`. */
+  siteUrl?: string
   /** Rebuild on change. */
   watch?: boolean
 }

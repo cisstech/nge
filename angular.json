@@ -142,7 +142,8 @@
             "outputPath": "projects/demo/src/assets/guide",
             "name": "Guide",
             "root": "/guide",
-            "assetsBase": "assets/guide"
+            "assetsBase": "assets/guide",
+            "siteUrl": "https://cisstech.github.io/nge"
           }
         }
       }

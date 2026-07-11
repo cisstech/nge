@@ -4,6 +4,7 @@ import type { NgeDocMeta } from '../src/nge-doc'
 import type { NgeDocManifest } from '../src/manifest'
 import { compileDocs } from './compile'
 import { DocFs, nodeFs } from './fs'
+import { buildRobots, buildSitemap } from './seo'
 
 /** Write side of the filesystem, abstracted so `buildDocs` is tested in memory. */
 export interface DocFsWriter {
@@ -27,6 +28,8 @@ export interface BuildDocsOptions {
   outDir: string
   /** Base url the markdown is served from at runtime. Default: `assets/docs`. */
   assetsBase?: string
+  /** Absolute site url. When set, emits `sitemap.xml` and `robots.txt`. */
+  siteUrl?: string
   fs?: DocFs
   writer?: DocFsWriter
 }
@@ -45,6 +48,11 @@ export function buildDocs(options: BuildDocsOptions): NgeDocManifest {
   writer.writeFile(join(options.outDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`)
   for (const rel of listMarkdown(fs, options.dir, '')) {
     writer.writeFile(join(options.outDir, rel), fs.readFile(join(options.dir, rel)))
+  }
+
+  if (options.siteUrl) {
+    writer.writeFile(join(options.outDir, 'sitemap.xml'), buildSitemap(manifest, options.siteUrl))
+    writer.writeFile(join(options.outDir, 'robots.txt'), buildRobots(options.siteUrl))
   }
 
   return manifest

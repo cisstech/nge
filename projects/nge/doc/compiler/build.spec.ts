@@ -64,4 +64,25 @@ describe('buildDocs', () => {
     // Only markdown is copied; _meta.json stays a build-time input.
     expect(written['out/_meta.json']).toBeUndefined()
   })
+
+  it('emits sitemap.xml and robots.txt only when a siteUrl is given', () => {
+    const files = { 'docs/index.md': '# Home', 'docs/guide.md': '# Guide' }
+
+    const withoutUrl = memWriter()
+    buildDocs({ dir: 'docs', meta, outDir: 'out', fs: memFs(files), writer: withoutUrl.writer })
+    expect(withoutUrl.written['out/sitemap.xml']).toBeUndefined()
+    expect(withoutUrl.written['out/robots.txt']).toBeUndefined()
+
+    const withUrl = memWriter()
+    buildDocs({
+      dir: 'docs',
+      meta,
+      outDir: 'out',
+      siteUrl: 'https://example.com',
+      fs: memFs(files),
+      writer: withUrl.writer,
+    })
+    expect(withUrl.written['out/sitemap.xml']).toContain('<loc>https://example.com/docs/guide</loc>')
+    expect(withUrl.written['out/robots.txt']).toContain('Sitemap: https://example.com/sitemap.xml')
+  })
 })

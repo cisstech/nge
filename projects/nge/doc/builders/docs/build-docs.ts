@@ -24,6 +24,7 @@ export function runDocsBuild(
       outDir: options.outputPath,
       meta: { name: options.name, root: options.root },
       assetsBase: options.assetsBase,
+      siteUrl: options.siteUrl,
       fs: deps.fs,
       writer: deps.writer,
     })
