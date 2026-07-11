@@ -22,6 +22,7 @@
     "email": "mciissee@gmail.com"
   },
   "license": "MIT",
+  "builders": "./builders.json",
   "peerDependencies": {
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",

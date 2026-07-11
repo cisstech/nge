@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "nge-doc builder options",
+  "type": "object",
+  "properties": {
+    "docsDir": {
+      "type": "string",
+      "default": "docs",
+      "description": "Path to the docs folder, relative to the workspace root."
+    },
+    "outputPath": {
+      "type": "string",
+      "description": "Output folder for manifest.json and the copied markdown (served as assetsBase)."
+    },
+    "name": { "type": "string", "description": "Site name." },
+    "root": { "type": "string", "description": "Site root url." },
+    "assetsBase": {
+      "type": "string",
+      "default": "assets/docs",
+      "description": "Base url the markdown is served from at runtime."
+    },
+    "watch": { "type": "boolean", "default": false, "description": "Rebuild on change." }
+  },
+  "required": ["outputPath", "name", "root"],
+  "additionalProperties": false
+}
