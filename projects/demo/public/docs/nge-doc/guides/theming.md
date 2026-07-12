@@ -1,4 +1,5 @@
 ---
+order: 3
 title: Theming
 description: Brand, header navigation, dark mode, custom themes and labels.
 ---

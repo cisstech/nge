@@ -1,4 +1,5 @@
 ---
+order: 4
 title: Search and SEO
 description: The command palette, the build-time content index, meta tags, edit links and the AI-friendly outputs.
 ---

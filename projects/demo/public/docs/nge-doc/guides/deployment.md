@@ -1,4 +1,5 @@
 ---
+order: 5
 title: Deployment
 description: Serve the docs under a base href and give the static host an SPA fallback.
 ---

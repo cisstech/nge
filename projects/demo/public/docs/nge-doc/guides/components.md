@@ -1,4 +1,5 @@
 ---
+order: 1
 title: Components in Markdown
 description: Embed live Angular components inside Markdown pages, or make a whole page interactive.
 ---

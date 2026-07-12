@@ -1,4 +1,5 @@
 ---
+order: 2
 title: Static generation
 description: Prerender every documentation page at build time with the doc/ssr entry.
 ---

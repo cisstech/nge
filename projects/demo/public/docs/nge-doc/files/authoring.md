@@ -19,6 +19,10 @@ and a folder is configured by its `index.md`. Reach for `_meta.json` for what a 
 cannot express: external links, hiding an entire folder, or configuring a folder that has
 no `index.md`.
 
+This site does both: the root keeps a `_meta.json` for the tab icons and short section
+labels, while simple sections (the guides you are reading) are driven by frontmatter
+alone.
+
 When present, its **key order drives the navigation order**, and each entry can override
 presentation:
 
