@@ -28,7 +28,7 @@ export function runDocsBuild(
     const manifest = buildDocs({
       dir: docsDirOf(options),
       outDir: options.publicDir,
-      meta: { name: options.name, root: options.root },
+      meta: { name: options.name, root: options.root, ...(options.nav ? { nav: options.nav } : {}) },
       siteUrl: options.siteUrl,
       sitemap: options.sitemap,
       robots: options.robots,

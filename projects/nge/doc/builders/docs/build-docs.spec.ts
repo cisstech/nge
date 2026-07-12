@@ -29,6 +29,16 @@ describe('runDocsBuild', () => {
     expect(existsSync(join(dir, 'public', 'docs', 'guide.md'))).toBe(true)
   })
 
+  it('carries the nav placement into the manifest meta', () => {
+    mkdirSync(join(dir, 'public', 'docs'), { recursive: true })
+    writeFileSync(join(dir, 'public', 'docs', 'index.md'), '# Home')
+
+    runDocsBuild({ publicDir: join(dir, 'public'), root: '/docs', name: 'Docs', nav: 'tabs' })
+
+    const manifest = JSON.parse(readFileSync(join(dir, 'public', 'docs', 'nge-doc.json'), 'utf8'))
+    expect(manifest.meta.nav).toBe('tabs')
+  })
+
   it('reports a failure instead of throwing when the docs folder is missing', () => {
     const result = runDocsBuild({ publicDir: join(dir, 'missing'), root: '/x', name: 'X' })
 

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { Subject, of } from 'rxjs'
 import { NgeDocLink, NgeDocSettings, NgeDocState } from './nge-doc'
 import { docsFromManifest } from './manifest'
-import { NGE_DOC_SEO } from './nge-doc.providers'
+import { NGE_DOC_NAVBAR, NGE_DOC_SEO } from './nge-doc.providers'
 import { NgeDocService } from './nge-doc.service'
 import { NgeDocSeoService } from './seo.service'
 import { NgeDocSitesLoader } from './sites-loader'
@@ -127,6 +127,94 @@ describe('NgeDocService', () => {
     service.setSeo('Custom', 'A description')
     expect(document.title).toBe('Custom · Alpha')
     expect(document.querySelector('meta[name="description"]')?.getAttribute('content')).toBe('A description')
+  })
+})
+
+describe('NgeDocService section tabs (meta.nav = "tabs")', () => {
+  let service: NgeDocService
+  let currentPath: string
+
+  const tabsSettings = (): NgeDocSettings => ({
+    meta: { name: 'Docs', root: '/docs/', nav: 'tabs' },
+    pages: [
+      {
+        title: 'Overview',
+        href: 'overview',
+        children: [{ title: 'Intro', href: 'intro', renderer: 'intro.md' }],
+      },
+      {
+        title: 'Guides',
+        href: 'guides',
+        children: [{ title: 'Theming', href: 'theming', renderer: 'theming.md' }],
+      },
+    ],
+  })
+
+  const configure = (providers: unknown[] = []) => {
+    TestBed.configureTestingModule({
+      providers: [
+        NgeDocService,
+        NgeDocSeoService,
+        NgeDocSitesLoader,
+        { provide: Router, useValue: { events: new Subject(), navigateByUrl: jest.fn(), url: '/' } },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: tabsSettings(), fragment: null } } },
+        { provide: Location, useValue: { path: () => currentPath } },
+        ...(providers as []),
+      ],
+    })
+    service = TestBed.inject(NgeDocService)
+  }
+
+  beforeEach(() => {
+    currentPath = '/docs/guides/theming'
+  })
+
+  it('derives the navbar from the top-level sections', async () => {
+    configure()
+    await service.setup()
+
+    expect(service.navbar().map((l) => l.title)).toEqual(['Overview', 'Guides'])
+    expect(service.navbar().map((l) => l.href)).toEqual(['/docs/overview', '/docs/guides'])
+  })
+
+  it('scopes the sidebar to the active section', async () => {
+    configure()
+    await service.setup()
+
+    expect(service.sidebarLinks().map((l) => l.title)).toEqual(['Theming'])
+  })
+
+  it('flags the active section tab', async () => {
+    configure()
+    await service.setup()
+
+    expect(service.isNavLinkActive({ title: 'Guides', href: '/docs/guides' })).toBe(true)
+    expect(service.isNavLinkActive({ title: 'Overview', href: '/docs/overview' })).toBe(false)
+  })
+
+  it('an explicit withNavbar still wins', async () => {
+    configure([{ provide: NGE_DOC_NAVBAR, useValue: [{ title: 'Mine', href: '/mine' }] }])
+    await service.setup()
+
+    expect(service.navbar().map((l) => l.title)).toEqual(['Mine'])
+  })
+
+  it('without tabs, the sidebar keeps the whole tree (multi-site unchanged)', async () => {
+    currentPath = '/docs/alpha/intro'
+    TestBed.configureTestingModule({
+      providers: [
+        NgeDocService,
+        NgeDocSeoService,
+        NgeDocSitesLoader,
+        { provide: Router, useValue: { events: new Subject(), navigateByUrl: jest.fn(), url: '/' } },
+        { provide: ActivatedRoute, useValue: { snapshot: { data: makeSettings(), fragment: null } } },
+        { provide: Location, useValue: { path: () => currentPath } },
+      ],
+    })
+    service = TestBed.inject(NgeDocService)
+    await service.setup()
+
+    expect(service.sidebarLinks().map((l) => l.title)).toEqual(['Intro', 'Guide'])
   })
 })
 

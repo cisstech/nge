@@ -14,7 +14,7 @@ import { NgeDocIconComponent } from '../icon/icon.component'
 })
 export class SidenavComponent {
   protected readonly docService = inject(NgeDocService)
-  protected readonly rootLinks = this.docService.rootLinks
+  protected readonly rootLinks = this.docService.sidebarLinks
   protected readonly navbar = this.docService.navbar
   protected readonly labels = this.docService.labels
 

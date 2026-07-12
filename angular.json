@@ -3,7 +3,9 @@
   "version": 1,
   "newProjectRoot": "projects",
   "cli": {
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "projects": {
     "nge": {
@@ -18,7 +20,6 @@
             "tsConfig": "projects/nge/tsconfig.lib.json",
             "project": "projects/nge/ng-package.json"
           },
-
           "configurations": {
             "production": {
               "tsConfig": "projects/nge/tsconfig.lib.prod.json"
@@ -28,7 +29,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["**/*.spec.ts", "**/*.d.ts"]
+            "lintFilePatterns": [
+              "**/*.spec.ts",
+              "**/*.d.ts"
+            ]
           }
         }
       }
@@ -52,18 +56,32 @@
             "browser": "projects/demo/src/main.ts",
             "server": "projects/demo/src/main.server.ts",
             "outputMode": "static",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": [
               "projects/demo/src/assets",
-              { "glob": "**/*", "input": "projects/demo/public", "output": "." },
-              { "glob": "**/*", "input": "./node_modules/monaco-editor/min", "output": "./assets/nge/monaco/min" },
+              {
+                "glob": "**/*",
+                "input": "projects/demo/public",
+                "output": "."
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/monaco-editor/min",
+                "output": "./assets/nge/monaco/min"
+              },
               {
                 "glob": "**/*",
                 "input": "./node_modules/monaco-editor/min-maps",
                 "output": "./assets/nge/monaco/min-maps"
               },
-              { "glob": "**/*", "input": "./projects/nge/monaco/src/themes", "output": "./assets/nge/monaco/themes" },
+              {
+                "glob": "**/*",
+                "input": "./projects/nge/monaco/src/themes",
+                "output": "./assets/nge/monaco/themes"
+              },
               {
                 "glob": "**/*",
                 "input": "./projects/nge/markdown/src/themes",
@@ -75,7 +93,9 @@
                 "output": "./assets/vendors/nge/ui/icon/icons/files/"
               }
             ],
-            "styles": ["projects/demo/src/styles.scss"],
+            "styles": [
+              "projects/demo/src/styles.scss"
+            ],
             "scripts": [],
             "extractLicenses": false,
             "sourceMap": true,
@@ -119,7 +139,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["**/*.spec.ts", "**/*.d.ts"]
+            "lintFilePatterns": [
+              "**/*.spec.ts",
+              "**/*.d.ts"
+            ]
           }
         },
         "extract-i18n": {
@@ -142,7 +165,8 @@
             "publicDir": "projects/demo/public",
             "name": "NG Essentials",
             "root": "/docs",
-            "siteUrl": "https://cisstech.github.io/nge"
+            "siteUrl": "https://cisstech.github.io/nge",
+            "nav": "tabs"
           }
         }
       }

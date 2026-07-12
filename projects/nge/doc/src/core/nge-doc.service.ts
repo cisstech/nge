@@ -69,12 +69,21 @@ export class NgeDocService implements OnDestroy {
   readonly sites = signal<NgeDocMeta[]>([])
 
   /**
-   * Header navigation links: the ones declared with `withNavbar`, or one per
-   * registered site (its name and root) as a sensible default.
+   * Header navigation links, in precedence order: the ones declared with
+   * `withNavbar`, the active site's top-level sections when its meta opts into
+   * `nav: 'tabs'`, or one per registered site (its name and root).
    */
-  readonly navbar = computed<NgeDocNavLink[]>(
-    () => this.explicitNavbar ?? this.sites().map((meta) => ({ title: meta.name, href: meta.root, icon: meta.logo }))
-  )
+  readonly navbar = computed<NgeDocNavLink[]>(() => {
+    if (this.explicitNavbar) {
+      return this.explicitNavbar
+    }
+    if (this.meta().nav === 'tabs') {
+      return this.rootLinks()
+        .filter((link) => !link.separator && link.href)
+        .map((link) => ({ title: link.title, href: link.href!, icon: link.icon }))
+    }
+    return this.sites().map((meta) => ({ title: meta.name, href: meta.root, icon: meta.logo }))
+  })
 
   /**
    * Header brand: the one declared with `withBrand`, or the active site's name
@@ -89,6 +98,16 @@ export class NgeDocService implements OnDestroy {
   readonly meta = computed(() => this.snapshot().meta)
   /** Root links of the active documentation site (the navigation tree). */
   readonly rootLinks = computed(() => this.snapshot().links)
+  /**
+   * What the sidebar shows: the whole tree, or only the active section's pages
+   * when the site places its sections in the navbar (`nav: 'tabs'`).
+   */
+  readonly sidebarLinks = computed(() => {
+    if (this.meta().nav !== 'tabs') {
+      return this.rootLinks()
+    }
+    return this.breadcrumb()[0]?.children ?? []
+  })
   /** Active link, or `undefined` before the first navigation resolves. */
   readonly currLink = computed(() => this.snapshot().currLink)
   /** Link before the active one in reading order. */
@@ -260,15 +279,20 @@ export class NgeDocService implements OnDestroy {
     })
   }
 
-  /** Whether a header navigation link points to the active site. */
+  /** Whether a header navigation link points to the active site or section. */
   isNavLinkActive(link: NgeDocNavLink): boolean {
     if (link.external) {
       return false
     }
     const strip = (url: string) => url.replace(/\/+$/, '')
-    const current = strip(this.meta().root)
     const target = strip(link.href)
-    return current === target || current.startsWith(target + '/')
+    const current = strip(this.meta().root)
+    if (current === target || current.startsWith(target + '/')) {
+      return true
+    }
+    // Section tabs: the target is a section of the active site, not a site root.
+    const page = this.currLink()?.href ? strip(this.currLink()!.href!) : undefined
+    return !!page && (page === target || page.startsWith(target + '/'))
   }
 
   /** Walks the navigation tree to the active link, collecting its ancestors. */

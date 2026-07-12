@@ -6,6 +6,8 @@ export interface DocsBuilderOptions {
   root: string
   /** Site name. */
   name: string
+  /** Where the top-level sections live: in the sidebar tree (default) or as navbar tabs. */
+  nav?: 'sidebar' | 'tabs'
   /** Absolute site url. When set, emits the AI/SEO files. */
   siteUrl?: string
   /** Emit `sitemap.xml` when `siteUrl` is set. Default: true. */

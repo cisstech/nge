@@ -53,6 +53,12 @@ export interface NgeDocMeta {
   root: string
   /** Icon of the documentation logo. */
   logo?: NgeDocIcon
+  /**
+   * Where the site's top-level sections live: inside the sidebar tree
+   * (`sidebar`, the default) or as navbar tabs (`tabs`), with the sidebar
+   * scoped to the active section. An explicit `withNavbar()` always wins.
+   */
+  nav?: 'sidebar' | 'tabs'
   /** Optional back url (use of Angular [routerLink]) */
   backUrl?: string
 

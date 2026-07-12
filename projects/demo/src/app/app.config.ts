@@ -3,7 +3,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core'
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser'
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router'
 
-import { provideNgeDoc, withBrand, withEditLink, withNavbar, withSearchIndex, withSeo } from '@cisstech/nge/doc'
+import { provideNgeDoc, withBrand, withEditLink, withSearchIndex, withSeo } from '@cisstech/nge/doc'
 import {
   NgeMarkdownConfig,
   provideNgeMarkdown,
@@ -73,14 +73,6 @@ export const appConfig: ApplicationConfig = {
     ),
     provideNgeDoc(
       withBrand({ title: 'NG Essentials', icon: 'assets/images/nge.svg', href: '/' }),
-      withNavbar([
-        { title: 'Overview', href: '/docs/overview/', icon: 'assets/icons/nav/overview.svg' },
-        { title: 'nge/doc', href: '/docs/nge-doc/', icon: 'assets/icons/nav/doc.svg' },
-        { title: 'nge/markdown', href: '/docs/nge-markdown/', icon: 'assets/icons/nav/markdown.svg' },
-        { title: 'nge/monaco', href: '/docs/nge-monaco/', icon: 'assets/icons/nav/monaco.svg' },
-        { title: 'nge/ui', href: '/docs/nge-ui/', icon: 'assets/icons/nav/ui.svg' },
-        { title: 'Utilities', href: '/docs/utilities/', icon: 'assets/icons/nav/utils.svg' },
-      ]),
       withSeo({ url: 'https://cisstech.github.io/nge', image: 'assets/images/nge.svg' }),
       withEditLink('https://github.com/cisstech/nge/edit/main/projects/demo/public/docs'),
       withSearchIndex('docs/search.json')
