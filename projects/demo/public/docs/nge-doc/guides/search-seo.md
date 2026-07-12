@@ -58,3 +58,6 @@ audiences for free:
 - **`llms.txt` and `llms-full.txt`** at the site root when `siteUrl` is set (see
   [Outputs](/docs/nge-doc/files/outputs)).
 - **`sitemap.xml` and `robots.txt`** for classic crawlers.
+
+For agents that code against your library, the [MCP server](/docs/nge-doc/guides/mcp)
+serves this same content on demand through the Model Context Protocol.

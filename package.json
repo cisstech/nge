@@ -40,6 +40,8 @@
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",
     "publish:lib": "npm publish ./dist/nge --provenance --access public",
+    "build:mcp": "tsc -p projects/nge-doc-mcp/tsconfig.json && cp projects/nge-doc-mcp/package.json projects/nge-doc-mcp/README.md dist/nge-doc-mcp/",
+    "publish:mcp": "npm publish ./dist/nge-doc-mcp --provenance --access public",
     "publish:demo": "ng deploy demo --no-silent",
     "release": "standard-version",
     "release:major": "standard-version --release-as major",
@@ -85,6 +87,7 @@
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@eslint/js": "^9.28.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "@types/jest": "^30.0.0",
     "@types/marked": "^4.0.1",
     "@types/mime-db": "^1.43.5",
@@ -122,7 +125,8 @@
   "jest": {
     "projects": [
       "./projects/demo/jest.config.ts",
-      "./projects/nge/jest.config.ts"
+      "./projects/nge/jest.config.ts",
+      "./projects/nge-doc-mcp/jest.config.cjs"
     ]
   },
   "config": {

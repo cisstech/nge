@@ -1,0 +1,26 @@
+{
+  "name": "@cisstech/nge-doc-mcp",
+  "version": "22.3.0",
+  "description": "MCP server that exposes an nge-doc documentation site to AI coding agents.",
+  "keywords": ["mcp", "model-context-protocol", "nge-doc", "documentation", "angular"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cisstech/nge"
+  },
+  "homepage": "https://github.com/cisstech/nge",
+  "type": "module",
+  "bin": {
+    "nge-doc-mcp": "./bin.js"
+  },
+  "main": "./server.js",
+  "types": "./server.d.ts",
+  "files": ["**/*.js", "**/*.d.ts", "README.md"],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.19.0",
+    "zod": "^3.23.0 || ^4.0.0"
+  }
+}

@@ -2528,6 +2528,7 @@ __metadata:
     "@commitlint/cli": "npm:^19.4.0"
     "@commitlint/config-conventional": "npm:^19.2.2"
     "@eslint/js": "npm:^9.28.0"
+    "@modelcontextprotocol/sdk": "npm:^1.29.0"
     "@types/jest": "npm:^30.0.0"
     "@types/marked": "npm:^4.0.1"
     "@types/mime-db": "npm:^1.43.5"
@@ -4484,7 +4485,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@modelcontextprotocol/sdk@npm:1.29.0":
+"@modelcontextprotocol/sdk@npm:1.29.0, @modelcontextprotocol/sdk@npm:^1.29.0":
   version: 1.29.0
   resolution: "@modelcontextprotocol/sdk@npm:1.29.0"
   dependencies:

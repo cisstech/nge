@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/nge-doc-mcp",
+    "rootDir": "src",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": ["node"],
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "importHelpers": false,
+    "skipLibCheck": true,
+    "strict": true,
+    "paths": {}
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
+}
