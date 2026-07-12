@@ -11,10 +11,10 @@ snippet in several languages.
 ## Register
 
 ```typescript
-import { NgeMarkdownTabbedSetProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withTabbedSet } from '@cisstech/nge/markdown'
 
 // add to your app providers (see Usage for the full setup)
-providers: [NgeMarkdownTabbedSetProvider]
+providers: [provideNgeMarkdown(withTabbedSet())]
 ```
 
 ## Syntax

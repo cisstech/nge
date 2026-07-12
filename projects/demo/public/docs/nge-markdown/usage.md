@@ -7,26 +7,29 @@ description: Render Markdown from a string, a file or transclusion, configure Ma
 
 ## Set up
 
-Add the providers you need at the app root: `HttpClient` (for `[file]`), a theme, and any
-[contributions](/docs/nge-markdown/contributions).
+Call `provideNgeMarkdown` at the app root and compose the features you need: a theme, and any
+[contributions](/docs/nge-markdown/contributions). Add `HttpClient` for `[file]`.
 
 ===app.config.ts
 
 ```typescript
 import { ApplicationConfig } from '@angular/core'
-import { provideHttpClient, withFetch } from '@angular/common/http'
+import { provideHttpClient } from '@angular/common/http'
 import {
-  NgeMarkdownThemeProvider,
-  NgeMarkdownAdmonitionsProvider,
-  NgeMarkdownTabbedSetProvider,
+  provideNgeMarkdown,
+  withThemes,
+  withAdmonitions,
+  withTabbedSet,
 } from '@cisstech/nge/markdown'
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withFetch()),
-    NgeMarkdownThemeProvider({ name: 'github', styleUrl: 'assets/nge/markdown/themes/github.css' }),
-    NgeMarkdownAdmonitionsProvider,
-    NgeMarkdownTabbedSetProvider,
+    provideHttpClient(),
+    provideNgeMarkdown(
+      withThemes({ name: 'github', styleUrl: 'assets/nge/markdown/themes/github.css' }),
+      withAdmonitions(),
+      withTabbedSet(),
+    ),
   ],
 }
 ```
@@ -103,13 +106,13 @@ not read them as Angular syntax. Prefer `[data]` or `[file]` for anything non-tr
 
 ## Configure Marked
 
-Pass [Marked options](https://marked.js.org/using_advanced#options) through
-`NgeMarkdownConfigProvider`. A factory form is available when the renderer or tokenizer needs
-dependency injection.
+Pass [Marked options](https://marked.js.org/using_advanced#options) through the `withConfig`
+feature. A factory form is available when the renderer or tokenizer needs dependency injection.
 
 ```typescript
 import {
-  NgeMarkdownConfigProvider,
+  provideNgeMarkdown,
+  withConfig,
   NgeMarkdownConfig,
 } from '@cisstech/nge/markdown'
 import { Renderer } from 'marked'
@@ -121,7 +124,7 @@ export function markdownConfig(): NgeMarkdownConfig {
 }
 
 // providers
-NgeMarkdownConfigProvider(markdownConfig)
+provideNgeMarkdown(withConfig(markdownConfig))
 ```
 
 :::+ note Reserved options
@@ -132,7 +135,7 @@ NgeMarkdownConfigProvider(markdownConfig)
 
 The default theme is inspired by
 [github-markdown-css](https://github.com/sindresorhus/github-markdown-css). Register it with
-`NgeMarkdownThemeProvider` and copy the stylesheets to your assets.
+the `withThemes` feature and copy the stylesheets to your assets.
 
 ### Copy the theme assets
 
@@ -151,10 +154,12 @@ The default theme is inspired by
 ### Register the theme
 
 ```typescript
-NgeMarkdownThemeProvider({
-  name: 'github',
-  styleUrl: 'assets/nge/markdown/themes/github.css',
-})
+provideNgeMarkdown(
+  withThemes({
+    name: 'github',
+    styleUrl: 'assets/nge/markdown/themes/github.css',
+  }),
+)
 ```
 
 The component applies the `github` theme unless you set `[theme]` to another registered name, or
@@ -166,7 +171,7 @@ Point the config at the class your app toggles for dark mode; the theme switches
 variant when that class is present on `<html>` or `<body>`.
 
 ```typescript
-NgeMarkdownConfigProvider({ darkThemeClassName: 'dark-theme' })
+provideNgeMarkdown(withConfig({ darkThemeClassName: 'dark-theme' }))
 ```
 
 Inside an [nge/doc](/docs/nge-doc/getting-started) site, use its class:
@@ -193,6 +198,6 @@ const tokens = await markdownService.compile({
 
 ## NgModule apps
 
-Import `NgeMarkdownModule` to expose the component in a module, and keep the same providers.
-`NgeMarkdownThemeProvider`, `NgeMarkdownConfigProvider` and the contribution providers are plain
-providers that work in both standalone and NgModule setups.
+Import `NgeMarkdownModule` to expose the component in a module, and keep the same setup:
+`provideNgeMarkdown(...)` returns `EnvironmentProviders`, so the same composition of features
+works in an NgModule's `providers` as well as in a standalone `ApplicationConfig`.

@@ -7,24 +7,22 @@ description: Set up nge/monaco, use the editor, diff editor and viewer component
 
 ## Set up
 
-Register the module providers once at the app root, alongside `HttpClient` for loading themes.
+Call `provideNgeMonaco` once at the app root, alongside `HttpClient` for loading themes.
 
 ===app.config.ts
 
 ```typescript
-import { ApplicationConfig, importProvidersFrom } from '@angular/core'
-import { provideHttpClient, withFetch } from '@angular/common/http'
-import { NgeMonacoModule } from '@cisstech/nge/monaco'
+import { ApplicationConfig } from '@angular/core'
+import { provideHttpClient } from '@angular/common/http'
+import { provideNgeMonaco } from '@cisstech/nge/monaco'
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withFetch()),
-    importProvidersFrom(
-      NgeMonacoModule.forRoot({
-        // options passed to every editor instance
-        options: { scrollBeyondLastLine: false },
-      })
-    ),
+    provideHttpClient(),
+    provideNgeMonaco({
+      // options passed to every editor instance
+      options: { scrollBeyondLastLine: false },
+    }),
   ],
 }
 ```
@@ -147,8 +145,8 @@ The viewer accepts `code`, `language`, `lines`, `highlights`, `filename` and `th
 
 ### Register themes
 
-Add the theme files to your assets and list the ones you want in `forRoot`. `NGE_MONACO_THEMES`
-holds every bundled theme name.
+Add the theme files to your assets and list the ones you want in `provideNgeMonaco`.
+`NGE_MONACO_THEMES` holds every bundled theme name.
 
 ```json
 {
@@ -163,9 +161,9 @@ holds every bundled theme name.
 ```
 
 ```typescript
-import { NgeMonacoModule, NGE_MONACO_THEMES } from '@cisstech/nge/monaco'
+import { provideNgeMonaco, NGE_MONACO_THEMES } from '@cisstech/nge/monaco'
 
-NgeMonacoModule.forRoot({
+provideNgeMonaco({
   theming: {
     themes: NGE_MONACO_THEMES.map((theme) => `assets/nge/monaco/themes/${theme}`),
     default: 'github',
@@ -200,7 +198,7 @@ a CSS class on the document root or, when no class is given, the `(prefers-color
 media query.
 
 ```typescript
-NgeMonacoModule.forRoot({
+provideNgeMonaco({
   theming: {
     themes: NGE_MONACO_THEMES.map((theme) => `assets/nge/monaco/themes/${theme}`),
     light: 'github',
@@ -262,13 +260,14 @@ To serve Monaco from your own domain instead of the CDN, copy its files to your 
 ```
 
 ```typescript
-NgeMonacoModule.forRoot({ assets: 'assets/nge/monaco' })
+provideNgeMonaco({ assets: 'assets/nge/monaco' })
 ```
 
 ## NgModule apps
 
-Import `NgeMonacoModule.forRoot({ /* ... */ })` in your root module instead of
-`importProvidersFrom`. The components work the same once imported.
+`provideNgeMonaco()` returns `EnvironmentProviders`, so the same call works in an NgModule's
+`providers` array. `NgeMonacoModule.forRoot({ /* ... */ })` still exists but is deprecated. The
+components work the same once imported.
 
 ## Links
 

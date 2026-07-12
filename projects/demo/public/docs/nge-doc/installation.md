@@ -1,9 +1,28 @@
 ---
 title: Installation
-description: Install nge/doc and the pieces it needs to render Markdown pages.
+description: Add nge/doc to a project with ng add, or set it up manually.
 ---
 
 # Installation
+
+## With ng add (recommended)
+
+```bash
+ng add @cisstech/nge
+```
+
+The schematic:
+
+- scaffolds `public/docs/` with a first page and a `_meta.json`,
+- registers the `docs` builder target in `angular.json`,
+- adds `provideNgeDoc()` to your application providers,
+- prints the route snippet to paste (the one edit it never makes for you).
+
+In workspaces without `angular.json` (some Nx setups), it scaffolds the files and prints
+instructions for the rest. You can also run it explicitly with
+`ng g @cisstech/nge:nge-doc`.
+
+## Manual setup
 
 ===npm
 
@@ -19,38 +38,30 @@ yarn add @cisstech/nge
 
 ===
 
-nge/doc only needs `@angular/common` and `@angular/core`.
+Markdown rendering ships with the package (the `marked` parser comes as a regular
+dependency), so there is nothing else to install. Then:
 
-## Rendering Markdown
-
-To render Markdown pages you provide a Markdown renderer component. These docs use
-[nge/markdown](/docs/nge-markdown/getting-started), which is built on `marked`:
-
-===npm
-
-```bash
-npm i marked
-```
-
-=== yarn
-
-```bash
-yarn add marked
-```
-
-===
-
-## HttpClient
-
-Markdown pages loaded from a URL are fetched with `HttpClient`, so provide it at the app
-root:
+1. Provide the engine and `HttpClient` (used to fetch pages):
 
 ```typescript
-import { provideHttpClient, withFetch } from '@angular/common/http'
+// app.config.ts
+import { provideHttpClient } from '@angular/common/http'
+import { provideNgeDoc } from '@cisstech/nge/doc'
 
-bootstrapApplication(AppComponent, {
-  providers: [provideHttpClient(withFetch())],
-})
+export const appConfig: ApplicationConfig = {
+  providers: [provideHttpClient(), provideNgeDoc()],
+}
 ```
 
-Next: [Usage](/docs/nge-doc/usage).
+2. Register the `docs` target in `angular.json` (compiles your Markdown into a manifest):
+
+```json
+"docs": {
+  "builder": "@cisstech/nge:docs",
+  "options": { "publicDir": "public", "root": "/docs", "name": "My docs" }
+}
+```
+
+3. Route the docs, as shown in [Getting started](/docs/nge-doc/getting-started).
+
+Next: [Docs from files](/docs/nge-doc/files).

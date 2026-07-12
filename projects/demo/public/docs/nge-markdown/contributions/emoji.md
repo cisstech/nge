@@ -11,10 +11,10 @@ and let this contribution render it with [Emoji Toolkit](https://github.com/joyp
 ## Register
 
 ```typescript
-import { NgeMarkdownEmojiProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withEmoji } from '@cisstech/nge/markdown'
 
 // add to your app providers (see Usage for the full setup)
-providers: [NgeMarkdownEmojiProvider]
+providers: [provideNgeMarkdown(withEmoji())]
 ```
 
 ## Syntax
@@ -30,14 +30,15 @@ Result: 😄
 
 ## Options
 
-Emoji Toolkit loads from a CDN by default. Point it at another location with
-`NgeMarkdownEmojiOptionsProvider`:
+Emoji Toolkit loads from a CDN by default. Point it at another location by passing options to
+`withEmoji`:
 
 ```typescript
-import { NgeMarkdownEmojiProvider, NgeMarkdownEmojiOptionsProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withEmoji } from '@cisstech/nge/markdown'
 
 providers: [
-  NgeMarkdownEmojiProvider,
-  NgeMarkdownEmojiOptionsProvider({ url: 'assets/scripts/joypixels.min.js' }),
+  provideNgeMarkdown(
+    withEmoji({ url: 'assets/scripts/joypixels.min.js' }),
+  ),
 ]
 ```

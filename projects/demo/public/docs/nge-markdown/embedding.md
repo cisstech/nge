@@ -12,12 +12,14 @@ other tag stays plain HTML.
 ## Register
 
 ```typescript
-import { NgeMarkdownComponentsProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withComponents } from '@cisstech/nge/markdown'
 
 // in your app (or NgModule) providers
-NgeMarkdownComponentsProvider({
-  'demo-counter': () => import('./demo-counter.component').then((m) => m.DemoCounterComponent),
-})
+provideNgeMarkdown(
+  withComponents({
+    'demo-counter': () => import('./demo-counter.component').then((m) => m.DemoCounterComponent),
+  }),
+)
 ```
 
 ## Use

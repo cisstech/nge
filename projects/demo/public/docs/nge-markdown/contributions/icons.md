@@ -11,10 +11,10 @@ Drop icons into Markdown with almost no setup. Icons are fetched on demand from
 ## Register
 
 ```typescript
-import { NgeMarkdownIconsProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withIcons } from '@cisstech/nge/markdown'
 
 // add to your app providers (see Usage for the full setup)
-providers: [NgeMarkdownIconsProvider]
+providers: [provideNgeMarkdown(withIcons())]
 ```
 
 ## Syntax

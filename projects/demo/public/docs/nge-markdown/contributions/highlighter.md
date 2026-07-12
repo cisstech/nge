@@ -15,14 +15,12 @@ Register the contribution and a highlighter service. With nge/monaco, wire its c
 
 ```typescript
 import { NgeMonacoColorizerService } from '@cisstech/nge/monaco'
-import {
-  NgeMarkdownHighlighterProvider,
-  NgeMarkdownHighlighterMonacoProvider,
-} from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withHighlighter } from '@cisstech/nge/markdown'
 
 providers: [
-  NgeMarkdownHighlighterProvider,
-  NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
+  provideNgeMarkdown(
+    withHighlighter(NgeMonacoColorizerService),
+  ),
 ]
 ```
 

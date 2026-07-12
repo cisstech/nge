@@ -13,10 +13,10 @@ come in several types, take an optional title, and can hold nested content.
 ## Register
 
 ```typescript
-import { NgeMarkdownAdmonitionsProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withAdmonitions } from '@cisstech/nge/markdown'
 
 // add to your app providers (see Usage for the full setup)
-providers: [NgeMarkdownAdmonitionsProvider]
+providers: [provideNgeMarkdown(withAdmonitions())]
 ```
 
 ## Syntax

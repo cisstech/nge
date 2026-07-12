@@ -1,1 +1,14 @@
-{ "getting-started": { "title": "Getting Started" }, "tree": { "title": "Tree" }, "list": { "title": "List" }, "icon": { "title": "Icon" } }
+{
+  "getting-started": {
+    "title": "Getting Started"
+  },
+  "tree": {
+    "title": "Tree"
+  },
+  "list": {
+    "title": "List"
+  },
+  "icon": {
+    "title": "Icon"
+  }
+}

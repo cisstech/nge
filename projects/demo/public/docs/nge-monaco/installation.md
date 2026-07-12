@@ -27,10 +27,10 @@ yarn add @cisstech/nge monaco-editor
 Themes are loaded over HTTP, so provide `HttpClient` at the app root:
 
 ```typescript
-import { provideHttpClient, withFetch } from '@angular/common/http'
+import { provideHttpClient } from '@angular/common/http'
 
 bootstrapApplication(AppComponent, {
-  providers: [provideHttpClient(withFetch())],
+  providers: [provideHttpClient()],
 })
 ```
 

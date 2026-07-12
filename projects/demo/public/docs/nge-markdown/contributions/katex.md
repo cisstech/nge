@@ -10,10 +10,10 @@ Write math and chemistry in your pages. Expressions render with [KaTeX](https://
 ## Register
 
 ```typescript
-import { NgeMarkdownKatexProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withKatex } from '@cisstech/nge/markdown'
 
 // add to your app providers (see Usage for the full setup)
-providers: [NgeMarkdownKatexProvider]
+providers: [provideNgeMarkdown(withKatex())]
 ```
 
 ## Syntax
@@ -48,23 +48,24 @@ Result: $\ce{CO2 + C -> 2 CO}$
 
 ## Options
 
-KaTeX loads from a CDN by default. Override the source, delimiters or extensions with
-`NgeMarkdownKatexOptionsProvider`:
+KaTeX loads from a CDN by default. Override the source, delimiters or extensions by passing
+options to `withKatex`:
 
 ```typescript
-import { NgeMarkdownKatexProvider, NgeMarkdownKatexOptionsProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withKatex } from '@cisstech/nge/markdown'
 
 providers: [
-  NgeMarkdownKatexProvider,
-  NgeMarkdownKatexOptionsProvider({
-    options: {
-      delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '$', right: '$', display: false },
-      ],
-    },
-    extensions: { mhchem: true, copyTex: true },
-  }),
+  provideNgeMarkdown(
+    withKatex({
+      options: {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false },
+        ],
+      },
+      extensions: { mhchem: true, copyTex: true },
+    }),
+  ),
 ]
 ```
 

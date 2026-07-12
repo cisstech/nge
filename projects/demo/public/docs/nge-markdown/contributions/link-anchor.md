@@ -12,10 +12,10 @@ happens and the router keeps control of the URL.
 ## Register
 
 ```typescript
-import { NgeMarkdownLinkAnchorProvider } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withLinkAnchor } from '@cisstech/nge/markdown'
 
 // add to your app providers (see Usage for the full setup)
-providers: [NgeMarkdownLinkAnchorProvider]
+providers: [provideNgeMarkdown(withLinkAnchor())]
 ```
 
 That is all: existing anchor links in your Markdown now route in place.

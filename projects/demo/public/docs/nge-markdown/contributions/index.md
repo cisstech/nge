@@ -10,42 +10,48 @@ it produces. nge/markdown ships a set of ready-made ones and lets you write your
 
 ## Built-in contributions
 
-Each is a provider you add to your app. Add only the ones you use.
+Each is a feature you compose inside `provideNgeMarkdown()`. Add only the ones you use.
 
-| Contribution | Provider | What it adds |
+| Contribution | Feature | What it adds |
 | --- | --- | --- |
-| [Admonitions](/docs/nge-markdown/contributions/admonitions) | `NgeMarkdownAdmonitionsProvider` | Styled call-out blocks |
-| [TabbedSet](/docs/nge-markdown/contributions/tabbed-set) | `NgeMarkdownTabbedSetProvider` | Tabbed content groups |
-| [KaTeX](/docs/nge-markdown/contributions/katex) | `NgeMarkdownKatexProvider` | Math and chemistry |
-| [Emoji](/docs/nge-markdown/contributions/emoji) | `NgeMarkdownEmojiProvider` | Emoji from shortcodes |
-| [Icons](/docs/nge-markdown/contributions/icons) | `NgeMarkdownIconsProvider` | Inline icons |
-| [LinkAnchor](/docs/nge-markdown/contributions/link-anchor) | `NgeMarkdownLinkAnchorProvider` | Router-aware anchor links |
-| [Highlighter](/docs/nge-markdown/contributions/highlighter) | `NgeMarkdownHighlighterProvider` | Code syntax highlighting |
+| [Admonitions](/docs/nge-markdown/contributions/admonitions) | `withAdmonitions()` | Styled call-out blocks |
+| [TabbedSet](/docs/nge-markdown/contributions/tabbed-set) | `withTabbedSet()` | Tabbed content groups |
+| [KaTeX](/docs/nge-markdown/contributions/katex) | `withKatex()` | Math and chemistry |
+| [Emoji](/docs/nge-markdown/contributions/emoji) | `withEmoji()` | Emoji from shortcodes |
+| [Icons](/docs/nge-markdown/contributions/icons) | `withIcons()` | Inline icons |
+| [LinkAnchor](/docs/nge-markdown/contributions/link-anchor) | `withLinkAnchor()` | Router-aware anchor links |
+| [Highlighter](/docs/nge-markdown/contributions/highlighter) | `withHighlighter()` | Code syntax highlighting |
 
-Register them in your app providers (see [Usage](/docs/nge-markdown/usage) for the full setup):
+Compose them in `provideNgeMarkdown` (see [Usage](/docs/nge-markdown/usage) for the full setup):
 
 ```typescript
 import {
-  NgeMarkdownAdmonitionsProvider,
-  NgeMarkdownTabbedSetProvider,
-  NgeMarkdownKatexProvider,
-  NgeMarkdownEmojiProvider,
-  NgeMarkdownIconsProvider,
-  NgeMarkdownLinkAnchorProvider,
-  NgeMarkdownHighlighterProvider,
+  provideNgeMarkdown,
+  withAdmonitions,
+  withTabbedSet,
+  withKatex,
+  withEmoji,
+  withIcons,
+  withLinkAnchor,
+  withHighlighter,
 } from '@cisstech/nge/markdown'
 
 // in your ApplicationConfig (or NgModule) providers
 providers: [
-  NgeMarkdownAdmonitionsProvider,
-  NgeMarkdownTabbedSetProvider,
-  NgeMarkdownKatexProvider,
-  NgeMarkdownEmojiProvider,
-  NgeMarkdownIconsProvider,
-  NgeMarkdownLinkAnchorProvider,
-  NgeMarkdownHighlighterProvider,
+  provideNgeMarkdown(
+    withAdmonitions(),
+    withTabbedSet(),
+    withKatex(),
+    withEmoji(),
+    withIcons(),
+    withLinkAnchor(),
+    withHighlighter(),
+  ),
 ]
 ```
+
+The former `NgeMarkdownXxxProvider` constants still work but are deprecated and will be removed
+in the next major.
 
 ## Write your own
 
