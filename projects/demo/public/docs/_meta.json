@@ -1,0 +1,8 @@
+{
+  "overview": { "title": "Overview", "icon": "assets/icons/nav/overview.svg" },
+  "nge-doc": { "title": "nge/doc", "icon": "assets/icons/nav/doc.svg" },
+  "nge-markdown": { "title": "nge/markdown", "icon": "assets/icons/nav/markdown.svg" },
+  "nge-monaco": { "title": "nge/monaco", "icon": "assets/icons/nav/monaco.svg" },
+  "nge-ui": { "title": "nge/ui", "icon": "assets/icons/nav/ui.svg" },
+  "utilities": { "title": "Utilities", "icon": "assets/icons/nav/utils.svg" }
+}

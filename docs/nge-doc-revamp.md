@@ -99,4 +99,4 @@ Output reworked for DX: the builder writes one tree into the app's `public/` dir
 - Doc site from zero in under 5 min (`ng add` → first `.md` rendered).
 - A prerendered page shows full content + meta with JS disabled; Lighthouse ≥ 95.
 - `llms.txt` and per-page `.md` reachable.
-- nge's own doc site is rebuilt on this stack (dogfooding).
+- [x] nge's own doc site is rebuilt on this stack (dogfooding): `/docs` is manifest-driven from `public/docs`, prerendered, with the interactive editors as markdown-embedded components.

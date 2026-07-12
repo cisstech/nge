@@ -140,8 +140,8 @@
           "builder": "./dist/nge:docs",
           "options": {
             "publicDir": "projects/demo/public",
-            "name": "Guide",
-            "root": "/guide",
+            "name": "NG Essentials",
+            "root": "/docs",
             "siteUrl": "https://cisstech.github.io/nge"
           }
         }

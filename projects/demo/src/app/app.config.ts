@@ -75,6 +75,9 @@ export const appConfig: ApplicationConfig = {
       'ui-tree-demo': () => import('./ui-demos/ui-tree-demo.component').then((m) => m.UiTreeDemoComponent),
       'ui-list-demo': () => import('./ui-demos/ui-list-demo.component').then((m) => m.UiListDemoComponent),
       'ui-icon-demo': () => import('./ui-demos/ui-icon-demo.component').then((m) => m.UiIconDemoComponent),
+      'monaco-showcase': () => import('./monaco/showcase/showcase.component').then((m) => m.ShowcaseComponent),
+      'markdown-cheatsheet': () =>
+        import('./markdown/cheat-sheet/cheat-sheet.component').then((m) => m.CheatSheetComponent),
     }),
     provideNgeDoc(
       withBrand({ title: 'NG Essentials', icon: 'assets/images/nge.svg', href: '/' }),
