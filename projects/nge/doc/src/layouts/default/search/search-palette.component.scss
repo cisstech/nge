@@ -1,6 +1,6 @@
 :host {
   display: block;
-  width: min(92vw, 34rem);
+  width: min(92vw, 40rem);
   background: var(--nge-doc-surface);
   border: 1px solid var(--nge-doc-border);
   border-radius: var(--nge-doc-r-lg);
@@ -88,7 +88,25 @@
   color: var(--nge-doc-primary);
 }
 
-.palette-item-path {
-  font-size: 0.76rem;
+.palette-item-section {
+  font-weight: 500;
   color: var(--nge-doc-fg-subtle);
+}
+
+.palette-item-excerpt {
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--nge-doc-fg-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.palette-item-excerpt mark {
+  background: var(--nge-doc-primary-subtle);
+  color: var(--nge-doc-fg);
+  border-radius: 3px;
+  padding: 0 0.1em;
 }

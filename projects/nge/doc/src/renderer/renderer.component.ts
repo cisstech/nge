@@ -20,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 import { CompilerService } from '@cisstech/nge/services'
 import { Subscription, firstValueFrom } from 'rxjs'
 import { parseFrontmatter } from '../frontmatter'
+import { slugify } from '../slug'
 import { NGE_DOC_RENDERERS, NgeDocState } from '../nge-doc'
 import { NgeDocService } from '../nge-doc.service'
 
@@ -365,7 +366,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
     const used = new Set<string>()
     const headings = elements.map((el) => {
       const label = el.textContent!.trim()
-      const base = el.id || this.slugify(label) || 'section'
+      const base = el.id || slugify(label) || 'section'
       let id = base
       let index = 2
       while (used.has(id)) {
@@ -436,15 +437,5 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
       frontmatter['description'] ?? link?.description,
       frontmatter['image']
     )
-  }
-
-  private slugify(text: string): string {
-    return text
-      .toLowerCase()
-      .trim()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/[\s_]+/g, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-+|-+$/g, '')
   }
 }

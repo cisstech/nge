@@ -26,6 +26,8 @@ export interface NgeDocSearchResult {
   path: string[]
   /** Matched heading, when the provider indexes page content. */
   heading?: string
+  /** A short content snippet around the match, when the provider indexes content. */
+  excerpt?: string
 }
 
 /**
@@ -69,12 +71,64 @@ export function indexablePages(manifests: NgeDocManifest[]): { href: string; tit
   return pages
 }
 
+/** A whitespace-collapsed snippet of `content` around `needle`, with ellipses. */
+function excerptAround(content: string, needle: string, radius = 90): string {
+  const text = content.replace(/\s+/g, ' ').trim()
+  const at = needle ? text.toLowerCase().indexOf(needle) : -1
+  if (at < 0) {
+    return text.length > radius * 2 ? `${text.slice(0, radius * 2).trimEnd()}…` : text
+  }
+  const start = Math.max(0, at - radius)
+  const end = Math.min(text.length, at + needle.length + radius)
+  return `${start > 0 ? '…' : ''}${text.slice(start, end).trim()}${end < text.length ? '…' : ''}`
+}
+
 /** Ranks documents by the earliest match position, then by title length; caps the list. */
 function rank(scored: { result: NgeDocSearchResult; score: number }[]): NgeDocSearchResult[] {
   return scored
     .sort((a, b) => a.score - b.score || a.result.title.length - b.result.title.length)
     .slice(0, MAX_RESULTS)
     .map((entry) => entry.result)
+}
+
+/** Earliest match position across a document's title, heading and content; -1 if it does not match. */
+function matchIndex(doc: NgeDocSearchDocument, needle: string): number {
+  return `${doc.title}\n${doc.heading ?? ''}\n${doc.content}`.toLowerCase().indexOf(needle)
+}
+
+/**
+ * Reduces the chunked index to the single best-matching section per page, so a
+ * page never shows as several near-identical rows; the kept section carries its
+ * heading and a snippet to locate the match.
+ */
+function bestSectionPerPage(
+  documents: NgeDocSearchDocument[],
+  needle: string,
+  pathBySlug: Map<string, string[]>
+): { result: NgeDocSearchResult; score: number }[] {
+  const best = new Map<string, { result: NgeDocSearchResult; score: number }>()
+  for (const doc of documents) {
+    const score = matchIndex(doc, needle)
+    if (score < 0) {
+      continue
+    }
+    const base = doc.slug.split('#')[0]
+    const current = best.get(base)
+    if (current && current.score <= score) {
+      continue
+    }
+    best.set(base, {
+      score,
+      result: {
+        slug: doc.slug,
+        title: doc.title,
+        heading: doc.heading,
+        path: pathBySlug.get(base) ?? [],
+        excerpt: excerptAround(doc.content, needle),
+      },
+    })
+  }
+  return [...best.values()]
 }
 
 /** In-memory, title-based search over the manifests. */
@@ -126,18 +180,6 @@ export class PrebuiltNgeDocSearchProvider implements NgeDocSearchProvider {
       return []
     }
     const documents = await (this.documents ??= firstValueFrom(this.http.get<NgeDocSearchDocument[]>(this.url)))
-
-    const scored: { result: NgeDocSearchResult; score: number }[] = []
-    for (const doc of documents) {
-      const score = `${doc.title}\n${doc.heading ?? ''}\n${doc.content}`.toLowerCase().indexOf(needle)
-      if (score >= 0) {
-        const base = doc.slug.split('#')[0]
-        scored.push({
-          result: { slug: doc.slug, title: doc.title, heading: doc.heading, path: this.pathBySlug.get(base) ?? [] },
-          score,
-        })
-      }
-    }
-    return rank(scored)
+    return rank(bestSectionPerPage(documents, needle, this.pathBySlug))
   }
 }

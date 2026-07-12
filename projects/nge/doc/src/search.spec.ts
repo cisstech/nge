@@ -142,6 +142,17 @@ describe('PrebuiltNgeDocSearchProvider', () => {
 
     expect(get).toHaveBeenCalledWith('docs/search.json')
     expect(results[0]).toMatchObject({ slug: '/docs/intro#setup', heading: 'Setup', path: ['Docs'] })
+    expect(results[0].excerpt).toContain('installer')
+  })
+
+  it('returns one result per page (best matching section), never duplicate rows', async () => {
+    await provider.index([site([{ title: 'Intro', href: '/docs/intro', renderer: 'x.md' }])])
+
+    // "the" is in both the intro and the #setup chunk, but they are the same page.
+    const results = await provider.search('the')
+
+    expect(results).toHaveLength(1)
+    expect(results[0].slug.split('#')[0]).toBe('/docs/intro')
   })
 
   it('returns nothing for a blank query, without fetching the index', async () => {

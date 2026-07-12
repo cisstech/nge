@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   afterNextRender,
+  computed,
   inject,
   output,
   signal,
@@ -13,6 +14,40 @@ import { Router } from '@angular/router'
 import { switchMap } from 'rxjs'
 import { NgeDocService } from '../../../nge-doc.service'
 import { NgeDocSearchResult } from '../../../search'
+
+interface HighlightPart {
+  text: string
+  hit: boolean
+}
+
+interface SearchRow {
+  result: NgeDocSearchResult
+  /** Breadcrumb trail down to the page, so same-titled pages read as distinct rows. */
+  crumb: string
+  excerpt: HighlightPart[] | null
+}
+
+/** Splits `text` into segments so each `needle` occurrence can be wrapped in a highlight. */
+function highlight(text: string, needle: string): HighlightPart[] {
+  if (!needle) {
+    return [{ text, hit: false }]
+  }
+  const parts: HighlightPart[] = []
+  const lower = text.toLowerCase()
+  const target = needle.toLowerCase()
+  let from = 0
+  for (let at = lower.indexOf(target); at >= 0; at = lower.indexOf(target, from)) {
+    if (at > from) {
+      parts.push({ text: text.slice(from, at), hit: false })
+    }
+    parts.push({ text: text.slice(at, at + target.length), hit: true })
+    from = at + target.length
+  }
+  if (from < text.length) {
+    parts.push({ text: text.slice(from), hit: false })
+  }
+  return parts
+}
 
 @Component({
   selector: 'nge-doc-search-palette',
@@ -36,6 +71,17 @@ export class SearchPaletteComponent {
     toObservable(this.query).pipe(switchMap((query) => this.docService.search(query))),
     { initialValue: [] as NgeDocSearchResult[] }
   )
+
+  /** Results paired with their breadcrumb and pre-split excerpt, computed once per query, not per render. */
+  protected readonly rows = computed<SearchRow[]>(() => {
+    const needle = this.query().trim()
+    return this.results().map((result) => ({
+      result,
+      // Drop the site name (path[0]); the section trail plus the title is what distinguishes rows.
+      crumb: [...result.path.slice(1), result.title].join(' › '),
+      excerpt: result.excerpt ? highlight(result.excerpt, needle) : null,
+    }))
+  })
 
   constructor() {
     afterNextRender(() => this.input().nativeElement.focus())

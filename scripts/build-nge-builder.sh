@@ -11,9 +11,10 @@ cd "$ROOT"
 npx tsc -p projects/nge/tsconfig.builder.json
 
 # tsc emits every program file under rootDir, so type-only imports drag the
-# Angular-facing src files in too. Only frontmatter is required at runtime; drop
-# the rest so the Node bundle carries no dead @angular imports.
-find dist/nge/node/src -type f ! -name 'frontmatter.js' -delete
+# Angular-facing src files in too. Only the pure utils (frontmatter, slug) are
+# needed at runtime; drop the rest so the Node bundle carries no dead @angular
+# imports.
+find dist/nge/node/src -type f ! -name 'frontmatter.js' ! -name 'slug.js' -delete
 
 echo '{ "type": "commonjs" }' > dist/nge/node/package.json
 

@@ -1,4 +1,5 @@
 import type { NgeDocManifest } from '../src/manifest'
+import { slugify } from '../src/slug'
 import { contentPages } from './pages'
 
 /**
@@ -13,21 +14,30 @@ export interface NgeDocSearchDocument {
   content: string
 }
 
-/** Slugify a heading the same way the renderer assigns heading ids, so anchors match. */
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_]+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
-
 interface Chunk {
   heading?: string
   anchor?: string
   text: string
+}
+
+/** Reduces markdown to searchable plain text so excerpts read as prose, not syntax. */
+function toPlainText(markdown: string): string {
+  return markdown
+    .replace(/```[a-z]*\n?/gi, ' ') // code fences (keep the code text between them)
+    .replace(/`([^`]+)`/g, '$1') // inline code
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ') // images
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1') // links -> label
+    .replace(/^[ \t]*[#>\-*+]+[ \t]+/gm, '') // heading / quote / list markers
+    .replace(/^[ \t]*[=:]{2,}.*$/gm, ' ') // tabbed-set (===) and admonition (:::) markers
+    .replace(/[*_~]/g, '') // emphasis
+    .replace(/\|/g, ' ') // table pipes
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/** Drops a leading `# Title` line so excerpts do not just echo the page title. */
+function stripLeadingH1(markdown: string): string {
+  return markdown.replace(/^\s*#[ \t]+.*(?:\r?\n|$)/, '')
 }
 
 /** Splits markdown into an intro chunk plus one chunk per `##`/`###` section (fenced code ignored). */
@@ -38,7 +48,7 @@ function chunkByHeading(markdown: string): Chunk[] {
   let inCode = false
 
   const flush = () => {
-    const text = lines.join('\n').trim()
+    const text = toPlainText(lines.join('\n'))
     if (text || heading) {
       chunks.push({ heading, anchor: heading ? slugify(heading) : undefined, text })
     }
@@ -75,7 +85,7 @@ export function buildSearchIndex(
     if (!page.sourcePath || !page.href) {
       continue
     }
-    for (const chunk of chunkByHeading(readSource(page.sourcePath))) {
+    for (const chunk of chunkByHeading(stripLeadingH1(readSource(page.sourcePath)))) {
       docs.push({
         slug: chunk.anchor ? `${page.href}#${chunk.anchor}` : page.href,
         title: page.title,
