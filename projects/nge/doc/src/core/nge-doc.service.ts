@@ -24,7 +24,7 @@ import {
   NgeDocBrand,
   NgeDocLabels,
   NgeDocNavLink,
-} from './nge-doc.providers'
+} from './providers'
 
 @Injectable()
 export class NgeDocService implements OnDestroy {

@@ -1,7 +1,7 @@
 import { DOCUMENT, Injectable, inject } from '@angular/core'
 import { Meta, Title } from '@angular/platform-browser'
 import { joinUrl } from './manifest'
-import { NGE_DOC_SEO } from './nge-doc.providers'
+import { NGE_DOC_SEO } from './providers'
 
 /** Context of the page whose tags are being written. */
 export interface NgeDocSeoPage {

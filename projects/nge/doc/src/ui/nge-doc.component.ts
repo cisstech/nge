@@ -4,7 +4,7 @@ import { NgeDocService } from '../core/nge-doc.service'
 import { NgeDocThemeService } from '../core/nge-doc-theme.service'
 import { NgeDocSeoService } from '../core/seo.service'
 import { NgeDocSitesLoader } from '../core/sites-loader'
-import { DEFAULT_NGE_DOC_LAYOUT, NGE_DOC_LAYOUT } from '../core/nge-doc.providers'
+import { DEFAULT_NGE_DOC_LAYOUT, NGE_DOC_LAYOUT } from '../core/providers'
 
 @Component({
   selector: 'nge-doc',
