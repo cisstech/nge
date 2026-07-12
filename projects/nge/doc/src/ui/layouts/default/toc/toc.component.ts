@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core'
 import { NgeDocRendererComponent } from '../../../renderer/renderer.component'
-import { NgeDocService } from '../../../nge-doc.service'
+import { NgeDocService } from '../../../../core/nge-doc.service'
 
 @Component({
   selector: 'nge-doc-toc',

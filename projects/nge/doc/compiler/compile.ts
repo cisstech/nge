@@ -1,6 +1,6 @@
-import type { NgeDocLink, NgeDocMeta } from '../src/nge-doc'
-import type { NgeDocManifest } from '../src/manifest'
-import { parseFrontmatter } from '../src/frontmatter'
+import type { NgeDocLink, NgeDocMeta } from '../src/core/nge-doc'
+import type { NgeDocManifest } from '../src/core/manifest'
+import { parseFrontmatter } from '../src/shared/frontmatter'
 import { DocFs, nodeFs } from './fs'
 import { DocGit, noopGit } from './git'
 

@@ -1,4 +1,4 @@
-import type { NgeDocManifest } from '../src/manifest'
+import type { NgeDocManifest } from '../src/core/manifest'
 import { buildSearchIndex } from './search'
 
 const manifest: NgeDocManifest = {

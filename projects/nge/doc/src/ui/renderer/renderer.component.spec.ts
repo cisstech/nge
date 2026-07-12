@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { ActivatedRoute, Router } from '@angular/router'
 import { CompilerService } from '@cisstech/nge/services'
 import { Subject } from 'rxjs'
-import { NGE_DOC_RENDERERS } from '../nge-doc'
-import { NgeDocService } from '../nge-doc.service'
+import { NGE_DOC_RENDERERS } from '../../core/nge-doc'
+import { NgeDocService } from '../../core/nge-doc.service'
 import { NgeDocRendererComponent } from './renderer.component'
 
 // Regression guard: authored Markdown links are plain anchors. Left to the

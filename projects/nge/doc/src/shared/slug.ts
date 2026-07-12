@@ -1,9 +1,8 @@
 /**
  * Turns a heading label into a URL fragment. The doc compiler uses it to build
  * search anchors and the renderer to assign heading ids; the two must agree or
- * deep-links break, so the logic lives here once. Pure and framework-free, so
- * the Node builder can import it too (kept at runtime by build-nge-builder.sh,
- * like {@link ./frontmatter}).
+ * deep-links break, so the logic lives here once. `src/shared` holds the pure,
+ * framework-free utils: it is the only src folder the Node builder ships.
  */
 export function slugify(text: string): string {
   return text

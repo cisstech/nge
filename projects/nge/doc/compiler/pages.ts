@@ -1,4 +1,4 @@
-export { contentPages } from '../src/pages'
+export { contentPages } from '../src/shared/pages'
 
 /** Absolute url for a page `href` under `siteUrl`, with exactly one slash between. */
 export function absoluteUrl(siteUrl: string, href: string): string {

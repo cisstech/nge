@@ -8,8 +8,8 @@ import {
   input,
   viewChild,
 } from '@angular/core'
-import { NgeDocIcon } from '../../../nge-doc'
-import { NgeDocThemeService } from '../../../nge-doc-theme.service'
+import { NgeDocIcon } from '../../../../core/nge-doc'
+import { NgeDocThemeService } from '../../../../core/nge-doc-theme.service'
 
 /**
  * Renders a consumer-provided icon so it looks right in light and dark.

@@ -20,7 +20,7 @@ export const NGE_DOC_LAYOUT = new InjectionToken<NgeDocLayoutLoader>('NGE_DOC_LA
  * consumer ships its own theme.
  */
 export const DEFAULT_NGE_DOC_LAYOUT: NgeDocLayoutLoader = () =>
-  import('./layouts/default/default-layout.component').then((m) => m.DefaultLayoutComponent)
+  import('../ui/layouts/default/default-layout.component').then((m) => m.DefaultLayoutComponent)
 
 /** A configuration feature for {@link provideNgeDoc}. */
 export interface NgeDocFeature {

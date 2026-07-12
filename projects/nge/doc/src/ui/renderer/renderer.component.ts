@@ -18,11 +18,11 @@ import {
 import { ActivatedRoute, Router } from '@angular/router'
 import { CompilerService } from '@cisstech/nge/services'
 import { Subscription } from 'rxjs'
-import { NgeDocAssets } from '../assets'
-import { parseFrontmatter } from '../frontmatter'
-import { slugify } from '../slug'
-import { NGE_DOC_RENDERERS, NgeDocState } from '../nge-doc'
-import { NgeDocService } from '../nge-doc.service'
+import { NgeDocAssets } from '../../core/assets'
+import { parseFrontmatter } from '../../shared/frontmatter'
+import { slugify } from '../../shared/slug'
+import { NGE_DOC_RENDERERS, NgeDocState } from '../../core/nge-doc'
+import { NgeDocService } from '../../core/nge-doc.service'
 
 /** A heading extracted from the rendered page, used to build a table of contents. */
 export interface NgeDocHeading {

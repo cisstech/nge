@@ -1,7 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common'
 import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { NgeDocService } from '../../../nge-doc.service'
+import { NgeDocService } from '../../../../core/nge-doc.service'
 import { NgeDocIconComponent } from '../icon/icon.component'
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component'
 

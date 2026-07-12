@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, Type, inject, signal } from '@angular/core'
 import { NgComponentOutlet } from '@angular/common'
-import { NgeDocService } from './nge-doc.service'
-import { NgeDocThemeService } from './nge-doc-theme.service'
-import { DEFAULT_NGE_DOC_LAYOUT, NGE_DOC_LAYOUT } from './nge-doc.providers'
+import { NgeDocService } from '../core/nge-doc.service'
+import { NgeDocThemeService } from '../core/nge-doc-theme.service'
+import { DEFAULT_NGE_DOC_LAYOUT, NGE_DOC_LAYOUT } from '../core/nge-doc.providers'
 
 @Component({
   selector: 'nge-doc',

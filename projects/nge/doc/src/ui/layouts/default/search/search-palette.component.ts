@@ -12,8 +12,8 @@ import {
 import { toObservable, toSignal } from '@angular/core/rxjs-interop'
 import { Router } from '@angular/router'
 import { switchMap } from 'rxjs'
-import { NgeDocService } from '../../../nge-doc.service'
-import { NgeDocSearchResult } from '../../../search'
+import { NgeDocService } from '../../../../core/nge-doc.service'
+import { NgeDocSearchResult } from '../../../../core/search'
 
 interface HighlightPart {
   text: string

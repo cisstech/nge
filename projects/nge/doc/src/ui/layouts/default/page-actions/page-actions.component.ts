@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http'
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core'
 import { firstValueFrom } from 'rxjs'
-import { parseFrontmatter } from '../../../frontmatter'
-import { NgeDocService } from '../../../nge-doc.service'
+import { parseFrontmatter } from '../../../../shared/frontmatter'
+import { NgeDocService } from '../../../../core/nge-doc.service'
 
 /**
  * "Copy as Markdown" and "Open in ChatGPT / Claude" actions for the active page.

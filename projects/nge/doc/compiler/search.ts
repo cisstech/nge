@@ -1,5 +1,5 @@
-import type { NgeDocManifest } from '../src/manifest'
-import { slugify } from '../src/slug'
+import type { NgeDocManifest } from '../src/core/manifest'
+import { slugify } from '../src/shared/slug'
 import { contentPages } from './pages'
 
 /**

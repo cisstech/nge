@@ -1,8 +1,8 @@
 import { NgTemplateOutlet } from '@angular/common'
 import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
-import { NgeDocLink } from '../../../nge-doc'
-import { NgeDocService } from '../../../nge-doc.service'
+import { NgeDocLink } from '../../../../core/nge-doc'
+import { NgeDocService } from '../../../../core/nge-doc.service'
 import { NgeDocIconComponent } from '../icon/icon.component'
 
 @Component({

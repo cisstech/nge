@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
-import { NgeDocThemeService } from '../../../nge-doc-theme.service'
-import { NgeDocService } from '../../../nge-doc.service'
+import { NgeDocThemeService } from '../../../../core/nge-doc-theme.service'
+import { NgeDocService } from '../../../../core/nge-doc.service'
 
 @Component({
   selector: 'nge-doc-theme-toggle',
