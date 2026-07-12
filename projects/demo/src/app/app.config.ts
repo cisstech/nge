@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http'
+import { provideHttpClient, withFetch } from '@angular/common/http'
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core'
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser'
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router'
@@ -30,7 +30,6 @@ import {
 import { NGE_MONACO_THEMES, NgeMonacoColorizerService, NgeMonacoModule } from '@cisstech/nge/monaco'
 
 import { routes } from './app.routes'
-import { DocsTransferCacheInterceptor } from './docs-transfer-cache.interceptor'
 
 export function markdownOptions(): NgeMarkdownConfig {
   return {
@@ -48,8 +47,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
       withPreloading(PreloadAllModules)
     ),
-    provideHttpClient(withFetch(), withInterceptorsFromDi()),
-    { provide: HTTP_INTERCEPTORS, useClass: DocsTransferCacheInterceptor, multi: true },
+    provideHttpClient(withFetch()),
     importProvidersFrom(
       NgeMarkdownModule,
       NgeMonacoModule.forRoot({

@@ -112,6 +112,18 @@ describe('compileDocs', () => {
     expect(manifest.pages.map((p) => p.title)).toEqual(['Visible'])
   })
 
+  it('marks pages with `prerender: false` frontmatter as client-only, on files and folder indexes', () => {
+    const manifest = compile({
+      'docs/static.md': '# S',
+      'docs/editor.md': '---\nprerender: false\n---\n# E',
+      'docs/playground/index.md': '---\nprerender: false\n---\n# P',
+    })
+
+    expect(manifest.pages.find((p) => p.title === 'Editor')?.prerender).toBe(false)
+    expect(manifest.pages.find((p) => p.title === 'Playground')?.prerender).toBe(false)
+    expect(manifest.pages.find((p) => p.title === 'Static')?.prerender).toBeUndefined()
+  })
+
   it('includes external links declared in _meta.json', () => {
     const manifest = compile({
       'docs/_meta.json': JSON.stringify({ intro: {}, github: { title: 'GitHub', href: 'https://github.com/x' } }),

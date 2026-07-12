@@ -27,12 +27,16 @@
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
     "@angular/cdk": "^22.0.0",
+    "@angular/ssr": "^22.0.0",
     "rxjs": "^7.5.2",
     "marked": "^11.0.1",
     "monaco-editor": ">=0.43.0 <0.55.0",
     "ngx-pipes": "^3.2.2"
   },
   "peerDependenciesMeta": {
+    "@angular/ssr": {
+      "optional": true
+    },
     "marked": {
       "optional": true
     },

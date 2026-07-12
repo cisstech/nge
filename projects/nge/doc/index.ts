@@ -1,5 +1,7 @@
 export * from './src/nge-doc'
+export * from './src/assets'
 export * from './src/manifest'
+export * from './src/pages'
 export * from './src/search'
 export * from './src/nge-doc.module'
 export * from './src/nge-doc.providers'

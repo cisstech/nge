@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http'
 import { Location } from '@angular/common'
 import { DOCUMENT, Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { Meta, Title } from '@angular/platform-browser'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
-import { BehaviorSubject, Subscription, firstValueFrom } from 'rxjs'
+import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
+import { NgeDocAssets } from './assets'
 import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
 import { NgeDocManifest, extractManifestSources, flattenPages, joinUrl, settingsToManifest } from './manifest'
 import {
@@ -30,7 +30,7 @@ import {
 export class NgeDocService implements OnDestroy {
   private readonly router = inject(Router)
   private readonly injector = inject(Injector)
-  private readonly http = inject(HttpClient, { optional: true })
+  private readonly assets = inject(NgeDocAssets)
   private readonly location = inject(Location)
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly title = inject(Title)
@@ -156,13 +156,8 @@ export class NgeDocService implements OnDestroy {
   }
 
   /** Fetches a build-time manifest for a `docsFromManifest()` source. */
-  private async fetchManifest(url: string): Promise<NgeDocManifest> {
-    if (!this.http) {
-      throw new Error(
-        '[nge-doc]: docsFromManifest() needs HttpClient. Add provideHttpClient() to your application providers.'
-      )
-    }
-    return firstValueFrom(this.http.get<NgeDocManifest>(url))
+  private fetchManifest(url: string): Promise<NgeDocManifest> {
+    return this.assets.json<NgeDocManifest>(url)
   }
 
   /**

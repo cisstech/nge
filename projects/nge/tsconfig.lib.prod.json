@@ -6,6 +6,7 @@
       "@cisstech/nge": ["dist/nge"],
       "@cisstech/nge/directives": ["dist/nge/directives"],
       "@cisstech/nge/doc": ["dist/nge/doc"],
+      "@cisstech/nge/doc/ssr": ["dist/nge/doc/ssr"],
       "@cisstech/nge/monaco": ["dist/nge/monaco"],
       "@cisstech/nge/pipes": ["dist/nge/pipes"],
       "@cisstech/nge/services": ["dist/nge/services"],

@@ -64,6 +64,7 @@ export function compileDocs(options: CompileDocsOptions): NgeDocManifest {
         renderer: servedMarkdown(ctx, 'index.md'),
         description: fm['description'],
         icon: fm['icon'],
+        prerender: prerenderOf(fm),
         ...sourceMeta(ctx, 'index.md'),
       })
     )
@@ -98,6 +99,7 @@ function buildDir(ctx: Ctx, rel: string): NgeDocLink[] {
           renderer: hasIndex ? servedMarkdown(ctx, joinRel(childRel, 'index.md')) : undefined,
           description: fm['description'],
           icon: meta.byKey[entry]?.icon ?? fm['icon'],
+          prerender: prerenderOf(fm),
           children: children.length ? children : undefined,
           ...(hasIndex ? sourceMeta(ctx, joinRel(childRel, 'index.md')) : {}),
         }),
@@ -118,6 +120,7 @@ function buildDir(ctx: Ctx, rel: string): NgeDocLink[] {
           renderer: servedMarkdown(ctx, joinRel(rel, entry)),
           description: fm['description'],
           icon: meta.byKey[key]?.icon ?? fm['icon'],
+          prerender: prerenderOf(fm),
           ...sourceMeta(ctx, joinRel(rel, entry)),
         }),
       })
@@ -179,6 +182,11 @@ function compare(a: { key: string; order: number }, b: { key: string; order: num
 function metaRank(key: string, order: string[]): number {
   const index = order.indexOf(key)
   return index < 0 ? order.length + 1 : index
+}
+
+/** `prerender: false` frontmatter marks the page client-only; anything else keeps the default. */
+function prerenderOf(fm: Record<string, string>): false | undefined {
+  return fm['prerender'] === 'false' ? false : undefined
 }
 
 function num(value: string | undefined): number {

@@ -1,5 +1,4 @@
 import { Location } from '@angular/common'
-import { HttpClient } from '@angular/common/http'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,7 +17,8 @@ import {
 } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { CompilerService } from '@cisstech/nge/services'
-import { Subscription, firstValueFrom } from 'rxjs'
+import { Subscription } from 'rxjs'
+import { NgeDocAssets } from '../assets'
 import { parseFrontmatter } from '../frontmatter'
 import { slugify } from '../slug'
 import { NGE_DOC_RENDERERS, NgeDocState } from '../nge-doc'
@@ -248,15 +248,8 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
 
       if (!data.includes('\n')) {
         // if data does not include at least two lines then it's an url
-        const http = this.injector.get(HttpClient, null)
-        if (!http) {
-          throw new Error(
-            '[nge-doc] When using the `file` renderer you *have to* pass the `HttpClient` as a parameter of the `forRoot` method. See README for more information'
-          )
-        }
-
         inputs = {
-          data: await firstValueFrom(http.get(data, { responseType: 'text' })),
+          data: await this.injector.get(NgeDocAssets).text(data),
         }
       }
 

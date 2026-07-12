@@ -160,6 +160,11 @@ export interface NgeDocLink {
   sourcePath?: string
   /** ISO date of the last commit that touched the source. Set by the compiler. */
   lastUpdated?: string
+  /**
+   * `false` marks a client-only page (an interactive editor, a playground...)
+   * that static generation must skip. Set by `prerender: false` frontmatter.
+   */
+  prerender?: boolean
 }
 
 /** Representation of the documentation state. */
