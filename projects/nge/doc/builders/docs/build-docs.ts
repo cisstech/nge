@@ -33,6 +33,7 @@ export function runDocsBuild(
       sitemap: options.sitemap,
       robots: options.robots,
       llms: options.llms,
+      search: options.search,
       fs: deps.fs,
       writer: deps.writer,
     })

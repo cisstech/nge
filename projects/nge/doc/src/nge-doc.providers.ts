@@ -1,6 +1,7 @@
 import { EnvironmentProviders, InjectionToken, Provider, Type, makeEnvironmentProviders } from '@angular/core'
 import { NGE_DOC_RENDERERS, NgeDocIcon, NgeDocRenderers } from './nge-doc'
 import { NGE_DOC_DEFAULT_COLOR_SCHEME, NgeDocColorScheme } from './nge-doc-theme.service'
+import { NGE_DOC_SEARCH_INDEX_URL, NGE_DOC_SEARCH_PROVIDER, PrebuiltNgeDocSearchProvider } from './search'
 
 /**
  * Loads the theme component that renders the documentation.
@@ -119,6 +120,20 @@ export const NGE_DOC_SEO = new InjectionToken<NgeDocSeoConfig>('NGE_DOC_SEO')
  */
 export function withSeo(config: NgeDocSeoConfig): NgeDocFeature {
   return { providers: [{ provide: NGE_DOC_SEO, useValue: config }] }
+}
+
+/**
+ * Search a build-time index emitted by the `@cisstech/nge:docs` builder instead
+ * of the default in-memory title index. `url` points at the generated
+ * `search.json` (e.g. `docs/search.json`); it loads on the first search.
+ */
+export function withSearchIndex(url: string): NgeDocFeature {
+  return {
+    providers: [
+      { provide: NGE_DOC_SEARCH_INDEX_URL, useValue: url },
+      { provide: NGE_DOC_SEARCH_PROVIDER, useClass: PrebuiltNgeDocSearchProvider },
+    ],
+  }
 }
 
 /** Base url a page's `sourcePath` is appended to for the "Edit this page" link. */

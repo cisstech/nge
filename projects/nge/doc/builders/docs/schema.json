@@ -17,6 +17,7 @@
     "sitemap": { "type": "boolean", "default": true, "description": "Emit sitemap.xml when siteUrl is set." },
     "robots": { "type": "boolean", "default": true, "description": "Emit robots.txt when siteUrl is set." },
     "llms": { "type": "boolean", "default": true, "description": "Emit llms.txt and llms-full.txt when siteUrl is set." },
+    "search": { "type": "boolean", "default": true, "description": "Emit search.json (the content index)." },
     "watch": { "type": "boolean", "default": false, "description": "Rebuild on change." }
   },
   "required": ["publicDir", "name", "root"],

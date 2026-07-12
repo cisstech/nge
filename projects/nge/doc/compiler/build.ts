@@ -7,6 +7,7 @@ import { compileDocs } from './compile'
 import { DocFs, nodeFs } from './fs'
 import { DocGit, nodeGit } from './git'
 import { buildLlms, buildLlmsFull } from './llms'
+import { buildSearchIndex } from './search'
 import { buildRobots, buildSitemap } from './seo'
 
 /** Write side of the filesystem, abstracted so `buildDocs` is tested in memory. */
@@ -37,6 +38,8 @@ export interface BuildDocsOptions {
   robots?: boolean
   /** Emit `llms.txt` and `llms-full.txt` when `siteUrl` is set. Default: true. */
   llms?: boolean
+  /** Emit `search.json` (the content index) next to the manifest. Default: true. */
+  search?: boolean
   fs?: DocFs
   writer?: DocFsWriter
   /** Source-control reader for `lastUpdated`. Default: the local git CLI. */
@@ -56,9 +59,18 @@ export function buildDocs(options: BuildDocsOptions): NgeDocManifest {
 
   const manifest = compileDocs({ dir: options.dir, meta: options.meta, fs, git: options.git ?? nodeGit })
 
+  const readSource = (sourcePath: string) => parseFrontmatter(fs.readFile(join(options.dir, sourcePath))).content
+
   // The manifest sits with its sources, served at `<root>/nge-doc.json` (a
   // distinctive name so it never collides with a web app `manifest.json`).
   writer.writeFile(join(options.dir, 'nge-doc.json'), `${JSON.stringify(manifest, null, 2)}\n`)
+
+  if (options.search !== false) {
+    writer.writeFile(
+      join(options.dir, 'search.json'),
+      `${JSON.stringify(buildSearchIndex(manifest, readSource), null, 2)}\n`
+    )
+  }
 
   if (options.siteUrl) {
     if (options.sitemap !== false) {
@@ -69,7 +81,6 @@ export function buildDocs(options: BuildDocsOptions): NgeDocManifest {
     }
     if (options.llms !== false) {
       writer.writeFile(join(options.outDir, 'llms.txt'), buildLlms(manifest, options.siteUrl))
-      const readSource = (sourcePath: string) => parseFrontmatter(fs.readFile(join(options.dir, sourcePath))).content
       writer.writeFile(join(options.outDir, 'llms-full.txt'), buildLlmsFull(manifest, options.siteUrl, readSource))
     }
   }

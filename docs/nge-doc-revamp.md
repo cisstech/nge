@@ -76,10 +76,10 @@ SSR hazards fixed along the way (nge is now SSR-safe): import-time `window` in t
 
 Output reworked for DX: the builder writes one tree into the app's `public/` dir (manifest under the site path, each page's markdown at its page-adjacent url which the renderer fetches, and sitemap/robots/llms at the root). `ng serve` and `ng build` serve it as-is, so `/llms.txt` and `/guide/getting-started.md` work in dev with no consumer postbuild (only the GitHub Pages CSR fallback remains, and that is deploy-host specific). `assetsBase` is gone.
 
-### M6 - Build-time search (needs M2)
+### M6 - Build-time search (needs M2) ✅
 
-- [ ] Compiler emits the search index (chunked by heading) as JSON.
-- [ ] `NgeDocSearchProvider` loads the prebuilt index; contract unchanged from M0.
+- [x] Compiler emits `search.json` (chunked by `##`/`###` heading, with anchors) next to the manifest.
+- [x] `PrebuiltNgeDocSearchProvider` (via `withSearchIndex`) loads it lazily on first search; contract unchanged from M0.
 
 ### M7 - ng add + schematics (needs M2)
 

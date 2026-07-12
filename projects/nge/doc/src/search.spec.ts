@@ -1,5 +1,13 @@
+import { HttpClient } from '@angular/common/http'
+import { TestBed } from '@angular/core/testing'
+import { of } from 'rxjs'
 import { NgeDocManifest } from './manifest'
-import { DefaultNgeDocSearchProvider } from './search'
+import {
+  DefaultNgeDocSearchProvider,
+  NGE_DOC_SEARCH_INDEX_URL,
+  NgeDocSearchDocument,
+  PrebuiltNgeDocSearchProvider,
+} from './search'
 
 const site = (pages: NgeDocManifest['pages'], name = 'Docs', root = '/docs'): NgeDocManifest => ({
   meta: { name, root },
@@ -103,5 +111,43 @@ describe('DefaultNgeDocSearchProvider', () => {
 
     expect(await provider.search('old')).toEqual([])
     expect((await provider.search('new')).map((r) => r.slug)).toEqual(['/docs/new'])
+  })
+})
+
+describe('PrebuiltNgeDocSearchProvider', () => {
+  const documents: NgeDocSearchDocument[] = [
+    { slug: '/docs/intro', title: 'Intro', content: 'welcome to the guide' },
+    { slug: '/docs/intro#setup', title: 'Intro', heading: 'Setup', content: 'run the installer' },
+  ]
+  let provider: PrebuiltNgeDocSearchProvider
+  let get: jest.Mock
+
+  beforeEach(() => {
+    get = jest.fn().mockReturnValue(of(documents))
+    TestBed.configureTestingModule({
+      providers: [
+        PrebuiltNgeDocSearchProvider,
+        { provide: HttpClient, useValue: { get } },
+        { provide: NGE_DOC_SEARCH_INDEX_URL, useValue: 'docs/search.json' },
+      ],
+    })
+    provider = TestBed.inject(PrebuiltNgeDocSearchProvider)
+  })
+
+  it('searches content and headings from the index, fetched lazily on the first search', async () => {
+    await provider.index([site([{ title: 'Intro', href: '/docs/intro', renderer: 'x.md' }])])
+    expect(get).not.toHaveBeenCalled()
+
+    const results = await provider.search('installer')
+
+    expect(get).toHaveBeenCalledWith('docs/search.json')
+    expect(results[0]).toMatchObject({ slug: '/docs/intro#setup', heading: 'Setup', path: ['Docs'] })
+  })
+
+  it('returns nothing for a blank query, without fetching the index', async () => {
+    await provider.index([site([])])
+
+    expect(await provider.search('   ')).toEqual([])
+    expect(get).not.toHaveBeenCalled()
   })
 })

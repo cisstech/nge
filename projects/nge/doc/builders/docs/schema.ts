@@ -14,6 +14,8 @@ export interface DocsBuilderOptions {
   robots?: boolean
   /** Emit `llms.txt` and `llms-full.txt` when `siteUrl` is set. Default: true. */
   llms?: boolean
+  /** Emit `search.json` (the content index). Default: true. */
+  search?: boolean
   /** Rebuild on change. */
   watch?: boolean
 }
