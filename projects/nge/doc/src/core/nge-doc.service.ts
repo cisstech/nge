@@ -1,13 +1,13 @@
 import { Location } from '@angular/common'
-import { DOCUMENT, Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
+import { Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
-import { Meta, Title } from '@angular/platform-browser'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
-import { NgeDocAssets } from './assets'
-import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState, extractNgeDocSettings } from './nge-doc'
-import { NgeDocManifest, extractManifestSources, flattenPages, joinUrl, settingsToManifest } from './manifest'
+import { NgeDocLink, NgeDocLinkActionHandler, NgeDocMeta, NgeDocState } from './nge-doc'
+import { flattenPages, joinUrl, NgeDocManifest } from './manifest'
+import { NgeDocSeoService } from './seo.service'
+import { NgeDocSitesLoader } from './sites-loader'
 import {
   DefaultNgeDocSearchProvider,
   NGE_DOC_SEARCH_PROVIDER,
@@ -30,12 +30,10 @@ import {
 export class NgeDocService implements OnDestroy {
   private readonly router = inject(Router)
   private readonly injector = inject(Injector)
-  private readonly assets = inject(NgeDocAssets)
   private readonly location = inject(Location)
   private readonly activatedRoute = inject(ActivatedRoute)
-  private readonly title = inject(Title)
-  private readonly metaTags = inject(Meta)
-  private readonly document = inject(DOCUMENT)
+  private readonly seoService = inject(NgeDocSeoService)
+  private readonly sitesLoader = inject(NgeDocSitesLoader)
   private readonly seo = inject(NGE_DOC_SEO, { optional: true })
   private readonly editUrlBase = inject(NGE_DOC_EDIT_URL, { optional: true })
   private readonly explicitNavbar = inject(NGE_DOC_NAVBAR, { optional: true })
@@ -133,15 +131,7 @@ export class NgeDocService implements OnDestroy {
   async setup(): Promise<void> {
     this.reset()
 
-    const data = this.activatedRoute.snapshot.data
-
-    // Resolved concurrently; Promise.all keeps the declaration order.
-    this.manifests = await Promise.all([
-      // Code-first: settings resolved to manifests.
-      ...extractNgeDocSettings(data).map((setting) => settingsToManifest(setting, this.injector)),
-      // File-first: manifests emitted by the build, fetched at runtime.
-      ...extractManifestSources(data).map((source) => this.fetchManifest(source.ngeDocManifestUrl)),
-    ])
+    this.manifests = await this.sitesLoader.load(this.activatedRoute.snapshot.data)
 
     this.routable = this.manifests.flatMap((manifest) => flattenPages(manifest.pages))
     this.sites.set(this.manifests.map((manifest) => manifest.meta))
@@ -152,11 +142,6 @@ export class NgeDocService implements OnDestroy {
     )
 
     this.onChangeRoute()
-  }
-
-  /** Fetches a build-time manifest for a `docsFromManifest()` source. */
-  private fetchManifest(url: string): Promise<NgeDocManifest> {
-    return this.assets.json<NgeDocManifest>(url)
   }
 
   private async onChangeRoute(): Promise<void> {
@@ -266,50 +251,13 @@ export class NgeDocService implements OnDestroy {
    * the renderer calls it again to apply values found in a page's frontmatter.
    */
   setSeo(title: string, description?: string, image?: string): void {
-    const siteName = this.state.value.meta.name
-    const pageTitle = title?.trim()
-    const fullTitle = pageTitle && pageTitle !== siteName ? `${pageTitle} · ${siteName}` : pageTitle || siteName
-    this.title.setTitle(fullTitle)
-
-    const description_ = description?.trim()
-    if (description_) {
-      this.metaTags.updateTag({ name: 'description', content: description_ })
-    }
-
-    this.metaTags.updateTag({ property: 'og:title', content: fullTitle })
-    this.metaTags.updateTag({ property: 'og:type', content: 'article' })
-    this.metaTags.updateTag({ property: 'og:site_name', content: siteName })
-    this.metaTags.updateTag({ name: 'twitter:card', content: 'summary_large_image' })
-    this.metaTags.updateTag({ name: 'twitter:title', content: fullTitle })
-    if (description_) {
-      this.metaTags.updateTag({ property: 'og:description', content: description_ })
-      this.metaTags.updateTag({ name: 'twitter:description', content: description_ })
-    }
-
-    const href = this.state.value.currLink?.href
-    if (this.seo?.url && href) {
-      const canonical = joinUrl(this.seo.url, href)
-      this.metaTags.updateTag({ property: 'og:url', content: canonical })
-      this.setCanonical(canonical)
-    }
-
-    const source = image?.trim() || this.seo?.image
-    const resolved = source && this.seo?.url && !/^https?:\/\//.test(source) ? joinUrl(this.seo.url, source) : source
-    if (resolved) {
-      this.metaTags.updateTag({ property: 'og:image', content: resolved })
-      this.metaTags.updateTag({ name: 'twitter:image', content: resolved })
-    }
-  }
-
-  /** Points the `<link rel="canonical">` at the active page, creating it once. */
-  private setCanonical(url: string): void {
-    let link = this.document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')
-    if (!link) {
-      link = this.document.createElement('link')
-      link.setAttribute('rel', 'canonical')
-      this.document.head.appendChild(link)
-    }
-    link.setAttribute('href', url)
+    this.seoService.apply({
+      title,
+      description,
+      image,
+      siteName: this.state.value.meta.name,
+      href: this.state.value.currLink?.href,
+    })
   }
 
   /** Whether a header navigation link points to the active site. */

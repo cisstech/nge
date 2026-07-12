@@ -2,12 +2,15 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, Type, inject, si
 import { NgComponentOutlet } from '@angular/common'
 import { NgeDocService } from '../core/nge-doc.service'
 import { NgeDocThemeService } from '../core/nge-doc-theme.service'
+import { NgeDocSeoService } from '../core/seo.service'
+import { NgeDocSitesLoader } from '../core/sites-loader'
 import { DEFAULT_NGE_DOC_LAYOUT, NGE_DOC_LAYOUT } from '../core/nge-doc.providers'
 
 @Component({
   selector: 'nge-doc',
   templateUrl: './nge-doc.component.html',
-  providers: [NgeDocService],
+  // NgeDocService is the facade; its collaborators live in the same route scope.
+  providers: [NgeDocService, NgeDocSeoService, NgeDocSitesLoader],
   styleUrls: ['nge-doc.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [NgComponentOutlet],

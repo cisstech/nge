@@ -7,6 +7,8 @@ import { NgeDocLink, NgeDocSettings, NgeDocState } from './nge-doc'
 import { docsFromManifest } from './manifest'
 import { NGE_DOC_SEO } from './nge-doc.providers'
 import { NgeDocService } from './nge-doc.service'
+import { NgeDocSeoService } from './seo.service'
+import { NgeDocSitesLoader } from './sites-loader'
 
 // The engine resolves hrefs by mutating the links in
 // place, so each test needs a fresh, independent copy.
@@ -41,6 +43,8 @@ describe('NgeDocService', () => {
     TestBed.configureTestingModule({
       providers: [
         NgeDocService,
+        NgeDocSeoService,
+        NgeDocSitesLoader,
         { provide: Router, useValue: { events: new Subject(), navigateByUrl: jest.fn(), url: '/' } },
         { provide: ActivatedRoute, useValue: { snapshot: { data: settings, fragment: null } } },
         { provide: Location, useValue: { path: () => currentPath } },
@@ -142,6 +146,8 @@ describe('NgeDocService with a manifest source (docsFromManifest)', () => {
     TestBed.configureTestingModule({
       providers: [
         NgeDocService,
+        NgeDocSeoService,
+        NgeDocSitesLoader,
         { provide: Router, useValue: { events: new Subject(), navigateByUrl: jest.fn(), url: '/' } },
         {
           provide: ActivatedRoute,
@@ -174,6 +180,8 @@ describe('NgeDocService SEO (withSeo)', () => {
     TestBed.configureTestingModule({
       providers: [
         NgeDocService,
+        NgeDocSeoService,
+        NgeDocSitesLoader,
         { provide: Router, useValue: { events: new Subject(), navigateByUrl: jest.fn(), url: '/' } },
         { provide: ActivatedRoute, useValue: { snapshot: { data: makeSettings(), fragment: null } } },
         { provide: Location, useValue: { path: () => '/docs/alpha/intro' } },
