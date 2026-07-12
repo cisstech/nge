@@ -30,7 +30,7 @@
     "start": "ng serve",
     "build": "yarn build:lib && yarn build:demo",
     "build:lib": "ng build nge --configuration production && yarn postbuild:lib",
-    "postbuild:lib": "./scripts/postbuild.sh && ./scripts/build-nge-builder.sh && yarn sync-version",
+    "postbuild:lib": "./scripts/postbuild.sh && ./scripts/build-nge-builder.sh && yarn build:mcp && yarn sync-version",
     "docs": "ng run demo:docs",
     "build:demo": "yarn docs && ng build demo --configuration production --base-href=/nge/ && yarn postbuild:demo",
     "postbuild:demo": "./scripts/postbuild-demo.sh",
@@ -39,16 +39,15 @@
     "lint:fix": "ng lint --fix",
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",
-    "publish:lib": "npm publish ./dist/nge --provenance --access public",
     "build:mcp": "tsc -p projects/nge-doc-mcp/tsconfig.json && cp projects/nge-doc-mcp/package.json projects/nge-doc-mcp/README.md dist/nge-doc-mcp/",
-    "publish:mcp": "npm publish ./dist/nge-doc-mcp --provenance --access public",
     "publish:demo": "ng deploy demo --no-silent",
     "release": "standard-version",
     "release:major": "standard-version --release-as major",
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
     "release:as": "standard-version --release-as",
-    "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json"
+    "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json && sync-json -v --property version --source package.json dist/nge-doc-mcp/package.json",
+    "publish:npm": "npm publish ./dist/nge --provenance --access public && npm publish ./dist/nge-doc-mcp --provenance --access public"
   },
   "dependencies": {
     "@angular/animations": "^22.0.5",
