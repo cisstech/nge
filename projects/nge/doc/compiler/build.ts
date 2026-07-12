@@ -62,7 +62,8 @@ export function buildDocs(options: BuildDocsOptions): NgeDocManifest {
 
   // Generate the API pages first, so the scan below picks them up as normal pages.
   if (options.api) {
-    buildApiDocs({ ...options.api, dir: join(options.dir, 'api') }, writer)
+    const basePath = `${options.meta.root.replace(/\/+$/, '')}/api`
+    buildApiDocs({ ...options.api, dir: join(options.dir, 'api'), basePath }, writer)
   }
 
   const manifest = compileDocs({ dir: options.dir, meta: options.meta, fs, git: options.git ?? nodeGit })

@@ -13,6 +13,8 @@ export interface ApiDocsOptions {
   tsconfig?: string
   /** Folder the pages are written to, e.g. `<docsDir>/api`. */
   dir: string
+  /** Site-absolute url of that folder, e.g. `/docs/api`, used for links between pages. */
+  basePath: string
 }
 
 /**
@@ -22,7 +24,7 @@ export interface ApiDocsOptions {
  */
 export function buildApiDocs(options: ApiDocsOptions, writer: DocFsWriter): number {
   const project = runTypedoc(options)
-  const { files } = renderApiDocs(project)
+  const { files } = renderApiDocs(project, options.basePath)
   for (const file of files) {
     writer.writeFile(join(options.dir, file.path), file.content)
   }

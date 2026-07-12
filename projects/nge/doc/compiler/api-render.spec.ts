@@ -68,7 +68,7 @@ const project = {
 }
 
 const render = () => {
-  const { files } = renderApiDocs(project)
+  const { files } = renderApiDocs(project, '/docs/api')
   const byPath = Object.fromEntries(files.map((f) => [f.path, f.content]))
   return { files, byPath }
 }
@@ -149,9 +149,48 @@ describe('renderApiDocs', () => {
 
     expect(page).toContain('# API reference')
     expect(page).toContain('## Functions')
-    expect(page).toContain('[provideThing](./functions/provideThing)')
+    expect(page).toContain('[provideThing](/docs/api/functions/provideThing)')
     expect(page).toContain('## Interfaces')
-    expect(page).toContain('[Feature](./interfaces/Feature)')
+    expect(page).toContain('[Feature](/docs/api/interfaces/Feature)')
+  })
+
+  it('resolves {@link Name} in prose to the referenced export page, leaving unknown names plain', () => {
+    const proj = {
+      variant: 'project',
+      kind: 1,
+      name: 'D',
+      children: [
+        {
+          kind: 64,
+          name: 'provideThing',
+          signatures: [
+            {
+              kind: 4096,
+              name: 'provideThing',
+              comment: {
+                summary: [
+                  { kind: 'text', text: 'See ' },
+                  { kind: 'inline-tag', tag: '@link', text: 'Feature', target: 1 },
+                  { kind: 'text', text: ' and ' },
+                  { kind: 'inline-tag', tag: '@link', text: 'missingThing', target: 9 },
+                  { kind: 'text', text: '.' },
+                ],
+              },
+              parameters: [],
+              type: { type: 'reference', name: 'Feature' },
+            },
+          ],
+        },
+        { kind: 256, name: 'Feature', children: [] },
+      ],
+    }
+
+    const byPath = Object.fromEntries(renderApiDocs(proj, '/docs/api').files.map((f) => [f.path, f.content]))
+    const page = byPath['functions/provideThing.md']
+
+    expect(page).toContain('See [Feature](/docs/api/interfaces/Feature) and missingThing.')
+    // The frontmatter description stays plain text (no link markup).
+    expect(page).toMatch(/description: See Feature and missingThing\./)
   })
 
   it('flattens module wrappers from multi entry-point projects', () => {
@@ -162,7 +201,7 @@ describe('renderApiDocs', () => {
       children: [{ kind: 2, name: 'index', children: project.children }],
     }
 
-    const { files } = renderApiDocs(wrapped)
+    const { files } = renderApiDocs(wrapped, '/docs/api')
 
     expect(files.map((f) => f.path)).toContain('functions/provideThing.md')
   })

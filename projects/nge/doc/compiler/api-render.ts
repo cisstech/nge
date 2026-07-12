@@ -22,8 +22,11 @@ const KIND = {
 } as const
 
 interface Comment {
-  summary?: { kind: string; text?: string }[]
+  summary?: { kind: string; tag?: string; text?: string }[]
 }
+
+/** Resolves an export name to a relative link to its page, or null when it is not a documented export. */
+type LinkResolver = (name: string) => string | null
 
 interface Flags {
   isReadonly?: boolean
@@ -90,11 +93,25 @@ const GROUPS: { kind: number; folder: string; title: string }[] = [
  * Renders the API into a nested tree: one subfolder per kind, one page per
  * export, and a `_meta.json` at each level to keep the sidebar ordered and the
  * export names cased. An `index.md` links everything from an overview.
+ *
+ * @param basePath Site-absolute url of the api folder, e.g. `/docs/api`. Links
+ * between pages are absolute (they resolve against the app `<base href>`, so
+ * relative links would not work).
  */
-export function renderApiDocs(project: unknown): RenderedApi {
+export function renderApiDocs(project: unknown, basePath: string): RenderedApi {
   const exports = topLevelExports(project as Project)
   const files: ApiFile[] = []
   const rootMeta: Record<string, { title: string }> = {}
+  const base = basePath.replace(/\/+$/, '')
+
+  // Every documented export, so `{@link Name}` in a comment resolves to its page.
+  const folderByName = new Map<string, string>()
+  for (const group of GROUPS) {
+    for (const decl of declarationsOf(exports, group.kind)) {
+      folderByName.set(decl.name, group.folder)
+    }
+  }
+  const resolve: LinkResolver = (name) => (folderByName.has(name) ? `${base}/${folderByName.get(name)}/${name}` : null)
 
   for (const group of GROUPS) {
     const decls = declarationsOf(exports, group.kind)
@@ -104,13 +121,13 @@ export function renderApiDocs(project: unknown): RenderedApi {
     rootMeta[group.folder] = { title: group.title }
     const folderMeta: Record<string, { title: string }> = {}
     for (const decl of decls) {
-      files.push({ path: `${group.folder}/${decl.name}.md`, content: renderDeclaration(decl) })
+      files.push({ path: `${group.folder}/${decl.name}.md`, content: renderDeclaration(decl, resolve) })
       folderMeta[decl.name] = { title: decl.name }
     }
     files.push({ path: `${group.folder}/_meta.json`, content: json(folderMeta) })
   }
 
-  files.push({ path: 'index.md', content: renderIndex(exports) })
+  files.push({ path: 'index.md', content: renderIndex(exports, base) })
   files.push({ path: '_meta.json', content: json(rootMeta) })
   return { files }
 }
@@ -137,7 +154,7 @@ function topLevelExports(project: Project): Reflection[] {
   return out.filter((decl) => GROUPS.some((group) => group.kind === decl.kind))
 }
 
-function renderIndex(exports: Reflection[]): string {
+function renderIndex(exports: Reflection[], base: string): string {
   const lines = ['# API reference', '', 'Generated from the source. Every export, grouped by kind.', '']
   for (const group of GROUPS) {
     const decls = declarationsOf(exports, group.kind)
@@ -147,32 +164,33 @@ function renderIndex(exports: Reflection[]): string {
     lines.push(`## ${group.title}`, '')
     for (const decl of decls) {
       const summary = firstLine(commentText(decl.comment ?? signatureComment(decl)))
-      lines.push(`- [${decl.name}](./${group.folder}/${decl.name})${summary ? ` - ${summary}` : ''}`)
+      lines.push(`- [${decl.name}](${base}/${group.folder}/${decl.name})${summary ? ` - ${summary}` : ''}`)
     }
     lines.push('')
   }
   return `${lines.join('\n').trimEnd()}\n`
 }
 
-function renderDeclaration(decl: Reflection): string {
+function renderDeclaration(decl: Reflection, resolve: LinkResolver): string {
   const comment = decl.comment ?? signatureComment(decl)
+  // Frontmatter stays plain text; the body prose carries resolved links.
   const description = firstLine(commentText(comment))
   const front = ['---', `title: ${decl.name}`, ...(description ? [`description: ${description}`] : []), '---', '']
   const body = [`# ${decl.name}`, '', `\`${kindLabel(decl.kind)}\``, '']
   if (description) {
-    body.push(commentText(comment), '')
+    body.push(commentText(comment, resolve), '')
   }
-  body.push(...declarationBody(decl))
+  body.push(...declarationBody(decl, resolve))
   return `${front.join('\n')}${body.join('\n').trimEnd()}\n`
 }
 
-function declarationBody(decl: Reflection): string[] {
+function declarationBody(decl: Reflection, resolve: LinkResolver): string[] {
   switch (decl.kind) {
     case KIND.function:
-      return signatureSections(decl.signatures ?? [], 'function ')
+      return signatureSections(decl.signatures ?? [], 'function ', resolve)
     case KIND.interface:
     case KIND.class:
-      return objectBody(decl)
+      return objectBody(decl, resolve)
     case KIND.typeAlias:
       return codeBlock(`type ${decl.name}${typeParams(decl.typeParameter)} = ${typeToString(decl.type)}`)
     case KIND.variable:
@@ -183,7 +201,7 @@ function declarationBody(decl: Reflection): string[] {
 }
 
 /** Signature-based body (functions, methods): a code block per overload plus params and return. */
-function signatureSections(signatures: Signature[], prefix: string): string[] {
+function signatureSections(signatures: Signature[], prefix: string, resolve: LinkResolver): string[] {
   const out: string[] = []
   for (const sig of signatures) {
     out.push('## Signature', '', ...codeBlock(`${prefix}${signatureString(sig)}`))
@@ -191,7 +209,7 @@ function signatureSections(signatures: Signature[], prefix: string): string[] {
     if (params.length) {
       out.push('### Parameters', '')
       for (const param of params) {
-        const desc = firstLine(commentText(param.comment))
+        const desc = firstLine(commentText(param.comment, resolve))
         const name = param.flags?.isRest ? `...${param.name}` : param.name
         out.push(`- \`${name}\` (\`${typeToString(param.type)}\`)${desc ? ` - ${desc}` : ''}`)
       }
@@ -205,7 +223,7 @@ function signatureSections(signatures: Signature[], prefix: string): string[] {
 }
 
 /** Interface and class body: a properties table and, for classes, the public methods. */
-function objectBody(decl: Reflection): string[] {
+function objectBody(decl: Reflection, resolve: LinkResolver): string[] {
   const members = (decl.children ?? []).filter((m) => !isHidden(m))
   const properties = members.filter((m) => m.kind === KIND.property || m.kind === KIND.accessor)
   const methods = members.filter((m) => m.kind === KIND.method)
@@ -216,14 +234,14 @@ function objectBody(decl: Reflection): string[] {
     for (const prop of properties) {
       const name = `${prop.name}${prop.flags?.isOptional ? '?' : ''}${prop.flags?.isReadonly ? ' (readonly)' : ''}`
       const type = typeToString(prop.type ?? prop.signatures?.[0]?.type)
-      out.push(`| \`${name}\` | \`${type}\` | ${cell(firstLine(commentText(prop.comment)))} |`)
+      out.push(`| \`${name}\` | \`${type}\` | ${cell(firstLine(commentText(prop.comment, resolve)))} |`)
     }
     out.push('')
   }
 
   for (const method of methods) {
     out.push(`## \`${method.name}()\``, '')
-    out.push(...signatureSections(method.signatures ?? [], ''))
+    out.push(...signatureSections(method.signatures ?? [], '', resolve))
   }
   return out
 }
@@ -320,10 +338,23 @@ function signatureComment(decl: Reflection): Comment | undefined {
   return decl.signatures?.find((sig) => sig.comment)?.comment
 }
 
-/** Joins a typedoc comment's summary parts into plain markdown text. */
-function commentText(comment: Comment | undefined): string {
+/**
+ * Joins a typedoc comment's summary parts into markdown. With a {@link LinkResolver},
+ * `{@link Name}` inline tags become links to the referenced export's page;
+ * without one (frontmatter, index summaries) they render as plain text.
+ */
+function commentText(comment: Comment | undefined, resolve?: LinkResolver): string {
   return (comment?.summary ?? [])
-    .map((part) => part.text ?? '')
+    .map((part) => {
+      if (resolve && part.kind === 'inline-tag' && part.tag?.startsWith('@link')) {
+        const label = (part.text ?? '').trim()
+        // `{@link Target}` or `{@link Target | label}` / `{@link Target label}`.
+        const name = label.split('|')[0].trim().split(/\s+/)[0]
+        const href = resolve(name)
+        return href ? `[${label}](${href})` : label
+      }
+      return part.text ?? ''
+    })
     .join('')
     .trim()
 }
