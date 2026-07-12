@@ -86,8 +86,8 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
     transformer.addHtmlTransformer((element) => {
       Array.from(element.querySelectorAll<HTMLElement>('.nge-markdown-math')).forEach((placeholder) => {
         const holder = element.ownerDocument.createElement('div')
-        holder.textContent = mathBlocks[Number(placeholder.dataset['math'])] ?? ''
-        placeholder.replaceWith(holder)
+        holder.textContent = mathBlocks[Number(placeholder.getAttribute('data-math'))] ?? ''
+        placeholder.parentNode?.replaceChild(holder, placeholder)
       })
 
       // KaTeX renders in the browser; under SSR leave the math placeholders for

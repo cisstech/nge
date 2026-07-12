@@ -94,7 +94,9 @@ export class NgeMarkdownTabbedSet implements NgeMarkdownContribution {
       content.className = 'nge-md-tabbed-content'
       e.content.forEach((c) => content.appendChild(c))
 
-      tabset.append(checkbox, label, content)
+      tabset.appendChild(checkbox)
+      tabset.appendChild(label)
+      tabset.appendChild(content)
       i++
     })
     return tabset

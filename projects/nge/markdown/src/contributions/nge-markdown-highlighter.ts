@@ -138,6 +138,11 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
     }
     const highlight = this.options.highligtht
     transformer.addHtmlTransformer(async (element) => {
+      // Colorizing needs the browser (monaco); under SSR the code blocks render
+      // plain and are colorized on the client after hydration.
+      if (typeof document === 'undefined') {
+        return
+      }
       const preElements = Array.from(element.querySelectorAll(`pre[${DATA_LANGUAGE}]`))
       for (const pre of preElements) {
         highlight(this.injector, {
