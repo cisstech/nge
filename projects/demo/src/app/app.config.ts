@@ -1,4 +1,4 @@
-import { provideHttpClient, withFetch } from '@angular/common/http'
+import { provideHttpClient } from '@angular/common/http'
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core'
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser'
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router'
@@ -47,7 +47,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
       withPreloading(PreloadAllModules)
     ),
-    provideHttpClient(withFetch()),
+    provideHttpClient(),
     importProvidersFrom(
       NgeMarkdownModule,
       NgeMonacoModule.forRoot({

@@ -135,14 +135,13 @@ export class NgeDocService implements OnDestroy {
 
     const data = this.activatedRoute.snapshot.data
 
-    // Code-first: settings resolved to manifests.
-    for (const setting of extractNgeDocSettings(data)) {
-      this.manifests.push(await settingsToManifest(setting, this.injector))
-    }
-    // File-first: manifests emitted by the build, fetched at runtime.
-    for (const source of extractManifestSources(data)) {
-      this.manifests.push(await this.fetchManifest(source.ngeDocManifestUrl))
-    }
+    // Resolved concurrently; Promise.all keeps the declaration order.
+    this.manifests = await Promise.all([
+      // Code-first: settings resolved to manifests.
+      ...extractNgeDocSettings(data).map((setting) => settingsToManifest(setting, this.injector)),
+      // File-first: manifests emitted by the build, fetched at runtime.
+      ...extractManifestSources(data).map((source) => this.fetchManifest(source.ngeDocManifestUrl)),
+    ])
 
     this.routable = this.manifests.flatMap((manifest) => flattenPages(manifest.pages))
     this.sites.set(this.manifests.map((manifest) => manifest.meta))
@@ -158,32 +157,6 @@ export class NgeDocService implements OnDestroy {
   /** Fetches a build-time manifest for a `docsFromManifest()` source. */
   private fetchManifest(url: string): Promise<NgeDocManifest> {
     return this.assets.json<NgeDocManifest>(url)
-  }
-
-  /**
-   * Checks whether the given `link` is active.
-   * @param link The link to test.
-   */
-  isActive(link: NgeDocLink): boolean {
-    if (!link.href) {
-      return false
-    }
-    const tree = this.location.path().split('/')
-    for (let i = 0; i < tree.length; i++) {
-      const path = tree.slice(0, tree.length - i).join('/')
-      if (path && path.endsWith(link.href)) {
-        return true
-      }
-    }
-    return false
-  }
-
-  /**
-   * Checks whether the given `link` includes sub links.
-   * @param link The link to test.
-   */
-  isExpandable(link: NgeDocLink): boolean {
-    return !!link.children?.length
   }
 
   private async onChangeRoute(): Promise<void> {

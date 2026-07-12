@@ -56,13 +56,13 @@ export interface NgeDocMeta {
   /** Optional back url (use of Angular [routerLink]) */
   backUrl?: string
 
-  /** Optional url for the back button icon */
+  /** @deprecated Ignored by the layout; will be removed in the next major. */
   backIconUrl?: string
 
   /** Optional back href */
   backUrlHref?: string
 
-  /** Optional informations about a github repository linked to the site */
+  /** @deprecated Ignored by the layout; will be removed in the next major. */
   repo?: {
     /** Url of the repository */
     url: string
@@ -76,7 +76,7 @@ export interface NgeDocMeta {
   }[]
 }
 
-export interface NgeDocLinAction {
+export interface NgeDocLinkAction {
   /** Icon to render for the action. */
   icon?: NgeDocIcon
   /** Title of the action. */
@@ -86,6 +86,9 @@ export interface NgeDocLinAction {
   /** Action handler. (A string value here means that the action is an url to open in a new tab) */
   run: NgeDocLinkActionHandler
 }
+
+/** @deprecated Misspelled alias of {@link NgeDocLinkAction}; will be removed in the next major. */
+export type NgeDocLinAction = NgeDocLinkAction
 
 /**
  * Representation of a link in the documentation navigation.
@@ -155,7 +158,7 @@ export interface NgeDocLink {
   /** Optional icon */
   icon?: NgeDocIcon
   /** Custom actions */
-  actions?: NgeDocLinAction[]
+  actions?: NgeDocLinkAction[]
   /** Source markdown file, relative to the docs folder. Set by the compiler. */
   sourcePath?: string
   /** ISO date of the last commit that touched the source. Set by the compiler. */
