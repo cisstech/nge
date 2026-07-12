@@ -66,5 +66,7 @@ points at this flag, rather than hanging.
 ## What you get
 
 Every prerendered page ships its content in the initial HTML, hydrates without refetching
-its Markdown, and stays a plain SPA afterwards. Nothing else in your setup changes:
+its Markdown, and stays a plain SPA afterwards. Pair it with
+[withShiki](/docs/nge-markdown/contributions/highlighter) and code blocks arrive
+highlighted in the static HTML too. Nothing else in your setup changes:
 the same route, the same providers, the same theme.

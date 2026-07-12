@@ -1,6 +1,7 @@
-import { Injector, InjectionToken, Injectable, Provider, Type, inject } from '@angular/core'
+import { DOCUMENT, Injector, InjectionToken, Injectable, Provider, Type, inject } from '@angular/core'
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
+import { applyCodeChrome } from './code-chrome'
 
 const DATA_LINES = 'data-nge-md-hl-lines'
 const DATA_LANGUAGE = 'data-nge-md-hl-language'
@@ -65,6 +66,14 @@ export interface NgeMarkdownHighlightOptions {
  */
 export interface NgeMarkdownHighlighterService {
   /**
+   * Whether the service also works during server rendering. Browser-bound
+   * services (monaco) leave it unset: their blocks render plain on the server
+   * and colorize on the client. A server-capable service (shiki) sets it to
+   * true so prerendered pages ship highlighted HTML.
+   */
+  ssr?: boolean
+
+  /**
    * Function called to hightlight an HTMLElement code.
    * @param injector Injector reference to use Angular dependency injection.
    * @param options Highlight options.
@@ -125,7 +134,6 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
             return `${attributeName}="${attributeValue}"`
           })
           .join(' ')
-        console.log(attribs)
         return `<pre ${attribs}><code>${this.escapeHtml(code)}</code></pre>`
       }
       return renderer
@@ -138,20 +146,32 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
     }
     const highlight = this.options.highligtht
     transformer.addHtmlTransformer(async (element) => {
-      // Colorizing needs the browser (monaco); under SSR the code blocks render
-      // plain and are colorized on the client after hydration.
-      if (typeof document === 'undefined') {
+      // Unless the service declares itself server-capable, colorizing waits for
+      // the browser: blocks render plain under SSR and colorize after hydration.
+      if (typeof document === 'undefined' && !this.options?.ssr) {
         return
       }
+      const doc = this.injector.get(DOCUMENT)
       const preElements = Array.from(element.querySelectorAll(`pre[${DATA_LANGUAGE}]`))
       for (const pre of preElements) {
-        highlight(this.injector, {
+        const code = pre.querySelector('code') as HTMLElement
+        const language = pre.getAttribute(DATA_LANGUAGE) || 'plaintext'
+        const filename = pre.getAttribute(DATA_FILENAME) || undefined
+        // Captured before colorizing mutates the DOM; feeds copy and download.
+        const raw = code?.textContent ?? ''
+
+        // Awaited so server rendering only snapshots once every block is done.
+        await highlight(this.injector, {
           lines: pre.getAttribute(DATA_LINES) || '',
-          element: pre.querySelector('code') as HTMLElement,
-          language: pre.getAttribute(DATA_LANGUAGE) || 'plaintext',
+          element: code,
+          language,
           highlights: pre.getAttribute(DATA_HIGHLIGHTS) || '',
-          filename: pre.getAttribute(DATA_FILENAME) || '',
+          filename: filename || '',
         })
+
+        // Same chrome (filename tab, copy and download actions) whatever the
+        // colorizing backend.
+        applyCodeChrome(doc, { pre: pre as HTMLElement, code: raw, filename, language })
       }
     })
   }
@@ -188,9 +208,7 @@ export function monacoHighlighterService(type: Type<any>): NgeMarkdownHighlighte
       const colorizer = injector.get(type, null)
       const code = options.element
       const pre = code.parentElement as HTMLElement
-      pre.style.margin = '0.5em 0'
       pre.style.overflow = 'auto'
-      pre.style.border = '1px solid #F2F2F2'
       colorizer?.colorizeElement({
         element: code,
         language: options.language,
@@ -198,6 +216,8 @@ export function monacoHighlighterService(type: Type<any>): NgeMarkdownHighlighte
         lines: options.lines,
         filename: options.filename,
         highlights: options.highlights,
+        // The highlighter contribution renders the shared chrome.
+        fileTab: false,
       })
     },
   } as NgeMarkdownHighlighterService

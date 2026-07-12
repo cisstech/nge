@@ -31,7 +31,9 @@ export class NgeMonacoColorizerService {
 
     element.className = ''
 
-    this.addFileTab(options)
+    if (options.fileTab !== false) {
+      this.addFileTab(options)
+    }
 
     await this.loader.loadAsync()
     if (options.theme) {
@@ -428,4 +430,10 @@ export interface NgeMonacoColorizeOptions {
    * Optional filename to display in the tab header.
    */
   filename?: string
+
+  /**
+   * Set to `false` to skip the built-in file tab (filename and actions), when
+   * the caller renders its own chrome (nge-markdown does).
+   */
+  fileTab?: boolean
 }

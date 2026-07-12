@@ -12,6 +12,7 @@ import {
   HostBinding,
   OnDestroy,
   OnInit,
+  PendingTasks,
   Type,
   createComponent,
   effect,
@@ -38,6 +39,7 @@ export class NgeMarkdownComponent implements OnInit, AfterViewInit, OnDestroy {
   private readonly document = inject(DOCUMENT)
   private readonly http = inject(HttpClient, { optional: true })
   private readonly markdownService = inject(NgeMarkdownService)
+  private readonly pendingTasks = inject(PendingTasks)
   private readonly resourceLoader = inject(ResourceLoaderService)
   private readonly changeDetectorRef = inject(ChangeDetectorRef)
   private readonly appRef = inject(ApplicationRef)
@@ -115,19 +117,26 @@ export class NgeMarkdownComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private async renderContent(file?: string, data?: string): Promise<void> {
-    // Tear down the previous embeds before the content that hosts them is replaced.
-    this.destroyEmbeddedComponents()
-    await this.checkTheme()
-    if (file) {
-      await this.renderFromFile(file)
-    } else if (data) {
-      await this.renderFromString(data)
-    } else {
-      await this.renderFromString(this.el.nativeElement.innerHTML, true)
+    // Rendering is asynchronous (fetch, compile, transforms): block application
+    // stability so server rendering serializes the page only once it is done.
+    const removePendingTask = this.pendingTasks.add()
+    try {
+      // Tear down the previous embeds before the content that hosts them is replaced.
+      this.destroyEmbeddedComponents()
+      await this.checkTheme()
+      if (file) {
+        await this.renderFromFile(file)
+      } else if (data) {
+        await this.renderFromString(data)
+      } else {
+        await this.renderFromString(this.el.nativeElement.innerHTML, true)
+      }
+      await this.mountEmbeddedComponents()
+      this.el.nativeElement.style.opacity = '1'
+      this.rendered.emit()
+    } finally {
+      removePendingTask()
     }
-    await this.mountEmbeddedComponents()
-    this.el.nativeElement.style.opacity = '1'
-    this.rendered.emit()
   }
 
   private async renderFromFile(file: string): Promise<void> {

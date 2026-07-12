@@ -2,7 +2,7 @@ import type { Renderer, Tokenizer, TokensList, marked } from 'marked'
 import { NgeMarkdownConfig } from './nge-markdown-config'
 
 declare type AstTransformer = (tokens: TokensList) => TokensList
-declare type HtmlTransformer = (element: HTMLElement) => void
+declare type HtmlTransformer = (element: HTMLElement) => void | Promise<void>
 declare type MarkdownTransformer = (markdown: string) => string
 declare type RendererTransformer = (renderer: Renderer) => Renderer
 declare type TokenizerTransformer = (tokenizer: Tokenizer) => Tokenizer
@@ -104,13 +104,16 @@ export class NgeMarkdownTransformer {
    * @param element the html element to transform.
    * @returns the transformed html.
    */
-  transformHTML(element: HTMLElement) {
+  async transformHTML(element: HTMLElement) {
     if (element == null) {
       throw new ReferenceError('argument "html" is required')
     }
 
+    // Awaited in order: transformers mutate the same DOM (tabbed sets regroup
+    // it, the highlighter then reads it), and server rendering must not
+    // snapshot the page before the async ones (shiki) are done.
     for (const fn of this.htmlTransformers) {
-      fn(element)
+      await fn(element)
     }
 
     return element

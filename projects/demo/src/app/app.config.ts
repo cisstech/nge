@@ -11,14 +11,14 @@ import {
   withComponents,
   withConfig,
   withEmoji,
-  withHighlighter,
   withIcons,
   withKatex,
   withLinkAnchor,
+  withShiki,
   withTabbedSet,
   withThemes,
 } from '@cisstech/nge/markdown'
-import { NGE_MONACO_THEMES, NgeMonacoColorizerService, provideNgeMonaco } from '@cisstech/nge/monaco'
+import { NGE_MONACO_THEMES, provideNgeMonaco } from '@cisstech/nge/monaco'
 
 import { routes } from './app.routes'
 
@@ -60,7 +60,7 @@ export const appConfig: ApplicationConfig = {
       withTabbedSet(),
       withLinkAnchor(),
       withAdmonitions(),
-      withHighlighter(NgeMonacoColorizerService),
+      withShiki(),
       withComponents({
         'demo-counter': () => import('./markdown/embed-demo/embed-demo.component').then((m) => m.EmbedDemoComponent),
         'ui-tree-demo': () => import('./ui-demos/ui-tree-demo.component').then((m) => m.UiTreeDemoComponent),

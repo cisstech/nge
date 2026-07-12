@@ -5,6 +5,33 @@ description: Syntax highlighting for code blocks, with line numbers, highlighted
 
 # Highlighter
 
+## Static highlighting with shiki (recommended)
+
+`withShiki()` highlights fenced code blocks with [shiki](https://shiki.style), on the
+server too: prerendered pages ship highlighted HTML, with both color palettes emitted as
+CSS variables so switching schemes never re-highlights. This site uses it.
+
+```bash
+npm i -D shiki
+```
+
+```typescript
+import { provideNgeMarkdown, withShiki } from '@cisstech/nge/markdown'
+
+provideNgeMarkdown(withShiki())
+// or with options:
+provideNgeMarkdown(withShiki({ themes: { light: 'vitesse-light', dark: 'vitesse-dark' } }))
+```
+
+On the server, the configured `langs` (a sensible default list) are preloaded before the
+first render; a language outside the list still highlights on the client. An unknown
+language falls back to plain text.
+
+The fence options below (`lines`, `highlights`, `filename`) work with both highlighters,
+with the same syntax, and every block gets the same chrome: a toolbar with the filename
+(or the language), a copy action and a download action.
+
+
 Highlight fenced code blocks. The contribution is highlighter-agnostic: it delegates to a service
 you provide. [nge/monaco](/docs/nge-monaco/getting-started) ships an adapter, so its editor engine
 colors your code.

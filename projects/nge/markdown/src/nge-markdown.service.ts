@@ -45,7 +45,7 @@ export class NgeMarkdownService {
 
     options.target.innerHTML = marked.parser(tokens, markedOptions)
 
-    transformer.transformHTML(options.target)
+    await transformer.transformHTML(options.target)
 
     return tokens
   }

@@ -1,4 +1,13 @@
-import { EnvironmentProviders, Provider, Type, makeEnvironmentProviders } from '@angular/core'
+import {
+  EnvironmentProviders,
+  PLATFORM_ID,
+  Provider,
+  Type,
+  inject,
+  makeEnvironmentProviders,
+  provideAppInitializer,
+} from '@angular/core'
+import { isPlatformServer } from '@angular/common'
 import { NgeMarkdownAdmonitions } from './contributions/nge-markdown-admonitions'
 import {
   NGE_MARKDOWN_EMOJI_OPTIONS,
@@ -11,6 +20,7 @@ import {
   monacoHighlighterService,
 } from './contributions/nge-markdown-highlighter'
 import { NgeMarkdownIcons } from './contributions/nge-markdown-icons'
+import { NgeMarkdownShikiOptions, preloadShiki, shikiHighlighterService } from './contributions/nge-markdown-shiki'
 import {
   NGE_MARKDOWN_KATEX_OPTIONS,
   NgeMarkdownKatex,
@@ -24,7 +34,7 @@ import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from './nge-markdo
 
 /** A configuration feature for {@link provideNgeMarkdown}. */
 export interface NgeMarkdownFeature {
-  readonly providers: Provider[]
+  readonly providers: (Provider | EnvironmentProviders)[]
 }
 
 /**
@@ -113,6 +123,31 @@ export function withAdmonitions(): NgeMarkdownFeature {
 export function withHighlighter(colorizer?: Type<unknown>): NgeMarkdownFeature {
   return {
     providers: [contribution(NgeMarkdownHighlighter), ...(colorizer ? [monacoHighlighter(colorizer)] : [])],
+  }
+}
+
+/**
+ * Highlight fenced code blocks with [shiki](https://shiki.style). Unlike
+ * {@link withHighlighter}, it also runs during server rendering: prerendered
+ * pages ship highlighted HTML, and both color schemes are emitted as CSS
+ * variables so theme switches never re-highlight. Requires the optional
+ * `shiki` peer dependency.
+ */
+export function withShiki(options?: NgeMarkdownShikiOptions): NgeMarkdownFeature {
+  return {
+    providers: [
+      contribution(NgeMarkdownHighlighter),
+      { provide: NGE_MARKDOWN_HIGHLIGHTER_SERVICE, useValue: shikiHighlighterService(options) },
+      // On the server, grammars must be loaded before the first render: the
+      // page is serialized at stability, and a grammar fetched mid-render is
+      // not tracked as pending work. The browser keeps lazy loading.
+      provideAppInitializer(() => {
+        if (isPlatformServer(inject(PLATFORM_ID))) {
+          return preloadShiki(options)
+        }
+        return undefined
+      }),
+    ],
   }
 }
 

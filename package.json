@@ -108,6 +108,7 @@
     "prettier": "^3.0.3",
     "prettier-eslint": "^16.3.0",
     "puppeteer": "^23.2.0",
+    "shiki": "^4.3.1",
     "standard-version": "^9.5.0",
     "sync-json": "^1.0.2",
     "ts-jest": "^29.2.5",
