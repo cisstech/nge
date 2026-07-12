@@ -31,6 +31,7 @@ export const NGE_MARKDOWN_CONFIG = new InjectionToken<NgeMarkdownConfig>('NGE_MA
 
 export const NGE_MARKDOWN_THEMES = new InjectionToken<NgeMarkdownTheme>('NGE_MARKDOWN_THEMES')
 
+/** @deprecated Use `provideNgeMarkdown(withConfig(...))` instead; will be removed in the next major. */
 export const NgeMarkdownConfigProvider = (config: NgeMarkdownConfig | (() => NgeMarkdownConfig)): Provider =>
   typeof config === 'function'
     ? {
@@ -46,6 +47,7 @@ export const NgeMarkdownConfigProvider = (config: NgeMarkdownConfig | (() => Nge
 
 //  darkThemeClassName: 'dark-theme',
 
+/** @deprecated Use `provideNgeMarkdown(withThemes(...))` instead; will be removed in the next major. */
 export const NgeMarkdownThemeProvider = (...themes: NgeMarkdownTheme[]): Provider[] =>
   themes.map((theme) => ({
     provide: NGE_MARKDOWN_THEMES,

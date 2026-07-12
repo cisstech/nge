@@ -27,6 +27,8 @@ export const NGE_MARKDOWN_COMPONENTS = new InjectionToken<NgeMarkdownComponents>
  * Then in Markdown, write the keyword as a tag: `<color-picker></color-picker>`. Tag attributes are
  * passed to the component as inputs, so `<color-picker theme="dark"></color-picker>` sets `theme`.
  * Prefer hyphenated keywords so they are valid custom-element names.
+ *
+ * @deprecated Use `provideNgeMarkdown(withComponents(...))` instead; will be removed in the next major.
  */
 export const NgeMarkdownComponentsProvider = (components: NgeMarkdownComponents): Provider => ({
   provide: NGE_MARKDOWN_COMPONENTS,

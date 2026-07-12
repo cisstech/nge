@@ -45,6 +45,8 @@ export class NgeMarkdownLinkAnchor implements NgeMarkdownContribution {
 
 /**
  * Injection token to register `NgeMarkdownLinkAnchor` contribution.
+ *
+ * @deprecated Use `provideNgeMarkdown(withLinkAnchor())` instead; will be removed in the next major.
  */
 export const NgeMarkdownLinkAnchorProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,

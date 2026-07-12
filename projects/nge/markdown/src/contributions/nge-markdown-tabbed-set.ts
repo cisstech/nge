@@ -168,7 +168,9 @@ export class NgeMarkdownTabbedSet implements NgeMarkdownContribution {
   }
 }
 
-/**  * Injection token to register `NgeMarkdownTabbedSet` contribution. */
+/**  * Injection token to register `NgeMarkdownTabbedSet` contribution. *
+ * @deprecated Use `provideNgeMarkdown(withTabbedSet())` instead; will be removed in the next major.
+ */
 export const NgeMarkdownTabbedSetProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,
   multi: true,

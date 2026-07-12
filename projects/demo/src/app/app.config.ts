@@ -1,5 +1,5 @@
 import { provideHttpClient } from '@angular/common/http'
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core'
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core'
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser'
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router'
 
@@ -13,21 +13,20 @@ import {
   withSeo,
 } from '@cisstech/nge/doc'
 import {
-  NgeMarkdownAdmonitionsProvider,
-  NgeMarkdownComponentsProvider,
   NgeMarkdownConfig,
-  NgeMarkdownConfigProvider,
-  NgeMarkdownEmojiProvider,
-  NgeMarkdownHighlighterMonacoProvider,
-  NgeMarkdownHighlighterProvider,
-  NgeMarkdownIconsProvider,
-  NgeMarkdownKatexProvider,
-  NgeMarkdownLinkAnchorProvider,
-  NgeMarkdownModule,
-  NgeMarkdownTabbedSetProvider,
-  NgeMarkdownThemeProvider,
+  provideNgeMarkdown,
+  withAdmonitions,
+  withComponents,
+  withConfig,
+  withEmoji,
+  withHighlighter,
+  withIcons,
+  withKatex,
+  withLinkAnchor,
+  withTabbedSet,
+  withThemes,
 } from '@cisstech/nge/markdown'
-import { NGE_MONACO_THEMES, NgeMonacoColorizerService, NgeMonacoModule } from '@cisstech/nge/monaco'
+import { NGE_MONACO_THEMES, NgeMonacoColorizerService, provideNgeMonaco } from '@cisstech/nge/monaco'
 
 import { routes } from './app.routes'
 
@@ -48,43 +47,38 @@ export const appConfig: ApplicationConfig = {
       withPreloading(PreloadAllModules)
     ),
     provideHttpClient(),
-    importProvidersFrom(
-      NgeMarkdownModule,
-      NgeMonacoModule.forRoot({
-        locale: 'fr',
-        theming: {
-          themes: NGE_MONACO_THEMES.map((theme) => 'assets/nge/monaco/themes/' + theme),
-          default: 'github',
-          // Follow the documentation color scheme: nge-doc toggles `nge-doc-dark`
-          // on <html>, and Monaco switches themes accordingly (no coupling).
-          light: 'github',
-          dark: 'tomorrow-night',
-          darkThemeClassName: 'nge-doc-dark',
-        },
+    provideNgeMonaco({
+      locale: 'fr',
+      theming: {
+        themes: NGE_MONACO_THEMES.map((theme) => 'assets/nge/monaco/themes/' + theme),
+        default: 'github',
+        // Follow the documentation color scheme: nge-doc toggles `nge-doc-dark`
+        // on <html>, and Monaco switches themes accordingly (no coupling).
+        light: 'github',
+        dark: 'tomorrow-night',
+        darkThemeClassName: 'nge-doc-dark',
+      },
+    }),
+    provideNgeMarkdown(
+      withConfig(markdownOptions),
+      withThemes({ name: 'github', styleUrl: 'assets/nge/markdown/themes/github.css' }),
+      withKatex(),
+      withIcons(),
+      withEmoji(),
+      withTabbedSet(),
+      withLinkAnchor(),
+      withAdmonitions(),
+      withHighlighter(NgeMonacoColorizerService),
+      withComponents({
+        'demo-counter': () => import('./markdown/embed-demo/embed-demo.component').then((m) => m.EmbedDemoComponent),
+        'ui-tree-demo': () => import('./ui-demos/ui-tree-demo.component').then((m) => m.UiTreeDemoComponent),
+        'ui-list-demo': () => import('./ui-demos/ui-list-demo.component').then((m) => m.UiListDemoComponent),
+        'ui-icon-demo': () => import('./ui-demos/ui-icon-demo.component').then((m) => m.UiIconDemoComponent),
+        'monaco-showcase': () => import('./monaco/showcase/showcase.component').then((m) => m.ShowcaseComponent),
+        'markdown-cheatsheet': () =>
+          import('./markdown/cheat-sheet/cheat-sheet.component').then((m) => m.CheatSheetComponent),
       })
     ),
-    NgeMarkdownConfigProvider(markdownOptions),
-    NgeMarkdownThemeProvider({
-      name: 'github',
-      styleUrl: 'assets/nge/markdown/themes/github.css',
-    }),
-    NgeMarkdownKatexProvider,
-    NgeMarkdownIconsProvider,
-    NgeMarkdownEmojiProvider,
-    NgeMarkdownTabbedSetProvider,
-    NgeMarkdownLinkAnchorProvider,
-    NgeMarkdownAdmonitionsProvider,
-    NgeMarkdownHighlighterProvider,
-    NgeMarkdownHighlighterMonacoProvider(NgeMonacoColorizerService),
-    NgeMarkdownComponentsProvider({
-      'demo-counter': () => import('./markdown/embed-demo/embed-demo.component').then((m) => m.EmbedDemoComponent),
-      'ui-tree-demo': () => import('./ui-demos/ui-tree-demo.component').then((m) => m.UiTreeDemoComponent),
-      'ui-list-demo': () => import('./ui-demos/ui-list-demo.component').then((m) => m.UiListDemoComponent),
-      'ui-icon-demo': () => import('./ui-demos/ui-icon-demo.component').then((m) => m.UiIconDemoComponent),
-      'monaco-showcase': () => import('./monaco/showcase/showcase.component').then((m) => m.ShowcaseComponent),
-      'markdown-cheatsheet': () =>
-        import('./markdown/cheat-sheet/cheat-sheet.component').then((m) => m.CheatSheetComponent),
-    }),
     provideNgeDoc(
       withBrand({ title: 'NG Essentials', icon: 'assets/images/nge.svg', href: '/' }),
       withNavbar([

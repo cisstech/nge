@@ -60,6 +60,8 @@ export class NgeMarkdownEmoji implements NgeMarkdownContribution {
 
 /**
  * Provider to register `NgeMarkdownEmoji` contribution.
+ *
+ * @deprecated Use `provideNgeMarkdown(withEmoji())` instead; will be removed in the next major.
  */
 export const NgeMarkdownEmojiProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,
@@ -70,6 +72,8 @@ export const NgeMarkdownEmojiProvider: Provider = {
 /**
  * Provider to pass options to `NgeMarkdownEmoji` contribution.
  * @param options `NgeMarkdownEmoji` options.
+ *
+ * @deprecated Use `provideNgeMarkdown(withEmoji(options))` instead; will be removed in the next major.
  */
 export function NgeMarkdownEmojiOptionsProvider(options: NgeMarkdownEmojiOptions): Provider {
   return {

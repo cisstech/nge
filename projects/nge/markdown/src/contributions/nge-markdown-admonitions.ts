@@ -271,6 +271,8 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
 
 /**
  * Injection token to register `NgeMarkdownAdmonitions` contribution.
+ *
+ * @deprecated Use `provideNgeMarkdown(withAdmonitions())` instead; will be removed in the next major.
  */
 export const NgeMarkdownAdmonitionsProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,

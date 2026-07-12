@@ -38,6 +38,8 @@ export class NgeMarkdownIcons implements NgeMarkdownContribution {
 
 /**
  * Injection token to register `NgeMarkdownIcons` contribution.
+ *
+ * @deprecated Use `provideNgeMarkdown(withIcons())` instead; will be removed in the next major.
  */
 export const NgeMarkdownIconsProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,

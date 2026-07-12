@@ -168,6 +168,8 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
 
 /**
  * Injection token to register `NgeMarkdownHighlighter` contribution.
+ *
+ * @deprecated Use `provideNgeMarkdown(withHighlighter())` instead; will be removed in the next major.
  */
 export const NgeMarkdownHighlighterProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,
@@ -176,30 +178,40 @@ export const NgeMarkdownHighlighterProvider: Provider = {
 }
 
 /**
+ * Highlighter service backed by a Monaco colorizer (`NgeMonacoColorizerService`),
+ * resolved lazily through the injector so markdown never imports monaco.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function monacoHighlighterService(type: Type<any>): NgeMarkdownHighlighterService {
+  return {
+    highligtht: (injector, options) => {
+      const colorizer = injector.get(type, null)
+      const code = options.element
+      const pre = code.parentElement as HTMLElement
+      pre.style.margin = '0.5em 0'
+      pre.style.overflow = 'auto'
+      pre.style.border = '1px solid #F2F2F2'
+      colorizer?.colorizeElement({
+        element: code,
+        language: options.language,
+        code: code.textContent,
+        lines: options.lines,
+        filename: options.filename,
+        highlights: options.highlights,
+      })
+    },
+  } as NgeMarkdownHighlighterService
+}
+
+/**
  * Provider to register `NgeMonacoColorizerService` as the syntax highlighter.
  * @param type A reference to NgeMonacoColorizerService type.
+ * @deprecated Use `provideNgeMarkdown(withHighlighter(NgeMonacoColorizerService))` instead; will be removed in the next major.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function NgeMarkdownHighlighterMonacoProvider(type: Type<any>) {
   return {
     provide: NGE_MARKDOWN_HIGHLIGHTER_SERVICE,
-    useValue: {
-      highligtht: (injector, options) => {
-        const colorizer = injector.get(type, null)
-        const code = options.element
-        const pre = code.parentElement as HTMLElement
-        pre.style.margin = '0.5em 0'
-        pre.style.overflow = 'auto'
-        pre.style.border = '1px solid #F2F2F2'
-        colorizer?.colorizeElement({
-          element: code,
-          language: options.language,
-          code: code.textContent,
-          lines: options.lines,
-          filename: options.filename,
-          highlights: options.highlights,
-        })
-      },
-    } as NgeMarkdownHighlighterService,
+    useValue: monacoHighlighterService(type),
   }
 }
