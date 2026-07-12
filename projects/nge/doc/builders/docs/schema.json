@@ -48,6 +48,27 @@
       "default": true,
       "description": "Emit search.json (the content index)."
     },
+    "api": {
+      "type": "object",
+      "description": "Generate an API reference from TypeScript sources (needs the optional typedoc dependency).",
+      "properties": {
+        "entryPoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Entry point source files typedoc reads."
+        },
+        "tsconfig": {
+          "type": "string",
+          "description": "tsconfig used to resolve types."
+        }
+      },
+      "required": [
+        "entryPoints"
+      ],
+      "additionalProperties": false
+    },
     "watch": {
       "type": "boolean",
       "default": false,

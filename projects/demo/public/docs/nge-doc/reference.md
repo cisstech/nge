@@ -18,6 +18,7 @@ description: Builder options, frontmatter keys, _meta.json entries, provideNgeDo
 | `robots` | `true` | Emit `robots.txt` (needs `siteUrl`). |
 | `llms` | `true` | Emit `llms.txt` and `llms-full.txt` (needs `siteUrl`). |
 | `search` | `true` | Emit `search.json`. |
+| `api` | unset | Generate an API reference from TypeScript sources (needs the optional `typedoc` dependency). |
 | `watch` | `false` | Rebuild on change. |
 
 ## Frontmatter

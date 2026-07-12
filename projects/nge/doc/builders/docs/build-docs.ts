@@ -34,6 +34,7 @@ export function runDocsBuild(
       robots: options.robots,
       llms: options.llms,
       search: options.search,
+      api: options.api,
       fs: deps.fs,
       writer: deps.writer,
     })

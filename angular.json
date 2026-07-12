@@ -166,7 +166,13 @@
             "name": "NG Essentials",
             "root": "/docs",
             "siteUrl": "https://cisstech.github.io/nge",
-            "nav": "tabs"
+            "nav": "tabs",
+            "api": {
+              "entryPoints": [
+                "projects/nge/doc/index.ts"
+              ],
+              "tsconfig": "projects/nge/tsconfig.lib.json"
+            }
           }
         }
       }

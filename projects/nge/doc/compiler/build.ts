@@ -3,6 +3,7 @@ import { dirname } from 'node:path'
 import type { NgeDocMeta } from '../src/core/nge-doc'
 import type { NgeDocManifest } from '../src/core/manifest'
 import { parseFrontmatter } from '../src/shared/frontmatter'
+import { ApiDocsOptions, buildApiDocs } from './api'
 import { compileDocs } from './compile'
 import { DocFs, nodeFs } from './fs'
 import { DocGit, nodeGit } from './git'
@@ -40,6 +41,8 @@ export interface BuildDocsOptions {
   llms?: boolean
   /** Emit `search.json` (the content index) next to the manifest. Default: true. */
   search?: boolean
+  /** Generate an API reference from TypeScript sources under `<dir>/api`. Off when absent. */
+  api?: Pick<ApiDocsOptions, 'entryPoints' | 'tsconfig'>
   fs?: DocFs
   writer?: DocFsWriter
   /** Source-control reader for `lastUpdated`. Default: the local git CLI. */
@@ -56,6 +59,11 @@ export interface BuildDocsOptions {
 export function buildDocs(options: BuildDocsOptions): NgeDocManifest {
   const fs = options.fs ?? nodeFs
   const writer = options.writer ?? nodeFsWriter
+
+  // Generate the API pages first, so the scan below picks them up as normal pages.
+  if (options.api) {
+    buildApiDocs({ ...options.api, dir: join(options.dir, 'api') }, writer)
+  }
 
   const manifest = compileDocs({ dir: options.dir, meta: options.meta, fs, git: options.git ?? nodeGit })
 

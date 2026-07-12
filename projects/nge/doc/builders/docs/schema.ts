@@ -18,6 +18,13 @@ export interface DocsBuilderOptions {
   llms?: boolean
   /** Emit `search.json` (the content index). Default: true. */
   search?: boolean
+  /** Generate an API reference (needs the optional `typedoc` dependency). */
+  api?: {
+    /** Entry point source files typedoc reads, e.g. `["projects/lib/src/index.ts"]`. */
+    entryPoints: string[]
+    /** tsconfig used to resolve types. Default: the nearest `tsconfig.json`. */
+    tsconfig?: string
+  }
   /** Rebuild on change. */
   watch?: boolean
 }
