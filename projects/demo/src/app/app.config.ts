@@ -15,6 +15,7 @@ import {
   withKatex,
   withLinkAnchor,
   withShiki,
+  withStackblitz,
   withTabbedSet,
   withThemes,
 } from '@cisstech/nge/markdown'
@@ -61,6 +62,7 @@ export const appConfig: ApplicationConfig = {
       withLinkAnchor(),
       withAdmonitions(),
       withShiki(),
+      withStackblitz({ template: 'typescript', file: 'index.ts', title: 'nge-doc example' }),
       withComponents({
         'demo-counter': () => import('./markdown/embed-demo/embed-demo.component').then((m) => m.EmbedDemoComponent),
         'ui-tree-demo': () => import('./ui-demos/ui-tree-demo.component').then((m) => m.UiTreeDemoComponent),

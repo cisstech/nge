@@ -2529,6 +2529,7 @@ __metadata:
     "@commitlint/config-conventional": "npm:^19.2.2"
     "@eslint/js": "npm:^9.28.0"
     "@modelcontextprotocol/sdk": "npm:^1.29.0"
+    "@stackblitz/sdk": "npm:^1.11.1"
     "@types/jest": "npm:^30.0.0"
     "@types/marked": "npm:^4.0.1"
     "@types/mime-db": "npm:^1.43.5"
@@ -5869,6 +5870,13 @@ __metadata:
   dependencies:
     "@sinonjs/commons": "npm:^3.0.1"
   checksum: 10c0/de4522afe0699fa8d3ae9d1715cbaa4b47e518c707bb7988a9ec6c7c67557d9f6df451f6be0338598b984a86f65aab9fab38dd9ce75a3c0ffb801a9500d5b10d
+  languageName: node
+  linkType: hard
+
+"@stackblitz/sdk@npm:^1.11.1":
+  version: 1.11.1
+  resolution: "@stackblitz/sdk@npm:1.11.1"
+  checksum: 10c0/05a2dcb4807cdef5b09a1a7c32d588c32d09fad8a773b85b496b4a3c7b1fcb5bd23e1747fe4273f55f3278806a27d5e90e4f5052de07d0ff56a9116bd35385cb
   languageName: node
   linkType: hard
 

@@ -25,6 +25,18 @@ export interface CodeChromeOptions {
   filename?: string
   /** Language, used as the download extension fallback. */
   language?: string
+  /** Extra toolbar actions, after copy and download (e.g. "Open in StackBlitz"). */
+  actions?: CodeAction[]
+}
+
+/** An extra toolbar action for a code block. */
+export interface CodeAction {
+  /** Accessible title and tooltip. */
+  title: string
+  /** Inline SVG markup for the icon. */
+  icon: string
+  /** Invoked with the raw code when the button is clicked. */
+  run: (code: string) => void
 }
 
 /**
@@ -52,6 +64,9 @@ export function applyCodeChrome(document: Document, options: CodeChromeOptions):
 
   const actions = document.createElement('div')
   actions.setAttribute('class', 'nge-code-toolbar-actions')
+  for (const action of options.actions ?? []) {
+    actions.appendChild(extraAction(document, options.code, action))
+  }
   actions.appendChild(copyAction(document, options))
   actions.appendChild(downloadAction(document, options))
   toolbar.appendChild(actions)
@@ -61,6 +76,16 @@ export function applyCodeChrome(document: Document, options: CodeChromeOptions):
   wrapper.appendChild(pre)
 
   ensureChromeStyle(document)
+}
+
+function extraAction(document: Document, code: string, action: CodeAction): HTMLElement {
+  const button = actionButton(document, action.title, action.icon)
+  button.addEventListener('click', (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    action.run(code)
+  })
+  return button
 }
 
 function copyAction(document: Document, options: CodeChromeOptions): HTMLElement {

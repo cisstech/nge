@@ -47,6 +47,23 @@ describe('applyCodeChrome', () => {
     expect(host.querySelectorAll('.nge-code-toolbar')).toHaveLength(1)
   })
 
+  it('renders extra actions before copy/download and runs them with the raw code', () => {
+    const runs: string[] = []
+    const { host, pre } = block('x')
+
+    applyCodeChrome(document, {
+      pre,
+      code: 'raw snippet',
+      actions: [{ title: 'Open in StackBlitz', icon: '<svg></svg>', run: (code) => runs.push(code) }],
+    })
+
+    const buttons = host.querySelectorAll('.nge-code-action')
+    expect(buttons[0].getAttribute('title')).toBe('Open in StackBlitz')
+    expect(buttons).toHaveLength(3)
+    ;(buttons[0] as HTMLElement).click()
+    expect(runs).toEqual(['raw snippet'])
+  })
+
   it('copies the raw code captured before colorizing', async () => {
     const writeText = jest.fn().mockResolvedValue(undefined)
     Object.assign(navigator, { clipboard: { writeText } })
