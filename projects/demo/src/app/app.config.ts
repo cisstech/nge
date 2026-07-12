@@ -3,15 +3,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core'
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser'
 import { PreloadAllModules, provideRouter, withInMemoryScrolling, withPreloading } from '@angular/router'
 
-import {
-  provideNgeDoc,
-  withBrand,
-  withEditLink,
-  withMarkdownRenderer,
-  withNavbar,
-  withSearchIndex,
-  withSeo,
-} from '@cisstech/nge/doc'
+import { provideNgeDoc, withBrand, withEditLink, withNavbar, withSearchIndex, withSeo } from '@cisstech/nge/doc'
 import {
   NgeMarkdownConfig,
   provideNgeMarkdown,
@@ -89,9 +81,6 @@ export const appConfig: ApplicationConfig = {
         { title: 'nge/ui', href: '/docs/nge-ui/', icon: 'assets/icons/nav/ui.svg' },
         { title: 'Utilities', href: '/docs/utilities/', icon: 'assets/icons/nav/utils.svg' },
       ]),
-      withMarkdownRenderer({
-        component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent),
-      }),
       withSeo({ url: 'https://cisstech.github.io/nge', image: 'assets/images/nge.svg' }),
       withEditLink('https://github.com/cisstech/nge/edit/main/projects/demo/public/docs'),
       withSearchIndex('docs/search.json')

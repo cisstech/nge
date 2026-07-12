@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/nge/schematics",
+    "rootDir": "doc/schematics",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": ["node"],
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "importHelpers": false,
+    "skipLibCheck": true,
+    "paths": {}
+  },
+  "include": ["doc/schematics/**/*.ts"],
+  "exclude": ["**/*.spec.ts"]
+}

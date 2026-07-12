@@ -38,8 +38,18 @@ export interface NgeDocFeature {
  * ```
  */
 export function provideNgeDoc(...features: NgeDocFeature[]): EnvironmentProviders {
-  // Default first; a withTheme() feature appended after wins (last provider wins).
-  const providers: Provider[] = [{ provide: NGE_DOC_LAYOUT, useValue: DEFAULT_NGE_DOC_LAYOUT }]
+  // Defaults first; a feature appended after wins (last provider wins).
+  const providers: Provider[] = [
+    { provide: NGE_DOC_LAYOUT, useValue: DEFAULT_NGE_DOC_LAYOUT },
+    // Markdown pages render out of the box; the component stays lazy, so an
+    // app that never renders markdown never loads it.
+    {
+      provide: NGE_DOC_RENDERERS,
+      useValue: {
+        markdown: { component: () => import('@cisstech/nge/markdown').then((m) => m.NgeMarkdownComponent) },
+      },
+    },
+  ]
   for (const feature of features) providers.push(...feature.providers)
   return makeEnvironmentProviders(providers)
 }

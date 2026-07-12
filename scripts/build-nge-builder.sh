@@ -21,4 +21,10 @@ echo '{ "type": "commonjs" }' > dist/nge/node/package.json
 cp -f projects/nge/builders.json dist/nge/builders.json
 cp -f projects/nge/doc/builders/docs/schema.json dist/nge/node/builders/docs/schema.json
 
-echo "build-nge-builder: staged @cisstech/nge:docs into dist/nge/node"
+# The ng-add schematic follows the same recipe: CJS compile plus static files.
+npx tsc -p projects/nge/tsconfig.schematics.json
+echo '{ "type": "commonjs" }' > dist/nge/schematics/package.json
+cp -f projects/nge/doc/schematics/collection.json dist/nge/schematics/collection.json
+cp -f projects/nge/doc/schematics/ng-add/schema.json dist/nge/schematics/ng-add/schema.json
+
+echo "build-nge-builder: staged @cisstech/nge:docs and ng-add into dist/nge"

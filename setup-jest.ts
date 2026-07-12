@@ -1,29 +1,32 @@
 import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 
-setupZoneTestEnv();
+// Node-environment suites (schematics, compiler) have no DOM to patch.
+if (typeof document !== 'undefined') {
+  setupZoneTestEnv();
 
-Object.defineProperty(document, 'doctype', {
-  value: '<!DOCTYPE html>',
-});
+  Object.defineProperty(document, 'doctype', {
+    value: '<!DOCTYPE html>',
+  });
 
-Object.defineProperty(window, 'getComputedStyle', {
-  value: () => {
-    return {
-      display: 'none',
-      appearance: ['-webkit-appearance'],
-    };
-  },
-});
+  Object.defineProperty(window, 'getComputedStyle', {
+    value: () => {
+      return {
+        display: 'none',
+        appearance: ['-webkit-appearance'],
+      };
+    },
+  });
 
-/**
- * ISSUE: https://github.com/angular/material2/issues/7101
- * Workaround for JSDOM missing transform property
- */
-Object.defineProperty(document.body.style, 'transform', {
-  value: () => {
-    return {
-      enumerable: true,
-      configurable: true,
-    };
-  },
-});
+  /**
+   * ISSUE: https://github.com/angular/material2/issues/7101
+   * Workaround for JSDOM missing transform property
+   */
+  Object.defineProperty(document.body.style, 'transform', {
+    value: () => {
+      return {
+        enumerable: true,
+        configurable: true,
+      };
+    },
+  });
+}

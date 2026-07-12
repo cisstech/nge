@@ -3,5 +3,8 @@
   "dest": "../../dist/nge",
   "lib": {
     "entryFile": "index.ts"
-  }
+  },
+  "allowedNonPeerDependencies": [
+    "marked"
+  ]
 }
