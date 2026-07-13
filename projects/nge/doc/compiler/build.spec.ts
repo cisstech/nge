@@ -51,6 +51,15 @@ describe('buildDocs', () => {
     expect(Object.keys(written).filter((path) => path.endsWith('.md'))).toEqual([])
   })
 
+  it('ignores an empty api option (the builder schema materializes api: {} when omitted)', () => {
+    const { writer } = memWriter()
+    const fs = memFs({ 'docs/index.md': '# Home' })
+
+    // Without entryPoints there is nothing to generate; requiring typedoc here
+    // would break every docs site that does not want an API reference.
+    expect(() => buildDocs({ dir: 'docs', meta, outDir: 'out', api: {}, fs, writer })).not.toThrow()
+  })
+
   it('emits the AI/SEO files only when a siteUrl is given, and honors the opt-out flags', () => {
     const files = { 'docs/index.md': '# Home', 'docs/guide.md': '# Guide' }
 

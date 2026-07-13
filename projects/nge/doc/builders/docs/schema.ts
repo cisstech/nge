@@ -18,10 +18,14 @@ export interface DocsBuilderOptions {
   llms?: boolean
   /** Emit `search.json` (the content index). Default: true. */
   search?: boolean
-  /** Generate an API reference (needs the optional `typedoc` dependency). */
+  /**
+   * Generate an API reference (needs the optional `typedoc` dependency). The
+   * Angular builder schema materializes this as `{}` when omitted, so the API
+   * build only runs when `entryPoints` are actually provided.
+   */
   api?: {
     /** Entry point source files typedoc reads, e.g. `["projects/lib/src/index.ts"]`. */
-    entryPoints: string[]
+    entryPoints?: string[]
     /** tsconfig used to resolve types. Default: the nearest `tsconfig.json`. */
     tsconfig?: string
   }
