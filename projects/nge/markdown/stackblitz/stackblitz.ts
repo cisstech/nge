@@ -1,4 +1,5 @@
-import { DATA_STACKBLITZ, NgeMarkdownCodeActionProvider } from './nge-markdown-highlighter'
+import { DATA_STACKBLITZ, NGE_MARKDOWN_CODE_ACTIONS } from '@cisstech/nge/markdown'
+import type { NgeMarkdownCodeActionProvider, NgeMarkdownFeature } from '@cisstech/nge/markdown'
 
 const STACKBLITZ_SVG =
   '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10.5 13.5H4.5L14 2l-.5 8.5h6L10 22z"/></svg>'
@@ -58,28 +59,38 @@ export function buildStackblitzProject(code: string, options: NgeMarkdownStackbl
   }
 }
 
-/**
- * Opens the snippet in StackBlitz. The SDK is loaded through a non-literal
- * specifier so bundlers treat `@stackblitz/sdk` as an optional runtime import:
- * apps that never call `withStackblitz()` build without the peer installed,
- * instead of failing to resolve it at bundle time.
- */
+/** Opens the snippet in StackBlitz. Loads the SDK lazily, so it never ships in the initial bundle. */
 export async function openInStackblitz(code: string, options: NgeMarkdownStackblitzOptions): Promise<void> {
   const { project, openFile } = buildStackblitzProject(code, options)
-  const moduleName = '@stackblitz/sdk'
-  const sdk = (await import(/* @vite-ignore */ moduleName)).default
+  const sdk = (await import('@stackblitz/sdk')).default
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sdk.openProject(project as any, { openFile, newWindow: true })
 }
 
 /**
  * The "Open in StackBlitz" toolbar action, added to blocks flagged with the
- * `stackblitz` fence keyword. Lives here rather than in the highlighter so the
- * StackBlitz SDK stays out of the module graph until `withStackblitz()` is used.
+ * `stackblitz` fence keyword. Contributed through the markdown code-action token
+ * so the highlighter never references the StackBlitz SDK.
  */
 export function stackblitzCodeActionProvider(options: NgeMarkdownStackblitzOptions): NgeMarkdownCodeActionProvider {
   return ({ pre }) =>
     pre.getAttribute(DATA_STACKBLITZ) === 'true'
       ? { title: 'Open in StackBlitz', icon: STACKBLITZ_SVG, run: (snippet) => openInStackblitz(snippet, options) }
       : null
+}
+
+/**
+ * Add an "Open in StackBlitz" action to fenced blocks marked with the
+ * `stackblitz` flag. The snippet is injected into the project scaffold you
+ * configure here (files and dependencies), so the example runs exactly as you
+ * set it up.
+ *
+ * Import from `@cisstech/nge/markdown/stackblitz`: the StackBlitz SDK lives
+ * behind this entry point, so only apps that use this feature pull it in and
+ * need the `@stackblitz/sdk` dependency.
+ */
+export function withStackblitz(options: NgeMarkdownStackblitzOptions): NgeMarkdownFeature {
+  return {
+    providers: [{ provide: NGE_MARKDOWN_CODE_ACTIONS, multi: true, useValue: stackblitzCodeActionProvider(options) }],
+  }
 }

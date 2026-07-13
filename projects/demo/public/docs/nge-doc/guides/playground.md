@@ -22,7 +22,8 @@ npm i @stackblitz/sdk
 ```
 
 ```typescript
-import { provideNgeMarkdown, withShiki, withStackblitz } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown, withShiki } from '@cisstech/nge/markdown'
+import { withStackblitz } from '@cisstech/nge/markdown/stackblitz'
 
 provideNgeMarkdown(
   withShiki(),

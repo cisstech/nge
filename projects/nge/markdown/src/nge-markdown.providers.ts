@@ -15,14 +15,12 @@ import {
   NgeMarkdownEmojiOptions,
 } from './contributions/nge-markdown-emoji'
 import {
-  NGE_MARKDOWN_CODE_ACTIONS,
   NGE_MARKDOWN_HIGHLIGHTER_SERVICE,
   NgeMarkdownHighlighter,
   monacoHighlighterService,
 } from './contributions/nge-markdown-highlighter'
 import { NgeMarkdownIcons } from './contributions/nge-markdown-icons'
 import { NgeMarkdownShikiOptions, preloadShiki, shikiHighlighterService } from './contributions/nge-markdown-shiki'
-import { NgeMarkdownStackblitzOptions, stackblitzCodeActionProvider } from './contributions/nge-markdown-stackblitz'
 import {
   NGE_MARKDOWN_KATEX_OPTIONS,
   NgeMarkdownKatex,
@@ -150,18 +148,6 @@ export function withShiki(options?: NgeMarkdownShikiOptions): NgeMarkdownFeature
         return undefined
       }),
     ],
-  }
-}
-
-/**
- * Add an "Open in StackBlitz" action to fenced blocks marked with the
- * `stackblitz` flag. The snippet is injected into the project scaffold you
- * configure here (files and dependencies), so the example runs exactly as you
- * set it up. Requires the optional `@stackblitz/sdk` peer dependency.
- */
-export function withStackblitz(options: NgeMarkdownStackblitzOptions): NgeMarkdownFeature {
-  return {
-    providers: [{ provide: NGE_MARKDOWN_CODE_ACTIONS, multi: true, useValue: stackblitzCodeActionProvider(options) }],
   }
 }
 
