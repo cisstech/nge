@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [22.4.0](https://github.com/cisstech/nge/compare/v22.3.0...v22.4.0) (2026-07-13)
+
+
+### Features
+
+* **doc:** add the docs compiler (scan docs/ into a manifest) ([fd24aa1](https://github.com/cisstech/nge/commit/fd24aa1b5945333651a2a85977107bbf13fb8e85))
+* **doc:** add the manifest model and a pluggable search contract ([b696530](https://github.com/cisstech/nge/commit/b69653073820e7954ad9cc39bad10b4756e268d0))
+* **doc:** emit manifest.json and copy markdown via buildDocs ([33117a0](https://github.com/cisstech/nge/commit/33117a0c8e5e3c816491379aaecd1bc777ad0ec4))
+* **doc:** load a build-time manifest at runtime via docsFromManifest ([a237446](https://github.com/cisstech/nge/commit/a237446319a38c875c1ad493a2335773c4640161))
+* **nge-doc-mcp:** MCP server exposing a docs site to AI agents ([78bb251](https://github.com/cisstech/nge/commit/78bb251ef72b9a0b577d8ad6af13e733b2782049))
+* **nge-doc:** add @cisstech/nge:docs architect builder ([492317e](https://github.com/cisstech/nge/commit/492317e79f295bace9278c2748a87d0abfb08571))
+* **nge-doc:** AI outputs served in place from public/ (M5 + turnkey output) ([7eb5348](https://github.com/cisstech/nge/commit/7eb5348ffe1105a189ca088f8426e4a92d1df2ba))
+* **nge-doc:** build-time search index (M6) ([b67b9b3](https://github.com/cisstech/nge/commit/b67b9b3b556e77b8576f2f2fcc495019aa6badfb))
+* **nge-doc:** emit per-page canonical, Open Graph and Twitter tags ([292fa57](https://github.com/cisstech/nge/commit/292fa57b54ceb7e4e0df4168d4e855c946e26012))
+* **nge-doc:** emit sitemap.xml and robots.txt from the compiler ([e5a6657](https://github.com/cisstech/nge/commit/e5a66573a2baf90f968f82127e1c9f4f35eeb637))
+* **nge-doc:** generate an API reference from TypeScript sources ([624e1e8](https://github.com/cisstech/nge/commit/624e1e85e371da5a2a51680f9184c35597775a4e))
+* **nge-doc:** let a site place its sections in the navbar (nav: tabs) ([fd12cc8](https://github.com/cisstech/nge/commit/fd12cc82c107846fbcb2ba5d0448b7bacf0d06df))
+* **nge-doc:** prerender the manifest docs route (SSG) with transfer state ([5847438](https://github.com/cisstech/nge/commit/5847438b2412a253e4ce196a8f0d806805354105))
+* **nge-doc:** record sourcePath and last-updated, show edit/updated in the layout ([59a32d4](https://github.com/cisstech/nge/commit/59a32d4b351e6aba950e30fc10abbd115ff282a3))
+* **nge-doc:** refine search UX with breadcrumbs and highlighted excerpts ([8ece587](https://github.com/cisstech/nge/commit/8ece58714354fe3ae12e68197d0f66f81cde31a9))
+* **nge-doc:** ship the SSR wiring as a doc/ssr entry point (M7.1) ([1191d74](https://github.com/cisstech/nge/commit/1191d74e2fd518b8de8828617c66b583a68736bb))
+* **nge-markdown,nge-monaco:** provide functions with composable features ([dda1de5](https://github.com/cisstech/nge/commit/dda1de5325535c31ee856136722dd8d1e8594314))
+* **nge-markdown:** open code snippets in StackBlitz ([db879ac](https://github.com/cisstech/nge/commit/db879ac6a6b1b7961bf8132c1e2a99c270dbf39c))
+* **nge-markdown:** shiki static highlighting and shared code-block chrome ([e9b831a](https://github.com/cisstech/nge/commit/e9b831aba9aebacfcc29ab13c5826e51a1d827b2))
+* **nge:** ng add sets up nge-doc turnkey ([9b57fd2](https://github.com/cisstech/nge/commit/9b57fd25999b2bd8199c07194f44b3d54872c8b9))
+
+
+### Bug Fixes
+
+* **markdown:** access window lazily so the compiler imports on the server ([578cb89](https://github.com/cisstech/nge/commit/578cb89f789d72da6f79588f84ce2fa1cfd81b95))
+* **nge-doc:** link {[@link](https://github.com/link)} references to their pages in the API reference ([971e03f](https://github.com/cisstech/nge/commit/971e03fd0df29e4842fe58bfbca0f41f2fcfa95c))
+* **nge-markdown:** make tabbed-set, katex and the monaco highlighter SSR-safe ([cb8a72f](https://github.com/cisstech/nge/commit/cb8a72f9d998bd0ada1d83eb618e4b5d27c4092e))
+
 ## [22.3.0](https://github.com/cisstech/nge/compare/v22.2.1...v22.3.0) (2026-07-10)
 
 
