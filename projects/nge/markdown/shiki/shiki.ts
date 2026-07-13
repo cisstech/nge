@@ -1,6 +1,13 @@
-import { DOCUMENT } from '@angular/core'
-import { NGE_MARKDOWN_CONFIG } from '../nge-markdown-config'
-import { NgeMarkdownHighlighterService } from './nge-markdown-highlighter'
+import { isPlatformServer } from '@angular/common'
+import { DOCUMENT, PLATFORM_ID, inject, provideAppInitializer } from '@angular/core'
+import {
+  NGE_MARKDOWN_CONFIG,
+  NGE_MARKDOWN_CONTRIBUTION,
+  NGE_MARKDOWN_HIGHLIGHTER_SERVICE,
+  NgeMarkdownFeature,
+  NgeMarkdownHighlighter,
+  NgeMarkdownHighlighterService,
+} from '@cisstech/nge/markdown'
 
 /** Options of the shiki highlighter (`withShiki`). */
 export interface NgeMarkdownShikiOptions {
@@ -96,6 +103,34 @@ export function shikiHighlighterService(options: NgeMarkdownShikiOptions = {}): 
       decorateLines(pre, code, highlight.lines, highlight.highlights)
       ensureThemeStyle(document, injector.get(NGE_MARKDOWN_CONFIG, null)?.darkThemeClassName)
     },
+  }
+}
+
+/**
+ * Highlight fenced code blocks with [shiki](https://shiki.style). Unlike
+ * `withHighlighter`, it also runs during server rendering: prerendered pages
+ * ship highlighted HTML, and both color schemes are emitted as CSS variables so
+ * theme switches never re-highlight.
+ *
+ * Import from `@cisstech/nge/markdown/shiki`: shiki lives behind this entry
+ * point, so only apps that opt into it pull the SDK and need the `shiki`
+ * dependency installed.
+ */
+export function withShiki(options?: NgeMarkdownShikiOptions): NgeMarkdownFeature {
+  return {
+    providers: [
+      { provide: NGE_MARKDOWN_CONTRIBUTION, multi: true, useClass: NgeMarkdownHighlighter },
+      { provide: NGE_MARKDOWN_HIGHLIGHTER_SERVICE, useValue: shikiHighlighterService(options) },
+      // On the server, grammars must be loaded before the first render: the page
+      // is serialized at stability, and a grammar fetched mid-render is not
+      // tracked as pending work. The browser keeps lazy loading.
+      provideAppInitializer(() => {
+        if (isPlatformServer(inject(PLATFORM_ID))) {
+          return preloadShiki(options)
+        }
+        return undefined
+      }),
+    ],
   }
 }
 
