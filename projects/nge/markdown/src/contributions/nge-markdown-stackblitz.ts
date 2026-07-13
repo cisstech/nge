@@ -1,4 +1,7 @@
-import { InjectionToken } from '@angular/core'
+import { DATA_STACKBLITZ, NgeMarkdownCodeActionProvider } from './nge-markdown-highlighter'
+
+const STACKBLITZ_SVG =
+  '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10.5 13.5H4.5L14 2l-.5 8.5h6L10 22z"/></svg>'
 
 /**
  * Options for opening fenced code in [StackBlitz](https://stackblitz.com). The
@@ -55,13 +58,28 @@ export function buildStackblitzProject(code: string, options: NgeMarkdownStackbl
   }
 }
 
-/** Opens the snippet in StackBlitz. Loads the SDK lazily, so it never ships in the initial bundle. */
+/**
+ * Opens the snippet in StackBlitz. The SDK is loaded through a non-literal
+ * specifier so bundlers treat `@stackblitz/sdk` as an optional runtime import:
+ * apps that never call `withStackblitz()` build without the peer installed,
+ * instead of failing to resolve it at bundle time.
+ */
 export async function openInStackblitz(code: string, options: NgeMarkdownStackblitzOptions): Promise<void> {
   const { project, openFile } = buildStackblitzProject(code, options)
-  const sdk = (await import('@stackblitz/sdk')).default
+  const moduleName = '@stackblitz/sdk'
+  const sdk = (await import(/* @vite-ignore */ moduleName)).default
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sdk.openProject(project as any, { openFile, newWindow: true })
 }
 
-/** Set with `withStackblitz()` to enable the "Open in StackBlitz" code-block action. */
-export const NGE_MARKDOWN_STACKBLITZ = new InjectionToken<NgeMarkdownStackblitzOptions>('NGE_MARKDOWN_STACKBLITZ')
+/**
+ * The "Open in StackBlitz" toolbar action, added to blocks flagged with the
+ * `stackblitz` fence keyword. Lives here rather than in the highlighter so the
+ * StackBlitz SDK stays out of the module graph until `withStackblitz()` is used.
+ */
+export function stackblitzCodeActionProvider(options: NgeMarkdownStackblitzOptions): NgeMarkdownCodeActionProvider {
+  return ({ pre }) =>
+    pre.getAttribute(DATA_STACKBLITZ) === 'true'
+      ? { title: 'Open in StackBlitz', icon: STACKBLITZ_SVG, run: (snippet) => openInStackblitz(snippet, options) }
+      : null
+}

@@ -2,16 +2,39 @@ import { DOCUMENT, Injector, InjectionToken, Injectable, Provider, Type, inject 
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
 import { CodeAction, applyCodeChrome } from './code-chrome'
-import { NGE_MARKDOWN_STACKBLITZ, openInStackblitz } from './nge-markdown-stackblitz'
 
 const DATA_LINES = 'data-nge-md-hl-lines'
 const DATA_LANGUAGE = 'data-nge-md-hl-language'
 const DATA_HIGHLIGHTS = 'data-nge-md-hl-highlights'
 const DATA_FILENAME = 'data-nge-md-hl-filename'
-const DATA_STACKBLITZ = 'data-nge-md-hl-stackblitz'
 
-const STACKBLITZ_SVG =
-  '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10.5 13.5H4.5L14 2l-.5 8.5h6L10 22z"/></svg>'
+/** Fence flag exposed on the rendered `pre`, e.g. from ```ts stackblitz. */
+export const DATA_STACKBLITZ = 'data-nge-md-hl-stackblitz'
+
+/** Context handed to a code-action provider for one highlighted block. */
+export interface NgeMarkdownCodeActionContext {
+  /** The rendered `pre` element, carrying the fence flags as data attributes. */
+  pre: HTMLElement
+  /** The raw code, captured before colorizing mutates the DOM. */
+  code: string
+  /** Fence language. */
+  language: string
+  /** Fence filename, if any. */
+  filename?: string
+}
+
+/**
+ * Contributes a toolbar action to a highlighted code block, or `null` to skip
+ * it. Register with `multi: true` on {@link NGE_MARKDOWN_CODE_ACTIONS}. Keeping
+ * actions behind this token lets optional integrations (StackBlitz, ...) stay
+ * out of the highlighter's module graph until their feature is opted into.
+ */
+export type NgeMarkdownCodeActionProvider = (context: NgeMarkdownCodeActionContext) => CodeAction | null
+
+/** Multi-provider token for code-block toolbar actions. */
+export const NGE_MARKDOWN_CODE_ACTIONS = new InjectionToken<readonly NgeMarkdownCodeActionProvider[]>(
+  'NGE_MARKDOWN_CODE_ACTIONS'
+)
 
 /**
  * Highlight options.
@@ -155,7 +178,7 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
       return
     }
     const highlight = this.options.highligtht
-    const stackblitz = this.injector.get(NGE_MARKDOWN_STACKBLITZ, null)
+    const actionProviders = this.injector.get(NGE_MARKDOWN_CODE_ACTIONS, [])
     transformer.addHtmlTransformer(async (element) => {
       // Unless the service declares itself server-capable, colorizing waits for
       // the browser: blocks render plain under SSR and colorize after hydration.
@@ -180,14 +203,10 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
           filename: filename || '',
         })
 
-        const actions: CodeAction[] = []
-        if (stackblitz && pre.getAttribute(DATA_STACKBLITZ) === 'true') {
-          actions.push({
-            title: 'Open in StackBlitz',
-            icon: STACKBLITZ_SVG,
-            run: (snippet) => openInStackblitz(snippet, stackblitz),
-          })
-        }
+        const context: NgeMarkdownCodeActionContext = { pre: pre as HTMLElement, code: raw, language, filename }
+        const actions = actionProviders
+          .map((provider) => provider(context))
+          .filter((action): action is CodeAction => action != null)
 
         // Same chrome (filename tab, copy, download, extra actions) whatever the
         // colorizing backend.
