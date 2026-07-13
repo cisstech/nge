@@ -41,8 +41,11 @@ export interface BuildDocsOptions {
   llms?: boolean
   /** Emit `search.json` (the content index) next to the manifest. Default: true. */
   search?: boolean
-  /** Generate an API reference from TypeScript sources under `<dir>/api`. Off when absent. */
-  api?: Pick<ApiDocsOptions, 'entryPoints' | 'tsconfig'>
+  /**
+   * Generate an API reference from TypeScript sources under `<dir>/api`. Off when
+   * absent or without entryPoints (the Angular builder schema materializes `{}`).
+   */
+  api?: Partial<Pick<ApiDocsOptions, 'entryPoints' | 'tsconfig'>>
   fs?: DocFs
   writer?: DocFsWriter
   /** Source-control reader for `lastUpdated`. Default: the local git CLI. */
@@ -61,9 +64,15 @@ export function buildDocs(options: BuildDocsOptions): NgeDocManifest {
   const writer = options.writer ?? nodeFsWriter
 
   // Generate the API pages first, so the scan below picks them up as normal pages.
-  if (options.api) {
+  // Guard on entryPoints, not just `api`: the Angular builder schema materializes
+  // an empty `api: {}` when the option is omitted, and an API build without entry
+  // points has nothing to read anyway.
+  if (options.api?.entryPoints?.length) {
     const basePath = `${options.meta.root.replace(/\/+$/, '')}/api`
-    buildApiDocs({ ...options.api, dir: join(options.dir, 'api'), basePath }, writer)
+    buildApiDocs(
+      { entryPoints: options.api.entryPoints, tsconfig: options.api.tsconfig, dir: join(options.dir, 'api'), basePath },
+      writer
+    )
   }
 
   const manifest = compileDocs({ dir: options.dir, meta: options.meta, fs, git: options.git ?? nodeGit })

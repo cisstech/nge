@@ -1,5 +1,5 @@
 import { Location } from '@angular/common'
-import { Injectable, Injector, OnDestroy, computed, inject, signal } from '@angular/core'
+import { Injectable, Injector, OnDestroy, PendingTasks, computed, inject, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'
 import { BehaviorSubject, Subscription } from 'rxjs'
@@ -31,6 +31,7 @@ export class NgeDocService implements OnDestroy {
   private readonly router = inject(Router)
   private readonly injector = inject(Injector)
   private readonly location = inject(Location)
+  private readonly pendingTasks = inject(PendingTasks)
   private readonly activatedRoute = inject(ActivatedRoute)
   private readonly seoService = inject(NgeDocSeoService)
   private readonly sitesLoader = inject(NgeDocSitesLoader)
@@ -148,22 +149,40 @@ export class NgeDocService implements OnDestroy {
    * into a manifest, flattens it for prev/next, and hands the set to search.
    */
   async setup(): Promise<void> {
-    this.reset()
+    // Hold application stability across the async setup and the first route
+    // resolution, so server-side rendering does not reach a stable state (and
+    // tear the injector down) before the documentation content has rendered.
+    const removePendingTask = this.pendingTasks.add()
+    try {
+      this.reset()
 
-    this.manifests = await this.sitesLoader.load(this.activatedRoute.snapshot.data)
+      this.manifests = await this.sitesLoader.load(this.activatedRoute.snapshot.data)
 
-    this.routable = this.manifests.flatMap((manifest) => flattenPages(manifest.pages))
-    this.sites.set(this.manifests.map((manifest) => manifest.meta))
-    await this.searchProvider.index(this.manifests)
+      this.routable = this.manifests.flatMap((manifest) => flattenPages(manifest.pages))
+      this.sites.set(this.manifests.map((manifest) => manifest.meta))
+      await this.searchProvider.index(this.manifests)
 
-    this.subscriptions.push(
-      this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(this.onChangeRoute.bind(this))
-    )
+      this.subscriptions.push(
+        this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(this.onChangeRoute.bind(this))
+      )
 
-    this.onChangeRoute()
+      await this.onChangeRoute()
+    } finally {
+      removePendingTask()
+    }
   }
 
+  /** Keeps the app unstable while the route (and any redirect it triggers) resolves. */
   private async onChangeRoute(): Promise<void> {
+    const removePendingTask = this.pendingTasks.add()
+    try {
+      await this.resolveRoute()
+    } finally {
+      removePendingTask()
+    }
+  }
+
+  private async resolveRoute(): Promise<void> {
     if (!this.manifests.length) {
       return
     }
@@ -206,7 +225,9 @@ export class NgeDocService implements OnDestroy {
     if (!currLink) {
       const firstPage = links.find((link) => !link.separator && link.href)
       if (firstPage?.href) {
-        this.router.navigateByUrl(firstPage.href, { replaceUrl: true })
+        // Awaited so the pending task spans the redirect; server rendering waits
+        // for the target page instead of settling on the empty site root.
+        await this.router.navigateByUrl(firstPage.href, { replaceUrl: true })
       }
       return
     }
@@ -215,7 +236,7 @@ export class NgeDocService implements OnDestroy {
     if (!currLink.renderer && currLink.children?.length) {
       const firstChild = currLink.children.find((child) => child.href)
       if (firstChild?.href) {
-        this.router.navigateByUrl(firstChild.href, { replaceUrl: true })
+        await this.router.navigateByUrl(firstChild.href, { replaceUrl: true })
       }
       return
     }
