@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.4.2](https://github.com/cisstech/nge/compare/v22.4.1...v22.4.2) (2026-07-13)
+
+
+### Bug Fixes
+
+* **markdown:** restore shiki/stackblitz runtime, isolate the StackBlitz SDK ([fc7a29e](https://github.com/cisstech/nge/commit/fc7a29ee650cdf7a632942a23e92ec3ddc7b171b))
+
 ### [22.4.1](https://github.com/cisstech/nge/compare/v22.4.0...v22.4.1) (2026-07-13)
 
 
