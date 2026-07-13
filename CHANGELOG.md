@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.4.1](https://github.com/cisstech/nge/compare/v22.4.0...v22.4.1) (2026-07-13)
+
+
+### Bug Fixes
+
+* **doc:** let ng-add survive Nx workspaces ([ccb5083](https://github.com/cisstech/nge/commit/ccb50839b88f257849d0923ac631cecbe22fe105))
+* **markdown:** keep optional peers out of consumer builds ([f4cbff3](https://github.com/cisstech/nge/commit/f4cbff3a63002db5be86141a35168f259017f362))
+
 ## [22.4.0](https://github.com/cisstech/nge/compare/v22.3.0...v22.4.0) (2026-07-13)
 
 
