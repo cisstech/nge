@@ -106,4 +106,21 @@ describe('ng-add', () => {
 
     expect(result.exists('/public/docs/index.md')).toBe(true)
   })
+
+  it('completes when provideNgeDoc cannot be wired automatically (build target the utility rejects)', async () => {
+    // The utility resolves the app entry from the build target; without one it
+    // throws on execution, as it does against an Nx workspace it cannot read.
+    const seeded = workspace()
+    const ws = JSON.parse(seeded.read('/angular.json')!.toString())
+    delete ws.projects.app.architect.build
+    seeded.overwrite('/angular.json', JSON.stringify(ws))
+
+    const result = await run(seeded)
+
+    expect(result.exists('/public/docs/index.md')).toBe(true)
+    expect(JSON.parse(result.readContent('/angular.json')).projects.app.architect.docs.builder).toBe(
+      '@cisstech/nge:docs'
+    )
+    expect(result.readContent('/src/app/app.config.ts')).not.toContain('provideNgeDoc')
+  })
 })
