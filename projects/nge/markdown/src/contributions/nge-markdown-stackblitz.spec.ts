@@ -1,4 +1,5 @@
-import { buildStackblitzProject } from './nge-markdown-stackblitz'
+import { DATA_STACKBLITZ, NgeMarkdownCodeActionContext } from './nge-markdown-highlighter'
+import { buildStackblitzProject, stackblitzCodeActionProvider } from './nge-markdown-stackblitz'
 
 describe('buildStackblitzProject', () => {
   const base = {
@@ -33,5 +34,25 @@ describe('buildStackblitzProject', () => {
 
     expect(project.template).toBe('typescript')
     expect(openFile).toBe('index.html')
+  })
+})
+
+describe('stackblitzCodeActionProvider', () => {
+  const provider = stackblitzCodeActionProvider({ file: 'src/main.ts' })
+  const context = (stackblitz: string | null): NgeMarkdownCodeActionContext => ({
+    pre: { getAttribute: (name: string) => (name === DATA_STACKBLITZ ? stackblitz : null) } as unknown as HTMLElement,
+    code: 'const x = 1',
+    language: 'ts',
+  })
+
+  it('adds the action to blocks flagged with the stackblitz fence keyword', () => {
+    const action = provider(context('true'))
+
+    expect(action?.title).toBe('Open in StackBlitz')
+    expect(typeof action?.run).toBe('function')
+  })
+
+  it('skips blocks without the flag', () => {
+    expect(provider(context(null))).toBeNull()
   })
 })

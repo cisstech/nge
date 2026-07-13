@@ -1,4 +1,4 @@
-import { Rule, SchematicContext, Tree, chain, noop } from '@angular-devkit/schematics'
+import { Rule, SchematicContext, Tree, callRule, chain, noop } from '@angular-devkit/schematics'
 
 interface Schema {
   project?: string
@@ -125,11 +125,14 @@ function addDocsTarget(project: TargetProject): Rule {
 
 /**
  * Best-effort: the official standalone utility handles `app.config.ts` and
- * inline `bootstrapApplication` setups. Anything else (NgModule apps, missing
- * @schematics/angular) falls back to the printed instructions.
+ * inline `bootstrapApplication` setups. Anything it cannot handle (NgModule apps,
+ * missing @schematics/angular, or an Nx workspace whose synthesized build target
+ * the utility rejects) is caught and falls back to the printed instructions.
+ * The rule is executed here, inside the guard, because addRootProvider fails on
+ * execution rather than construction.
  */
 function addRootProviders(projectName: string): Rule {
-  return (tree: Tree, context: SchematicContext) => {
+  return async (tree: Tree, context: SchematicContext) => {
     try {
       // Resolved at run time inside the CLI, where @schematics/angular is present.
       // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -142,8 +145,18 @@ function addRootProviders(projectName: string): Rule {
           }) => unknown
         ) => Rule
       }
-      return addRootProvider(projectName, ({ code, external }) => {
+      const rule = addRootProvider(projectName, ({ code, external }) => {
         return code`${external('provideNgeDoc', '@cisstech/nge/doc')}()`
+      })
+      // Run it here so an execution failure is caught; awaited via a plain
+      // subscribe to sidestep the two rxjs copies the devkit ships with.
+      return await new Promise<Tree>((resolve, reject) => {
+        let result: Tree = tree
+        callRule(rule, tree, context).subscribe({
+          next: (next) => (result = next),
+          error: reject,
+          complete: () => resolve(result),
+        })
       })
     } catch {
       context.logger.warn('Could not add provideNgeDoc() automatically; add it to your providers (printed below).')

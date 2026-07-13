@@ -35,6 +35,16 @@ export const NGE_MARKDOWN_SHIKI_DEFAULT_LANGS = [
 ]
 
 /**
+ * Loads shiki through a non-literal specifier so bundlers treat it as an
+ * optional runtime import: apps that never call `withShiki()` build without the
+ * peer installed, while apps that do get it bundled as a lazy chunk on first use.
+ */
+async function loadShiki(): Promise<typeof import('shiki')> {
+  const moduleName = 'shiki'
+  return import(/* @vite-ignore */ moduleName) as Promise<typeof import('shiki')>
+}
+
+/**
  * Loads shiki and the configured grammars ahead of the first render, so every
  * `codeToHtml` call during server rendering resolves without async grammar
  * fetches. Called by `withShiki` through an app initializer on the server.
@@ -42,7 +52,7 @@ export const NGE_MARKDOWN_SHIKI_DEFAULT_LANGS = [
 export async function preloadShiki(options: NgeMarkdownShikiOptions = {}): Promise<void> {
   const themes = options.themes ?? { light: 'github-light', dark: 'github-dark' }
   const langs = options.langs ?? NGE_MARKDOWN_SHIKI_DEFAULT_LANGS
-  const { codeToHtml } = await import('shiki')
+  const { codeToHtml } = await loadShiki()
   await Promise.all(langs.map((lang) => codeToHtml('', { lang, themes, defaultColor: false }).catch(() => undefined)))
 }
 
@@ -66,7 +76,7 @@ export function shikiHighlighterService(options: NgeMarkdownShikiOptions = {}): 
         return
       }
 
-      const { codeToHtml } = await import('shiki')
+      const { codeToHtml } = await loadShiki()
       let html: string
       try {
         html = await codeToHtml(code.textContent ?? '', {
