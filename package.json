@@ -30,21 +30,24 @@
     "start": "ng serve",
     "build": "yarn build:lib && yarn build:demo",
     "build:lib": "ng build nge --configuration production && yarn postbuild:lib",
-    "postbuild:lib": "./scripts/postbuild.sh && yarn sync-version",
-    "build:demo": "ng build demo --configuration production --base-href='https://cisstech.github.io/nge/'",
+    "postbuild:lib": "./scripts/postbuild.sh && ./scripts/build-nge-builder.sh && yarn build:mcp && yarn sync-version",
+    "docs": "ng run demo:docs",
+    "build:demo": "yarn docs && ng build demo --configuration production --base-href=/nge/ && yarn postbuild:demo",
+    "postbuild:demo": "./scripts/postbuild-demo.sh",
     "test": "jest --coverage=true --watch=false --coverageReporters=lcov  --browsers=ChromeHeadless && node coverage-merger.js",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
     "format:check": "prettier --list-different 'projects/**/*.ts'",
     "format:write": "prettier --write 'projects/**/*.ts'",
-    "publish:lib": "npm publish ./dist/nge --provenance --access public",
+    "build:mcp": "tsc -p projects/nge-doc-mcp/tsconfig.json && cp projects/nge-doc-mcp/package.json projects/nge-doc-mcp/README.md dist/nge-doc-mcp/",
     "publish:demo": "ng deploy demo --no-silent",
     "release": "standard-version",
     "release:major": "standard-version --release-as major",
     "release:minor": "standard-version --release-as minor",
     "release:patch": "standard-version --release-as patch",
     "release:as": "standard-version --release-as",
-    "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json"
+    "sync-version": "sync-json -v --property version --source package.json dist/nge/package.json && sync-json -v --property version --source package.json dist/nge-doc-mcp/package.json",
+    "publish:npm": "npm publish ./dist/nge --provenance --access public && npm publish ./dist/nge-doc-mcp --provenance --access public"
   },
   "dependencies": {
     "@angular/animations": "^22.0.5",
@@ -78,9 +81,13 @@
     "@angular-eslint/template-parser": "22.0.0",
     "@angular/cli": "^22.0.5",
     "@angular/compiler-cli": "^22.0.5",
+    "@angular/platform-server": "22.0.5",
+    "@angular/ssr": "22.0.5",
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
     "@eslint/js": "^9.28.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@stackblitz/sdk": "^1.11.1",
     "@types/jest": "^30.0.0",
     "@types/marked": "^4.0.1",
     "@types/mime-db": "^1.43.5",
@@ -104,11 +111,13 @@
     "prettier": "^3.0.3",
     "prettier-eslint": "^16.3.0",
     "puppeteer": "^23.2.0",
+    "shiki": "^4.3.1",
     "standard-version": "^9.5.0",
     "sync-json": "^1.0.2",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.1",
     "tslint": "^6.1.3",
+    "typedoc": "^0.28.20",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.33.1",
     "wait-on": "^7.0.1"
@@ -116,7 +125,8 @@
   "jest": {
     "projects": [
       "./projects/demo/jest.config.ts",
-      "./projects/nge/jest.config.ts"
+      "./projects/nge/jest.config.ts",
+      "./projects/nge-doc-mcp/jest.config.cjs"
     ]
   },
   "config": {

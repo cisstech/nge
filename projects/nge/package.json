@@ -22,17 +22,22 @@
     "email": "mciissee@gmail.com"
   },
   "license": "MIT",
+  "builders": "./builders.json",
+  "schematics": "./schematics/collection.json",
   "peerDependencies": {
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
     "@angular/cdk": "^22.0.0",
+    "@angular/ssr": "^22.0.0",
     "rxjs": "^7.5.2",
-    "marked": "^11.0.1",
     "monaco-editor": ">=0.43.0 <0.55.0",
-    "ngx-pipes": "^3.2.2"
+    "ngx-pipes": "^3.2.2",
+    "shiki": ">=3.0.0 <5.0.0",
+    "typedoc": ">=0.26.0 <0.29.0",
+    "@stackblitz/sdk": "^1.0.0"
   },
   "peerDependenciesMeta": {
-    "marked": {
+    "@angular/ssr": {
       "optional": true
     },
     "monaco-editor": {
@@ -40,6 +45,18 @@
     },
     "ngx-pipes": {
       "optional": true
+    },
+    "shiki": {
+      "optional": true
+    },
+    "typedoc": {
+      "optional": true
+    },
+    "@stackblitz/sdk": {
+      "optional": true
     }
+  },
+  "dependencies": {
+    "marked": "^11.0.1"
   }
 }

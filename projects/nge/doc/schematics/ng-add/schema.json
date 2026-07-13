@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "nge ng-add options",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Application to set up. Default: the first application of the workspace.",
+      "$default": { "$source": "projectName" }
+    }
+  },
+  "additionalProperties": false
+}

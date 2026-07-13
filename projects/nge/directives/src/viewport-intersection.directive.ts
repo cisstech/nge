@@ -29,10 +29,7 @@ export class ViewportIntersectionDirective implements AfterViewInit, OnDestroy {
    * Please refers to the official documentation of Intersection API for more informations.
    */
   readonly rootMargin = input<string>()
-  readonly debug = input(
-    false,
-    { transform: booleanAttribute }
-  )
+  readonly debug = input(false, { transform: booleanAttribute })
 
   /**
    * This event is emitted whenever the observed element intersects with the viewport or the specified scrollContainer

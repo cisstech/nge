@@ -1,11 +1,17 @@
-import { Injector, InjectionToken, Injectable, Provider, Type, inject } from '@angular/core'
+import { DOCUMENT, Injector, InjectionToken, Injectable, Provider, Type, inject } from '@angular/core'
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
+import { CodeAction, applyCodeChrome } from './code-chrome'
+import { NGE_MARKDOWN_STACKBLITZ, openInStackblitz } from './nge-markdown-stackblitz'
 
 const DATA_LINES = 'data-nge-md-hl-lines'
 const DATA_LANGUAGE = 'data-nge-md-hl-language'
 const DATA_HIGHLIGHTS = 'data-nge-md-hl-highlights'
 const DATA_FILENAME = 'data-nge-md-hl-filename'
+const DATA_STACKBLITZ = 'data-nge-md-hl-stackblitz'
+
+const STACKBLITZ_SVG =
+  '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M10.5 13.5H4.5L14 2l-.5 8.5h6L10 22z"/></svg>'
 
 /**
  * Highlight options.
@@ -65,6 +71,14 @@ export interface NgeMarkdownHighlightOptions {
  */
 export interface NgeMarkdownHighlighterService {
   /**
+   * Whether the service also works during server rendering. Browser-bound
+   * services (monaco) leave it unset: their blocks render plain on the server
+   * and colorize on the client. A server-capable service (shiki) sets it to
+   * true so prerendered pages ship highlighted HTML.
+   */
+  ssr?: boolean
+
+  /**
    * Function called to hightlight an HTMLElement code.
    * @param injector Injector reference to use Angular dependency injection.
    * @param options Highlight options.
@@ -120,12 +134,16 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
           attributes.set(DATA_FILENAME, match[1])
         }
 
+        // STACKBLITZ (a bare flag on the fence, e.g. ```ts stackblitz)
+        if (/(^|\s)stackblitz(\s|$)/.test(args)) {
+          attributes.set(DATA_STACKBLITZ, 'true')
+        }
+
         const attribs = Array.from(attributes.entries())
           .map(([attributeName, attributeValue]) => {
             return `${attributeName}="${attributeValue}"`
           })
           .join(' ')
-        console.log(attribs)
         return `<pre ${attribs}><code>${this.escapeHtml(code)}</code></pre>`
       }
       return renderer
@@ -137,16 +155,43 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
       return
     }
     const highlight = this.options.highligtht
+    const stackblitz = this.injector.get(NGE_MARKDOWN_STACKBLITZ, null)
     transformer.addHtmlTransformer(async (element) => {
+      // Unless the service declares itself server-capable, colorizing waits for
+      // the browser: blocks render plain under SSR and colorize after hydration.
+      if (typeof document === 'undefined' && !this.options?.ssr) {
+        return
+      }
+      const doc = this.injector.get(DOCUMENT)
       const preElements = Array.from(element.querySelectorAll(`pre[${DATA_LANGUAGE}]`))
       for (const pre of preElements) {
-        highlight(this.injector, {
+        const code = pre.querySelector('code') as HTMLElement
+        const language = pre.getAttribute(DATA_LANGUAGE) || 'plaintext'
+        const filename = pre.getAttribute(DATA_FILENAME) || undefined
+        // Captured before colorizing mutates the DOM; feeds copy, download and the actions.
+        const raw = code?.textContent ?? ''
+
+        // Awaited so server rendering only snapshots once every block is done.
+        await highlight(this.injector, {
           lines: pre.getAttribute(DATA_LINES) || '',
-          element: pre.querySelector('code') as HTMLElement,
-          language: pre.getAttribute(DATA_LANGUAGE) || 'plaintext',
+          element: code,
+          language,
           highlights: pre.getAttribute(DATA_HIGHLIGHTS) || '',
-          filename: pre.getAttribute(DATA_FILENAME) || '',
+          filename: filename || '',
         })
+
+        const actions: CodeAction[] = []
+        if (stackblitz && pre.getAttribute(DATA_STACKBLITZ) === 'true') {
+          actions.push({
+            title: 'Open in StackBlitz',
+            icon: STACKBLITZ_SVG,
+            run: (snippet) => openInStackblitz(snippet, stackblitz),
+          })
+        }
+
+        // Same chrome (filename tab, copy, download, extra actions) whatever the
+        // colorizing backend.
+        applyCodeChrome(doc, { pre: pre as HTMLElement, code: raw, filename, language, actions })
       }
     })
   }
@@ -163,6 +208,8 @@ export class NgeMarkdownHighlighter implements NgeMarkdownContribution {
 
 /**
  * Injection token to register `NgeMarkdownHighlighter` contribution.
+ *
+ * @deprecated Use `provideNgeMarkdown(withHighlighter())` instead; will be removed in the next major.
  */
 export const NgeMarkdownHighlighterProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,
@@ -171,30 +218,40 @@ export const NgeMarkdownHighlighterProvider: Provider = {
 }
 
 /**
+ * Highlighter service backed by a Monaco colorizer (`NgeMonacoColorizerService`),
+ * resolved lazily through the injector so markdown never imports monaco.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function monacoHighlighterService(type: Type<any>): NgeMarkdownHighlighterService {
+  return {
+    highligtht: (injector, options) => {
+      const colorizer = injector.get(type, null)
+      const code = options.element
+      const pre = code.parentElement as HTMLElement
+      pre.style.overflow = 'auto'
+      colorizer?.colorizeElement({
+        element: code,
+        language: options.language,
+        code: code.textContent,
+        lines: options.lines,
+        filename: options.filename,
+        highlights: options.highlights,
+        // The highlighter contribution renders the shared chrome.
+        fileTab: false,
+      })
+    },
+  } as NgeMarkdownHighlighterService
+}
+
+/**
  * Provider to register `NgeMonacoColorizerService` as the syntax highlighter.
  * @param type A reference to NgeMonacoColorizerService type.
+ * @deprecated Use `provideNgeMarkdown(withHighlighter(NgeMonacoColorizerService))` instead; will be removed in the next major.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function NgeMarkdownHighlighterMonacoProvider(type: Type<any>) {
   return {
     provide: NGE_MARKDOWN_HIGHLIGHTER_SERVICE,
-    useValue: {
-      highligtht: (injector, options) => {
-        const colorizer = injector.get(type, null)
-        const code = options.element
-        const pre = code.parentElement as HTMLElement
-        pre.style.margin = '0.5em 0'
-        pre.style.overflow = 'auto'
-        pre.style.border = '1px solid #F2F2F2'
-        colorizer?.colorizeElement({
-          element: code,
-          language: options.language,
-          code: code.textContent,
-          lines: options.lines,
-          filename: options.filename,
-          highlights: options.highlights,
-        })
-      },
-    } as NgeMarkdownHighlighterService,
+    useValue: monacoHighlighterService(type),
   }
 }

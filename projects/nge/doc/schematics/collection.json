@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "nge-doc": {
+      "description": "Set up the nge-doc documentation engine: docs skeleton, builder target and root providers.",
+      "factory": "./ng-add/index#ngAdd",
+      "schema": "./ng-add/schema.json"
+    },
+    "ng-add": {
+      "description": "Alias of the nge-doc schematic, run by `ng add @cisstech/nge`.",
+      "factory": "./ng-add/index#ngAdd",
+      "schema": "./ng-add/schema.json",
+      "hidden": true
+    }
+  }
+}

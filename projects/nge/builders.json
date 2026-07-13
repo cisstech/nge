@@ -1,0 +1,10 @@
+{
+  "$schema": "../../node_modules/@angular-devkit/architect/src/builders-schema.json",
+  "builders": {
+    "docs": {
+      "implementation": "./node/builders/docs",
+      "schema": "./node/builders/docs/schema.json",
+      "description": "Compiles a docs/ folder into a manifest and copied markdown assets."
+    }
+  }
+}

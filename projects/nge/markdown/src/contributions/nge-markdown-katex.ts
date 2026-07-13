@@ -35,7 +35,9 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
   }
 
   dependencies() {
-    if ('katex' in window) {
+    // KaTeX ships as browser scripts; under SSR declare no dependencies and let
+    // the math render on the client after hydration.
+    if (typeof window === 'undefined' || 'katex' in window) {
       return []
     }
 
@@ -82,11 +84,17 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
     )
 
     transformer.addHtmlTransformer((element) => {
-      element.querySelectorAll<HTMLElement>('.nge-markdown-math').forEach((placeholder) => {
+      Array.from(element.querySelectorAll<HTMLElement>('.nge-markdown-math')).forEach((placeholder) => {
         const holder = element.ownerDocument.createElement('div')
-        holder.textContent = mathBlocks[Number(placeholder.dataset['math'])] ?? ''
-        placeholder.replaceWith(holder)
+        holder.textContent = mathBlocks[Number(placeholder.getAttribute('data-math'))] ?? ''
+        placeholder.parentNode?.replaceChild(holder, placeholder)
       })
+
+      // KaTeX renders in the browser; under SSR leave the math placeholders for
+      // the client to render after hydration.
+      if (typeof window === 'undefined') {
+        return
+      }
 
       const { renderMathInElement } = window as any
       try {
@@ -110,6 +118,8 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
 
 /**
  * Provider to render math expressions in markdown using [Katex](https://katex.org) library.
+ *
+ * @deprecated Use `provideNgeMarkdown(withKatex())` instead; will be removed in the next major.
  */
 export const NgeMarkdownKatexProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,
@@ -120,6 +130,8 @@ export const NgeMarkdownKatexProvider: Provider = {
 /**
  * Provider to pass options to `NgeMarkdownKatex` contribution.
  * @param options `NgeMarkdownKatex` options.
+ *
+ * @deprecated Use `provideNgeMarkdown(withKatex(options))` instead; will be removed in the next major.
  */
 export function NgeMarkdownKatexOptionsProvider(options: NgeMarkdownKatexOptions): Provider {
   return {

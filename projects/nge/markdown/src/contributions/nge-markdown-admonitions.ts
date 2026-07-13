@@ -1,4 +1,4 @@
-import { Injectable, Provider } from '@angular/core'
+import { DOCUMENT, Injectable, Provider, inject } from '@angular/core'
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
 
@@ -10,6 +10,8 @@ const CLOSE = /^:::\s*$/
  */
 @Injectable()
 export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
+  private readonly document = inject(DOCUMENT)
+
   contribute(transformer: NgeMarkdownTransformer) {
     this.addStyles()
     this.autoFixAdmonitionsSyntax(transformer)
@@ -17,7 +19,7 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
   }
 
   private addStyles() {
-    const head = document.head
+    const head = this.document.head
     if (head.querySelector('[nge-markdown-admonitions]')) {
       return
     }
@@ -177,7 +179,7 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
                 }
             `)
     })
-    const style = document.createElement('style')
+    const style = this.document.createElement('style')
     style.setAttribute('nge-markdown-admonitions', '')
     style.innerHTML = stylesheet.join('\n')
 
@@ -186,7 +188,7 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
 
   private createAdmonitions(transformer: NgeMarkdownTransformer) {
     transformer.addHtmlTransformer((element) => {
-      const paragraphs = element.querySelectorAll('p')
+      const paragraphs = Array.from(element.querySelectorAll('p'))
       paragraphs.forEach((p) => {
         const text = p.innerHTML
         const match = text.match(OPEN)
@@ -195,13 +197,13 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
           const type = match[2]
           const title = (match[3] || '').trim()
 
-          const admonition = document.createElement('details')
+          const admonition = this.document.createElement('details')
           if (opener.endsWith('+')) {
             admonition.open = true
           }
           admonition.className = 'nge-md-admonition nge-md-admonition--' + type
 
-          const summary = document.createElement('summary')
+          const summary = this.document.createElement('summary')
           summary.className = 'nge-md-admonition-title nge-md-admonition-title--' + type
           summary.innerHTML = title
 
@@ -225,7 +227,7 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
             node = node.nextElementSibling
           }
 
-          const div = document.createElement('div')
+          const div = this.document.createElement('div')
           div.className = 'nge-md-admonition-content'
           content.forEach((e) => div.appendChild(e))
           admonition.appendChild(div)
@@ -269,6 +271,8 @@ export class NgeMarkdownAdmonitions implements NgeMarkdownContribution {
 
 /**
  * Injection token to register `NgeMarkdownAdmonitions` contribution.
+ *
+ * @deprecated Use `provideNgeMarkdown(withAdmonitions())` instead; will be removed in the next major.
  */
 export const NgeMarkdownAdmonitionsProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,

@@ -20,6 +20,7 @@
       "@cisstech/nge": ["projects/nge"],
       "@cisstech/nge/directives": ["projects/nge/directives"],
       "@cisstech/nge/doc": ["projects/nge/doc"],
+      "@cisstech/nge/doc/ssr": ["projects/nge/doc/ssr"],
       "@cisstech/nge/elements": ["projects/nge/elements"],
       "@cisstech/nge/monaco": ["projects/nge/monaco"],
       "@cisstech/nge/pipes": ["projects/nge/pipes"],

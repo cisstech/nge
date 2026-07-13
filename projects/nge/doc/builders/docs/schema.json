@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "nge-doc builder options",
+  "type": "object",
+  "properties": {
+    "publicDir": {
+      "type": "string",
+      "default": "public",
+      "description": "The served public dir (site root). Markdown is authored under <publicDir>/<root>."
+    },
+    "root": {
+      "type": "string",
+      "description": "Site root url, e.g. /guide. Sources live at <publicDir>/<root>."
+    },
+    "name": {
+      "type": "string",
+      "description": "Site name."
+    },
+    "nav": {
+      "type": "string",
+      "enum": [
+        "sidebar",
+        "tabs"
+      ],
+      "description": "Where the top-level sections live: in the sidebar tree (default) or as navbar tabs."
+    },
+    "siteUrl": {
+      "type": "string",
+      "description": "Absolute site url. When set, emits sitemap.xml, robots.txt and the llms*.txt files."
+    },
+    "sitemap": {
+      "type": "boolean",
+      "default": true,
+      "description": "Emit sitemap.xml when siteUrl is set."
+    },
+    "robots": {
+      "type": "boolean",
+      "default": true,
+      "description": "Emit robots.txt when siteUrl is set."
+    },
+    "llms": {
+      "type": "boolean",
+      "default": true,
+      "description": "Emit llms.txt and llms-full.txt when siteUrl is set."
+    },
+    "search": {
+      "type": "boolean",
+      "default": true,
+      "description": "Emit search.json (the content index)."
+    },
+    "api": {
+      "type": "object",
+      "description": "Generate an API reference from TypeScript sources (needs the optional typedoc dependency).",
+      "properties": {
+        "entryPoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Entry point source files typedoc reads."
+        },
+        "tsconfig": {
+          "type": "string",
+          "description": "tsconfig used to resolve types."
+        }
+      },
+      "required": [
+        "entryPoints"
+      ],
+      "additionalProperties": false
+    },
+    "watch": {
+      "type": "boolean",
+      "default": false,
+      "description": "Rebuild on change."
+    }
+  },
+  "required": [
+    "publicDir",
+    "name",
+    "root"
+  ],
+  "additionalProperties": false
+}

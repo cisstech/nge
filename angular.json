@@ -3,7 +3,9 @@
   "version": 1,
   "newProjectRoot": "projects",
   "cli": {
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   },
   "projects": {
     "nge": {
@@ -18,7 +20,6 @@
             "tsConfig": "projects/nge/tsconfig.lib.json",
             "project": "projects/nge/ng-package.json"
           },
-
           "configurations": {
             "production": {
               "tsConfig": "projects/nge/tsconfig.lib.prod.json"
@@ -28,7 +29,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["**/*.spec.ts", "**/*.d.ts"]
+            "lintFilePatterns": [
+              "**/*.spec.ts",
+              "**/*.d.ts"
+            ]
           }
         }
       }
@@ -45,21 +49,39 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser-esbuild",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/demo",
             "index": "projects/demo/src/index.html",
-            "polyfills": ["projects/demo/src/polyfills.ts"],
+            "browser": "projects/demo/src/main.ts",
+            "server": "projects/demo/src/main.server.ts",
+            "outputMode": "static",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": [
               "projects/demo/src/assets",
-              { "glob": "**/*", "input": "./node_modules/monaco-editor/min", "output": "./assets/nge/monaco/min" },
+              {
+                "glob": "**/*",
+                "input": "projects/demo/public",
+                "output": "."
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/monaco-editor/min",
+                "output": "./assets/nge/monaco/min"
+              },
               {
                 "glob": "**/*",
                 "input": "./node_modules/monaco-editor/min-maps",
                 "output": "./assets/nge/monaco/min-maps"
               },
-              { "glob": "**/*", "input": "./projects/nge/monaco/src/themes", "output": "./assets/nge/monaco/themes" },
+              {
+                "glob": "**/*",
+                "input": "./projects/nge/monaco/src/themes",
+                "output": "./assets/nge/monaco/themes"
+              },
               {
                 "glob": "**/*",
                 "input": "./projects/nge/markdown/src/themes",
@@ -71,22 +93,17 @@
                 "output": "./assets/vendors/nge/ui/icon/icons/files/"
               }
             ],
-            "styles": ["projects/demo/src/styles.scss"],
+            "styles": [
+              "projects/demo/src/styles.scss"
+            ],
             "scripts": [],
             "extractLicenses": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true,
-            "main": "projects/demo/src/main.ts"
+            "namedChunks": true
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/demo/src/environments/environment.ts",
-                  "with": "projects/demo/src/environments/environment.prod.ts"
-                }
-              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -122,7 +139,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["**/*.spec.ts", "**/*.d.ts"]
+            "lintFilePatterns": [
+              "**/*.spec.ts",
+              "**/*.d.ts"
+            ]
           }
         },
         "extract-i18n": {
@@ -134,10 +154,25 @@
         "deploy": {
           "builder": "angular-cli-ghpages:deploy",
           "options": {
-            "dir": "./dist/demo",
+            "dir": "./dist/demo/browser",
             "repo": "https://github.com/cisstech/nge.git",
-            "buildTarget": "demo:build:production",
-            "baseHref": "https://cisstech.github.io/nge/"
+            "noBuild": true
+          }
+        },
+        "docs": {
+          "builder": "./dist/nge:docs",
+          "options": {
+            "publicDir": "projects/demo/public",
+            "name": "NG Essentials",
+            "root": "/docs",
+            "siteUrl": "https://cisstech.github.io/nge",
+            "nav": "tabs",
+            "api": {
+              "entryPoints": [
+                "projects/nge/doc/index.ts"
+              ],
+              "tsconfig": "projects/nge/tsconfig.lib.json"
+            }
           }
         }
       }

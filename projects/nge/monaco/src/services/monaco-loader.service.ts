@@ -10,8 +10,10 @@ export const MONACO_CDNJS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-e
 /** monaco editor cdn url hosted at jsdeliver. */
 export const MONACO_JS_DELIVER_URL = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.0'
 
+// Guarded so importing the service does not crash under SSR; monaco only ever
+// loads in the browser, where every WINDOW usage below runs.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const WINDOW = window as any
+const WINDOW = (typeof window !== 'undefined' ? window : {}) as any
 
 /**
  * Loads monaco editor using AMD loader.

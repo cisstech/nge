@@ -1,4 +1,4 @@
-import { Injectable, Provider } from '@angular/core'
+import { DOCUMENT, Injectable, Provider, inject } from '@angular/core'
 import { NgeMarkdownTransformer } from '../nge-markdown-transformer'
 import { NgeMarkdownContribution, NGE_MARKDOWN_CONTRIBUTION } from '../nge-markdown-contribution'
 
@@ -14,6 +14,8 @@ interface Tab {
  */
 @Injectable()
 export class NgeMarkdownTabbedSet implements NgeMarkdownContribution {
+  private readonly document = inject(DOCUMENT)
+
   contribute(transformer: NgeMarkdownTransformer) {
     this.addStyles()
     transformer.addHtmlTransformer((el) => {
@@ -21,7 +23,7 @@ export class NgeMarkdownTabbedSet implements NgeMarkdownContribution {
       const close = /^===\s*$/
       const processed: Element[] = []
       const toRemoves: Element[] = []
-      el.querySelectorAll('p').forEach((paragraph) => {
+      Array.from(el.querySelectorAll('p')).forEach((paragraph) => {
         if (processed.indexOf(paragraph) !== -1) {
           return
         }
@@ -70,13 +72,13 @@ export class NgeMarkdownTabbedSet implements NgeMarkdownContribution {
   }
 
   private createTabs(tabs: Tab[]) {
-    const tabset = document.createElement('div')
+    const tabset = this.document.createElement('div')
     tabset.className = 'nge-md-tabbed-set'
 
     let i = 0
     TABSET_COUNTER++
     tabs.forEach((e) => {
-      const checkbox = document.createElement('input')
+      const checkbox = this.document.createElement('input')
       checkbox.type = 'radio'
       checkbox.id = 'nge-md-tabbed-' + TABSET_COUNTER + '-' + i
       checkbox.name = 'nge-md-tabbed-' + TABSET_COUNTER
@@ -84,27 +86,29 @@ export class NgeMarkdownTabbedSet implements NgeMarkdownContribution {
         checkbox.setAttribute('checked', 'checked')
       }
 
-      const label = document.createElement('label')
+      const label = this.document.createElement('label')
       label.setAttribute('for', checkbox.id)
       label.innerHTML = e.title
 
-      const content = document.createElement('div')
+      const content = this.document.createElement('div')
       content.className = 'nge-md-tabbed-content'
       e.content.forEach((c) => content.appendChild(c))
 
-      tabset.append(checkbox, label, content)
+      tabset.appendChild(checkbox)
+      tabset.appendChild(label)
+      tabset.appendChild(content)
       i++
     })
     return tabset
   }
 
   private addStyles() {
-    const head = document.head
+    const head = this.document.head
     if (head.querySelector('[nge-markdown-tabbed-set]')) {
       return
     }
 
-    const style = document.createElement('style')
+    const style = this.document.createElement('style')
     style.setAttribute('nge-markdown-tabbed-set', '')
     style.innerHTML = `
             /*  TAB SET */
@@ -164,7 +168,9 @@ export class NgeMarkdownTabbedSet implements NgeMarkdownContribution {
   }
 }
 
-/**  * Injection token to register `NgeMarkdownTabbedSet` contribution. */
+/**  * Injection token to register `NgeMarkdownTabbedSet` contribution. *
+ * @deprecated Use `provideNgeMarkdown(withTabbedSet())` instead; will be removed in the next major.
+ */
 export const NgeMarkdownTabbedSetProvider: Provider = {
   provide: NGE_MARKDOWN_CONTRIBUTION,
   multi: true,

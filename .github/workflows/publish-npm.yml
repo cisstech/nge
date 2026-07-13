@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLIC_TOKEN }}" > ~/.npmrc
           yarn build:lib
-          npm publish ./dist/nge --provenance --access public
+          yarn publish:npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLIC_TOKEN }}
 
