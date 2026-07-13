@@ -14,10 +14,10 @@ import {
   withIcons,
   withKatex,
   withLinkAnchor,
-  withShiki,
   withTabbedSet,
   withThemes,
 } from '@cisstech/nge/markdown'
+import { withShiki } from '@cisstech/nge/markdown/shiki'
 import { withStackblitz } from '@cisstech/nge/markdown/stackblitz'
 import { NGE_MONACO_THEMES, provideNgeMonaco } from '@cisstech/nge/monaco'
 

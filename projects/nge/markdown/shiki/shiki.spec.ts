@@ -5,8 +5,8 @@ jest.mock('shiki', () => ({ codeToHtml }), { virtual: true })
 
 import { Injector } from '@angular/core'
 import { TestBed } from '@angular/core/testing'
-import { NGE_MARKDOWN_CONFIG } from '../nge-markdown-config'
-import { shikiHighlighterService } from './nge-markdown-shiki'
+import { NGE_MARKDOWN_CONFIG } from '@cisstech/nge/markdown'
+import { shikiHighlighterService } from './shiki'
 
 const SHIKI_OUTPUT =
   '<pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8">' +

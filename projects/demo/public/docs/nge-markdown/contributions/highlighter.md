@@ -16,7 +16,8 @@ npm i -D shiki
 ```
 
 ```typescript
-import { provideNgeMarkdown, withShiki } from '@cisstech/nge/markdown'
+import { provideNgeMarkdown } from '@cisstech/nge/markdown'
+import { withShiki } from '@cisstech/nge/markdown/shiki'
 
 provideNgeMarkdown(withShiki())
 // or with options:
