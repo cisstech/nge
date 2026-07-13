@@ -29,7 +29,9 @@ language falls back to plain text.
 
 The fence options below (`lines`, `highlights`, `filename`) work with both highlighters,
 with the same syntax, and every block gets the same chrome: a toolbar with the filename
-(or the language), a copy action and a download action.
+(or the language), a copy action and a download action. Add `withStackblitz()` and that
+toolbar also gains an "Open in StackBlitz" action on flagged blocks, see the
+[Playground](/docs/nge-doc/guides/playground) guide.
 
 
 Highlight fenced code blocks. The contribution is highlighter-agnostic: it delegates to a service

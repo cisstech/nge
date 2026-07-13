@@ -16,7 +16,7 @@
           "renderer": "docs/overview/introduction.md",
           "description": "Focused Angular building blocks. A documentation engine, a Markdown renderer, a Monaco editor integration, and a few UI and utility packages.",
           "sourcePath": "overview/introduction.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Installation",
@@ -24,7 +24,7 @@
           "renderer": "docs/overview/installation.md",
           "description": "Install @cisstech/nge, its peer dependencies, and pick the Angular-compatible version line.",
           "sourcePath": "overview/installation.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         }
       ]
     },
@@ -39,7 +39,7 @@
           "renderer": "docs/nge-doc/getting-started.md",
           "description": "Build a documentation site for Angular from Markdown files or code, with navigation, search, dark mode, SEO and static generation handled for you.",
           "sourcePath": "nge-doc/getting-started.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Installation",
@@ -47,7 +47,7 @@
           "renderer": "docs/nge-doc/installation.md",
           "description": "Add nge/doc to a project with ng add, or set it up manually.",
           "sourcePath": "nge-doc/installation.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Docs from files",
@@ -61,7 +61,7 @@
               "renderer": "docs/nge-doc/files/authoring.md",
               "description": "Pages, sections, _meta.json and frontmatter, and how titles and order are resolved.",
               "sourcePath": "nge-doc/files/authoring.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Outputs",
@@ -69,11 +69,11 @@
               "renderer": "docs/nge-doc/files/outputs.md",
               "description": "What the docs builder emits, where, and how to opt out of each output.",
               "sourcePath": "nge-doc/files/outputs.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             }
           ],
           "sourcePath": "nge-doc/files/index.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Docs from code",
@@ -81,7 +81,7 @@
           "renderer": "docs/nge-doc/code-first.md",
           "description": "Declare pages as data when the navigation is dynamic, generated or backed by an API.",
           "sourcePath": "nge-doc/code-first.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Guides",
@@ -93,7 +93,7 @@
               "renderer": "docs/nge-doc/guides/components.md",
               "description": "Embed live Angular components inside Markdown pages, or make a whole page interactive.",
               "sourcePath": "nge-doc/guides/components.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Static generation",
@@ -101,7 +101,7 @@
               "renderer": "docs/nge-doc/guides/ssg.md",
               "description": "Prerender every documentation page at build time with the doc/ssr entry.",
               "sourcePath": "nge-doc/guides/ssg.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Theming",
@@ -109,7 +109,7 @@
               "renderer": "docs/nge-doc/guides/theming.md",
               "description": "Brand, header navigation, dark mode, custom themes and labels.",
               "sourcePath": "nge-doc/guides/theming.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Search and SEO",
@@ -117,7 +117,7 @@
               "renderer": "docs/nge-doc/guides/search-seo.md",
               "description": "The command palette, the build-time content index, meta tags, edit links and the AI-friendly outputs.",
               "sourcePath": "nge-doc/guides/search-seo.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Deployment",
@@ -125,7 +125,7 @@
               "renderer": "docs/nge-doc/guides/deployment.md",
               "description": "Serve the docs under a base href and give the static host an SPA fallback.",
               "sourcePath": "nge-doc/guides/deployment.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "API reference",
@@ -133,7 +133,7 @@
               "renderer": "docs/nge-doc/guides/api-reference.md",
               "description": "Generate reference pages from TypeScript sources, rendered through the same pipeline as the rest of the docs.",
               "sourcePath": "nge-doc/guides/api-reference.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "MCP server",
@@ -141,7 +141,7 @@
               "renderer": "docs/nge-doc/guides/mcp.md",
               "description": "Let AI coding agents search and read your published docs through the Model Context Protocol.",
               "sourcePath": "nge-doc/guides/mcp.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Playground",
@@ -149,7 +149,7 @@
               "renderer": "docs/nge-doc/guides/playground.md",
               "description": "Turn a fenced code block into a runnable StackBlitz example, or embed a live component.",
               "sourcePath": "nge-doc/guides/playground.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             }
           ]
         },
@@ -159,7 +159,7 @@
           "renderer": "docs/nge-doc/reference.md",
           "description": "Builder options, frontmatter keys, _meta.json entries, provideNgeDoc features and the SSR api, in one place.",
           "sourcePath": "nge-doc/reference.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         }
       ]
     },
@@ -174,7 +174,7 @@
           "renderer": "docs/nge-markdown/getting-started.md",
           "description": "Render Markdown in Angular with a GitHub-style theme, dark mode and a contribution API for admonitions, tabs, KaTeX, emoji and syntax highlighting.",
           "sourcePath": "nge-markdown/getting-started.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Installation",
@@ -182,7 +182,7 @@
           "renderer": "docs/nge-markdown/installation.md",
           "description": "Install nge/markdown and its Marked peer dependency.",
           "sourcePath": "nge-markdown/installation.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Usage",
@@ -190,7 +190,7 @@
           "renderer": "docs/nge-markdown/usage.md",
           "description": "Render Markdown from a string, a file or transclusion, configure Marked, apply a theme, and compile Markdown yourself with NgeMarkdownService.",
           "sourcePath": "nge-markdown/usage.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Embedding",
@@ -198,7 +198,7 @@
           "renderer": "docs/nge-markdown/embedding.md",
           "description": "Render live Angular components inside Markdown by keyword, through a small component registry.",
           "sourcePath": "nge-markdown/embedding.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Contributions",
@@ -212,7 +212,7 @@
               "renderer": "docs/nge-markdown/contributions/admonitions.md",
               "description": "Styled call-out blocks (note, tip, warning, danger and more) with an optional title and arbitrary nested content.",
               "sourcePath": "nge-markdown/contributions/admonitions.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Emoji",
@@ -220,7 +220,7 @@
               "renderer": "docs/nge-markdown/contributions/emoji.md",
               "description": "Render emoji from shortcodes such as :smile: using Emoji Toolkit.",
               "sourcePath": "nge-markdown/contributions/emoji.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Highlighter",
@@ -228,7 +228,7 @@
               "renderer": "docs/nge-markdown/contributions/highlighter.md",
               "description": "Syntax highlighting for code blocks, with line numbers, highlighted lines and a filename header.",
               "sourcePath": "nge-markdown/contributions/highlighter.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "Icons",
@@ -236,7 +236,7 @@
               "renderer": "docs/nge-markdown/contributions/icons.md",
               "description": "Inline icons from icongram, sized and colored, loaded on demand.",
               "sourcePath": "nge-markdown/contributions/icons.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "KaTeX",
@@ -244,7 +244,7 @@
               "renderer": "docs/nge-markdown/contributions/katex.md",
               "description": "Render mathematical and chemical expressions in Markdown with KaTeX.",
               "sourcePath": "nge-markdown/contributions/katex.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "LinkAnchor",
@@ -252,7 +252,7 @@
               "renderer": "docs/nge-markdown/contributions/link-anchor.md",
               "description": "Make in-page anchor links navigate through the Angular router instead of reloading.",
               "sourcePath": "nge-markdown/contributions/link-anchor.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             },
             {
               "title": "TabbedSet",
@@ -260,11 +260,11 @@
               "renderer": "docs/nge-markdown/contributions/tabbed-set.md",
               "description": "Group alternative content, such as code for several languages, under tabs.",
               "sourcePath": "nge-markdown/contributions/tabbed-set.md",
-              "lastUpdated": "2026-07-13T18:33:52+02:00"
+              "lastUpdated": "2026-07-13T19:55:02+02:00"
             }
           ],
           "sourcePath": "nge-markdown/contributions/index.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Cheatsheet",
@@ -272,7 +272,7 @@
           "renderer": "docs/nge-markdown/cheatsheet.md",
           "prerender": false,
           "sourcePath": "nge-markdown/cheatsheet.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         }
       ]
     },
@@ -287,7 +287,7 @@
           "renderer": "docs/nge-monaco/getting-started.md",
           "description": "Embed the Monaco editor in Angular with editor, diff editor and read-only viewer components, a theming API with automatic light/dark switching, and full control over the editor instance.",
           "sourcePath": "nge-monaco/getting-started.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Installation",
@@ -295,7 +295,7 @@
           "renderer": "docs/nge-monaco/installation.md",
           "description": "Install nge/monaco and its monaco-editor peer dependency.",
           "sourcePath": "nge-monaco/installation.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Usage",
@@ -303,7 +303,7 @@
           "renderer": "docs/nge-monaco/usage.md",
           "description": "Set up nge/monaco, use the editor, diff editor and viewer components, switch themes at runtime, follow light and dark mode, and extend Monaco with contributions.",
           "sourcePath": "nge-monaco/usage.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Showcase",
@@ -311,7 +311,7 @@
           "renderer": "docs/nge-monaco/showcase.md",
           "prerender": false,
           "sourcePath": "nge-monaco/showcase.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         }
       ]
     },
@@ -326,7 +326,7 @@
           "renderer": "docs/nge-ui/getting-started.md",
           "description": "Standalone Angular UI building blocks: a data tree, a filterable list, and a multi-source icon component.",
           "sourcePath": "nge-ui/getting-started.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Tree",
@@ -334,7 +334,7 @@
           "renderer": "docs/nge-ui/tree.md",
           "description": "Render a data tree from your own model with an adapter, with expand/collapse, selection, filtering and keyboard actions.",
           "sourcePath": "nge-ui/tree.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "List",
@@ -342,7 +342,7 @@
           "renderer": "docs/nge-ui/list.md",
           "description": "Render a filterable list of items with your own item template or a ready-made article layout.",
           "sourcePath": "nge-ui/list.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Icon",
@@ -350,7 +350,7 @@
           "renderer": "docs/nge-ui/icon.md",
           "description": "Render an icon from Font Awesome, icongram, VS Code codicons, a file or folder type, or an image, behind one component.",
           "sourcePath": "nge-ui/icon.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         }
       ]
     },
@@ -365,7 +365,7 @@
           "renderer": "docs/utilities/getting-started.md",
           "description": "The small building blocks the rest of nge is built on: services, standalone pipes, and framework-free helper functions.",
           "sourcePath": "utilities/getting-started.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Services",
@@ -373,7 +373,7 @@
           "renderer": "docs/utilities/services.md",
           "description": "Root-provided helpers for the clipboard, dynamic component rendering, on-demand resource loading and file picking.",
           "sourcePath": "utilities/services.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Pipes",
@@ -381,7 +381,7 @@
           "renderer": "docs/utilities/pipes.md",
           "description": "Standalone template pipes for type checks, length, safe values and inline icons.",
           "sourcePath": "utilities/pipes.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         },
         {
           "title": "Utils",
@@ -389,7 +389,7 @@
           "renderer": "docs/utilities/utils.md",
           "description": "Pure helper functions for colors, dates, strings, comparison, copying, file types and typed builders, with no Angular dependency.",
           "sourcePath": "utilities/utils.md",
-          "lastUpdated": "2026-07-13T18:33:52+02:00"
+          "lastUpdated": "2026-07-13T19:55:02+02:00"
         }
       ]
     },

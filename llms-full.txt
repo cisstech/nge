@@ -1018,6 +1018,12 @@ toolbar gains an "Open in StackBlitz" action. The snippet is injected into the
 project scaffold you configure, so the example runs exactly as you set it up (no
 fragile generation).
 
+`@stackblitz/sdk` is an optional peer, install it only for this feature:
+
+```bash
+npm i @stackblitz/sdk
+```
+
 ```typescript
 import { provideNgeMarkdown, withShiki, withStackblitz } from '@cisstech/nge/markdown'
 
@@ -1044,8 +1050,7 @@ console.log(greeting)
 ```
 
 For a full app, use `template: 'node'` and provide a `package.json` (and any
-other files) through the `files` option; the snippet lands at `file`. It needs
-the optional `@stackblitz/sdk` dependency.
+other files) through the `files` option; the snippet lands at `file`.
 
 ## Embed a live component
 
@@ -1732,7 +1737,9 @@ language falls back to plain text.
 
 The fence options below (`lines`, `highlights`, `filename`) work with both highlighters,
 with the same syntax, and every block gets the same chrome: a toolbar with the filename
-(or the language), a copy action and a download action.
+(or the language), a copy action and a download action. Add `withStackblitz()` and that
+toolbar also gains an "Open in StackBlitz" action on flagged blocks, see the
+[Playground](/docs/nge-doc/guides/playground) guide.
 
 
 Highlight fenced code blocks. The contribution is highlighter-agnostic: it delegates to a service
