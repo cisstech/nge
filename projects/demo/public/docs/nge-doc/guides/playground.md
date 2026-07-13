@@ -15,6 +15,12 @@ toolbar gains an "Open in StackBlitz" action. The snippet is injected into the
 project scaffold you configure, so the example runs exactly as you set it up (no
 fragile generation).
 
+`@stackblitz/sdk` is an optional peer, install it only for this feature:
+
+```bash
+npm i @stackblitz/sdk
+```
+
 ```typescript
 import { provideNgeMarkdown, withShiki, withStackblitz } from '@cisstech/nge/markdown'
 
@@ -41,8 +47,7 @@ console.log(greeting)
 ```
 
 For a full app, use `template: 'node'` and provide a `package.json` (and any
-other files) through the `files` option; the snippet lands at `file`. It needs
-the optional `@stackblitz/sdk` dependency.
+other files) through the `files` option; the snippet lands at `file`.
 
 ## Embed a live component
 
