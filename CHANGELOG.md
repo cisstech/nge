@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.4.3](https://github.com/cisstech/nge/compare/v22.4.2...v22.4.3) (2026-07-13)
+
+
+### Bug Fixes
+
+* **doc:** do not require typedoc when the api option is omitted ([9b144d8](https://github.com/cisstech/nge/commit/9b144d843fb9318f2cd284018e218e47bd0d8ffc))
+* **doc:** hold pending tasks through route resolution for SSR ([082d9e5](https://github.com/cisstech/nge/commit/082d9e52a52341dd388a38cbb219cd15d3d395bc))
+* **markdown:** move withShiki to its own entry point ([e792b1d](https://github.com/cisstech/nge/commit/e792b1d7acc4440c84688c021c2145eca5ac28b2))
+
 ### [22.4.2](https://github.com/cisstech/nge/compare/v22.4.1...v22.4.2) (2026-07-13)
 
 
