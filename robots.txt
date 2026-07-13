@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cisstech.github.io/nge/sitemap.xml

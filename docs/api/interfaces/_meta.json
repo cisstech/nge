@@ -1,0 +1,50 @@
+{
+  "NgeDocBrand": {
+    "title": "NgeDocBrand"
+  },
+  "NgeDocFeature": {
+    "title": "NgeDocFeature"
+  },
+  "NgeDocHeading": {
+    "title": "NgeDocHeading"
+  },
+  "NgeDocLabels": {
+    "title": "NgeDocLabels"
+  },
+  "NgeDocLink": {
+    "title": "NgeDocLink"
+  },
+  "NgeDocLinkAction": {
+    "title": "NgeDocLinkAction"
+  },
+  "NgeDocManifest": {
+    "title": "NgeDocManifest"
+  },
+  "NgeDocManifestSource": {
+    "title": "NgeDocManifestSource"
+  },
+  "NgeDocMeta": {
+    "title": "NgeDocMeta"
+  },
+  "NgeDocNavLink": {
+    "title": "NgeDocNavLink"
+  },
+  "NgeDocSearchDocument": {
+    "title": "NgeDocSearchDocument"
+  },
+  "NgeDocSearchProvider": {
+    "title": "NgeDocSearchProvider"
+  },
+  "NgeDocSearchResult": {
+    "title": "NgeDocSearchResult"
+  },
+  "NgeDocSeoConfig": {
+    "title": "NgeDocSeoConfig"
+  },
+  "NgeDocSettings": {
+    "title": "NgeDocSettings"
+  },
+  "NgeDocState": {
+    "title": "NgeDocState"
+  }
+}

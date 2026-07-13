@@ -1,0 +1,47 @@
+{
+  "DEFAULT_NGE_DOC_LABELS": {
+    "title": "DEFAULT_NGE_DOC_LABELS"
+  },
+  "DEFAULT_NGE_DOC_LAYOUT": {
+    "title": "DEFAULT_NGE_DOC_LAYOUT"
+  },
+  "NGE_DOC_BRAND": {
+    "title": "NGE_DOC_BRAND"
+  },
+  "NGE_DOC_DEFAULT_COLOR_SCHEME": {
+    "title": "NGE_DOC_DEFAULT_COLOR_SCHEME"
+  },
+  "NGE_DOC_EDIT_URL": {
+    "title": "NGE_DOC_EDIT_URL"
+  },
+  "NGE_DOC_LABELS": {
+    "title": "NGE_DOC_LABELS"
+  },
+  "NGE_DOC_LABELS_EN": {
+    "title": "NGE_DOC_LABELS_EN"
+  },
+  "NGE_DOC_LABELS_FR": {
+    "title": "NGE_DOC_LABELS_FR"
+  },
+  "NGE_DOC_LAYOUT": {
+    "title": "NGE_DOC_LAYOUT"
+  },
+  "NGE_DOC_NAVBAR": {
+    "title": "NGE_DOC_NAVBAR"
+  },
+  "NGE_DOC_RENDERERS": {
+    "title": "NGE_DOC_RENDERERS"
+  },
+  "NGE_DOC_ROUTES": {
+    "title": "NGE_DOC_ROUTES"
+  },
+  "NGE_DOC_SEARCH_INDEX_URL": {
+    "title": "NGE_DOC_SEARCH_INDEX_URL"
+  },
+  "NGE_DOC_SEARCH_PROVIDER": {
+    "title": "NGE_DOC_SEARCH_PROVIDER"
+  },
+  "NGE_DOC_SEO": {
+    "title": "NGE_DOC_SEO"
+  }
+}

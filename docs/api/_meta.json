@@ -1,0 +1,17 @@
+{
+  "functions": {
+    "title": "Functions"
+  },
+  "classes": {
+    "title": "Classes"
+  },
+  "interfaces": {
+    "title": "Interfaces"
+  },
+  "type-aliases": {
+    "title": "Type aliases"
+  },
+  "variables": {
+    "title": "Variables"
+  }
+}

@@ -1,0 +1,6 @@
+---
+title: NgeDocModule
+---
+# NgeDocModule
+
+`class`

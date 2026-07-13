@@ -1,0 +1,118 @@
+# NG Essentials
+
+## Documentation
+
+- [Introduction](https://cisstech.github.io/nge/docs/overview/introduction): Focused Angular building blocks. A documentation engine, a Markdown renderer, a Monaco editor integration, and a few UI and utility packages.
+- [Installation](https://cisstech.github.io/nge/docs/overview/installation): Install @cisstech/nge, its peer dependencies, and pick the Angular-compatible version line.
+- [Getting started](https://cisstech.github.io/nge/docs/nge-doc/getting-started): Build a documentation site for Angular from Markdown files or code, with navigation, search, dark mode, SEO and static generation handled for you.
+- [Installation](https://cisstech.github.io/nge/docs/nge-doc/installation): Add nge/doc to a project with ng add, or set it up manually.
+- [Docs from files](https://cisstech.github.io/nge/docs/nge-doc/files): Author Markdown under public/, compile it with the docs builder, and serve everything in place.
+- [Authoring](https://cisstech.github.io/nge/docs/nge-doc/files/authoring): Pages, sections, _meta.json and frontmatter, and how titles and order are resolved.
+- [Outputs](https://cisstech.github.io/nge/docs/nge-doc/files/outputs): What the docs builder emits, where, and how to opt out of each output.
+- [Docs from code](https://cisstech.github.io/nge/docs/nge-doc/code-first): Declare pages as data when the navigation is dynamic, generated or backed by an API.
+- [Components in Markdown](https://cisstech.github.io/nge/docs/nge-doc/guides/components): Embed live Angular components inside Markdown pages, or make a whole page interactive.
+- [Static generation](https://cisstech.github.io/nge/docs/nge-doc/guides/ssg): Prerender every documentation page at build time with the doc/ssr entry.
+- [Theming](https://cisstech.github.io/nge/docs/nge-doc/guides/theming): Brand, header navigation, dark mode, custom themes and labels.
+- [Search and SEO](https://cisstech.github.io/nge/docs/nge-doc/guides/search-seo): The command palette, the build-time content index, meta tags, edit links and the AI-friendly outputs.
+- [Deployment](https://cisstech.github.io/nge/docs/nge-doc/guides/deployment): Serve the docs under a base href and give the static host an SPA fallback.
+- [API reference](https://cisstech.github.io/nge/docs/nge-doc/guides/api-reference): Generate reference pages from TypeScript sources, rendered through the same pipeline as the rest of the docs.
+- [MCP server](https://cisstech.github.io/nge/docs/nge-doc/guides/mcp): Let AI coding agents search and read your published docs through the Model Context Protocol.
+- [Playground](https://cisstech.github.io/nge/docs/nge-doc/guides/playground): Turn a fenced code block into a runnable StackBlitz example, or embed a live component.
+- [Reference](https://cisstech.github.io/nge/docs/nge-doc/reference): Builder options, frontmatter keys, _meta.json entries, provideNgeDoc features and the SSR api, in one place.
+- [Getting Started](https://cisstech.github.io/nge/docs/nge-markdown/getting-started): Render Markdown in Angular with a GitHub-style theme, dark mode and a contribution API for admonitions, tabs, KaTeX, emoji and syntax highlighting.
+- [Installation](https://cisstech.github.io/nge/docs/nge-markdown/installation): Install nge/markdown and its Marked peer dependency.
+- [Usage](https://cisstech.github.io/nge/docs/nge-markdown/usage): Render Markdown from a string, a file or transclusion, configure Marked, apply a theme, and compile Markdown yourself with NgeMarkdownService.
+- [Embedding](https://cisstech.github.io/nge/docs/nge-markdown/embedding): Render live Angular components inside Markdown by keyword, through a small component registry.
+- [Contributions](https://cisstech.github.io/nge/docs/nge-markdown/contributions): Extend nge/markdown with admonitions, tabs, KaTeX, emoji, icons, router-aware links and syntax highlighting, or write your own transform of the Markdown pipeline.
+- [Admonitions](https://cisstech.github.io/nge/docs/nge-markdown/contributions/admonitions): Styled call-out blocks (note, tip, warning, danger and more) with an optional title and arbitrary nested content.
+- [Emoji](https://cisstech.github.io/nge/docs/nge-markdown/contributions/emoji): Render emoji from shortcodes such as :smile: using Emoji Toolkit.
+- [Highlighter](https://cisstech.github.io/nge/docs/nge-markdown/contributions/highlighter): Syntax highlighting for code blocks, with line numbers, highlighted lines and a filename header.
+- [Icons](https://cisstech.github.io/nge/docs/nge-markdown/contributions/icons): Inline icons from icongram, sized and colored, loaded on demand.
+- [KaTeX](https://cisstech.github.io/nge/docs/nge-markdown/contributions/katex): Render mathematical and chemical expressions in Markdown with KaTeX.
+- [LinkAnchor](https://cisstech.github.io/nge/docs/nge-markdown/contributions/link-anchor): Make in-page anchor links navigate through the Angular router instead of reloading.
+- [TabbedSet](https://cisstech.github.io/nge/docs/nge-markdown/contributions/tabbed-set): Group alternative content, such as code for several languages, under tabs.
+- [Cheatsheet](https://cisstech.github.io/nge/docs/nge-markdown/cheatsheet)
+- [Getting Started](https://cisstech.github.io/nge/docs/nge-monaco/getting-started): Embed the Monaco editor in Angular with editor, diff editor and read-only viewer components, a theming API with automatic light/dark switching, and full control over the editor instance.
+- [Installation](https://cisstech.github.io/nge/docs/nge-monaco/installation): Install nge/monaco and its monaco-editor peer dependency.
+- [Usage](https://cisstech.github.io/nge/docs/nge-monaco/usage): Set up nge/monaco, use the editor, diff editor and viewer components, switch themes at runtime, follow light and dark mode, and extend Monaco with contributions.
+- [Showcase](https://cisstech.github.io/nge/docs/nge-monaco/showcase)
+- [Getting Started](https://cisstech.github.io/nge/docs/nge-ui/getting-started): Standalone Angular UI building blocks: a data tree, a filterable list, and a multi-source icon component.
+- [Tree](https://cisstech.github.io/nge/docs/nge-ui/tree): Render a data tree from your own model with an adapter, with expand/collapse, selection, filtering and keyboard actions.
+- [List](https://cisstech.github.io/nge/docs/nge-ui/list): Render a filterable list of items with your own item template or a ready-made article layout.
+- [Icon](https://cisstech.github.io/nge/docs/nge-ui/icon): Render an icon from Font Awesome, icongram, VS Code codicons, a file or folder type, or an image, behind one component.
+- [Getting Started](https://cisstech.github.io/nge/docs/utilities/getting-started): The small building blocks the rest of nge is built on: services, standalone pipes, and framework-free helper functions.
+- [Services](https://cisstech.github.io/nge/docs/utilities/services): Root-provided helpers for the clipboard, dynamic component rendering, on-demand resource loading and file picking.
+- [Pipes](https://cisstech.github.io/nge/docs/utilities/pipes): Standalone template pipes for type checks, length, safe values and inline icons.
+- [Utils](https://cisstech.github.io/nge/docs/utilities/utils): Pure helper functions for colors, dates, strings, comparison, copying, file types and typed builders, with no Angular dependency.
+- [API](https://cisstech.github.io/nge/docs/api)
+- [contentPages](https://cisstech.github.io/nge/docs/api/functions/contentPages): Content pages (an `href` plus a renderer) of a navigation tree, depth-first.
+- [docsAssetStateKey](https://cisstech.github.io/nge/docs/api/functions/docsAssetStateKey): Transfer-state key of a docs asset, shared by the browser and server implementations.
+- [docsFromManifest](https://cisstech.github.io/nge/docs/api/functions/docsFromManifest): Declares a documentation site loaded at runtime from a build-time manifest.
+- [extractManifestSources](https://cisstech.github.io/nge/docs/api/functions/extractManifestSources): Collects manifest sources from route data (mirrors `extractNgeDocSettings`).
+- [extractNgeDocSettings](https://cisstech.github.io/nge/docs/api/functions/extractNgeDocSettings)
+- [flattenPages](https://cisstech.github.io/nge/docs/api/functions/flattenPages): Routable links of a manifest in reading order (depth-first, a parent before
+- [indexablePages](https://cisstech.github.io/nge/docs/api/functions/indexablePages): Every routable page across the manifests, with its breadcrumb path (site name first).
+- [isNgeDocManifestSource](https://cisstech.github.io/nge/docs/api/functions/isNgeDocManifestSource): Type guard for a NgeDocManifestSource.
+- [isNgeDocSettings](https://cisstech.github.io/nge/docs/api/functions/isNgeDocSettings)
+- [joinUrl](https://cisstech.github.io/nge/docs/api/functions/joinUrl): Joins two url segments with exactly one slash between them.
+- [provideNgeDoc](https://cisstech.github.io/nge/docs/api/functions/provideNgeDoc): Configure the nge-doc engine at the application root.
+- [settingsToManifest](https://cisstech.github.io/nge/docs/api/functions/settingsToManifest): Converts code-first NgeDocSettings into a NgeDocManifest:
+- [withBrand](https://cisstech.github.io/nge/docs/api/functions/withBrand): Set a single brand (logo and title) for the header, shared across every site.
+- [withDarkMode](https://cisstech.github.io/nge/docs/api/functions/withDarkMode): Set the default color scheme applied before the user picks one.
+- [withEditLink](https://cisstech.github.io/nge/docs/api/functions/withEditLink): Show an "Edit this page" link built from `baseUrl` and each page's compiler
+- [withLabels](https://cisstech.github.io/nge/docs/api/functions/withLabels): Translate or reword the default theme. Pass only the labels you want to change.
+- [withMarkdownRenderer](https://cisstech.github.io/nge/docs/api/functions/withMarkdownRenderer): Register the component used to render markdown pages.
+- [withNavbar](https://cisstech.github.io/nge/docs/api/functions/withNavbar): Declare the header navigation links (e.g. to move between documentation sites).
+- [withSearchIndex](https://cisstech.github.io/nge/docs/api/functions/withSearchIndex): Search a build-time index emitted by the `@cisstech/nge:docs` builder instead
+- [withSeo](https://cisstech.github.io/nge/docs/api/functions/withSeo): Enable per-page canonical, Open Graph and Twitter tags. Titles and descriptions
+- [withTheme](https://cisstech.github.io/nge/docs/api/functions/withTheme): Use a custom theme instead of the default one.
+- [DefaultNgeDocSearchProvider](https://cisstech.github.io/nge/docs/api/classes/DefaultNgeDocSearchProvider): In-memory, title-based search over the manifests.
+- [HttpNgeDocAssets](https://cisstech.github.io/nge/docs/api/classes/HttpNgeDocAssets): Reads transfer state first, so a hydrated page reuses the content embedded
+- [NgeDocAssets](https://cisstech.github.io/nge/docs/api/classes/NgeDocAssets): Fetch port for the docs assets: the manifest (`nge-doc.json`) and the
+- [NgeDocModule](https://cisstech.github.io/nge/docs/api/classes/NgeDocModule)
+- [NgeDocRendererComponent](https://cisstech.github.io/nge/docs/api/classes/NgeDocRendererComponent)
+- [NgeDocService](https://cisstech.github.io/nge/docs/api/classes/NgeDocService)
+- [NgeDocThemeService](https://cisstech.github.io/nge/docs/api/classes/NgeDocThemeService): Owns the documentation color scheme.
+- [PrebuiltNgeDocSearchProvider](https://cisstech.github.io/nge/docs/api/classes/PrebuiltNgeDocSearchProvider): Searches a build-time index (chunked by heading) fetched from
+- [NgeDocBrand](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocBrand): The header brand: one logo and wordmark shared by every site.
+- [NgeDocFeature](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocFeature): A configuration feature for provideNgeDoc.
+- [NgeDocHeading](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocHeading): A heading extracted from the rendered page, used to build a table of contents.
+- [NgeDocLabels](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocLabels): User-facing wording of the default theme, so it can be translated or reworded.
+- [NgeDocLink](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocLink): Representation of a link in the documentation navigation.
+- [NgeDocLinkAction](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocLinkAction)
+- [NgeDocManifest](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocManifest): A resolved documentation site: its metadata and the navigation tree with every
+- [NgeDocManifestSource](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocManifestSource): A file-first source: the url of a manifest emitted by the build. Declared in a
+- [NgeDocMeta](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocMeta): Metadata informations about a documentation site.
+- [NgeDocNavLink](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocNavLink): A top-level navigation link shown in the theme header.
+- [NgeDocSearchDocument](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocSearchDocument): A unit of the search index: one document per page, or per heading when content is indexed.
+- [NgeDocSearchProvider](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocSearchProvider): Pluggable search backend. The default builds its index in memory from the
+- [NgeDocSearchResult](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocSearchResult): A page returned by a NgeDocSearchProvider for a query.
+- [NgeDocSeoConfig](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocSeoConfig): Site-wide SEO settings used to build canonical, Open Graph and Twitter tags.
+- [NgeDocSettings](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocSettings): Documentation site config.
+- [NgeDocState](https://cisstech.github.io/nge/docs/api/interfaces/NgeDocState): Representation of the documentation state.
+- [DynamicMeta](https://cisstech.github.io/nge/docs/api/type-aliases/DynamicMeta)
+- [DynamicPage](https://cisstech.github.io/nge/docs/api/type-aliases/DynamicPage)
+- [NgeDocColorScheme](https://cisstech.github.io/nge/docs/api/type-aliases/NgeDocColorScheme): Color scheme preference. `auto` follows the operating system setting.
+- [NgeDocIcon](https://cisstech.github.io/nge/docs/api/type-aliases/NgeDocIcon): An icon reference.
+- [NgeDocLayoutLoader](https://cisstech.github.io/nge/docs/api/type-aliases/NgeDocLayoutLoader): Loads the theme component that renders the documentation.
+- [NgeDocLinAction](https://cisstech.github.io/nge/docs/api/type-aliases/NgeDocLinAction)
+- [NgeDocLinkActionHandler](https://cisstech.github.io/nge/docs/api/type-aliases/NgeDocLinkActionHandler)
+- [NgeDocRenderer](https://cisstech.github.io/nge/docs/api/type-aliases/NgeDocRenderer)
+- [NgeDocRenderers](https://cisstech.github.io/nge/docs/api/type-aliases/NgeDocRenderers)
+- [StaticMeta](https://cisstech.github.io/nge/docs/api/type-aliases/StaticMeta)
+- [StaticPage](https://cisstech.github.io/nge/docs/api/type-aliases/StaticPage)
+- [DEFAULT_NGE_DOC_LABELS](https://cisstech.github.io/nge/docs/api/variables/DEFAULT_NGE_DOC_LABELS): Default (English) theme wording.
+- [DEFAULT_NGE_DOC_LAYOUT](https://cisstech.github.io/nge/docs/api/variables/DEFAULT_NGE_DOC_LAYOUT): The built-in default theme, dynamic-imported so it is tree-shaken away when a
+- [NGE_DOC_BRAND](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_BRAND): Header brand. When absent, the default theme uses the active site's name and logo.
+- [NGE_DOC_DEFAULT_COLOR_SCHEME](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_DEFAULT_COLOR_SCHEME): Default color scheme used when the user has not chosen one yet (see `withDarkMode`).
+- [NGE_DOC_EDIT_URL](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_EDIT_URL): Base url a page's `sourcePath` is appended to for the "Edit this page" link.
+- [NGE_DOC_LABELS](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_LABELS): Overridden theme wording. Merged over DEFAULT_NGE_DOC_LABELS.
+- [NGE_DOC_LABELS_EN](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_LABELS_EN): Ready-made English wording, an alias of DEFAULT_NGE_DOC_LABELS.
+- [NGE_DOC_LABELS_FR](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_LABELS_FR): Ready-made French wording. Use it with `withLabels(NGE_DOC_LABELS_FR)`.
+- [NGE_DOC_LAYOUT](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_LAYOUT): Injection token holding the active theme loader.
+- [NGE_DOC_NAVBAR](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_NAVBAR): Header navigation links. When absent, a theme may derive them from the registered sites.
+- [NGE_DOC_RENDERERS](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_RENDERERS): Custom renderers components
+- [NGE_DOC_ROUTES](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_ROUTES): Routes that render the documentation. Load them directly from a standalone
+- [NGE_DOC_SEARCH_INDEX_URL](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_SEARCH_INDEX_URL): Search index url for PrebuiltNgeDocSearchProvider, set via `withSearchIndex()`.
+- [NGE_DOC_SEARCH_PROVIDER](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_SEARCH_PROVIDER): Override this to plug a custom search backend via `withSearch()`.
+- [NGE_DOC_SEO](https://cisstech.github.io/nge/docs/api/variables/NGE_DOC_SEO): Site-wide SEO settings.

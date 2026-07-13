@@ -1,0 +1,919 @@
+{
+  "meta": {
+    "name": "NG Essentials",
+    "root": "/docs",
+    "nav": "tabs"
+  },
+  "pages": [
+    {
+      "title": "Overview",
+      "href": "/docs/overview",
+      "icon": "assets/icons/nav/overview.svg",
+      "children": [
+        {
+          "title": "Introduction",
+          "href": "/docs/overview/introduction",
+          "renderer": "docs/overview/introduction.md",
+          "description": "Focused Angular building blocks. A documentation engine, a Markdown renderer, a Monaco editor integration, and a few UI and utility packages.",
+          "sourcePath": "overview/introduction.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Installation",
+          "href": "/docs/overview/installation",
+          "renderer": "docs/overview/installation.md",
+          "description": "Install @cisstech/nge, its peer dependencies, and pick the Angular-compatible version line.",
+          "sourcePath": "overview/installation.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        }
+      ]
+    },
+    {
+      "title": "nge/doc",
+      "href": "/docs/nge-doc",
+      "icon": "assets/icons/nav/doc.svg",
+      "children": [
+        {
+          "title": "Getting started",
+          "href": "/docs/nge-doc/getting-started",
+          "renderer": "docs/nge-doc/getting-started.md",
+          "description": "Build a documentation site for Angular from Markdown files or code, with navigation, search, dark mode, SEO and static generation handled for you.",
+          "sourcePath": "nge-doc/getting-started.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Installation",
+          "href": "/docs/nge-doc/installation",
+          "renderer": "docs/nge-doc/installation.md",
+          "description": "Add nge/doc to a project with ng add, or set it up manually.",
+          "sourcePath": "nge-doc/installation.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Docs from files",
+          "href": "/docs/nge-doc/files",
+          "renderer": "docs/nge-doc/files/index.md",
+          "description": "Author Markdown under public/, compile it with the docs builder, and serve everything in place.",
+          "children": [
+            {
+              "title": "Authoring",
+              "href": "/docs/nge-doc/files/authoring",
+              "renderer": "docs/nge-doc/files/authoring.md",
+              "description": "Pages, sections, _meta.json and frontmatter, and how titles and order are resolved.",
+              "sourcePath": "nge-doc/files/authoring.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Outputs",
+              "href": "/docs/nge-doc/files/outputs",
+              "renderer": "docs/nge-doc/files/outputs.md",
+              "description": "What the docs builder emits, where, and how to opt out of each output.",
+              "sourcePath": "nge-doc/files/outputs.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            }
+          ],
+          "sourcePath": "nge-doc/files/index.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Docs from code",
+          "href": "/docs/nge-doc/code-first",
+          "renderer": "docs/nge-doc/code-first.md",
+          "description": "Declare pages as data when the navigation is dynamic, generated or backed by an API.",
+          "sourcePath": "nge-doc/code-first.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Guides",
+          "href": "/docs/nge-doc/guides",
+          "children": [
+            {
+              "title": "Components in Markdown",
+              "href": "/docs/nge-doc/guides/components",
+              "renderer": "docs/nge-doc/guides/components.md",
+              "description": "Embed live Angular components inside Markdown pages, or make a whole page interactive.",
+              "sourcePath": "nge-doc/guides/components.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Static generation",
+              "href": "/docs/nge-doc/guides/ssg",
+              "renderer": "docs/nge-doc/guides/ssg.md",
+              "description": "Prerender every documentation page at build time with the doc/ssr entry.",
+              "sourcePath": "nge-doc/guides/ssg.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Theming",
+              "href": "/docs/nge-doc/guides/theming",
+              "renderer": "docs/nge-doc/guides/theming.md",
+              "description": "Brand, header navigation, dark mode, custom themes and labels.",
+              "sourcePath": "nge-doc/guides/theming.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Search and SEO",
+              "href": "/docs/nge-doc/guides/search-seo",
+              "renderer": "docs/nge-doc/guides/search-seo.md",
+              "description": "The command palette, the build-time content index, meta tags, edit links and the AI-friendly outputs.",
+              "sourcePath": "nge-doc/guides/search-seo.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Deployment",
+              "href": "/docs/nge-doc/guides/deployment",
+              "renderer": "docs/nge-doc/guides/deployment.md",
+              "description": "Serve the docs under a base href and give the static host an SPA fallback.",
+              "sourcePath": "nge-doc/guides/deployment.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "API reference",
+              "href": "/docs/nge-doc/guides/api-reference",
+              "renderer": "docs/nge-doc/guides/api-reference.md",
+              "description": "Generate reference pages from TypeScript sources, rendered through the same pipeline as the rest of the docs.",
+              "sourcePath": "nge-doc/guides/api-reference.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "MCP server",
+              "href": "/docs/nge-doc/guides/mcp",
+              "renderer": "docs/nge-doc/guides/mcp.md",
+              "description": "Let AI coding agents search and read your published docs through the Model Context Protocol.",
+              "sourcePath": "nge-doc/guides/mcp.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Playground",
+              "href": "/docs/nge-doc/guides/playground",
+              "renderer": "docs/nge-doc/guides/playground.md",
+              "description": "Turn a fenced code block into a runnable StackBlitz example, or embed a live component.",
+              "sourcePath": "nge-doc/guides/playground.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            }
+          ]
+        },
+        {
+          "title": "Reference",
+          "href": "/docs/nge-doc/reference",
+          "renderer": "docs/nge-doc/reference.md",
+          "description": "Builder options, frontmatter keys, _meta.json entries, provideNgeDoc features and the SSR api, in one place.",
+          "sourcePath": "nge-doc/reference.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        }
+      ]
+    },
+    {
+      "title": "nge/markdown",
+      "href": "/docs/nge-markdown",
+      "icon": "assets/icons/nav/markdown.svg",
+      "children": [
+        {
+          "title": "Getting Started",
+          "href": "/docs/nge-markdown/getting-started",
+          "renderer": "docs/nge-markdown/getting-started.md",
+          "description": "Render Markdown in Angular with a GitHub-style theme, dark mode and a contribution API for admonitions, tabs, KaTeX, emoji and syntax highlighting.",
+          "sourcePath": "nge-markdown/getting-started.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Installation",
+          "href": "/docs/nge-markdown/installation",
+          "renderer": "docs/nge-markdown/installation.md",
+          "description": "Install nge/markdown and its Marked peer dependency.",
+          "sourcePath": "nge-markdown/installation.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Usage",
+          "href": "/docs/nge-markdown/usage",
+          "renderer": "docs/nge-markdown/usage.md",
+          "description": "Render Markdown from a string, a file or transclusion, configure Marked, apply a theme, and compile Markdown yourself with NgeMarkdownService.",
+          "sourcePath": "nge-markdown/usage.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Embedding",
+          "href": "/docs/nge-markdown/embedding",
+          "renderer": "docs/nge-markdown/embedding.md",
+          "description": "Render live Angular components inside Markdown by keyword, through a small component registry.",
+          "sourcePath": "nge-markdown/embedding.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Contributions",
+          "href": "/docs/nge-markdown/contributions",
+          "renderer": "docs/nge-markdown/contributions/index.md",
+          "description": "Extend nge/markdown with admonitions, tabs, KaTeX, emoji, icons, router-aware links and syntax highlighting, or write your own transform of the Markdown pipeline.",
+          "children": [
+            {
+              "title": "Admonitions",
+              "href": "/docs/nge-markdown/contributions/admonitions",
+              "renderer": "docs/nge-markdown/contributions/admonitions.md",
+              "description": "Styled call-out blocks (note, tip, warning, danger and more) with an optional title and arbitrary nested content.",
+              "sourcePath": "nge-markdown/contributions/admonitions.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Emoji",
+              "href": "/docs/nge-markdown/contributions/emoji",
+              "renderer": "docs/nge-markdown/contributions/emoji.md",
+              "description": "Render emoji from shortcodes such as :smile: using Emoji Toolkit.",
+              "sourcePath": "nge-markdown/contributions/emoji.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Highlighter",
+              "href": "/docs/nge-markdown/contributions/highlighter",
+              "renderer": "docs/nge-markdown/contributions/highlighter.md",
+              "description": "Syntax highlighting for code blocks, with line numbers, highlighted lines and a filename header.",
+              "sourcePath": "nge-markdown/contributions/highlighter.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "Icons",
+              "href": "/docs/nge-markdown/contributions/icons",
+              "renderer": "docs/nge-markdown/contributions/icons.md",
+              "description": "Inline icons from icongram, sized and colored, loaded on demand.",
+              "sourcePath": "nge-markdown/contributions/icons.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "KaTeX",
+              "href": "/docs/nge-markdown/contributions/katex",
+              "renderer": "docs/nge-markdown/contributions/katex.md",
+              "description": "Render mathematical and chemical expressions in Markdown with KaTeX.",
+              "sourcePath": "nge-markdown/contributions/katex.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "LinkAnchor",
+              "href": "/docs/nge-markdown/contributions/link-anchor",
+              "renderer": "docs/nge-markdown/contributions/link-anchor.md",
+              "description": "Make in-page anchor links navigate through the Angular router instead of reloading.",
+              "sourcePath": "nge-markdown/contributions/link-anchor.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            },
+            {
+              "title": "TabbedSet",
+              "href": "/docs/nge-markdown/contributions/tabbed-set",
+              "renderer": "docs/nge-markdown/contributions/tabbed-set.md",
+              "description": "Group alternative content, such as code for several languages, under tabs.",
+              "sourcePath": "nge-markdown/contributions/tabbed-set.md",
+              "lastUpdated": "2026-07-13T18:19:16+02:00"
+            }
+          ],
+          "sourcePath": "nge-markdown/contributions/index.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Cheatsheet",
+          "href": "/docs/nge-markdown/cheatsheet",
+          "renderer": "docs/nge-markdown/cheatsheet.md",
+          "prerender": false,
+          "sourcePath": "nge-markdown/cheatsheet.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        }
+      ]
+    },
+    {
+      "title": "nge/monaco",
+      "href": "/docs/nge-monaco",
+      "icon": "assets/icons/nav/monaco.svg",
+      "children": [
+        {
+          "title": "Getting Started",
+          "href": "/docs/nge-monaco/getting-started",
+          "renderer": "docs/nge-monaco/getting-started.md",
+          "description": "Embed the Monaco editor in Angular with editor, diff editor and read-only viewer components, a theming API with automatic light/dark switching, and full control over the editor instance.",
+          "sourcePath": "nge-monaco/getting-started.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Installation",
+          "href": "/docs/nge-monaco/installation",
+          "renderer": "docs/nge-monaco/installation.md",
+          "description": "Install nge/monaco and its monaco-editor peer dependency.",
+          "sourcePath": "nge-monaco/installation.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Usage",
+          "href": "/docs/nge-monaco/usage",
+          "renderer": "docs/nge-monaco/usage.md",
+          "description": "Set up nge/monaco, use the editor, diff editor and viewer components, switch themes at runtime, follow light and dark mode, and extend Monaco with contributions.",
+          "sourcePath": "nge-monaco/usage.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Showcase",
+          "href": "/docs/nge-monaco/showcase",
+          "renderer": "docs/nge-monaco/showcase.md",
+          "prerender": false,
+          "sourcePath": "nge-monaco/showcase.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        }
+      ]
+    },
+    {
+      "title": "nge/ui",
+      "href": "/docs/nge-ui",
+      "icon": "assets/icons/nav/ui.svg",
+      "children": [
+        {
+          "title": "Getting Started",
+          "href": "/docs/nge-ui/getting-started",
+          "renderer": "docs/nge-ui/getting-started.md",
+          "description": "Standalone Angular UI building blocks: a data tree, a filterable list, and a multi-source icon component.",
+          "sourcePath": "nge-ui/getting-started.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Tree",
+          "href": "/docs/nge-ui/tree",
+          "renderer": "docs/nge-ui/tree.md",
+          "description": "Render a data tree from your own model with an adapter, with expand/collapse, selection, filtering and keyboard actions.",
+          "sourcePath": "nge-ui/tree.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "List",
+          "href": "/docs/nge-ui/list",
+          "renderer": "docs/nge-ui/list.md",
+          "description": "Render a filterable list of items with your own item template or a ready-made article layout.",
+          "sourcePath": "nge-ui/list.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Icon",
+          "href": "/docs/nge-ui/icon",
+          "renderer": "docs/nge-ui/icon.md",
+          "description": "Render an icon from Font Awesome, icongram, VS Code codicons, a file or folder type, or an image, behind one component.",
+          "sourcePath": "nge-ui/icon.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        }
+      ]
+    },
+    {
+      "title": "Utilities",
+      "href": "/docs/utilities",
+      "icon": "assets/icons/nav/utils.svg",
+      "children": [
+        {
+          "title": "Getting Started",
+          "href": "/docs/utilities/getting-started",
+          "renderer": "docs/utilities/getting-started.md",
+          "description": "The small building blocks the rest of nge is built on: services, standalone pipes, and framework-free helper functions.",
+          "sourcePath": "utilities/getting-started.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Services",
+          "href": "/docs/utilities/services",
+          "renderer": "docs/utilities/services.md",
+          "description": "Root-provided helpers for the clipboard, dynamic component rendering, on-demand resource loading and file picking.",
+          "sourcePath": "utilities/services.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Pipes",
+          "href": "/docs/utilities/pipes",
+          "renderer": "docs/utilities/pipes.md",
+          "description": "Standalone template pipes for type checks, length, safe values and inline icons.",
+          "sourcePath": "utilities/pipes.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        },
+        {
+          "title": "Utils",
+          "href": "/docs/utilities/utils",
+          "renderer": "docs/utilities/utils.md",
+          "description": "Pure helper functions for colors, dates, strings, comparison, copying, file types and typed builders, with no Angular dependency.",
+          "sourcePath": "utilities/utils.md",
+          "lastUpdated": "2026-07-13T18:19:16+02:00"
+        }
+      ]
+    },
+    {
+      "title": "API",
+      "href": "/docs/api",
+      "renderer": "docs/api/index.md",
+      "icon": "assets/icons/nav/utils.svg",
+      "children": [
+        {
+          "title": "Functions",
+          "href": "/docs/api/functions",
+          "children": [
+            {
+              "title": "contentPages",
+              "href": "/docs/api/functions/contentPages",
+              "renderer": "docs/api/functions/contentPages.md",
+              "description": "Content pages (an `href` plus a renderer) of a navigation tree, depth-first.",
+              "sourcePath": "api/functions/contentPages.md"
+            },
+            {
+              "title": "docsAssetStateKey",
+              "href": "/docs/api/functions/docsAssetStateKey",
+              "renderer": "docs/api/functions/docsAssetStateKey.md",
+              "description": "Transfer-state key of a docs asset, shared by the browser and server implementations.",
+              "sourcePath": "api/functions/docsAssetStateKey.md"
+            },
+            {
+              "title": "docsFromManifest",
+              "href": "/docs/api/functions/docsFromManifest",
+              "renderer": "docs/api/functions/docsFromManifest.md",
+              "description": "Declares a documentation site loaded at runtime from a build-time manifest.",
+              "sourcePath": "api/functions/docsFromManifest.md"
+            },
+            {
+              "title": "extractManifestSources",
+              "href": "/docs/api/functions/extractManifestSources",
+              "renderer": "docs/api/functions/extractManifestSources.md",
+              "description": "Collects manifest sources from route data (mirrors `extractNgeDocSettings`).",
+              "sourcePath": "api/functions/extractManifestSources.md"
+            },
+            {
+              "title": "extractNgeDocSettings",
+              "href": "/docs/api/functions/extractNgeDocSettings",
+              "renderer": "docs/api/functions/extractNgeDocSettings.md",
+              "sourcePath": "api/functions/extractNgeDocSettings.md"
+            },
+            {
+              "title": "flattenPages",
+              "href": "/docs/api/functions/flattenPages",
+              "renderer": "docs/api/functions/flattenPages.md",
+              "description": "Routable links of a manifest in reading order (depth-first, a parent before",
+              "sourcePath": "api/functions/flattenPages.md"
+            },
+            {
+              "title": "indexablePages",
+              "href": "/docs/api/functions/indexablePages",
+              "renderer": "docs/api/functions/indexablePages.md",
+              "description": "Every routable page across the manifests, with its breadcrumb path (site name first).",
+              "sourcePath": "api/functions/indexablePages.md"
+            },
+            {
+              "title": "isNgeDocManifestSource",
+              "href": "/docs/api/functions/isNgeDocManifestSource",
+              "renderer": "docs/api/functions/isNgeDocManifestSource.md",
+              "description": "Type guard for a NgeDocManifestSource.",
+              "sourcePath": "api/functions/isNgeDocManifestSource.md"
+            },
+            {
+              "title": "isNgeDocSettings",
+              "href": "/docs/api/functions/isNgeDocSettings",
+              "renderer": "docs/api/functions/isNgeDocSettings.md",
+              "sourcePath": "api/functions/isNgeDocSettings.md"
+            },
+            {
+              "title": "joinUrl",
+              "href": "/docs/api/functions/joinUrl",
+              "renderer": "docs/api/functions/joinUrl.md",
+              "description": "Joins two url segments with exactly one slash between them.",
+              "sourcePath": "api/functions/joinUrl.md"
+            },
+            {
+              "title": "provideNgeDoc",
+              "href": "/docs/api/functions/provideNgeDoc",
+              "renderer": "docs/api/functions/provideNgeDoc.md",
+              "description": "Configure the nge-doc engine at the application root.",
+              "sourcePath": "api/functions/provideNgeDoc.md"
+            },
+            {
+              "title": "settingsToManifest",
+              "href": "/docs/api/functions/settingsToManifest",
+              "renderer": "docs/api/functions/settingsToManifest.md",
+              "description": "Converts code-first NgeDocSettings into a NgeDocManifest:",
+              "sourcePath": "api/functions/settingsToManifest.md"
+            },
+            {
+              "title": "withBrand",
+              "href": "/docs/api/functions/withBrand",
+              "renderer": "docs/api/functions/withBrand.md",
+              "description": "Set a single brand (logo and title) for the header, shared across every site.",
+              "sourcePath": "api/functions/withBrand.md"
+            },
+            {
+              "title": "withDarkMode",
+              "href": "/docs/api/functions/withDarkMode",
+              "renderer": "docs/api/functions/withDarkMode.md",
+              "description": "Set the default color scheme applied before the user picks one.",
+              "sourcePath": "api/functions/withDarkMode.md"
+            },
+            {
+              "title": "withEditLink",
+              "href": "/docs/api/functions/withEditLink",
+              "renderer": "docs/api/functions/withEditLink.md",
+              "description": "Show an \"Edit this page\" link built from `baseUrl` and each page's compiler",
+              "sourcePath": "api/functions/withEditLink.md"
+            },
+            {
+              "title": "withLabels",
+              "href": "/docs/api/functions/withLabels",
+              "renderer": "docs/api/functions/withLabels.md",
+              "description": "Translate or reword the default theme. Pass only the labels you want to change.",
+              "sourcePath": "api/functions/withLabels.md"
+            },
+            {
+              "title": "withMarkdownRenderer",
+              "href": "/docs/api/functions/withMarkdownRenderer",
+              "renderer": "docs/api/functions/withMarkdownRenderer.md",
+              "description": "Register the component used to render markdown pages.",
+              "sourcePath": "api/functions/withMarkdownRenderer.md"
+            },
+            {
+              "title": "withNavbar",
+              "href": "/docs/api/functions/withNavbar",
+              "renderer": "docs/api/functions/withNavbar.md",
+              "description": "Declare the header navigation links (e.g. to move between documentation sites).",
+              "sourcePath": "api/functions/withNavbar.md"
+            },
+            {
+              "title": "withSearchIndex",
+              "href": "/docs/api/functions/withSearchIndex",
+              "renderer": "docs/api/functions/withSearchIndex.md",
+              "description": "Search a build-time index emitted by the `@cisstech/nge:docs` builder instead",
+              "sourcePath": "api/functions/withSearchIndex.md"
+            },
+            {
+              "title": "withSeo",
+              "href": "/docs/api/functions/withSeo",
+              "renderer": "docs/api/functions/withSeo.md",
+              "description": "Enable per-page canonical, Open Graph and Twitter tags. Titles and descriptions",
+              "sourcePath": "api/functions/withSeo.md"
+            },
+            {
+              "title": "withTheme",
+              "href": "/docs/api/functions/withTheme",
+              "renderer": "docs/api/functions/withTheme.md",
+              "description": "Use a custom theme instead of the default one.",
+              "sourcePath": "api/functions/withTheme.md"
+            }
+          ]
+        },
+        {
+          "title": "Classes",
+          "href": "/docs/api/classes",
+          "children": [
+            {
+              "title": "DefaultNgeDocSearchProvider",
+              "href": "/docs/api/classes/DefaultNgeDocSearchProvider",
+              "renderer": "docs/api/classes/DefaultNgeDocSearchProvider.md",
+              "description": "In-memory, title-based search over the manifests.",
+              "sourcePath": "api/classes/DefaultNgeDocSearchProvider.md"
+            },
+            {
+              "title": "HttpNgeDocAssets",
+              "href": "/docs/api/classes/HttpNgeDocAssets",
+              "renderer": "docs/api/classes/HttpNgeDocAssets.md",
+              "description": "Reads transfer state first, so a hydrated page reuses the content embedded",
+              "sourcePath": "api/classes/HttpNgeDocAssets.md"
+            },
+            {
+              "title": "NgeDocAssets",
+              "href": "/docs/api/classes/NgeDocAssets",
+              "renderer": "docs/api/classes/NgeDocAssets.md",
+              "description": "Fetch port for the docs assets: the manifest (`nge-doc.json`) and the",
+              "sourcePath": "api/classes/NgeDocAssets.md"
+            },
+            {
+              "title": "NgeDocModule",
+              "href": "/docs/api/classes/NgeDocModule",
+              "renderer": "docs/api/classes/NgeDocModule.md",
+              "sourcePath": "api/classes/NgeDocModule.md"
+            },
+            {
+              "title": "NgeDocRendererComponent",
+              "href": "/docs/api/classes/NgeDocRendererComponent",
+              "renderer": "docs/api/classes/NgeDocRendererComponent.md",
+              "sourcePath": "api/classes/NgeDocRendererComponent.md"
+            },
+            {
+              "title": "NgeDocService",
+              "href": "/docs/api/classes/NgeDocService",
+              "renderer": "docs/api/classes/NgeDocService.md",
+              "sourcePath": "api/classes/NgeDocService.md"
+            },
+            {
+              "title": "NgeDocThemeService",
+              "href": "/docs/api/classes/NgeDocThemeService",
+              "renderer": "docs/api/classes/NgeDocThemeService.md",
+              "description": "Owns the documentation color scheme.",
+              "sourcePath": "api/classes/NgeDocThemeService.md"
+            },
+            {
+              "title": "PrebuiltNgeDocSearchProvider",
+              "href": "/docs/api/classes/PrebuiltNgeDocSearchProvider",
+              "renderer": "docs/api/classes/PrebuiltNgeDocSearchProvider.md",
+              "description": "Searches a build-time index (chunked by heading) fetched from",
+              "sourcePath": "api/classes/PrebuiltNgeDocSearchProvider.md"
+            }
+          ]
+        },
+        {
+          "title": "Interfaces",
+          "href": "/docs/api/interfaces",
+          "children": [
+            {
+              "title": "NgeDocBrand",
+              "href": "/docs/api/interfaces/NgeDocBrand",
+              "renderer": "docs/api/interfaces/NgeDocBrand.md",
+              "description": "The header brand: one logo and wordmark shared by every site.",
+              "sourcePath": "api/interfaces/NgeDocBrand.md"
+            },
+            {
+              "title": "NgeDocFeature",
+              "href": "/docs/api/interfaces/NgeDocFeature",
+              "renderer": "docs/api/interfaces/NgeDocFeature.md",
+              "description": "A configuration feature for provideNgeDoc.",
+              "sourcePath": "api/interfaces/NgeDocFeature.md"
+            },
+            {
+              "title": "NgeDocHeading",
+              "href": "/docs/api/interfaces/NgeDocHeading",
+              "renderer": "docs/api/interfaces/NgeDocHeading.md",
+              "description": "A heading extracted from the rendered page, used to build a table of contents.",
+              "sourcePath": "api/interfaces/NgeDocHeading.md"
+            },
+            {
+              "title": "NgeDocLabels",
+              "href": "/docs/api/interfaces/NgeDocLabels",
+              "renderer": "docs/api/interfaces/NgeDocLabels.md",
+              "description": "User-facing wording of the default theme, so it can be translated or reworded.",
+              "sourcePath": "api/interfaces/NgeDocLabels.md"
+            },
+            {
+              "title": "NgeDocLink",
+              "href": "/docs/api/interfaces/NgeDocLink",
+              "renderer": "docs/api/interfaces/NgeDocLink.md",
+              "description": "Representation of a link in the documentation navigation.",
+              "sourcePath": "api/interfaces/NgeDocLink.md"
+            },
+            {
+              "title": "NgeDocLinkAction",
+              "href": "/docs/api/interfaces/NgeDocLinkAction",
+              "renderer": "docs/api/interfaces/NgeDocLinkAction.md",
+              "sourcePath": "api/interfaces/NgeDocLinkAction.md"
+            },
+            {
+              "title": "NgeDocManifest",
+              "href": "/docs/api/interfaces/NgeDocManifest",
+              "renderer": "docs/api/interfaces/NgeDocManifest.md",
+              "description": "A resolved documentation site: its metadata and the navigation tree with every",
+              "sourcePath": "api/interfaces/NgeDocManifest.md"
+            },
+            {
+              "title": "NgeDocManifestSource",
+              "href": "/docs/api/interfaces/NgeDocManifestSource",
+              "renderer": "docs/api/interfaces/NgeDocManifestSource.md",
+              "description": "A file-first source: the url of a manifest emitted by the build. Declared in a",
+              "sourcePath": "api/interfaces/NgeDocManifestSource.md"
+            },
+            {
+              "title": "NgeDocMeta",
+              "href": "/docs/api/interfaces/NgeDocMeta",
+              "renderer": "docs/api/interfaces/NgeDocMeta.md",
+              "description": "Metadata informations about a documentation site.",
+              "sourcePath": "api/interfaces/NgeDocMeta.md"
+            },
+            {
+              "title": "NgeDocNavLink",
+              "href": "/docs/api/interfaces/NgeDocNavLink",
+              "renderer": "docs/api/interfaces/NgeDocNavLink.md",
+              "description": "A top-level navigation link shown in the theme header.",
+              "sourcePath": "api/interfaces/NgeDocNavLink.md"
+            },
+            {
+              "title": "NgeDocSearchDocument",
+              "href": "/docs/api/interfaces/NgeDocSearchDocument",
+              "renderer": "docs/api/interfaces/NgeDocSearchDocument.md",
+              "description": "A unit of the search index: one document per page, or per heading when content is indexed.",
+              "sourcePath": "api/interfaces/NgeDocSearchDocument.md"
+            },
+            {
+              "title": "NgeDocSearchProvider",
+              "href": "/docs/api/interfaces/NgeDocSearchProvider",
+              "renderer": "docs/api/interfaces/NgeDocSearchProvider.md",
+              "description": "Pluggable search backend. The default builds its index in memory from the",
+              "sourcePath": "api/interfaces/NgeDocSearchProvider.md"
+            },
+            {
+              "title": "NgeDocSearchResult",
+              "href": "/docs/api/interfaces/NgeDocSearchResult",
+              "renderer": "docs/api/interfaces/NgeDocSearchResult.md",
+              "description": "A page returned by a NgeDocSearchProvider for a query.",
+              "sourcePath": "api/interfaces/NgeDocSearchResult.md"
+            },
+            {
+              "title": "NgeDocSeoConfig",
+              "href": "/docs/api/interfaces/NgeDocSeoConfig",
+              "renderer": "docs/api/interfaces/NgeDocSeoConfig.md",
+              "description": "Site-wide SEO settings used to build canonical, Open Graph and Twitter tags.",
+              "sourcePath": "api/interfaces/NgeDocSeoConfig.md"
+            },
+            {
+              "title": "NgeDocSettings",
+              "href": "/docs/api/interfaces/NgeDocSettings",
+              "renderer": "docs/api/interfaces/NgeDocSettings.md",
+              "description": "Documentation site config.",
+              "sourcePath": "api/interfaces/NgeDocSettings.md"
+            },
+            {
+              "title": "NgeDocState",
+              "href": "/docs/api/interfaces/NgeDocState",
+              "renderer": "docs/api/interfaces/NgeDocState.md",
+              "description": "Representation of the documentation state.",
+              "sourcePath": "api/interfaces/NgeDocState.md"
+            }
+          ]
+        },
+        {
+          "title": "Type aliases",
+          "href": "/docs/api/type-aliases",
+          "children": [
+            {
+              "title": "DynamicMeta",
+              "href": "/docs/api/type-aliases/DynamicMeta",
+              "renderer": "docs/api/type-aliases/DynamicMeta.md",
+              "sourcePath": "api/type-aliases/DynamicMeta.md"
+            },
+            {
+              "title": "DynamicPage",
+              "href": "/docs/api/type-aliases/DynamicPage",
+              "renderer": "docs/api/type-aliases/DynamicPage.md",
+              "sourcePath": "api/type-aliases/DynamicPage.md"
+            },
+            {
+              "title": "NgeDocColorScheme",
+              "href": "/docs/api/type-aliases/NgeDocColorScheme",
+              "renderer": "docs/api/type-aliases/NgeDocColorScheme.md",
+              "description": "Color scheme preference. `auto` follows the operating system setting.",
+              "sourcePath": "api/type-aliases/NgeDocColorScheme.md"
+            },
+            {
+              "title": "NgeDocIcon",
+              "href": "/docs/api/type-aliases/NgeDocIcon",
+              "renderer": "docs/api/type-aliases/NgeDocIcon.md",
+              "description": "An icon reference.",
+              "sourcePath": "api/type-aliases/NgeDocIcon.md"
+            },
+            {
+              "title": "NgeDocLayoutLoader",
+              "href": "/docs/api/type-aliases/NgeDocLayoutLoader",
+              "renderer": "docs/api/type-aliases/NgeDocLayoutLoader.md",
+              "description": "Loads the theme component that renders the documentation.",
+              "sourcePath": "api/type-aliases/NgeDocLayoutLoader.md"
+            },
+            {
+              "title": "NgeDocLinAction",
+              "href": "/docs/api/type-aliases/NgeDocLinAction",
+              "renderer": "docs/api/type-aliases/NgeDocLinAction.md",
+              "sourcePath": "api/type-aliases/NgeDocLinAction.md"
+            },
+            {
+              "title": "NgeDocLinkActionHandler",
+              "href": "/docs/api/type-aliases/NgeDocLinkActionHandler",
+              "renderer": "docs/api/type-aliases/NgeDocLinkActionHandler.md",
+              "sourcePath": "api/type-aliases/NgeDocLinkActionHandler.md"
+            },
+            {
+              "title": "NgeDocRenderer",
+              "href": "/docs/api/type-aliases/NgeDocRenderer",
+              "renderer": "docs/api/type-aliases/NgeDocRenderer.md",
+              "sourcePath": "api/type-aliases/NgeDocRenderer.md"
+            },
+            {
+              "title": "NgeDocRenderers",
+              "href": "/docs/api/type-aliases/NgeDocRenderers",
+              "renderer": "docs/api/type-aliases/NgeDocRenderers.md",
+              "sourcePath": "api/type-aliases/NgeDocRenderers.md"
+            },
+            {
+              "title": "StaticMeta",
+              "href": "/docs/api/type-aliases/StaticMeta",
+              "renderer": "docs/api/type-aliases/StaticMeta.md",
+              "sourcePath": "api/type-aliases/StaticMeta.md"
+            },
+            {
+              "title": "StaticPage",
+              "href": "/docs/api/type-aliases/StaticPage",
+              "renderer": "docs/api/type-aliases/StaticPage.md",
+              "sourcePath": "api/type-aliases/StaticPage.md"
+            }
+          ]
+        },
+        {
+          "title": "Variables",
+          "href": "/docs/api/variables",
+          "children": [
+            {
+              "title": "DEFAULT_NGE_DOC_LABELS",
+              "href": "/docs/api/variables/DEFAULT_NGE_DOC_LABELS",
+              "renderer": "docs/api/variables/DEFAULT_NGE_DOC_LABELS.md",
+              "description": "Default (English) theme wording.",
+              "sourcePath": "api/variables/DEFAULT_NGE_DOC_LABELS.md"
+            },
+            {
+              "title": "DEFAULT_NGE_DOC_LAYOUT",
+              "href": "/docs/api/variables/DEFAULT_NGE_DOC_LAYOUT",
+              "renderer": "docs/api/variables/DEFAULT_NGE_DOC_LAYOUT.md",
+              "description": "The built-in default theme, dynamic-imported so it is tree-shaken away when a",
+              "sourcePath": "api/variables/DEFAULT_NGE_DOC_LAYOUT.md"
+            },
+            {
+              "title": "NGE_DOC_BRAND",
+              "href": "/docs/api/variables/NGE_DOC_BRAND",
+              "renderer": "docs/api/variables/NGE_DOC_BRAND.md",
+              "description": "Header brand. When absent, the default theme uses the active site's name and logo.",
+              "sourcePath": "api/variables/NGE_DOC_BRAND.md"
+            },
+            {
+              "title": "NGE_DOC_DEFAULT_COLOR_SCHEME",
+              "href": "/docs/api/variables/NGE_DOC_DEFAULT_COLOR_SCHEME",
+              "renderer": "docs/api/variables/NGE_DOC_DEFAULT_COLOR_SCHEME.md",
+              "description": "Default color scheme used when the user has not chosen one yet (see `withDarkMode`).",
+              "sourcePath": "api/variables/NGE_DOC_DEFAULT_COLOR_SCHEME.md"
+            },
+            {
+              "title": "NGE_DOC_EDIT_URL",
+              "href": "/docs/api/variables/NGE_DOC_EDIT_URL",
+              "renderer": "docs/api/variables/NGE_DOC_EDIT_URL.md",
+              "description": "Base url a page's `sourcePath` is appended to for the \"Edit this page\" link.",
+              "sourcePath": "api/variables/NGE_DOC_EDIT_URL.md"
+            },
+            {
+              "title": "NGE_DOC_LABELS",
+              "href": "/docs/api/variables/NGE_DOC_LABELS",
+              "renderer": "docs/api/variables/NGE_DOC_LABELS.md",
+              "description": "Overridden theme wording. Merged over DEFAULT_NGE_DOC_LABELS.",
+              "sourcePath": "api/variables/NGE_DOC_LABELS.md"
+            },
+            {
+              "title": "NGE_DOC_LABELS_EN",
+              "href": "/docs/api/variables/NGE_DOC_LABELS_EN",
+              "renderer": "docs/api/variables/NGE_DOC_LABELS_EN.md",
+              "description": "Ready-made English wording, an alias of DEFAULT_NGE_DOC_LABELS.",
+              "sourcePath": "api/variables/NGE_DOC_LABELS_EN.md"
+            },
+            {
+              "title": "NGE_DOC_LABELS_FR",
+              "href": "/docs/api/variables/NGE_DOC_LABELS_FR",
+              "renderer": "docs/api/variables/NGE_DOC_LABELS_FR.md",
+              "description": "Ready-made French wording. Use it with `withLabels(NGE_DOC_LABELS_FR)`.",
+              "sourcePath": "api/variables/NGE_DOC_LABELS_FR.md"
+            },
+            {
+              "title": "NGE_DOC_LAYOUT",
+              "href": "/docs/api/variables/NGE_DOC_LAYOUT",
+              "renderer": "docs/api/variables/NGE_DOC_LAYOUT.md",
+              "description": "Injection token holding the active theme loader.",
+              "sourcePath": "api/variables/NGE_DOC_LAYOUT.md"
+            },
+            {
+              "title": "NGE_DOC_NAVBAR",
+              "href": "/docs/api/variables/NGE_DOC_NAVBAR",
+              "renderer": "docs/api/variables/NGE_DOC_NAVBAR.md",
+              "description": "Header navigation links. When absent, a theme may derive them from the registered sites.",
+              "sourcePath": "api/variables/NGE_DOC_NAVBAR.md"
+            },
+            {
+              "title": "NGE_DOC_RENDERERS",
+              "href": "/docs/api/variables/NGE_DOC_RENDERERS",
+              "renderer": "docs/api/variables/NGE_DOC_RENDERERS.md",
+              "description": "Custom renderers components",
+              "sourcePath": "api/variables/NGE_DOC_RENDERERS.md"
+            },
+            {
+              "title": "NGE_DOC_ROUTES",
+              "href": "/docs/api/variables/NGE_DOC_ROUTES",
+              "renderer": "docs/api/variables/NGE_DOC_ROUTES.md",
+              "description": "Routes that render the documentation. Load them directly from a standalone",
+              "sourcePath": "api/variables/NGE_DOC_ROUTES.md"
+            },
+            {
+              "title": "NGE_DOC_SEARCH_INDEX_URL",
+              "href": "/docs/api/variables/NGE_DOC_SEARCH_INDEX_URL",
+              "renderer": "docs/api/variables/NGE_DOC_SEARCH_INDEX_URL.md",
+              "description": "Search index url for PrebuiltNgeDocSearchProvider, set via `withSearchIndex()`.",
+              "sourcePath": "api/variables/NGE_DOC_SEARCH_INDEX_URL.md"
+            },
+            {
+              "title": "NGE_DOC_SEARCH_PROVIDER",
+              "href": "/docs/api/variables/NGE_DOC_SEARCH_PROVIDER",
+              "renderer": "docs/api/variables/NGE_DOC_SEARCH_PROVIDER.md",
+              "description": "Override this to plug a custom search backend via `withSearch()`.",
+              "sourcePath": "api/variables/NGE_DOC_SEARCH_PROVIDER.md"
+            },
+            {
+              "title": "NGE_DOC_SEO",
+              "href": "/docs/api/variables/NGE_DOC_SEO",
+              "renderer": "docs/api/variables/NGE_DOC_SEO.md",
+              "description": "Site-wide SEO settings.",
+              "sourcePath": "api/variables/NGE_DOC_SEO.md"
+            }
+          ]
+        }
+      ],
+      "sourcePath": "api/index.md"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "DefaultNgeDocSearchProvider": {
+    "title": "DefaultNgeDocSearchProvider"
+  },
+  "HttpNgeDocAssets": {
+    "title": "HttpNgeDocAssets"
+  },
+  "NgeDocAssets": {
+    "title": "NgeDocAssets"
+  },
+  "NgeDocModule": {
+    "title": "NgeDocModule"
+  },
+  "NgeDocRendererComponent": {
+    "title": "NgeDocRendererComponent"
+  },
+  "NgeDocService": {
+    "title": "NgeDocService"
+  },
+  "NgeDocThemeService": {
+    "title": "NgeDocThemeService"
+  },
+  "PrebuiltNgeDocSearchProvider": {
+    "title": "PrebuiltNgeDocSearchProvider"
+  }
+}

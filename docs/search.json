@@ -1,0 +1,2380 @@
+[
+  {
+    "slug": "/docs/overview/introduction",
+    "title": "Introduction",
+    "content": "@cisstech/nge is a small set of focused building blocks for Angular apps. It ships as one package split into secondary entry points, so you only bundle what you actually import."
+  },
+  {
+    "slug": "/docs/overview/introduction#packages",
+    "title": "Introduction",
+    "heading": "Packages",
+    "content": "Package What it gives you --- --- nge/doc Turn a route config, Markdown files or live Angular components into a documentation site (the site you are reading). nge/markdown Markdown rendering built on Marked, with admonitions, tabs, KaTeX and syntax highlighting. nge/monaco Monaco editor integration: editor, diff editor and read-only viewer. nge/ui Standalone UI building blocks: a data tree, a filterable virtual list and a multi-source icon. Utilities Root-provided services, standalone pipes and framework-free helper functions (nge/services, nge/pipes, nge/utils)."
+  },
+  {
+    "slug": "/docs/overview/introduction#why-it-exists",
+    "title": "Introduction",
+    "heading": "Why it exists",
+    "content": "Every entry point solves one problem well and stays out of your way: standalone-first, signal-based, tree-shakeable, and configured through provide functions. Use one package or all of them; you never pay for the parts you leave out."
+  },
+  {
+    "slug": "/docs/overview/introduction#where-to-go-next",
+    "title": "Introduction",
+    "heading": "Where to go next",
+    "content": "New here? Start with nge/doc to build a docs site like this one. Just need Markdown? Jump to nge/markdown. Embedding an editor? See nge/monaco. Source, issues and releases live on GitHub."
+  },
+  {
+    "slug": "/docs/overview/installation",
+    "title": "Installation",
+    "content": "npm i @cisstech/nge yarn add @cisstech/nge"
+  },
+  {
+    "slug": "/docs/overview/installation#peer-dependencies",
+    "title": "Installation",
+    "heading": "Peer dependencies",
+    "content": "Required: @angular/common, @angular/core. UI entry points (nge/ui/tree, nge/ui/list, nge/ui/icon): @angular/cdk. Optional, per entry point: marked for nge/markdown, monaco-editor for nge/monaco, ngx-pipes for nge/pipes. Install the optional peers only when you use the matching entry point."
+  },
+  {
+    "slug": "/docs/overview/installation#version-compatibility",
+    "title": "Installation",
+    "heading": "Version compatibility",
+    "content": "The major version of @cisstech/nge tracks the Angular major it targets. Pick the line that matches your Angular version. @cisstech/nge Angular Node --- --- --- 22.x 22 ^22.22.3, ^24.15.0 or >=26 18.x 18 ^18.19, ^20.11 or >=22 17.x 17 ^18.13 or >=20 16.x 16 ^16.14 or >=18 15.x 15 ^14.20, ^16.13 or >=18"
+  },
+  {
+    "slug": "/docs/overview/installation#next",
+    "title": "Installation",
+    "heading": "Next",
+    "content": "Each package has its own Getting Started: nge/doc, nge/markdown, nge/monaco."
+  },
+  {
+    "slug": "/docs/nge-doc/getting-started",
+    "title": "Getting started",
+    "content": "nge/doc turns a folder of Markdown files, or a route configuration, into a documentation site like the one you are reading. The engine takes care of navigation, the table of contents, breadcrumbs, previous/next links, dark mode, search, SEO and static generation, so you focus on writing."
+  },
+  {
+    "slug": "/docs/nge-doc/getting-started#quickstart",
+    "title": "Getting started",
+    "heading": "Quickstart",
+    "content": "ng add @cisstech/nge The schematic scaffolds public/docs/ with a first page, registers the docs builder target and adds provideNgeDoc() to your configuration. Route the docs where you want them: // app.routes.ts import { docsFromManifest } from '@cisstech/nge/doc' export const routes: Routes = [ { path: 'docs', loadChildren: () => import('@cisstech/nge/doc').then((m) => m.NGEDOCROUTES), data: docsFromManifest('docs/nge-doc.json'), }, ] Compile the manifest and serve: ng run my-app:docs ng serve /docs now renders your Markdown. Markdown rendering works out of the box; there is no renderer to wire."
+  },
+  {
+    "slug": "/docs/nge-doc/getting-started#choose-your-path",
+    "title": "Getting started",
+    "heading": "Choose your path",
+    "content": "Docs from files, the default. Author Markdown under public/docs/, order sections with meta.json, and let the builder compile the navigation, the search index and the SEO outputs. This is what ng add sets up and what this site uses. Docs from code. Declare pages as an NgeDocSettings object when the navigation is dynamic: pages fetched from an API, generated at runtime, or mixed with live components. Both paths render through the same engine and can live side by side in one application."
+  },
+  {
+    "slug": "/docs/nge-doc/getting-started#what-you-get",
+    "title": "Getting started",
+    "heading": "What you get",
+    "content": "Markdown or components. A page is a Markdown file, an inline Markdown string, or a lazy-loaded Angular component. Mix them freely, even inside a Markdown page. Navigation for free. Sidebar, table of contents with scroll spy, breadcrumbs and previous/next cards, all generated from your page tree. Command palette. Cmd/Ctrl+K searches titles by default, and full page content when the build-time index is enabled. Dark mode. Light, dark or auto, remembered across visits. SEO and AI outputs. Canonical, Open Graph and Twitter tags per page; sitemap.xml, robots.txt, llms.txt and per-page raw Markdown when a site url is configured. Static generation. Prerender every page with the @cisstech/nge/doc/ssr entry; interactive pages opt out with one line of frontmatter. Pluggable themes and i18n. Ship your own layout with withTheme(), reword or translate every label with withLabels()."
+  },
+  {
+    "slug": "/docs/nge-doc/getting-started#next-steps",
+    "title": "Getting started",
+    "heading": "Next steps",
+    "content": "Installation for manual setup details. Docs from files to author your content. Guides for components, static generation, theming, search and SEO. Reference for every option in one place."
+  },
+  {
+    "slug": "/docs/nge-doc/installation#with-ng-add-recommended",
+    "title": "Installation",
+    "heading": "With ng add (recommended)",
+    "content": "ng add @cisstech/nge The schematic: scaffolds public/docs/ with a first page and a meta.json, registers the docs builder target in angular.json, adds provideNgeDoc() to your application providers, prints the route snippet to paste (the one edit it never makes for you). In workspaces without angular.json (some Nx setups), it scaffolds the files and prints instructions for the rest. You can also run it explicitly with ng g @cisstech/nge:nge-doc."
+  },
+  {
+    "slug": "/docs/nge-doc/installation#manual-setup",
+    "title": "Installation",
+    "heading": "Manual setup",
+    "content": "npm i @cisstech/nge yarn add @cisstech/nge Markdown rendering ships with the package (the marked parser comes as a regular dependency), so there is nothing else to install. Then: 1. Provide the engine and HttpClient (used to fetch pages): // app.config.ts import { provideHttpClient } from '@angular/common/http' import { provideNgeDoc } from '@cisstech/nge/doc' export const appConfig: ApplicationConfig = { providers: [provideHttpClient(), provideNgeDoc()], } 2. Register the docs target in angular.json (compiles your Markdown into a manifest): \"docs\": { \"builder\": \"@cisstech/nge:docs\", \"options\": { \"publicDir\": \"public\", \"root\": \"/docs\", \"name\": \"My docs\" } } 3. Route the docs, as shown in Getting started. Next: Docs from files."
+  },
+  {
+    "slug": "/docs/nge-doc/files",
+    "title": "Docs from files",
+    "content": "The default workflow: your Markdown lives in the application's public/ folder, is served as-is, and a builder compiles the navigation and the indexes next to it. No copy step, no post-build script."
+  },
+  {
+    "slug": "/docs/nge-doc/files#the-layout",
+    "title": "Docs from files",
+    "heading": "The layout",
+    "content": "public/ docs/ <- your site, authored here, served here meta.json <- section order and titles index.md <- landing page of the site root getting-started.md <- a page: /docs/getting-started guides/ <- a folder: a section with children index.md <- section landing: /docs/guides theming.md <- /docs/guides/theming nge-doc.json <- generated: the compiled manifest search.json <- generated: the content search index Every .md file becomes a page, folders become sections, and urls mirror the file tree. The generated files are outputs; add them to .gitignore and rebuild them in CI."
+  },
+  {
+    "slug": "/docs/nge-doc/files#compile",
+    "title": "Docs from files",
+    "heading": "Compile",
+    "content": "The docs target scans the folder and writes nge-doc.json: ng run my-app:docs # one shot ng run my-app:docs --watch # rebuild while writing \"docs\": { \"builder\": \"@cisstech/nge:docs\", \"options\": { \"publicDir\": \"public\", \"root\": \"/docs\", \"name\": \"My docs\", \"siteUrl\": \"https://example.com\" } } siteUrl is optional; setting it also emits sitemap.xml, robots.txt and the llms.txt files (see Outputs)."
+  },
+  {
+    "slug": "/docs/nge-doc/files#serve",
+    "title": "Docs from files",
+    "heading": "Serve",
+    "content": "The route points the engine at the compiled manifest: data: docsFromManifest('docs/nge-doc.json') At runtime the engine fetches the manifest, builds the navigation, and loads each page's Markdown from its served url. Since sources are served in place, the raw Markdown of every page is also directly reachable (/docs/getting-started.md), which powers the \"Copy as Markdown\" and \"Open in ChatGPT / Claude\" page actions."
+  },
+  {
+    "slug": "/docs/nge-doc/files#several-sites",
+    "title": "Docs from files",
+    "heading": "Several sites",
+    "content": "Repeat the recipe for each site (public/guide, public/docs...): one builder target per site, and one docsFromManifest() entry per manifest in the route data array. Each site keeps its own root url and sidebar; the header links them (see Theming). Next: Authoring for ordering, titles and frontmatter."
+  },
+  {
+    "slug": "/docs/nge-doc/files/authoring#pages-and-sections",
+    "title": "Authoring",
+    "heading": "Pages and sections",
+    "content": "A Markdown file is a page; its url is its path without the extension. A folder is a section. Its pages are its children in the sidebar, and its index.md, when present, is the section's own landing page. An index.md at the site root is the landing page of the whole site."
+  },
+  {
+    "slug": "/docs/nge-doc/files/authoring#metajson",
+    "title": "Authoring",
+    "heading": "_meta.json",
+    "content": "meta.json is optional: frontmatter alone can drive titles, order, icons and drafts, and a folder is configured by its index.md. Reach for meta.json for what a file cannot express: external links, hiding an entire folder, or configuring a folder that has no index.md. This site does both: the root keeps a meta.json for the tab icons and short section labels, while simple sections (the guides you are reading) are driven by frontmatter alone. When present, its key order drives the navigation order, and each entry can override presentation: { \"getting-started\": { \"title\": \"Getting started\" }, \"guides\": { \"icon\": \"assets/icons/guides.svg\" }, \"internal-notes\": { \"display\": \"hidden\" }, \"github\": { \"title\": \"GitHub\", \"href\": \"https://github.com/me/my-lib\" } } title renames the entry (wins over frontmatter). icon shows an icon in the sidebar. display: \"hidden\" keeps a page out of the navigation. an entry with href and no backing file is an external link."
+  },
+  {
+    "slug": "/docs/nge-doc/files/authoring#frontmatter",
+    "title": "Authoring",
+    "heading": "Frontmatter",
+    "content": "Each page can open with a frontmatter block, stripped before rendering: --- title: Configuring the router description: How the docs engine plugs into the Angular router. order: 2 --- Key Effect --- --- title Page title (navigation, document title, search). description Meta description and social tags. order Position among siblings not ordered by meta.json. icon Sidebar icon. image Social preview image for this page. draft: true Excluded from the build entirely. prerender: false Rendered on the client only; static generation skips it (see Static generation)."
+  },
+  {
+    "slug": "/docs/nge-doc/files/authoring#resolution-order",
+    "title": "Authoring",
+    "heading": "Resolution order",
+    "content": "For titles: meta.json wins over frontmatter, which wins over the humanized filename (getting-started.md becomes \"Getting started\"). For order: meta.json key order first, then frontmatter order, then alphabetical."
+  },
+  {
+    "slug": "/docs/nge-doc/files/authoring#linking-between-pages",
+    "title": "Authoring",
+    "heading": "Linking between pages",
+    "content": "Write site-absolute Markdown links (Theming). The engine routes them through the Angular router, so navigation stays in the SPA and works under any base href. Heading anchors work too: Options. Next: Outputs."
+  },
+  {
+    "slug": "/docs/nge-doc/files/outputs",
+    "title": "Outputs",
+    "content": "The builder writes everything into public/, so the outputs are served with the app like any other asset. Two families:"
+  },
+  {
+    "slug": "/docs/nge-doc/files/outputs#next-to-the-docs-publicdirroot",
+    "title": "Outputs",
+    "heading": "Next to the docs (`<publicDir>/<root>/`)",
+    "content": "File Role --- --- nge-doc.json The compiled manifest: navigation tree, titles, source paths, last-updated dates. The route's docsFromManifest() consumes it. search.json The content search index, chunked by heading. Enable it in the palette with withSearchIndex() (see Search and SEO)."
+  },
+  {
+    "slug": "/docs/nge-doc/files/outputs#at-the-site-root-publicdir-when-siteurl-is-set",
+    "title": "Outputs",
+    "heading": "At the site root (`<publicDir>/`), when `siteUrl` is set",
+    "content": "File Role --- --- sitemap.xml One entry per page, with last-modified dates from git. robots.txt Allows crawling and points at the sitemap. llms.txt The llms.txt index: your navigation as a Markdown outline with absolute links. llms-full.txt The whole documentation concatenated, for tools that ingest a single file."
+  },
+  {
+    "slug": "/docs/nge-doc/files/outputs#opting-out",
+    "title": "Outputs",
+    "heading": "Opting out",
+    "content": "Every output beyond the manifest has a flag, all true by default: \"options\": { \"publicDir\": \"public\", \"root\": \"/docs\", \"name\": \"My docs\", \"siteUrl\": \"https://example.com\", \"sitemap\": false, \"robots\": false, \"llms\": false, \"search\": false } Without siteUrl, the seo outputs are simply not produced (they need absolute urls)."
+  },
+  {
+    "slug": "/docs/nge-doc/files/outputs#version-control",
+    "title": "Outputs",
+    "heading": "Version control",
+    "content": "The outputs are derived from your Markdown; commit the sources, ignore the outputs: public/docs/nge-doc.json public/docs/search.json public/sitemap.xml public/robots.txt public/llms.txt public/llms-full.txt Run ng run my-app:docs in CI before ng build so deploys always carry fresh outputs."
+  },
+  {
+    "slug": "/docs/nge-doc/code-first",
+    "title": "Docs from code",
+    "content": "When pages cannot live as files, fetched from a CMS, generated at runtime, or computed from your own data, declare them as an NgeDocSettings object and pass it through the route data. Same engine, same theme, same features."
+  },
+  {
+    "slug": "/docs/nge-doc/code-first#declare-the-pages",
+    "title": "Docs from code",
+    "heading": "Declare the pages",
+    "content": "// docs.ts import { NgeDocSettings } from '@cisstech/nge/doc' export const DOCS: NgeDocSettings = { meta: { name: 'My library', root: '/docs/', logo: 'assets/logo.svg', }, pages: [ { title: 'Getting started', href: 'getting-started', renderer: 'assets/docs/getting-started.md' }, { title: 'Installation', href: 'installation', renderer: 'assets/docs/installation.md' }, ], } // app.routes.ts { path: 'docs', loadChildren: () => import('@cisstech/nge/doc').then((m) => m.NGEDOCROUTES), data: DOCS, } The route data also accepts an array, and file-based and code-first sites mix freely: data: [DOCS, docsFromManifest('guide/nge-doc.json')]."
+  },
+  {
+    "slug": "/docs/nge-doc/code-first#page-renderers",
+    "title": "Docs from code",
+    "heading": "Page renderers",
+    "content": "A page's renderer can be any of: A file url (a single-line string): loaded and rendered as Markdown. Inline Markdown (a multi-line string): rendered as-is. A component: () => import('./demo.component').then((m) => m.DemoComponent). A module exposing a component field, when the component needs its own imports. Pass inputs to a component page with inputs: { title: 'Playground', href: 'playground', renderer: () => import('./playground.component').then((m) => m.PlaygroundComponent), inputs: { theme: 'dark' }, }"
+  },
+  {
+    "slug": "/docs/nge-doc/code-first#dynamic-and-nested-pages",
+    "title": "Docs from code",
+    "heading": "Dynamic and nested pages",
+    "content": "A page entry can be a function of the environment injector, sync or async, returning one link or many. Return children to build a nested section: pages: [ (injector) => { const api = injector.get(ApiService) return api.listGuides().then((guides) => ({ title: 'Guides', href: 'guides', children: guides.map((g) => ({ title: g.title, href: g.slug, renderer: g.url })), })) }, ]"
+  },
+  {
+    "slug": "/docs/nge-doc/code-first#section-separators",
+    "title": "Docs from code",
+    "heading": "Section separators",
+    "content": "Group the sidebar with headings. A separator is a flat entry, not a parent, so the pages that follow keep their own urls. Add color for an accent dot: pages: [ { separator: true, title: 'Guides', color: '#10b981' }, { title: 'Getting started', href: 'getting-started', renderer: 'assets/docs/getting-started.md' }, { separator: true, title: 'Reference' }, { title: 'API', href: 'api', renderer: 'assets/docs/api.md' }, ]"
+  },
+  {
+    "slug": "/docs/nge-doc/code-first#actions-and-icons",
+    "title": "Docs from code",
+    "heading": "Actions and icons",
+    "content": "Each page can declare header actions. A string handler opens a url in a new tab; a function handler receives the injector: { title: 'API', href: 'api', renderer: 'assets/docs/api.md', icon: 'assets/icons/api.svg', actions: [ { title: 'Edit on GitHub', icon: editIcon, run: 'https://github.com/me/my-lib/edit/main/docs/api.md' }, { title: 'Copy link', run: (injector) => injector.get(ClipboardService).copy(location.href) }, ], } Any icon (on a link, an action, a nav item or the logo) is an NgeDocIcon: a single url, or a { light, dark } pair per color scheme. The default theme recolors monochrome same-origin icons to the current text color automatically."
+  },
+  {
+    "slug": "/docs/nge-doc/code-first#what-the-file-based-path-adds",
+    "title": "Docs from code",
+    "heading": "What the file-based path adds",
+    "content": "Code-first pages have no source file, so the features derived from sources do not light up: content search, \"Copy as Markdown\", edit links, last-updated dates and the seo/llms outputs. Title search, navigation, SEO tags and theming work identically."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/components",
+    "title": "Components in Markdown",
+    "content": "File-based pages are Markdown, but they can host live Angular components: a demo next to its explanation, or a whole interactive page. This site's Monaco showcase and Markdown cheatsheet are Markdown pages doing exactly that."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/components#register-components",
+    "title": "Components in Markdown",
+    "heading": "Register components",
+    "content": "Map a tag name to a lazy component with the withComponents feature of nge/markdown: // app.config.ts import { provideNgeMarkdown, withComponents } from '@cisstech/nge/markdown' provideNgeMarkdown( withComponents({ 'demo-counter': () => import('./demos/counter.component').then((m) => m.CounterComponent), 'monaco-showcase': () => import('./monaco/showcase.component').then((m) => m.ShowcaseComponent), }) )"
+  },
+  {
+    "slug": "/docs/nge-doc/guides/components#use-them-in-a-page",
+    "title": "Components in Markdown",
+    "heading": "Use them in a page",
+    "content": "Counters A live demo, rendered by Angular between two paragraphs: <demo-counter></demo-counter> The component loads lazily, only when the page renders. Attributes on the tag are passed to the component's inputs."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/components#a-whole-interactive-page",
+    "title": "Components in Markdown",
+    "heading": "A whole interactive page",
+    "content": "A page can be little more than its component. If the component needs a browser (an editor, a canvas, a playground), exclude it from static generation with frontmatter: --- prerender: false --- Showcase <monaco-showcase></monaco-showcase> See Static generation for what prerender: false does."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/components#code-first-equivalent",
+    "title": "Components in Markdown",
+    "heading": "Code-first equivalent",
+    "content": "In code-first sites, a page's renderer can be the component itself; no tag registration needed."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/ssg",
+    "title": "Static generation",
+    "content": "Prerendering turns each page into static HTML: instant first paint, robots and link previews see real content, and hosting stays a plain file server. The @cisstech/nge/doc/ssr entry provides the whole setup; this site is built with it."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/ssg#set-up-ssr",
+    "title": "Static generation",
+    "heading": "Set up SSR",
+    "content": "Add server rendering to the app if it does not have it (ng add @angular/ssr), with outputMode: \"static\" for a fully static site. Then wire the two pieces: // app.routes.server.ts import { RenderMode, ServerRoute } from '@angular/ssr' import { ngeDocPrerenderRoutes } from '@cisstech/nge/doc/ssr' export const serverRoutes: ServerRoute[] = [ ...ngeDocPrerenderRoutes('public/docs/nge-doc.json'), { path: '', renderMode: RenderMode.Client }, ] // app.config.server.ts import { provideNgeDocSsr } from '@cisstech/nge/doc/ssr' const serverConfig: ApplicationConfig = { providers: [provideServerRendering(withRoutes(serverRoutes)), provideNgeDocSsr()], } ngeDocPrerenderRoutes(manifestPath) reads the compiled manifest at build time and returns one prerender route per site, listing every page. Pass several manifest paths for several sites. provideNgeDocSsr() serves the manifest and the Markdown from the filesystem during prerendering (there is no HTTP server then) and records them in transfer state, so the hydrated page does not refetch them. It reads from public/ by default; monorepos pass their own path: provideNgeDocSsr({ roots: ['projects/demo/public'] }). Build order matters: compile the docs first, then build the app. ng run my-app:docs && ng build my-app"
+  },
+  {
+    "slug": "/docs/nge-doc/guides/ssg#client-only-pages",
+    "title": "Static generation",
+    "heading": "Client-only pages",
+    "content": "Pages that need a browser (editors, playgrounds) opt out with frontmatter: --- prerender: false --- The page keeps its url and navigation entry; it simply renders on the client, through the prerender fallback. A missing file at prerender time fails the build with a message that points at this flag, rather than hanging."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/ssg#what-you-get",
+    "title": "Static generation",
+    "heading": "What you get",
+    "content": "Every prerendered page ships its content in the initial HTML, hydrates without refetching its Markdown, and stays a plain SPA afterwards. Pair it with withShiki and code blocks arrive highlighted in the static HTML too. Nothing else in your setup changes: the same route, the same providers, the same theme."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/theming#brand",
+    "title": "Theming",
+    "heading": "Brand",
+    "content": "The header shows the active site's name and logo by default. Set one brand for the whole documentation with withBrand() to keep the header stable across sites; site names still drive breadcrumbs and page titles. provideNgeDoc(withBrand({ title: 'NG Essentials', icon: 'assets/logo.svg', href: '/' })) icon is an NgeDocIcon (a url, or a { light, dark } pair) and href is where clicking the brand navigates (defaults to /)."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/theming#header-navigation",
+    "title": "Theming",
+    "heading": "Header navigation",
+    "content": "The top bar resolves in precedence order: 1. withNavbar(), when you want full control (external links, custom order): provideNgeDoc( withNavbar([ { title: 'Docs', href: '/docs/' }, { title: 'Changelog', href: 'https://github.com/me/my-lib/releases', external: true }, ]) ) 2. Section tabs, when the site opts into nav: \"tabs\": the top-level sections become the navbar (titles and icons from meta.json), and the sidebar shows only the active section. This site works that way: \"docs\": { \"builder\": \"@cisstech/nge:docs\", \"options\": { \"publicDir\": \"public\", \"root\": \"/docs\", \"name\": \"My docs\", \"nav\": \"tabs\" } } Code-first sites opt in with meta: { ..., nav: 'tabs' }. 3. The registered sites, one entry per site, which is the multi-site default."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/theming#dark-mode",
+    "title": "Theming",
+    "heading": "Dark mode",
+    "content": "The default theme ships a light/dark toggle. Set the initial scheme with withDarkMode('auto' 'dark' 'light'); auto follows the OS and the choice is remembered across visits. NgeDocThemeService owns the scheme: read isDark(), call toggle() or setScheme(), and it reflects the result as a nge-doc-dark class on the document root. Other libraries can follow that class: point nge/monaco and nge/markdown at darkThemeClassName: 'nge-doc-dark' and their editors and rendered Markdown switch with the site."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/theming#custom-theme",
+    "title": "Theming",
+    "heading": "Custom theme",
+    "content": "The default theme is a standalone component mounted by the engine. Ship your own layout with withTheme(); it receives the engine services (NgeDocService, NgeDocThemeService) through dependency injection and renders the content with <nge-doc-renderer>. provideNgeDoc(withTheme(() => import('./my-theme.component').then((m) => m.MyThemeComponent)))"
+  },
+  {
+    "slug": "/docs/nge-doc/guides/theming#labels-and-i18n",
+    "title": "Theming",
+    "heading": "Labels and i18n",
+    "content": "Every string the default theme shows can be translated or reworded with withLabels(). Pass a ready-made set, or only the keys you want to change; anything left out keeps its English default. import { provideNgeDoc, withLabels, NGEDOCLABELSFR } from '@cisstech/nge/doc' provideNgeDoc( withLabels(NGEDOCLABELSFR) // ready-made French // or reword a few keys: // withLabels({ search: 'Search the docs' }), ) NGEDOCLABELSEN and NGEDOCLABELSFR ship with the library, and NgeDocLabels is the full list of keys for supplying another language."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/theming#keyboard",
+    "title": "Theming",
+    "heading": "Keyboard",
+    "content": "The default theme is navigable from the keyboard: Cmd/Ctrl+K opens search, ← / → move to the previous and next page, and focus moves to the content on navigation so the page scrolls right away. Shortcuts stay out of the way while you type in a field."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/search-seo#search",
+    "title": "Search and SEO",
+    "heading": "Search",
+    "content": "The command palette (Cmd/Ctrl+K) works with zero configuration: it searches page titles from the navigation tree, in memory. To search full page content, enable the build-time index the docs builder emits: provideNgeDoc(withSearchIndex('docs/search.json')) Results become one row per page with the matched section, a highlighted excerpt, and a deep link to the heading. The index is fetched lazily on the first search, so prerendered pages do not carry it. Something else entirely (a hosted search, another index)? Provide your own backend through the NGEDOCSEARCHPROVIDER token; the palette UI stays."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/search-seo#seo-tags",
+    "title": "Search and SEO",
+    "heading": "SEO tags",
+    "content": "On every navigation the engine sets the document title (Page · Site), the meta description, and the Open Graph and Twitter tags, from the link or the page's frontmatter. Add your site url to emit the canonical url and absolute social images: provideNgeDoc(withSeo({ url: 'https://example.com', image: 'assets/social.png' })) A page can override the social image with image: in its frontmatter."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/search-seo#edit-links-and-dates",
+    "title": "Search and SEO",
+    "heading": "Edit links and dates",
+    "content": "Point withEditLink() at your repository's edit url and every file-based page grows an \"Edit this page\" link, built from its source path. The compiler also records each page's last commit date, shown next to it. provideNgeDoc(withEditLink('https://github.com/me/my-lib/edit/main/public/docs'))"
+  },
+  {
+    "slug": "/docs/nge-doc/guides/search-seo#ai-friendly-by-default",
+    "title": "Search and SEO",
+    "heading": "AI-friendly by default",
+    "content": "Documentation is read by people and ingested by tools. File-based sites get both audiences for free: Raw Markdown served in place: every page at <url>.md, wired to the \"Copy as Markdown\", \"Open in ChatGPT\" and \"Open in Claude\" page actions. llms.txt and llms-full.txt at the site root when siteUrl is set (see Outputs). sitemap.xml and robots.txt for classic crawlers. For agents that code against your library, the MCP server serves this same content on demand through the Model Context Protocol."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/deployment",
+    "title": "Deployment",
+    "content": "The engine uses the Angular router and relative asset urls, so it works unchanged when the site is served from a sub-path (GitHub Pages, a reverse proxy). Two things to set up:"
+  },
+  {
+    "slug": "/docs/nge-doc/guides/deployment#base-href",
+    "title": "Deployment",
+    "heading": "Base href",
+    "content": "Build with the sub-path as the base href so <base href> is correct: ng build --base-href=/my-repo/ Router links, the manifest fetch and the relative Markdown urls all resolve against it. Keep the urls in your configuration relative (docs/nge-doc.json, not /docs/nge-doc.json) so they follow the base href."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/deployment#spa-fallback",
+    "title": "Deployment",
+    "heading": "SPA fallback",
+    "content": "Give the static host a fallback so a refresh on a deep link serves the app shell: Fully prerendered sites (see Static generation) only need the fallback for client-only pages: expose the CSR shell (index.csr.html) as 404.html on GitHub Pages. Client-rendered sites need every unknown path to serve index.html (angular-cli-ghpages and most hosts have an option for this)."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/deployment#build-order",
+    "title": "Deployment",
+    "heading": "Build order",
+    "content": "The docs builder writes into public/, which ng build copies to the output. Always compile the docs first: ng run my-app:docs && ng build my-app"
+  },
+  {
+    "slug": "/docs/nge-doc/guides/api-reference",
+    "title": "API reference",
+    "content": "Point the builder at your entry points and it generates one Markdown page per exported declaration, straight into public/docs/api/. Since these are ordinary pages, they get everything the rest of the docs get: the sidebar, Cmd/Ctrl+K search, prerendering, SEO and the llms.txt outputs. This site's API section is generated this way, from @cisstech/nge/doc."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/api-reference#enable-it",
+    "title": "API reference",
+    "heading": "Enable it",
+    "content": "npm i -D typedoc \"docs\": { \"builder\": \"@cisstech/nge:docs\", \"options\": { \"publicDir\": \"public\", \"root\": \"/docs\", \"name\": \"My docs\", \"api\": { \"entryPoints\": [\"projects/my-lib/src/index.ts\"], \"tsconfig\": \"projects/my-lib/tsconfig.lib.json\" } } } ng run my-app:docs then writes public/docs/api/ with an index.md overview, one page per export grouped by kind (functions, classes, interfaces, type aliases, variables), and a meta.json that orders them. Add the folder to .gitignore, like the other generated outputs, and rebuild it in CI."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/api-reference#notes",
+    "title": "API reference",
+    "heading": "Notes",
+    "content": "tsconfig should exclude test files (point it at your tsconfig.lib.json); typedoc reports type errors and stops otherwise. Give the section a title and place it with a meta.json entry at the docs root, for example \"api\": { \"title\": \"API\" }. Signatures, parameters, property tables and descriptions come from your code and its doc comments, so the reference never drifts from the source."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/mcp",
+    "title": "MCP server",
+    "content": "Developers using your library increasingly code with an AI agent (Cursor, Claude Code, ...). @cisstech/nge-doc-mcp lets that agent search and read your published documentation through the Model Context Protocol, so it works from your real, current docs instead of guessing at your API. It reads the static outputs the builder already emits, the search index and the raw markdown served in place, so there is no backend to run: the server runs on the developer's machine and reads your public site."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/mcp#wire-it-into-an-agent",
+    "title": "MCP server",
+    "heading": "Wire it into an agent",
+    "content": "Point it at the url of your site's nge-doc.json (your site url followed by the docs root, the same file your app passes to docsFromManifest): { \"mcpServers\": { \"nge-doc\": { \"command\": \"npx\", \"args\": [\"-y\", \"@cisstech/nge-doc-mcp\", \"https://example.com/docs/nge-doc.json\"] } } }"
+  },
+  {
+    "slug": "/docs/nge-doc/guides/mcp#tools",
+    "title": "MCP server",
+    "heading": "Tools",
+    "content": "searchdocs(query, limit?) returns the best matching pages, each with its slug, title, matched heading and an excerpt. readpage(slug) returns the full markdown of a page. A typical exchange: the agent calls searchdocs to find the relevant pages, then readpage on a slug to pull the full content into its context."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/mcp#how-it-fits",
+    "title": "MCP server",
+    "heading": "How it fits",
+    "content": "Nothing to add to your site: publishing it with search.json (the default) already makes this work. It complements the AI-friendly outputs (llms.txt, raw markdown, the \"Open in ChatGPT / Claude\" page actions), which target humans and one-shot prompts, whereas the MCP server gives an agent live, on-demand access while it codes."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/playground",
+    "title": "Playground",
+    "content": "Two ways to make examples interactive, both building on pieces you already have."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/playground#open-a-snippet-in-stackblitz",
+    "title": "Playground",
+    "heading": "Open a snippet in StackBlitz",
+    "content": "Enable withStackblitz and mark a fenced block with the stackblitz flag: its toolbar gains an \"Open in StackBlitz\" action. The snippet is injected into the project scaffold you configure, so the example runs exactly as you set it up (no fragile generation). import { provideNgeMarkdown, withShiki, withStackblitz } from '@cisstech/nge/markdown' provideNgeMarkdown( withShiki(), withStackblitz({ template: 'typescript', file: 'index.ts', title: 'nge example' }) ) Then, in any markdown page, add the flag after the language: markdown stackblitz const greeting = 'Hello from nge-doc' console.log(greeting) Which renders as (try the StackBlitz button in the toolbar): stackblitz const greeting = 'Hello from nge-doc' console.log(greeting) For a full app, use template: 'node' and provide a package.json (and any other files) through the files option; the snippet lands at file. It needs the optional @stackblitz/sdk dependency."
+  },
+  {
+    "slug": "/docs/nge-doc/guides/playground#embed-a-live-component",
+    "title": "Playground",
+    "heading": "Embed a live component",
+    "content": "For an example that runs inline, register a component and use its tag in the markdown, as covered in Components in Markdown. Pair it with an editor: nge/monaco is an editor, so a component can show its own source next to a live result, the way this site's Monaco showcase and Markdown cheatsheet pages do."
+  },
+  {
+    "slug": "/docs/nge-doc/reference#the-docs-builder-cisstechngedocs",
+    "title": "Reference",
+    "heading": "The `docs` builder (`@cisstech/nge:docs`)",
+    "content": "Option Default Role --- --- --- publicDir public Served public dir; Markdown is authored under <publicDir>/<root>. root required Site root url (/docs). name required Site name (breadcrumbs, titles, navbar). nav sidebar Top-level sections placement: sidebar tree or navbar tabs. siteUrl unset Absolute site url; enables the seo outputs. sitemap true Emit sitemap.xml (needs siteUrl). robots true Emit robots.txt (needs siteUrl). llms true Emit llms.txt and llms-full.txt (needs siteUrl). search true Emit search.json. api unset Generate an API reference from TypeScript sources (needs the optional typedoc dependency). watch false Rebuild on change."
+  },
+  {
+    "slug": "/docs/nge-doc/reference#frontmatter",
+    "title": "Reference",
+    "heading": "Frontmatter",
+    "content": "Key Role --- --- title Page title. description Meta description and social tags. order Position among siblings. icon Sidebar icon url. image Social preview image. draft: true Excluded from the build. prerender: false Client-only page; static generation skips it."
+  },
+  {
+    "slug": "/docs/nge-doc/reference#metajson",
+    "title": "Reference",
+    "heading": "`_meta.json`",
+    "content": "Key order drives the navigation order. Each entry: Key Role --- --- title Renames the entry (wins over frontmatter). icon Sidebar or tab icon. display: \"hidden\" Keeps the page out of the navigation. href Makes the entry an external link (no backing file)."
+  },
+  {
+    "slug": "/docs/nge-doc/reference#providengedoc-features",
+    "title": "Reference",
+    "heading": "`provideNgeDoc()` features",
+    "content": "Feature Role --- --- withBrand({ title, icon, href }) Fixed header brand. withNavbar([...]) Explicit header links (wins over everything). withTheme(loader) Custom layout component. withDarkMode('auto' \\ 'dark' \\ 'light') Initial color scheme. withLabels(labels) Reword or translate the theme strings. withSeo({ url, image }) Canonical url and absolute social images. withEditLink(baseUrl) \"Edit this page\" links from source paths. withSearchIndex(url) Content search from the build-time index. withMarkdownRenderer({ component }) Override the default Markdown renderer."
+  },
+  {
+    "slug": "/docs/nge-doc/reference#cisstechngedocssr",
+    "title": "Reference",
+    "heading": "`@cisstech/nge/doc/ssr`",
+    "content": "Api Role --- --- ngeDocPrerenderRoutes(...manifestPaths) One prerender server route per site, honoring prerender: false. provideNgeDocSsr({ roots? }) Serves the docs from the filesystem during prerendering, with transfer state. roots defaults to ['public']."
+  },
+  {
+    "slug": "/docs/nge-doc/reference#route-data",
+    "title": "Reference",
+    "heading": "Route data",
+    "content": "Value Role --- --- docsFromManifest(url) A file-based site, from its compiled manifest. NgeDocSettings A code-first site. An array of the above Several sites side by side."
+  },
+  {
+    "slug": "/docs/nge-markdown/getting-started",
+    "title": "Getting Started",
+    "content": "nge/markdown renders Markdown in an Angular app. It is built on Marked and adds a themeable component, dark mode, and a contribution API to extend both the syntax and the generated HTML."
+  },
+  {
+    "slug": "/docs/nge-markdown/getting-started#what-you-get",
+    "title": "Getting Started",
+    "heading": "What you get",
+    "content": "Three ways to render. Bind a string with [data], load a file with [file], or write Markdown directly inside the component tag (transclusion). A GitHub-style theme. Applied by default, with a dark variant that follows a CSS class you control. Set [theme]=\"'none'\" to opt out. Contributions. Admonitions, tabbed sets, KaTeX math, emoji, inline icons, router-aware links, and syntax highlighting through nge/monaco. Add only the ones you use. Embed components. Drop live Angular components into Markdown by keyword with a small registry. See Embedding components. Full access to Marked. Bring your own renderer and tokenizer, and read the token list after each render with (render). Your own extensions. A contribution can transform the raw Markdown, the tokens, the Marked renderer or tokenizer, and the final HTML."
+  },
+  {
+    "slug": "/docs/nge-markdown/getting-started#next-steps",
+    "title": "Getting Started",
+    "heading": "Next steps",
+    "content": "Installation to add it to a project. Usage to render your first Markdown. Contributions for the syntax extensions and how to write your own."
+  },
+  {
+    "slug": "/docs/nge-markdown/installation",
+    "title": "Installation",
+    "content": "nge/markdown ships in @cisstech/nge, with Marked as a peer dependency: npm i @cisstech/nge marked yarn add @cisstech/nge marked"
+  },
+  {
+    "slug": "/docs/nge-markdown/installation#httpclient",
+    "title": "Installation",
+    "heading": "HttpClient",
+    "content": "Loading Markdown from a URL with [file] uses HttpClient, so provide it at the app root: import { provideHttpClient } from '@angular/common/http' bootstrapApplication(AppComponent, { providers: [provideHttpClient()], }) Rendering from a string or from transclusion does not need it. Next: Usage."
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#set-up",
+    "title": "Usage",
+    "heading": "Set up",
+    "content": "Call provideNgeMarkdown at the app root and compose the features you need: a theme, and any contributions. Add HttpClient for [file]. import { ApplicationConfig } from '@angular/core' import { provideHttpClient } from '@angular/common/http' import { provideNgeMarkdown, withThemes, withAdmonitions, withTabbedSet, } from '@cisstech/nge/markdown' export const appConfig: ApplicationConfig = { providers: [ provideHttpClient(), provideNgeMarkdown( withThemes({ name: 'github', styleUrl: 'assets/nge/markdown/themes/github.css' }), withAdmonitions(), withTabbedSet(), ), ], } The renderer is the standalone NgeMarkdownComponent. Import it where you use it: import { Component } from '@angular/core' import { NgeMarkdownComponent } from '@cisstech/nge/markdown' @Component({ selector: 'app-doc', imports: [NgeMarkdownComponent], template: <nge-markdown [file]=\"'assets/readme.md'\" />, }) export class DocComponent {}"
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#render-markdown",
+    "title": "Usage",
+    "heading": "Render Markdown",
+    "content": "Three sources, one component. (render) emits the Marked token list after each pass. import { Component } from '@angular/core' import { NgeMarkdownComponent } from '@cisstech/nge/markdown' import type { TokensList } from 'marked' @Component({ selector: 'app-demo', imports: [NgeMarkdownComponent], templateUrl: './demo.component.html', }) export class DemoComponent { readonly markdown = # Title\\n\\nRendered from a string. onRender(tokens: TokensList) { console.log(tokens) } } <!-- from a string --> <nge-markdown [data]=\"markdown\" (render)=\"onRender($event)\" /> <!-- from a file --> <nge-markdown [file]=\"'assets/readme.md'\" (render)=\"onRender($event)\" /> <!-- from transclusion --> <nge-markdown ngPreserveWhitespaces> Title Rendered from the template. </nge-markdown> The Angular compiler collapses whitespace by default. Add ngPreserveWhitespaces so newlines survive and the transcluded Markdown renders as written. Inside a template, characters such as <, >, { and } must be escaped so the compiler does not read them as Angular syntax. Prefer [data] or [file] for anything non-trivial."
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#configure-marked",
+    "title": "Usage",
+    "heading": "Configure Marked",
+    "content": "Pass Marked options through the withConfig feature. A factory form is available when the renderer or tokenizer needs dependency injection. import { provideNgeMarkdown, withConfig, NgeMarkdownConfig, } from '@cisstech/nge/markdown' import { Renderer } from 'marked' export function markdownConfig(): NgeMarkdownConfig { const renderer = new Renderer() renderer.blockquote = (quote) => <blockquote class=\"callout\">${quote}</blockquote> return { renderer, breaks: false } } // providers provideNgeMarkdown(withConfig(markdownConfig)) highlight and langPrefix are managed by the library and cannot be overridden."
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#theming",
+    "title": "Usage",
+    "heading": "Theming",
+    "content": "The default theme is inspired by github-markdown-css. Register it with the withThemes feature and copy the stylesheets to your assets."
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#copy-the-theme-assets",
+    "title": "Usage",
+    "heading": "Copy the theme assets",
+    "content": "{ \"assets\": [ { \"glob\": \"/\", \"input\": \"./nodemodules/@cisstech/nge/assets/markdown/\", \"output\": \"./assets/nge/markdown/\" } ] }"
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#register-the-theme",
+    "title": "Usage",
+    "heading": "Register the theme",
+    "content": "provideNgeMarkdown( withThemes({ name: 'github', styleUrl: 'assets/nge/markdown/themes/github.css', }), ) The component applies the github theme unless you set [theme] to another registered name, or to 'none' to render unstyled."
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#dark-mode",
+    "title": "Usage",
+    "heading": "Dark mode",
+    "content": "Point the config at the class your app toggles for dark mode; the theme switches its dark variant when that class is present on <html> or <body>. provideNgeMarkdown(withConfig({ darkThemeClassName: 'dark-theme' })) Inside an nge/doc site, use its class: darkThemeClassName: 'nge-doc-dark'. This is the same option as in nge/monaco, so one class drives both. It also accepts an array (['dark-theme', 'nge-doc-dark']) for apps whose pages toggle different dark classes."
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#compile-markdown-yourself",
+    "title": "Usage",
+    "heading": "Compile Markdown yourself",
+    "content": "NgeMarkdownComponent wraps NgeMarkdownService. Inject the service to render into an element you own and get the tokens back. import { inject } from '@angular/core' import { NgeMarkdownService } from '@cisstech/nge/markdown' const markdownService = inject(NgeMarkdownService) const tokens = await markdownService.compile({ markdown: '# Hello', target: document.getElementById('out')!, })"
+  },
+  {
+    "slug": "/docs/nge-markdown/usage#ngmodule-apps",
+    "title": "Usage",
+    "heading": "NgModule apps",
+    "content": "Import NgeMarkdownModule to expose the component in a module, and keep the same setup: provideNgeMarkdown(...) returns EnvironmentProviders, so the same composition of features works in an NgModule's providers as well as in a standalone ApplicationConfig."
+  },
+  {
+    "slug": "/docs/nge-markdown/embedding",
+    "title": "Embedding",
+    "content": "Register a component under a keyword, then write that keyword as a tag anywhere in your Markdown. The renderer mounts the live component in its place. Only registered keywords are mounted, so every other tag stays plain HTML."
+  },
+  {
+    "slug": "/docs/nge-markdown/embedding#register",
+    "title": "Embedding",
+    "heading": "Register",
+    "content": "import { provideNgeMarkdown, withComponents } from '@cisstech/nge/markdown' // in your app (or NgModule) providers provideNgeMarkdown( withComponents({ 'demo-counter': () => import('./demo-counter.component').then((m) => m.DemoCounterComponent), }), )"
+  },
+  {
+    "slug": "/docs/nge-markdown/embedding#use",
+    "title": "Embedding",
+    "heading": "Use",
+    "content": "Write the keyword as a tag. Attributes are passed to the component as inputs, so label=\"Try me\" sets the label input. Here is a live component: <demo-counter label=\"Try me\"></demo-counter> Result: <demo-counter label=\"Try me\"></demo-counter> Prefer hyphenated keywords such as demo-counter; they are valid custom-element names and never clash with real HTML. Components are pre-built and registered by keyword, so there is no runtime template compiler and no bundle cost beyond the components you register. The reader cannot edit their code: this renders a live component, it does not compile new ones."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions",
+    "title": "Contributions",
+    "content": "A contribution hooks into the Markdown pipeline to change the syntax it understands or the HTML it produces. nge/markdown ships a set of ready-made ones and lets you write your own."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions#built-in-contributions",
+    "title": "Contributions",
+    "heading": "Built-in contributions",
+    "content": "Each is a feature you compose inside provideNgeMarkdown(). Add only the ones you use. Contribution Feature What it adds --- --- --- Admonitions withAdmonitions() Styled call-out blocks TabbedSet withTabbedSet() Tabbed content groups KaTeX withKatex() Math and chemistry Emoji withEmoji() Emoji from shortcodes Icons withIcons() Inline icons LinkAnchor withLinkAnchor() Router-aware anchor links Highlighter withHighlighter() Code syntax highlighting Compose them in provideNgeMarkdown (see Usage for the full setup): import { provideNgeMarkdown, withAdmonitions, withTabbedSet, withKatex, withEmoji, withIcons, withLinkAnchor, withHighlighter, } from '@cisstech/nge/markdown' // in your ApplicationConfig (or NgModule) providers providers: [ provideNgeMarkdown( withAdmonitions(), withTabbedSet(), withKatex(), withEmoji(), withIcons(), withLinkAnchor(), withHighlighter(), ), ] The former NgeMarkdownXxxProvider constants still work but are deprecated and will be removed in the next major."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions#write-your-own",
+    "title": "Contributions",
+    "heading": "Write your own",
+    "content": "A contribution is a class implementing NgeMarkdownContribution. Its contribute method receives an NgeMarkdownTransformer that lets you hook into each phase of the parse: addMarkdownTransformer rewrites the raw Markdown string before parsing. addTokenizerTransformer adjusts the Marked tokenizer. addAstTransformer edits the token list produced by the lexer. addRendererTransformer adjusts the Marked renderer. addHtmlTransformer edits the final HTML before it is displayed. dependencies() can return external scripts or styles to load before the transforms run. import { Injectable, Provider } from '@angular/core' import { NgeMarkdownContribution, NgeMarkdownTransformer, NGEMARKDOWNCONTRIBUTION, } from '@cisstech/nge/markdown' @Injectable() export class MyContribution implements NgeMarkdownContribution { contribute(transformer: NgeMarkdownTransformer) { transformer.addHtmlTransformer((element) => { element.querySelectorAll('h2').forEach((h2) => h2.classList.add('section-title')) }) } } export const MyContributionProvider: Provider = { provide: NGEMARKDOWNCONTRIBUTION, multi: true, useClass: MyContribution, } providers: [MyContributionProvider]"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/admonitions",
+    "title": "Admonitions",
+    "content": "Admonitions, also called call-outs, add side content without breaking the flow of the page. They come in several types, take an optional title, and can hold nested content. Examples on this page follow the Material for MkDocs reference."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/admonitions#register",
+    "title": "Admonitions",
+    "heading": "Register",
+    "content": "import { provideNgeMarkdown, withAdmonitions } from '@cisstech/nge/markdown' // add to your app providers (see Usage for the full setup) providers: [provideNgeMarkdown(withAdmonitions())]"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/admonitions#syntax",
+    "title": "Admonitions",
+    "heading": "Syntax",
+    "content": "A block starts with ::: followed by a type keyword, then the content, then a closing :::. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/admonitions#title",
+    "title": "Admonitions",
+    "heading": "Title",
+    "content": "Add a title after the type. Use :::+ to make the block open by default. The title accepts inline Markdown. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/admonitions#nested-content",
+    "title": "Admonitions",
+    "heading": "Nested content",
+    "content": "A block can hold headings, lists, code and other blocks. plaintext Lorem ipsum dolor sit amet. def bubblesort(items): for i in range(len(items)): for j in range(len(items) - 1 - i): if items[j] > items[j + 1]: items[j], items[j + 1] = items[j + 1], items[j] Lorem ipsum dolor sit amet. def bubblesort(items): for i in range(len(items)): for j in range(len(items) - 1 - i): if items[j] > items[j + 1]: items[j], items[j + 1] = items[j + 1], items[j]"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/admonitions#types",
+    "title": "Admonitions",
+    "heading": "Types",
+    "content": "note, abstract, info, tip, success, question, warning, failure, danger, bug, example and quote. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/emoji",
+    "title": "Emoji",
+    "content": "Write emoji straight into Markdown. You can paste a Unicode emoji directly, or type a shortcode and let this contribution render it with Emoji Toolkit."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/emoji#register",
+    "title": "Emoji",
+    "heading": "Register",
+    "content": "import { provideNgeMarkdown, withEmoji } from '@cisstech/nge/markdown' // add to your app providers (see Usage for the full setup) providers: [provideNgeMarkdown(withEmoji())]"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/emoji#syntax",
+    "title": "Emoji",
+    "heading": "Syntax",
+    "content": "Wrap a shortcode in colons. See the emoji cheat sheet for the full list. :smile: Result: 😄"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/emoji#options",
+    "title": "Emoji",
+    "heading": "Options",
+    "content": "Emoji Toolkit loads from a CDN by default. Point it at another location by passing options to withEmoji: import { provideNgeMarkdown, withEmoji } from '@cisstech/nge/markdown' providers: [ provideNgeMarkdown( withEmoji({ url: 'assets/scripts/joypixels.min.js' }), ), ]"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/highlighter#static-highlighting-with-shiki-recommended",
+    "title": "Highlighter",
+    "heading": "Static highlighting with shiki (recommended)",
+    "content": "withShiki() highlights fenced code blocks with shiki, on the server too: prerendered pages ship highlighted HTML, with both color palettes emitted as CSS variables so switching schemes never re-highlights. This site uses it. npm i -D shiki import { provideNgeMarkdown, withShiki } from '@cisstech/nge/markdown' provideNgeMarkdown(withShiki()) // or with options: provideNgeMarkdown(withShiki({ themes: { light: 'vitesse-light', dark: 'vitesse-dark' } })) On the server, the configured langs (a sensible default list) are preloaded before the first render; a language outside the list still highlights on the client. An unknown language falls back to plain text. The fence options below (lines, highlights, filename) work with both highlighters, with the same syntax, and every block gets the same chrome: a toolbar with the filename (or the language), a copy action and a download action. Highlight fenced code blocks. The contribution is highlighter-agnostic: it delegates to a service you provide. nge/monaco ships an adapter, so its editor engine colors your code."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/highlighter#register",
+    "title": "Highlighter",
+    "heading": "Register",
+    "content": "Register the contribution and a highlighter service. With nge/monaco, wire its colorizer: import { NgeMonacoColorizerService } from '@cisstech/nge/monaco' import { provideNgeMarkdown, withHighlighter } from '@cisstech/nge/markdown' providers: [ provideNgeMarkdown( withHighlighter(NgeMonacoColorizerService), ), ] To use another highlighter, implement NgeMarkdownHighlighterService and provide it for the NGEMARKDOWNHIGHLIGHTERSERVICE token."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/highlighter#syntax",
+    "title": "Highlighter",
+    "heading": "Syntax",
+    "content": "A plain fenced block is highlighted from its language: plaintext const s = 'JavaScript syntax highlighting' alert(s) const s = 'JavaScript syntax highlighting' alert(s) Add options after the language: lines shows line numbers, highlights emphasizes lines (single or ranges), and filename adds a header with copy and download actions. plaintext lines=\"1\" highlights=\"1-2\" filename=\"demo.py\" s = \"Highlighted lines with a filename header\" print(s) lines=\"1\" highlights=\"1-2\" filename=\"demo.py\" s = \"Highlighted lines with a filename header\" print(s)"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/icons",
+    "title": "Icons",
+    "content": "Drop icons into Markdown with almost no setup. Icons are fetched on demand from icongram, which offers more than 10,000 across several libraries."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/icons#register",
+    "title": "Icons",
+    "heading": "Register",
+    "content": "import { provideNgeMarkdown, withIcons } from '@cisstech/nge/markdown' // add to your app providers (see Usage for the full setup) providers: [provideNgeMarkdown(withIcons())]"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/icons#syntax",
+    "title": "Icons",
+    "heading": "Syntax",
+    "content": "Wrap the icon library and name in @. @octicons home@ @fontawesome home@ Result: @octicons home@ @fontawesome home@"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/icons#color-and-size",
+    "title": "Icons",
+    "heading": "Color and size",
+    "content": "Add color (a hex value without #) and size (in pixels). @octicons home size=32 color=FF0000@ @fontawesome home size=48 color=00AA00@ Result: @octicons home size=32 color=FF0000@ @fontawesome home size=48 color=00AA00@"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/katex",
+    "title": "KaTeX",
+    "content": "Write math and chemistry in your pages. Expressions render with KaTeX."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/katex#register",
+    "title": "KaTeX",
+    "heading": "Register",
+    "content": "import { provideNgeMarkdown, withKatex } from '@cisstech/nge/markdown' // add to your app providers (see Usage for the full setup) providers: [provideNgeMarkdown(withKatex())]"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/katex#syntax",
+    "title": "KaTeX",
+    "heading": "Syntax",
+    "content": "A display block sits between $$ fences on their own lines: $$ f(x) = \\int{-\\infty}^{\\infty} \\hat f(\\xi)\\, e^{2 \\pi i \\xi x} \\,d\\xi $$ $$ f(x) = \\int{-\\infty}^{\\infty} \\hat f(\\xi)\\, e^{2 \\pi i \\xi x} \\,d\\xi $$ Inline math sits between single $: $c = \\pm\\sqrt{a^2 + b^2}$ Result: $c = \\pm\\sqrt{a^2 + b^2}$ Chemistry uses mhchem notation: $\\ce{CO2 + C -> 2 CO}$ Result: $\\ce{CO2 + C -> 2 CO}$"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/katex#options",
+    "title": "KaTeX",
+    "heading": "Options",
+    "content": "KaTeX loads from a CDN by default. Override the source, delimiters or extensions by passing options to withKatex: import { provideNgeMarkdown, withKatex } from '@cisstech/nge/markdown' providers: [ provideNgeMarkdown( withKatex({ options: { delimiters: [ { left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, ], }, extensions: { mhchem: true, copyTex: true }, }), ), ] With extensions.copyTex on (the default), copying a rendered expression puts its LaTeX source on the clipboard. extensions.mhchem (also on by default) enables the chemistry notation above."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/link-anchor",
+    "title": "LinkAnchor",
+    "content": "Unlike the other contributions, LinkAnchor adds no syntax. It makes fragment links such as go to section navigate through the Angular router, so a full page reload never happens and the router keeps control of the URL."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/link-anchor#register",
+    "title": "LinkAnchor",
+    "heading": "Register",
+    "content": "import { provideNgeMarkdown, withLinkAnchor } from '@cisstech/nge/markdown' // add to your app providers (see Usage for the full setup) providers: [provideNgeMarkdown(withLinkAnchor())] That is all: existing anchor links in your Markdown now route in place."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/tabbed-set",
+    "title": "TabbedSet",
+    "content": "Group alternative content under tabs, for example the same setup shown for npm and yarn, or a snippet in several languages."
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/tabbed-set#register",
+    "title": "TabbedSet",
+    "heading": "Register",
+    "content": "import { provideNgeMarkdown, withTabbedSet } from '@cisstech/nge/markdown' // add to your app providers (see Usage for the full setup) providers: [provideNgeMarkdown(withTabbedSet())]"
+  },
+  {
+    "slug": "/docs/nge-markdown/contributions/tabbed-set#syntax",
+    "title": "TabbedSet",
+    "heading": "Syntax",
+    "content": "Each tab starts with === followed by its title, then a blank line and the content. Close the set with a line holding only ===. plaintext #include <stdio.h> int main(void) { printf(\"Hello world!\\n\"); return 0; } Sed sagittis eleifend rutrum Donec vitae suscipit est Nulla tempor lobortis orci Result: #include <stdio.h> int main(void) { printf(\"Hello world!\\n\"); return 0; } Sed sagittis eleifend rutrum Donec vitae suscipit est Nulla tempor lobortis orci A tab can hold arbitrary content and nest inside other blocks (admonitions, blockquotes), but it cannot contain another tab set."
+  },
+  {
+    "slug": "/docs/nge-markdown/cheatsheet",
+    "title": "Cheatsheet",
+    "content": "A live gallery of the markdown features nge/markdown renders. <markdown-cheatsheet></markdown-cheatsheet>"
+  },
+  {
+    "slug": "/docs/nge-monaco/getting-started",
+    "title": "Getting Started",
+    "content": "nge/monaco brings the Monaco editor, the editor that powers VS Code, into Angular. It wraps Monaco in components while leaving the editor instance fully in your hands."
+  },
+  {
+    "slug": "/docs/nge-monaco/getting-started#what-you-get",
+    "title": "Getting Started",
+    "heading": "What you get",
+    "content": "Three components. An editor, a side-by-side diff editor, and a read-only viewer for highlighting a code block. Theming. A set of ready-to-use themes, an API to switch at runtime, and automatic light/dark switching driven by a CSS class or the OS preference. Full control. You create and own the ITextModel, so binding, languages and disposal work exactly the way Monaco intends. Extensible. Register contributions to add languages, completions or any Monaco API once the editor loads. Loads from a CDN by default. Point it at your own server to self-host, and localize the editor UI."
+  },
+  {
+    "slug": "/docs/nge-monaco/getting-started#next-steps",
+    "title": "Getting Started",
+    "heading": "Next steps",
+    "content": "Installation to add it to a project. Usage for the components, theming and extensions. Showcase to see the components running."
+  },
+  {
+    "slug": "/docs/nge-monaco/installation",
+    "title": "Installation",
+    "content": "nge/monaco ships in @cisstech/nge, with monaco-editor as a peer dependency: npm i @cisstech/nge monaco-editor yarn add @cisstech/nge monaco-editor"
+  },
+  {
+    "slug": "/docs/nge-monaco/installation#httpclient",
+    "title": "Installation",
+    "heading": "HttpClient",
+    "content": "Themes are loaded over HTTP, so provide HttpClient at the app root: import { provideHttpClient } from '@angular/common/http' bootstrapApplication(AppComponent, { providers: [provideHttpClient()], })"
+  },
+  {
+    "slug": "/docs/nge-monaco/installation#where-monaco-loads-from",
+    "title": "Installation",
+    "heading": "Where Monaco loads from",
+    "content": "The editor sources load from a CDN by default, so the monaco-editor package is only required when you self-host them. Keep it installed to pin the version you serve. Next: Usage."
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#set-up",
+    "title": "Usage",
+    "heading": "Set up",
+    "content": "Call provideNgeMonaco once at the app root, alongside HttpClient for loading themes. import { ApplicationConfig } from '@angular/core' import { provideHttpClient } from '@angular/common/http' import { provideNgeMonaco } from '@cisstech/nge/monaco' export const appConfig: ApplicationConfig = { providers: [ provideHttpClient(), provideNgeMonaco({ // options passed to every editor instance options: { scrollBeyondLastLine: false }, }), ], } The components are standalone. Import the ones you use: import { NgeMonacoEditorComponent, NgeMonacoDiffEditorComponent, NgeMonacoViewerComponent, } from '@cisstech/nge/monaco'"
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#editor",
+    "title": "Usage",
+    "heading": "Editor",
+    "content": "nge/monaco does not bind a value for you: you create the ITextModel and attach it in the (ready) handler. This keeps languages, multiple models and disposal under your control. Set the height with the --editor-height custom property. import { Component } from '@angular/core' import { NgeMonacoEditorComponent } from '@cisstech/nge/monaco' @Component({ selector: 'app-editor', imports: [NgeMonacoEditorComponent], templateUrl: './editor.component.html', }) export class EditorComponent { private model?: monaco.editor.ITextModel onReady(editor: monaco.editor.IStandaloneCodeEditor) { this.model ??= monaco.editor.createModel('print(\"Hello world\")', 'python') editor.setModel(this.model) editor.addCommand(monaco.KeyMod.CtrlCmd monaco.KeyCode.KeyS, () => { console.log(this.model?.getValue()) }) } } <nge-monaco-editor style=\"--editor-height: 240px\" (ready)=\"onReady($event)\" /> You own the models you create, so dispose them when the component is destroyed. The editor itself is disposed for you."
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#diff-editor",
+    "title": "Usage",
+    "heading": "Diff editor",
+    "content": "Same idea, with an original and a modified model. import { Component } from '@angular/core' import { NgeMonacoDiffEditorComponent } from '@cisstech/nge/monaco' @Component({ selector: 'app-diff', imports: [NgeMonacoDiffEditorComponent], templateUrl: './diff.component.html', }) export class DiffComponent { onReady(editor: monaco.editor.IStandaloneDiffEditor) { editor.updateOptions({ renderSideBySide: true }) editor.setModel({ original: monaco.editor.createModel('print(\"Hello world !!!\")', 'python'), modified: monaco.editor.createModel('print(\"hello world\")', 'python'), }) } } <nge-monaco-diff-editor style=\"--editor-height: 240px\" (ready)=\"onReady($event)\" />"
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#viewer",
+    "title": "Usage",
+    "heading": "Viewer",
+    "content": "For read-only code, the viewer highlights a block without a full editor. Pass the code with [code] or through transclusion, and pick a language. <!-- from an input --> <nge-monaco-viewer [language]=\"'python'\" [code]=\"'print(\\'Hello world\\')'\" /> <!-- from transclusion, with visible lines, highlights and a filename tab --> <nge-monaco-viewer [language]=\"'typescript'\" [lines]=\"'1 4-7'\" [highlights]=\"'2-3'\" [filename]=\"'example.ts'\" ngPreserveWhitespaces > const answer = 42 </nge-monaco-viewer> The viewer accepts code, language, lines, highlights, filename and theme inputs. Add ngPreserveWhitespaces when using transclusion so line breaks survive template compilation."
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#theming",
+    "title": "Usage",
+    "heading": "Theming",
+    "content": ""
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#register-themes",
+    "title": "Usage",
+    "heading": "Register themes",
+    "content": "Add the theme files to your assets and list the ones you want in provideNgeMonaco. NGEMONACOTHEMES holds every bundled theme name. { \"assets\": [ { \"glob\": \"/\", \"input\": \"./nodemodules/@cisstech/nge/assets/monaco/\", \"output\": \"./assets/nge/monaco/\" } ] } import { provideNgeMonaco, NGEMONACOTHEMES } from '@cisstech/nge/monaco' provideNgeMonaco({ theming: { themes: NGEMONACOTHEMES.map((theme) => assets/nge/monaco/themes/${theme}), default: 'github', }, })"
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#switch-at-runtime",
+    "title": "Usage",
+    "heading": "Switch at runtime",
+    "content": "NgeMonacoThemeService changes the theme for every editor on the page. themesChanges emits the list of available themes. import { Component, inject } from '@angular/core' import { NgeMonacoThemeService } from '@cisstech/nge/monaco' @Component({ / ... / }) export class ThemePickerComponent { private readonly theming = inject(NgeMonacoThemeService) readonly themes = this.theming.themesChanges setTheme(name: string) { this.theming.setTheme(name) } }"
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#follow-light-and-dark-mode",
+    "title": "Usage",
+    "heading": "Follow light and dark mode",
+    "content": "Set a light and a dark theme and Monaco switches between them on its own. Detection is either a CSS class on the document root or, when no class is given, the (prefers-color-scheme: dark) media query. provideNgeMonaco({ theming: { themes: NGEMONACOTHEMES.map((theme) => assets/nge/monaco/themes/${theme}), light: 'github', dark: 'tomorrow-night', // observed live on <html> and <body>; omit to follow the OS preference darkThemeClassName: 'dark-theme', }, }) This is how these docs keep the editors in step with the site: nge/doc toggles a class for dark mode, and Monaco reads the same class. darkThemeClassName matches the option of the same name in nge/markdown, so a single class drives both. Inside an nge/doc site, set darkThemeClassName: 'nge-doc-dark', the class nge/doc toggles on <html>. darkThemeClassName also accepts an array, so an app whose pages use different dark classes can pass ['dark-theme', 'nge-doc-dark'] and Monaco follows whichever one is present."
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#extensions",
+    "title": "Usage",
+    "heading": "Extensions",
+    "content": "Register a contribution to run code once Monaco is available, for example to add a language. Bind it to the NGEMONACOCONTRIBUTION token. import { Injectable } from '@angular/core' import { NgeMonacoContribution, NGEMONACOCONTRIBUTION } from '@cisstech/nge/monaco' @Injectable() class CustomLanguageContribution implements NgeMonacoContribution { activate() { monaco.languages.register({ id: 'my-lang' }) monaco.languages.setMonarchTokensProvider('my-lang', { tokenizer: { root: [[/\\[error./, 'custom-error']] }, }) } deactivate() { // release any disposables here } } // providers { provide: NGEMONACOCONTRIBUTION, multi: true, useClass: CustomLanguageContribution }"
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#self-host-monaco",
+    "title": "Usage",
+    "heading": "Self-host Monaco",
+    "content": "To serve Monaco from your own domain instead of the CDN, copy its files to your assets and point assets at them. { \"assets\": [ { \"glob\": \"/\", \"input\": \"./nodemodules/monaco-editor/min\", \"output\": \"./assets/nge/monaco/min\" }, { \"glob\": \"/\", \"input\": \"./nodemodules/monaco-editor/min-maps\", \"output\": \"./assets/nge/monaco/min-maps\" } ] } provideNgeMonaco({ assets: 'assets/nge/monaco' })"
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#ngmodule-apps",
+    "title": "Usage",
+    "heading": "NgModule apps",
+    "content": "provideNgeMonaco() returns EnvironmentProviders, so the same call works in an NgModule's providers array. NgeMonacoModule.forRoot({ / ... / }) still exists but is deprecated. The components work the same once imported."
+  },
+  {
+    "slug": "/docs/nge-monaco/usage#links",
+    "title": "Usage",
+    "heading": "Links",
+    "content": "Monaco editor Editor options"
+  },
+  {
+    "slug": "/docs/nge-monaco/showcase",
+    "title": "Showcase",
+    "content": "Live examples of the nge/monaco editors: a viewer, an editor and a diff editor. <monaco-showcase></monaco-showcase>"
+  },
+  {
+    "slug": "/docs/nge-ui/getting-started",
+    "title": "Getting Started",
+    "content": "nge/ui is a small set of standalone UI building blocks for Angular apps. Each one is its own entry point, so you only bundle what you import."
+  },
+  {
+    "slug": "/docs/nge-ui/getting-started#what-you-get",
+    "title": "Getting Started",
+    "heading": "What you get",
+    "content": "Tree (ui-tree) renders a data tree from your own model through an adapter, with expand/collapse, selection, filtering and keyboard and mouse actions. List (ui-list) renders a list from your items and an item template, with optional selection and text filtering. Icon (ui-icon) renders an icon from Font Awesome, icongram, VS Code codicons, a file or folder type, or a plain image, behind one component."
+  },
+  {
+    "slug": "/docs/nge-ui/getting-started#installation",
+    "title": "Getting Started",
+    "heading": "Installation",
+    "content": "npm i @cisstech/nge @angular/cdk yarn add @cisstech/nge @angular/cdk ui-tree, ui-list and ui-icon use @angular/cdk, installed above. No other UI dependency is required. Each component is standalone. Import the ones you use, or their NgModule (NgeUiTreeModule, NgeUiListModule, NgeUiIconModule)."
+  },
+  {
+    "slug": "/docs/nge-ui/tree",
+    "title": "Tree",
+    "content": "ui-tree renders a tree from any data model. You describe how to read your nodes through an adapter, and the component handles expansion, selection, filtering and interaction."
+  },
+  {
+    "slug": "/docs/nge-ui/tree#live-example",
+    "title": "Tree",
+    "heading": "Live example",
+    "content": "<ui-tree-demo></ui-tree-demo>"
+  },
+  {
+    "slug": "/docs/nge-ui/tree#usage",
+    "title": "Tree",
+    "heading": "Usage",
+    "content": "Pass the root nodes and an adapter, and project a node template with the treeNode directive. The template receives an ITreeNodeHolder: node.name is the display name (from nameProvider) and node.data is your original object. Import TreeComponent and TreeNodeDirective. <ui-tree [nodes]=\"nodes\" [adapter]=\"adapter\"> <ng-template treeNode let-node>{{ node.name }}</ng-template> </ui-tree> The adapter (ITreeAdapter<T>) tells the tree how to read a node. id, idProvider, isExpandable and nameProvider are required; the rest are optional. import { ITreeAdapter } from '@cisstech/nge/ui/tree' interface FileNode { path: string name: string children?: FileNode[] } readonly adapter: ITreeAdapter<FileNode> = { id: 'file-tree', idProvider: (node) => node.path, isExpandable: (node) => !!node.children?.length, nameProvider: (node) => node.name, childrenProvider: (node) => node.children ?? [], actions: { mouse: { click: (e) => console.log('open', e.node?.path), }, }, }"
+  },
+  {
+    "slug": "/docs/nge-ui/tree#controlling-the-tree",
+    "title": "Tree",
+    "heading": "Controlling the tree",
+    "content": "id names the tree so you can reach it from anywhere with TreeService.get(id), for example to expand everything or set the filter term without holding a reference to the component. import { inject } from '@angular/core' import { TreeService } from '@cisstech/nge/ui/tree' const trees = inject(TreeService) const tree = trees.get('file-tree') tree?.expandAll() tree?.search({ term: 'readme' }) treeHeight and itemHeight set the tree's overall height and its row height, and the actions mapping binds keyboard and mouse handlers (click, rightClick, key bindings) to your own callbacks."
+  },
+  {
+    "slug": "/docs/nge-ui/list",
+    "title": "List",
+    "content": "ui-list renders a list from your items and an item template, with optional selection and text filtering built in."
+  },
+  {
+    "slug": "/docs/nge-ui/list#live-example",
+    "title": "List",
+    "heading": "Live example",
+    "content": "<ui-list-demo></ui-list-demo>"
+  },
+  {
+    "slug": "/docs/nge-ui/list#usage",
+    "title": "List",
+    "heading": "Usage",
+    "content": "idField is required and names the property that uniquely identifies an item. Project the item template with ui-list-template. <ui-list [idField]=\"'id'\" [items]=\"articles\" [filter]=\"query\" [filterBy]=\"['title', 'summary']\"> <ui-list-template slot=\"row\"> <ng-template let-item=\"item\"> <ui-list-item-article [articleTitle]=\"item.title\" [articleDescription]=\"item.summary\" /> </ng-template> </ui-list-template> </ui-list>"
+  },
+  {
+    "slug": "/docs/nge-ui/list#inputs",
+    "title": "List",
+    "heading": "Inputs",
+    "content": "idField (required): the property that identifies an item. items: the array to render. filter and filterBy: a search term and the fields to match it against. selectable: allow items to be selected. trackBy: property used to track items across changes. containerClass: extra class on the list container."
+  },
+  {
+    "slug": "/docs/nge-ui/list#item-templates",
+    "title": "List",
+    "heading": "Item templates",
+    "content": "ui-list-template projects a template into a slot of the list. slot targets where it renders: row for each item, plus selection, header, empty and noresult. Use when to pick a template conditionally. ui-list-item-article is a ready-made row layout with a title, description, banner, icon and tags, so common lists need no custom markup."
+  },
+  {
+    "slug": "/docs/nge-ui/icon",
+    "title": "Icon",
+    "content": "ui-icon renders an icon from several sources behind a single component. You pass an Icon instance and the component draws the right thing."
+  },
+  {
+    "slug": "/docs/nge-ui/icon#live-example",
+    "title": "Icon",
+    "heading": "Live example",
+    "content": "<ui-icon-demo></ui-icon-demo>"
+  },
+  {
+    "slug": "/docs/nge-ui/icon#usage",
+    "title": "Icon",
+    "heading": "Usage",
+    "content": "<ui-icon [icon]=\"icon\" /> import { FaIcon, CodIcon, IcongrIcon, ImgIcon } from '@cisstech/nge/ui/icon' readonly icon = new FaIcon('user') // Font Awesome"
+  },
+  {
+    "slug": "/docs/nge-ui/icon#sources",
+    "title": "Icon",
+    "heading": "Sources",
+    "content": "new FaIcon('user'): a Font Awesome icon. new CodIcon('git-commit'): a VS Code codicon. new IcongrIcon('material account'): an icongram icon (library name), with size and color options. new ImgIcon('assets/logo.svg', { alt: 'Logo' }): any image url."
+  },
+  {
+    "slug": "/docs/nge-ui/icon#file-and-folder-icons",
+    "title": "Icon",
+    "heading": "File and folder icons",
+    "content": "Icons matched by file extension (and folder open/closed state) are available through the package's icon pipes, so a file explorer can show the right glyph per entry."
+  },
+  {
+    "slug": "/docs/nge-ui/icon#configuration",
+    "title": "Icon",
+    "heading": "Configuration",
+    "content": "Provide NGEUIICONCONFIG to set a default file icon or register extra FileIcon mappings for extensions the built-in set does not cover."
+  },
+  {
+    "slug": "/docs/utilities/getting-started",
+    "title": "Getting Started",
+    "content": "Three small entry points that the rest of nge builds on, and that are useful on their own."
+  },
+  {
+    "slug": "/docs/utilities/getting-started#what-you-get",
+    "title": "Getting Started",
+    "heading": "What you get",
+    "content": "Services (nge/services): root-provided helpers for the clipboard, dynamic component rendering, on-demand resource loading and file picking. Pipes (nge/pipes): standalone template pipes for common checks and transforms. Utils (nge/utils): pure functions for colors, dates, strings, comparison, copying and file types, with no Angular dependency."
+  },
+  {
+    "slug": "/docs/utilities/getting-started#installation",
+    "title": "Getting Started",
+    "heading": "Installation",
+    "content": "npm i @cisstech/nge yarn add @cisstech/nge The services are providedIn: 'root', the pipes are standalone, and the utils are plain functions, so there is nothing to register."
+  },
+  {
+    "slug": "/docs/utilities/services",
+    "title": "Services",
+    "content": "Every service in nge/services is providedIn: 'root', so you just inject() it. import { inject } from '@angular/core' import { ClipboardService } from '@cisstech/nge/services' const clipboard = inject(ClipboardService) await clipboard.copy('Copied to the clipboard')"
+  },
+  {
+    "slug": "/docs/utilities/services#what-is-available",
+    "title": "Services",
+    "heading": "What is available",
+    "content": "ClipboardService copies text to the clipboard: copy(text): Promise<void>. CompilerService mounts a component dynamically: render(options): Promise<ComponentRef> and resolveComponent(type, injector). This is what the doc engine and the Markdown renderer use to render component pages. ResourceLoaderService loads external scripts and styles on demand, once each: loadAllSync(resources) and loadAllAsync(resources) return an observable, and waitForPendings() resolves when in-flight loads finish. It is how contributions pull in KaTeX, emoji and other assets only when needed. PickerBrowserService opens the browser file picker: pickFiles(options): Promise<File[]>. InjectorService exposes the root injector for the rare case where you need it outside Angular's dependency injection."
+  },
+  {
+    "slug": "/docs/utilities/pipes",
+    "title": "Pipes",
+    "content": "nge/pipes are standalone pipes. Import the pipe class into the component that uses it. import { Component } from '@angular/core' import { IsTemplatePipe } from '@cisstech/nge/pipes' @Component({ selector: 'app-demo', imports: [IsTemplatePipe], template: @if (value istemplate) { <ng-container [ngTemplateOutlet]=\"value\" /> }, }) export class DemoComponent {}"
+  },
+  {
+    "slug": "/docs/utilities/pipes#what-is-available",
+    "title": "Pipes",
+    "heading": "What is available",
+    "content": "istemplate, isobject, isstring: type-guard checks, handy when a value can be a TemplateRef, an object or a plain string and the template must branch. length: the length of an array or string. safe: bypass Angular sanitization for a value you trust, by kind. Use it for a resource url, HTML, style, script or url. <div [innerHTML]=\"trustedHtml safe: 'html'\"></div> icongr: replace icongram markup inside a string with the matching <img> tags."
+  },
+  {
+    "slug": "/docs/utilities/utils",
+    "title": "Utils",
+    "content": "nge/utils is a set of pure functions with no Angular dependency, so you can use them anywhere. import { deepEqual, shortDate, colorContrast } from '@cisstech/nge/utils' deepEqual({ a: 1 }, { a: 1 }) // true"
+  },
+  {
+    "slug": "/docs/utilities/utils#what-is-available",
+    "title": "Utils",
+    "heading": "What is available",
+    "content": "Colors: rgbFromHex, rgbToHex, colorContrast (readable foreground for a background), colorTint, colorShade. Dates: epoch, addDays, timestamp, toTimestamp, dateFromTimestamp, fullDate, shortDate, hours, isToday, compareDays, convertDate, weeksDiff, dateRangeOverlaps. Strings: isNullOrEmpty, anyNullOrEmpty, isURL, hashCode. Comparison and copy: deepEqual, deepCopy. Contracts: ensures, ensuresNonNull, ensuresNonNullArray, ensuresNonNullString for runtime assertions that also narrow the type. File types: extensionOf, isImage, isPdf, isText, isWordDoc, isExcelDoc, isPowerPointDoc. Builder: the Builder<T> class with the @Entity and @Property decorators for building typed objects."
+  },
+  {
+    "slug": "/docs/api",
+    "title": "API",
+    "content": "Generated from the source. Every export, grouped by kind."
+  },
+  {
+    "slug": "/docs/api#functions",
+    "title": "API",
+    "heading": "Functions",
+    "content": "contentPages - Content pages (an href plus a renderer) of a navigation tree, depth-first. docsAssetStateKey - Transfer-state key of a docs asset, shared by the browser and server implementations. docsFromManifest - Declares a documentation site loaded at runtime from a build-time manifest. extractManifestSources - Collects manifest sources from route data (mirrors extractNgeDocSettings). extractNgeDocSettings flattenPages - Routable links of a manifest in reading order (depth-first, a parent before indexablePages - Every routable page across the manifests, with its breadcrumb path (site name first). isNgeDocManifestSource - Type guard for a NgeDocManifestSource. isNgeDocSettings joinUrl - Joins two url segments with exactly one slash between them. provideNgeDoc - Configure the nge-doc engine at the application root. settingsToManifest - Converts code-first NgeDocSettings into a NgeDocManifest: withBrand - Set a single brand (logo and title) for the header, shared across every site. withDarkMode - Set the default color scheme applied before the user picks one. withEditLink - Show an \"Edit this page\" link built from baseUrl and each page's compiler withLabels - Translate or reword the default theme. Pass only the labels you want to change. withMarkdownRenderer - Register the component used to render markdown pages. withNavbar - Declare the header navigation links (e.g. to move between documentation sites). withSearchIndex - Search a build-time index emitted by the @cisstech/nge:docs builder instead withSeo - Enable per-page canonical, Open Graph and Twitter tags. Titles and descriptions withTheme - Use a custom theme instead of the default one."
+  },
+  {
+    "slug": "/docs/api#classes",
+    "title": "API",
+    "heading": "Classes",
+    "content": "DefaultNgeDocSearchProvider - In-memory, title-based search over the manifests. HttpNgeDocAssets - Reads transfer state first, so a hydrated page reuses the content embedded NgeDocAssets - Fetch port for the docs assets: the manifest (nge-doc.json) and the NgeDocModule NgeDocRendererComponent NgeDocService NgeDocThemeService - Owns the documentation color scheme. PrebuiltNgeDocSearchProvider - Searches a build-time index (chunked by heading) fetched from"
+  },
+  {
+    "slug": "/docs/api#interfaces",
+    "title": "API",
+    "heading": "Interfaces",
+    "content": "NgeDocBrand - The header brand: one logo and wordmark shared by every site. NgeDocFeature - A configuration feature for provideNgeDoc. NgeDocHeading - A heading extracted from the rendered page, used to build a table of contents. NgeDocLabels - User-facing wording of the default theme, so it can be translated or reworded. NgeDocLink - Representation of a link in the documentation navigation. NgeDocLinkAction NgeDocManifest - A resolved documentation site: its metadata and the navigation tree with every NgeDocManifestSource - A file-first source: the url of a manifest emitted by the build. Declared in a NgeDocMeta - Metadata informations about a documentation site. NgeDocNavLink - A top-level navigation link shown in the theme header. NgeDocSearchDocument - A unit of the search index: one document per page, or per heading when content is indexed. NgeDocSearchProvider - Pluggable search backend. The default builds its index in memory from the NgeDocSearchResult - A page returned by a NgeDocSearchProvider for a query. NgeDocSeoConfig - Site-wide SEO settings used to build canonical, Open Graph and Twitter tags. NgeDocSettings - Documentation site config. NgeDocState - Representation of the documentation state."
+  },
+  {
+    "slug": "/docs/api#type-aliases",
+    "title": "API",
+    "heading": "Type aliases",
+    "content": "DynamicMeta DynamicPage NgeDocColorScheme - Color scheme preference. auto follows the operating system setting. NgeDocIcon - An icon reference. NgeDocLayoutLoader - Loads the theme component that renders the documentation. NgeDocLinAction NgeDocLinkActionHandler NgeDocRenderer NgeDocRenderers StaticMeta StaticPage"
+  },
+  {
+    "slug": "/docs/api#variables",
+    "title": "API",
+    "heading": "Variables",
+    "content": "DEFAULTNGEDOCLABELS - Default (English) theme wording. DEFAULTNGEDOCLAYOUT - The built-in default theme, dynamic-imported so it is tree-shaken away when a NGEDOCBRAND - Header brand. When absent, the default theme uses the active site's name and logo. NGEDOCDEFAULTCOLORSCHEME - Default color scheme used when the user has not chosen one yet (see withDarkMode). NGEDOCEDITURL - Base url a page's sourcePath is appended to for the \"Edit this page\" link. NGEDOCLABELS - Overridden theme wording. Merged over DEFAULTNGEDOCLABELS. NGEDOCLABELSEN - Ready-made English wording, an alias of DEFAULTNGEDOCLABELS. NGEDOCLABELSFR - Ready-made French wording. Use it with withLabels(NGEDOCLABELSFR). NGEDOCLAYOUT - Injection token holding the active theme loader. NGEDOCNAVBAR - Header navigation links. When absent, a theme may derive them from the registered sites. NGEDOCRENDERERS - Custom renderers components NGEDOCROUTES - Routes that render the documentation. Load them directly from a standalone NGEDOCSEARCHINDEXURL - Search index url for PrebuiltNgeDocSearchProvider, set via withSearchIndex(). NGEDOCSEARCHPROVIDER - Override this to plug a custom search backend via withSearch(). NGEDOCSEO - Site-wide SEO settings."
+  },
+  {
+    "slug": "/docs/api/functions/contentPages",
+    "title": "contentPages",
+    "content": "function Content pages (an href plus a renderer) of a navigation tree, depth-first. Separators, pure grouping links and external links (no renderer) are excluded. Shared by the runtime, the compiler and the SSR entry; src/shared holds the pure, framework-free utils and is the only src folder the Node builder ships (the link type import is type-only, erased at compile time)."
+  },
+  {
+    "slug": "/docs/api/functions/contentPages#signature",
+    "title": "contentPages",
+    "heading": "Signature",
+    "content": "function contentPages(pages: NgeDocLink[]): NgeDocLink[]"
+  },
+  {
+    "slug": "/docs/api/functions/contentPages#parameters",
+    "title": "contentPages",
+    "heading": "Parameters",
+    "content": "pages (NgeDocLink[])"
+  },
+  {
+    "slug": "/docs/api/functions/contentPages#returns",
+    "title": "contentPages",
+    "heading": "Returns",
+    "content": "NgeDocLink[]"
+  },
+  {
+    "slug": "/docs/api/functions/docsAssetStateKey",
+    "title": "docsAssetStateKey",
+    "content": "function Transfer-state key of a docs asset, shared by the browser and server implementations."
+  },
+  {
+    "slug": "/docs/api/functions/docsAssetStateKey#signature",
+    "title": "docsAssetStateKey",
+    "heading": "Signature",
+    "content": "function docsAssetStateKey(url: string): StateKey<string>"
+  },
+  {
+    "slug": "/docs/api/functions/docsAssetStateKey#parameters",
+    "title": "docsAssetStateKey",
+    "heading": "Parameters",
+    "content": "url (string)"
+  },
+  {
+    "slug": "/docs/api/functions/docsAssetStateKey#returns",
+    "title": "docsAssetStateKey",
+    "heading": "Returns",
+    "content": "StateKey<string>"
+  },
+  {
+    "slug": "/docs/api/functions/docsFromManifest",
+    "title": "docsFromManifest",
+    "content": "function Declares a documentation site loaded at runtime from a build-time manifest."
+  },
+  {
+    "slug": "/docs/api/functions/docsFromManifest#signature",
+    "title": "docsFromManifest",
+    "heading": "Signature",
+    "content": "function docsFromManifest(url: string): NgeDocManifestSource"
+  },
+  {
+    "slug": "/docs/api/functions/docsFromManifest#parameters",
+    "title": "docsFromManifest",
+    "heading": "Parameters",
+    "content": "url (string)"
+  },
+  {
+    "slug": "/docs/api/functions/docsFromManifest#returns",
+    "title": "docsFromManifest",
+    "heading": "Returns",
+    "content": "NgeDocManifestSource"
+  },
+  {
+    "slug": "/docs/api/functions/extractManifestSources",
+    "title": "extractManifestSources",
+    "content": "function Collects manifest sources from route data (mirrors extractNgeDocSettings)."
+  },
+  {
+    "slug": "/docs/api/functions/extractManifestSources#signature",
+    "title": "extractManifestSources",
+    "heading": "Signature",
+    "content": "function extractManifestSources(value: unknown): NgeDocManifestSource[]"
+  },
+  {
+    "slug": "/docs/api/functions/extractManifestSources#parameters",
+    "title": "extractManifestSources",
+    "heading": "Parameters",
+    "content": "value (unknown)"
+  },
+  {
+    "slug": "/docs/api/functions/extractManifestSources#returns",
+    "title": "extractManifestSources",
+    "heading": "Returns",
+    "content": "NgeDocManifestSource[]"
+  },
+  {
+    "slug": "/docs/api/functions/extractNgeDocSettings",
+    "title": "extractNgeDocSettings",
+    "content": "function"
+  },
+  {
+    "slug": "/docs/api/functions/extractNgeDocSettings#signature",
+    "title": "extractNgeDocSettings",
+    "heading": "Signature",
+    "content": "function extractNgeDocSettings(v: unknown): NgeDocSettings[]"
+  },
+  {
+    "slug": "/docs/api/functions/extractNgeDocSettings#parameters",
+    "title": "extractNgeDocSettings",
+    "heading": "Parameters",
+    "content": "v (unknown)"
+  },
+  {
+    "slug": "/docs/api/functions/extractNgeDocSettings#returns",
+    "title": "extractNgeDocSettings",
+    "heading": "Returns",
+    "content": "NgeDocSettings[]"
+  },
+  {
+    "slug": "/docs/api/functions/flattenPages",
+    "title": "flattenPages",
+    "content": "function Routable links of a manifest in reading order (depth-first, a parent before its children). Separators, being visual headings, are skipped along with their subtree. Used to compute prev/next and to feed search."
+  },
+  {
+    "slug": "/docs/api/functions/flattenPages#signature",
+    "title": "flattenPages",
+    "heading": "Signature",
+    "content": "function flattenPages(pages: NgeDocLink[]): NgeDocLink[]"
+  },
+  {
+    "slug": "/docs/api/functions/flattenPages#parameters",
+    "title": "flattenPages",
+    "heading": "Parameters",
+    "content": "pages (NgeDocLink[])"
+  },
+  {
+    "slug": "/docs/api/functions/flattenPages#returns",
+    "title": "flattenPages",
+    "heading": "Returns",
+    "content": "NgeDocLink[]"
+  },
+  {
+    "slug": "/docs/api/functions/indexablePages",
+    "title": "indexablePages",
+    "content": "function Every routable page across the manifests, with its breadcrumb path (site name first)."
+  },
+  {
+    "slug": "/docs/api/functions/indexablePages#signature",
+    "title": "indexablePages",
+    "heading": "Signature",
+    "content": "function indexablePages(manifests: NgeDocManifest[]): object[]"
+  },
+  {
+    "slug": "/docs/api/functions/indexablePages#parameters",
+    "title": "indexablePages",
+    "heading": "Parameters",
+    "content": "manifests (NgeDocManifest[])"
+  },
+  {
+    "slug": "/docs/api/functions/indexablePages#returns",
+    "title": "indexablePages",
+    "heading": "Returns",
+    "content": "object[]"
+  },
+  {
+    "slug": "/docs/api/functions/isNgeDocManifestSource",
+    "title": "isNgeDocManifestSource",
+    "content": "function Type guard for a NgeDocManifestSource."
+  },
+  {
+    "slug": "/docs/api/functions/isNgeDocManifestSource#signature",
+    "title": "isNgeDocManifestSource",
+    "heading": "Signature",
+    "content": "function isNgeDocManifestSource(value: unknown): value is NgeDocManifestSource"
+  },
+  {
+    "slug": "/docs/api/functions/isNgeDocManifestSource#parameters",
+    "title": "isNgeDocManifestSource",
+    "heading": "Parameters",
+    "content": "value (unknown)"
+  },
+  {
+    "slug": "/docs/api/functions/isNgeDocManifestSource#returns",
+    "title": "isNgeDocManifestSource",
+    "heading": "Returns",
+    "content": "value is NgeDocManifestSource"
+  },
+  {
+    "slug": "/docs/api/functions/isNgeDocSettings",
+    "title": "isNgeDocSettings",
+    "content": "function"
+  },
+  {
+    "slug": "/docs/api/functions/isNgeDocSettings#signature",
+    "title": "isNgeDocSettings",
+    "heading": "Signature",
+    "content": "function isNgeDocSettings(v: unknown): v is NgeDocSettings"
+  },
+  {
+    "slug": "/docs/api/functions/isNgeDocSettings#parameters",
+    "title": "isNgeDocSettings",
+    "heading": "Parameters",
+    "content": "v (unknown)"
+  },
+  {
+    "slug": "/docs/api/functions/isNgeDocSettings#returns",
+    "title": "isNgeDocSettings",
+    "heading": "Returns",
+    "content": "v is NgeDocSettings"
+  },
+  {
+    "slug": "/docs/api/functions/joinUrl",
+    "title": "joinUrl",
+    "content": "function Joins two url segments with exactly one slash between them."
+  },
+  {
+    "slug": "/docs/api/functions/joinUrl#signature",
+    "title": "joinUrl",
+    "heading": "Signature",
+    "content": "function joinUrl(a: string, b: string): string"
+  },
+  {
+    "slug": "/docs/api/functions/joinUrl#parameters",
+    "title": "joinUrl",
+    "heading": "Parameters",
+    "content": "a (string) b (string)"
+  },
+  {
+    "slug": "/docs/api/functions/joinUrl#returns",
+    "title": "joinUrl",
+    "heading": "Returns",
+    "content": "string"
+  },
+  {
+    "slug": "/docs/api/functions/provideNgeDoc",
+    "title": "provideNgeDoc",
+    "content": "function Configure the nge-doc engine at the application root. Optional: without it, the default theme is used. Compose features such as withTheme to opt into a custom theme. providers: [provideNgeDoc(withTheme(() => import('@acme/theme').then((m) => m.AcmeTheme)))]"
+  },
+  {
+    "slug": "/docs/api/functions/provideNgeDoc#signature",
+    "title": "provideNgeDoc",
+    "heading": "Signature",
+    "content": "function provideNgeDoc(...features: NgeDocFeature[]): EnvironmentProviders"
+  },
+  {
+    "slug": "/docs/api/functions/provideNgeDoc#parameters",
+    "title": "provideNgeDoc",
+    "heading": "Parameters",
+    "content": "...features (NgeDocFeature[])"
+  },
+  {
+    "slug": "/docs/api/functions/provideNgeDoc#returns",
+    "title": "provideNgeDoc",
+    "heading": "Returns",
+    "content": "EnvironmentProviders"
+  },
+  {
+    "slug": "/docs/api/functions/settingsToManifest",
+    "title": "settingsToManifest",
+    "content": "function Converts code-first NgeDocSettings into a NgeDocManifest: resolves dynamic meta/pages factories and returns a fresh tree with hrefs joined under meta.root. The input is never mutated, so settings stay reusable across navigations."
+  },
+  {
+    "slug": "/docs/api/functions/settingsToManifest#signature",
+    "title": "settingsToManifest",
+    "heading": "Signature",
+    "content": "function settingsToManifest(settings: NgeDocSettings, injector: Injector): Promise<NgeDocManifest>"
+  },
+  {
+    "slug": "/docs/api/functions/settingsToManifest#parameters",
+    "title": "settingsToManifest",
+    "heading": "Parameters",
+    "content": "settings (NgeDocSettings) injector (Injector)"
+  },
+  {
+    "slug": "/docs/api/functions/settingsToManifest#returns",
+    "title": "settingsToManifest",
+    "heading": "Returns",
+    "content": "Promise<NgeDocManifest>"
+  },
+  {
+    "slug": "/docs/api/functions/withBrand",
+    "title": "withBrand",
+    "content": "function Set a single brand (logo and title) for the header, shared across every site. The default theme otherwise shows the active site's meta.name and meta.logo, so the brand width follows the current site. A fixed brand keeps the header stable while site names still drive breadcrumbs and page titles."
+  },
+  {
+    "slug": "/docs/api/functions/withBrand#signature",
+    "title": "withBrand",
+    "heading": "Signature",
+    "content": "function withBrand(brand: NgeDocBrand): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withBrand#parameters",
+    "title": "withBrand",
+    "heading": "Parameters",
+    "content": "brand (NgeDocBrand)"
+  },
+  {
+    "slug": "/docs/api/functions/withBrand#returns",
+    "title": "withBrand",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withDarkMode",
+    "title": "withDarkMode",
+    "content": "function Set the default color scheme applied before the user picks one."
+  },
+  {
+    "slug": "/docs/api/functions/withDarkMode#signature",
+    "title": "withDarkMode",
+    "heading": "Signature",
+    "content": "function withDarkMode(mode: NgeDocColorScheme): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withDarkMode#parameters",
+    "title": "withDarkMode",
+    "heading": "Parameters",
+    "content": "mode (NgeDocColorScheme) - auto (follow the OS, default), dark or light."
+  },
+  {
+    "slug": "/docs/api/functions/withDarkMode#returns",
+    "title": "withDarkMode",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withEditLink",
+    "title": "withEditLink",
+    "content": "function Show an \"Edit this page\" link built from baseUrl and each page's compiler sourcePath, e.g. https://github.com/org/repo/edit/main/docs."
+  },
+  {
+    "slug": "/docs/api/functions/withEditLink#signature",
+    "title": "withEditLink",
+    "heading": "Signature",
+    "content": "function withEditLink(baseUrl: string): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withEditLink#parameters",
+    "title": "withEditLink",
+    "heading": "Parameters",
+    "content": "baseUrl (string)"
+  },
+  {
+    "slug": "/docs/api/functions/withEditLink#returns",
+    "title": "withEditLink",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withLabels",
+    "title": "withLabels",
+    "content": "function Translate or reword the default theme. Pass only the labels you want to change."
+  },
+  {
+    "slug": "/docs/api/functions/withLabels#signature",
+    "title": "withLabels",
+    "heading": "Signature",
+    "content": "function withLabels(labels: Partial<NgeDocLabels>): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withLabels#parameters",
+    "title": "withLabels",
+    "heading": "Parameters",
+    "content": "labels (Partial<NgeDocLabels>)"
+  },
+  {
+    "slug": "/docs/api/functions/withLabels#returns",
+    "title": "withLabels",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withMarkdownRenderer",
+    "title": "withMarkdownRenderer",
+    "content": "function Register the component used to render markdown pages."
+  },
+  {
+    "slug": "/docs/api/functions/withMarkdownRenderer#signature",
+    "title": "withMarkdownRenderer",
+    "heading": "Signature",
+    "content": "function withMarkdownRenderer(markdown: object): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withMarkdownRenderer#parameters",
+    "title": "withMarkdownRenderer",
+    "heading": "Parameters",
+    "content": "markdown (object)"
+  },
+  {
+    "slug": "/docs/api/functions/withMarkdownRenderer#returns",
+    "title": "withMarkdownRenderer",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withNavbar",
+    "title": "withNavbar",
+    "content": "function Declare the header navigation links (e.g. to move between documentation sites). Without it, the default theme derives them from the active site's sections (nav: 'tabs') or lists the registered sites."
+  },
+  {
+    "slug": "/docs/api/functions/withNavbar#signature",
+    "title": "withNavbar",
+    "heading": "Signature",
+    "content": "function withNavbar(links: NgeDocNavLink[]): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withNavbar#parameters",
+    "title": "withNavbar",
+    "heading": "Parameters",
+    "content": "links (NgeDocNavLink[])"
+  },
+  {
+    "slug": "/docs/api/functions/withNavbar#returns",
+    "title": "withNavbar",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withSearchIndex",
+    "title": "withSearchIndex",
+    "content": "function Search a build-time index emitted by the @cisstech/nge:docs builder instead of the default in-memory title index. url points at the generated search.json (e.g. docs/search.json); it loads on the first search."
+  },
+  {
+    "slug": "/docs/api/functions/withSearchIndex#signature",
+    "title": "withSearchIndex",
+    "heading": "Signature",
+    "content": "function withSearchIndex(url: string): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withSearchIndex#parameters",
+    "title": "withSearchIndex",
+    "heading": "Parameters",
+    "content": "url (string)"
+  },
+  {
+    "slug": "/docs/api/functions/withSearchIndex#returns",
+    "title": "withSearchIndex",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withSeo",
+    "title": "withSeo",
+    "content": "function Enable per-page canonical, Open Graph and Twitter tags. Titles and descriptions come from each page (frontmatter overrides the manifest); url builds the canonical and og:url, and image sets the default social card."
+  },
+  {
+    "slug": "/docs/api/functions/withSeo#signature",
+    "title": "withSeo",
+    "heading": "Signature",
+    "content": "function withSeo(config: NgeDocSeoConfig): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withSeo#parameters",
+    "title": "withSeo",
+    "heading": "Parameters",
+    "content": "config (NgeDocSeoConfig)"
+  },
+  {
+    "slug": "/docs/api/functions/withSeo#returns",
+    "title": "withSeo",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withTheme",
+    "title": "withTheme",
+    "content": "function Use a custom theme instead of the default one."
+  },
+  {
+    "slug": "/docs/api/functions/withTheme#signature",
+    "title": "withTheme",
+    "heading": "Signature",
+    "content": "function withTheme(loader: NgeDocLayoutLoader): NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/functions/withTheme#parameters",
+    "title": "withTheme",
+    "heading": "Parameters",
+    "content": "loader (NgeDocLayoutLoader)"
+  },
+  {
+    "slug": "/docs/api/functions/withTheme#returns",
+    "title": "withTheme",
+    "heading": "Returns",
+    "content": "NgeDocFeature"
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider",
+    "title": "DefaultNgeDocSearchProvider",
+    "content": "class In-memory, title-based search over the manifests."
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider#index",
+    "title": "DefaultNgeDocSearchProvider",
+    "heading": "`index()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider#signature",
+    "title": "DefaultNgeDocSearchProvider",
+    "heading": "Signature",
+    "content": "index(manifests: NgeDocManifest[]): Promise<void>"
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider#parameters",
+    "title": "DefaultNgeDocSearchProvider",
+    "heading": "Parameters",
+    "content": "manifests (NgeDocManifest[])"
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider#returns",
+    "title": "DefaultNgeDocSearchProvider",
+    "heading": "Returns",
+    "content": "Promise<void>"
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider#search",
+    "title": "DefaultNgeDocSearchProvider",
+    "heading": "`search()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider#signature",
+    "title": "DefaultNgeDocSearchProvider",
+    "heading": "Signature",
+    "content": "search(query: string): Promise<NgeDocSearchResult[]>"
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider#parameters",
+    "title": "DefaultNgeDocSearchProvider",
+    "heading": "Parameters",
+    "content": "query (string)"
+  },
+  {
+    "slug": "/docs/api/classes/DefaultNgeDocSearchProvider#returns",
+    "title": "DefaultNgeDocSearchProvider",
+    "heading": "Returns",
+    "content": "Promise<NgeDocSearchResult[]>"
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets",
+    "title": "HttpNgeDocAssets",
+    "content": "class Reads transfer state first, so a hydrated page reuses the content embedded at prerender time instead of refetching it, then falls back to HttpClient. Each transferred entry is consumed on first read: later navigations back to the same url fetch fresh content."
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets#json",
+    "title": "HttpNgeDocAssets",
+    "heading": "`json()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets#signature",
+    "title": "HttpNgeDocAssets",
+    "heading": "Signature",
+    "content": "json(url: string): Promise<T>"
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets#parameters",
+    "title": "HttpNgeDocAssets",
+    "heading": "Parameters",
+    "content": "url (string)"
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets#returns",
+    "title": "HttpNgeDocAssets",
+    "heading": "Returns",
+    "content": "Promise<T>"
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets#text",
+    "title": "HttpNgeDocAssets",
+    "heading": "`text()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets#signature",
+    "title": "HttpNgeDocAssets",
+    "heading": "Signature",
+    "content": "text(url: string): Promise<string>"
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets#parameters",
+    "title": "HttpNgeDocAssets",
+    "heading": "Parameters",
+    "content": "url (string)"
+  },
+  {
+    "slug": "/docs/api/classes/HttpNgeDocAssets#returns",
+    "title": "HttpNgeDocAssets",
+    "heading": "Returns",
+    "content": "Promise<string>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets",
+    "title": "NgeDocAssets",
+    "content": "class Fetch port for the docs assets: the manifest (nge-doc.json) and the markdown pages. The default implementation fetches over HTTP with transfer state support; provideNgeDocSsr() (from @cisstech/nge/doc/ssr) replaces it with a filesystem adapter, since there is no HTTP server at prerender time."
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets#json",
+    "title": "NgeDocAssets",
+    "heading": "`json()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets#signature",
+    "title": "NgeDocAssets",
+    "heading": "Signature",
+    "content": "json(url: string): Promise<T>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets#parameters",
+    "title": "NgeDocAssets",
+    "heading": "Parameters",
+    "content": "url (string)"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets#returns",
+    "title": "NgeDocAssets",
+    "heading": "Returns",
+    "content": "Promise<T>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets#text",
+    "title": "NgeDocAssets",
+    "heading": "`text()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets#signature",
+    "title": "NgeDocAssets",
+    "heading": "Signature",
+    "content": "text(url: string): Promise<string>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets#parameters",
+    "title": "NgeDocAssets",
+    "heading": "Parameters",
+    "content": "url (string)"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocAssets#returns",
+    "title": "NgeDocAssets",
+    "heading": "Returns",
+    "content": "Promise<string>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocModule",
+    "title": "NgeDocModule",
+    "content": "class"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent",
+    "title": "NgeDocRendererComponent",
+    "content": "class"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#properties",
+    "title": "NgeDocRendererComponent",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- activeHeadingId (readonly) WritableSignal<string null> Id of the heading currently in view, driven by scroll position. componentRef? ComponentRef<any> componentRefByTypes Map<Type<any>, ComponentRef<any>> container (readonly) Signal<ViewContainerRef> headings (readonly) WritableSignal<NgeDocHeading[]> Headings of the current page, in document order. loading (readonly) WritableSignal<boolean> notFound (readonly) WritableSignal<boolean>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#ngondestroy",
+    "title": "NgeDocRendererComponent",
+    "heading": "`ngOnDestroy()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#signature",
+    "title": "NgeDocRendererComponent",
+    "heading": "Signature",
+    "content": "ngOnDestroy(): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#returns",
+    "title": "NgeDocRendererComponent",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#ngoninit",
+    "title": "NgeDocRendererComponent",
+    "heading": "`ngOnInit()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#signature",
+    "title": "NgeDocRendererComponent",
+    "heading": "Signature",
+    "content": "ngOnInit(): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#returns",
+    "title": "NgeDocRendererComponent",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#onhostclick",
+    "title": "NgeDocRendererComponent",
+    "heading": "`onHostClick()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#signature",
+    "title": "NgeDocRendererComponent",
+    "heading": "Signature",
+    "content": "onHostClick(event: MouseEvent): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#parameters",
+    "title": "NgeDocRendererComponent",
+    "heading": "Parameters",
+    "content": "event (MouseEvent)"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#returns",
+    "title": "NgeDocRendererComponent",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#scrolltoheading",
+    "title": "NgeDocRendererComponent",
+    "heading": "`scrollToHeading()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#signature",
+    "title": "NgeDocRendererComponent",
+    "heading": "Signature",
+    "content": "scrollToHeading(id: string): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#parameters",
+    "title": "NgeDocRendererComponent",
+    "heading": "Parameters",
+    "content": "id (string)"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocRendererComponent#returns",
+    "title": "NgeDocRendererComponent",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService",
+    "title": "NgeDocService",
+    "content": "class"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#properties",
+    "title": "NgeDocService",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- brand (readonly) Signal<NgeDocBrand> Header brand: the one declared with withBrand, or the active site's name breadcrumb (readonly) Signal<NgeDocLink[]> Ancestor chain from a root link down to the active one, inclusive. currLink (readonly) Signal<NgeDocLink undefined> Active link, or undefined before the first navigation resolves. editUrl (readonly) Signal<string undefined> \"Edit this page\" url for the active page, when withEditLink is set and the page has a source. labels (readonly) NgeDocLabels Resolved theme wording: the English defaults merged with any withLabels overrides. lastUpdated (readonly) Signal<string undefined> ISO date the active page was last updated, when the compiler recorded it. markdownAbsoluteUrl (readonly) Signal<string undefined> Absolute url of the active page's raw markdown (<page>.md), when withSeo is set. markdownUrl (readonly) Signal<string undefined> Relative url of the active page's raw markdown, used by \"copy as markdown\". meta (readonly) Signal<NgeDocMeta> Metadata of the active documentation site. navbar (readonly) Signal<NgeDocNavLink[]> Header navigation links, in precedence order: the ones declared with nextLink (readonly) Signal<NgeDocLink undefined> Link after the active one in reading order. prevLink (readonly) Signal<NgeDocLink undefined> Link before the active one in reading order. rootLinks (readonly) Signal<NgeDocLink[]> Root links of the active documentation site (the navigation tree). sidebarLinks (readonly) Signal<NgeDocLink[]> What the sidebar shows: the whole tree, or only the active section's pages sites (readonly) WritableSignal<NgeDocMeta[]> Metadata of every registered documentation site, in declaration order. stateChanges unknown"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#isnavlinkactive",
+    "title": "NgeDocService",
+    "heading": "`isNavLinkActive()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#signature",
+    "title": "NgeDocService",
+    "heading": "Signature",
+    "content": "isNavLinkActive(link: NgeDocNavLink): boolean"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#parameters",
+    "title": "NgeDocService",
+    "heading": "Parameters",
+    "content": "link (NgeDocNavLink)"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#returns",
+    "title": "NgeDocService",
+    "heading": "Returns",
+    "content": "boolean"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#ngondestroy",
+    "title": "NgeDocService",
+    "heading": "`ngOnDestroy()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#signature",
+    "title": "NgeDocService",
+    "heading": "Signature",
+    "content": "ngOnDestroy(): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#returns",
+    "title": "NgeDocService",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#runaction",
+    "title": "NgeDocService",
+    "heading": "`runAction()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#signature",
+    "title": "NgeDocService",
+    "heading": "Signature",
+    "content": "runAction(run: NgeDocLinkActionHandler): Promise<void>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#parameters",
+    "title": "NgeDocService",
+    "heading": "Parameters",
+    "content": "run (NgeDocLinkActionHandler) - The action handler declared on a link."
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#returns",
+    "title": "NgeDocService",
+    "heading": "Returns",
+    "content": "Promise<void>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#search",
+    "title": "NgeDocService",
+    "heading": "`search()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#signature",
+    "title": "NgeDocService",
+    "heading": "Signature",
+    "content": "search(query: string): Promise<NgeDocSearchResult[]>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#parameters",
+    "title": "NgeDocService",
+    "heading": "Parameters",
+    "content": "query (string) - Free text to match (case-insensitive)."
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#returns",
+    "title": "NgeDocService",
+    "heading": "Returns",
+    "content": "Promise<NgeDocSearchResult[]>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#setseo",
+    "title": "NgeDocService",
+    "heading": "`setSeo()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#signature",
+    "title": "NgeDocService",
+    "heading": "Signature",
+    "content": "setSeo(title: string, description?: string, image?: string): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#parameters",
+    "title": "NgeDocService",
+    "heading": "Parameters",
+    "content": "title (string) description (string) image (string)"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#returns",
+    "title": "NgeDocService",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#setup",
+    "title": "NgeDocService",
+    "heading": "`setup()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#signature",
+    "title": "NgeDocService",
+    "heading": "Signature",
+    "content": "setup(): Promise<void>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocService#returns",
+    "title": "NgeDocService",
+    "heading": "Returns",
+    "content": "Promise<void>"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService",
+    "title": "NgeDocThemeService",
+    "content": "class Owns the documentation color scheme. The resolved scheme is reflected as a nge-doc-dark class on the document root and as a native color-scheme, so themes and the markdown renderer can style themselves through plain CSS without re-rendering. Provided in root so a single instance is shared by every theme."
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#properties",
+    "title": "NgeDocThemeService",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- isDark (readonly) Signal<boolean> Whether dark mode is currently active once auto is resolved. scheme (readonly) WritableSignal<NgeDocColorScheme> The user preference. Defaults to auto (follows the OS)."
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#setactive",
+    "title": "NgeDocThemeService",
+    "heading": "`setActive()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#signature",
+    "title": "NgeDocThemeService",
+    "heading": "Signature",
+    "content": "setActive(active: boolean): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#parameters",
+    "title": "NgeDocThemeService",
+    "heading": "Parameters",
+    "content": "active (boolean)"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#returns",
+    "title": "NgeDocThemeService",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#setscheme",
+    "title": "NgeDocThemeService",
+    "heading": "`setScheme()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#signature",
+    "title": "NgeDocThemeService",
+    "heading": "Signature",
+    "content": "setScheme(scheme: NgeDocColorScheme): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#parameters",
+    "title": "NgeDocThemeService",
+    "heading": "Parameters",
+    "content": "scheme (NgeDocColorScheme)"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#returns",
+    "title": "NgeDocThemeService",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#toggle",
+    "title": "NgeDocThemeService",
+    "heading": "`toggle()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#signature",
+    "title": "NgeDocThemeService",
+    "heading": "Signature",
+    "content": "toggle(): void"
+  },
+  {
+    "slug": "/docs/api/classes/NgeDocThemeService#returns",
+    "title": "NgeDocThemeService",
+    "heading": "Returns",
+    "content": "void"
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "content": "class Searches a build-time index (chunked by heading) fetched from NGEDOCSEARCHINDEXURL. The index loads lazily on the first search, so prerendered pages do not carry it. Same contract as the default provider."
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider#index",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "heading": "`index()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider#signature",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "heading": "Signature",
+    "content": "index(manifests: NgeDocManifest[]): Promise<void>"
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider#parameters",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "heading": "Parameters",
+    "content": "manifests (NgeDocManifest[])"
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider#returns",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "heading": "Returns",
+    "content": "Promise<void>"
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider#search",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "heading": "`search()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider#signature",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "heading": "Signature",
+    "content": "search(query: string): Promise<NgeDocSearchResult[]>"
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider#parameters",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "heading": "Parameters",
+    "content": "query (string)"
+  },
+  {
+    "slug": "/docs/api/classes/PrebuiltNgeDocSearchProvider#returns",
+    "title": "PrebuiltNgeDocSearchProvider",
+    "heading": "Returns",
+    "content": "Promise<NgeDocSearchResult[]>"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocBrand",
+    "title": "NgeDocBrand",
+    "content": "interface The header brand: one logo and wordmark shared by every site."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocBrand#properties",
+    "title": "NgeDocBrand",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- href? string Where clicking the brand navigates (an Angular routerLink). Defaults to /. icon? NgeDocIcon Optional logo icon. title string Wordmark shown next to the logo."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocFeature",
+    "title": "NgeDocFeature",
+    "content": "interface A configuration feature for provideNgeDoc."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocFeature#properties",
+    "title": "NgeDocFeature",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- providers (readonly) Provider[]"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocHeading",
+    "title": "NgeDocHeading",
+    "content": "interface A heading extracted from the rendered page, used to build a table of contents."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocHeading#properties",
+    "title": "NgeDocHeading",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- id string Slug assigned to the heading element, usable as a url fragment. label string Text content of the heading. level number Heading level (2 for h2, 3 for h3)."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocLabels",
+    "title": "NgeDocLabels",
+    "content": "interface User-facing wording of the default theme, so it can be translated or reworded."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocLabels#properties",
+    "title": "NgeDocLabels",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- action string Header action label, used when an action has no title. backToTop string Table of contents scroll-to-top action. breadcrumb string Breadcrumb landmark label. collapse string Folder toggle label when the folder is expanded. copied string Confirmation shown briefly after copying. copyAsMarkdown string Action that copies the page's markdown to the clipboard. editThisPage string Link to edit the current page's source. expand string Folder toggle label when the folder is collapsed. hideSidebar string Sidebar collapse toggle label when the sidebar is visible. lastUpdated string Prefix for the date the current page was last updated. next string Next page, on the pager. openInChatGpt string Action that opens the page in ChatGPT. openInClaude string Action that opens the page in Claude. pagination string Pager landmark label. poweredBy string Footer credit, shown before the engine name. previous string Previous page, on the pager. repository string Repository link label, used when the repo has no name. search string Search control and palette (label, aria and placeholder). searchEmpty string Empty search state, shown before the query. sections string Site navigation landmark label (header and mobile drawer). showSidebar string Sidebar collapse toggle label when the sidebar is hidden. switchToDark string Theme toggle label to switch to the dark scheme. switchToLight string Theme toggle label to switch to the light scheme. tableOfContents string Table of contents heading and its landmark label. toggleNavigation string Mobile navigation toggle label."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocLink",
+    "title": "NgeDocLink",
+    "content": "interface Representation of a link in the documentation navigation."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocLink#properties",
+    "title": "NgeDocLink",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- actions? NgeDocLinkAction[] Custom actions children? NgeDocLink[] Sub links color? string Accent color (any CSS color) shown as the separator's dot. description? string Optional page description, used for the <meta name=\"description\"> tag. expanded? boolean A value indicating whether the link is expanded or not. href? string Url to display in the browser navigation bar. Omitted for separators. icon? NgeDocIcon Optional icon inputs? Record<string, unknown> Inputs to pass to the dynamic renderered component if renderer is a dynamic component. lastUpdated? string ISO date of the last commit that touched the source. Set by the compiler. prerender? boolean false marks a client-only page (an interactive editor, a playground...) renderer? NgeDocRenderer Content to render once the link is displayed. separator? boolean Renders this entry as a non-clickable section heading in the sidebar rather sourcePath? string Source markdown file, relative to the docs folder. Set by the compiler. title string Title of the link"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocLinkAction",
+    "title": "NgeDocLinkAction",
+    "content": "interface"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocLinkAction#properties",
+    "title": "NgeDocLinkAction",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- icon? NgeDocIcon Icon to render for the action. run NgeDocLinkActionHandler Action handler. (A string value here means that the action is an url to open in a new tab) title? string Title of the action. tooltip? string Action tooltip"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocManifest",
+    "title": "NgeDocManifest",
+    "content": "interface A resolved documentation site: its metadata and the navigation tree with every href made absolute. It is the single shape the runtime consumes, no matter where the docs come from: code-first settings (via settingsToManifest) or, later, a manifest emitted by the build. NgeDocLink stays the authoring API; the manifest is just its resolved form."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocManifest#properties",
+    "title": "NgeDocManifest",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- meta NgeDocMeta pages NgeDocLink[] Navigation tree, hrefs resolved relative to meta.root."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocManifestSource",
+    "title": "NgeDocManifestSource",
+    "content": "interface A file-first source: the url of a manifest emitted by the build. Declared in a route's data next to (or instead of) code-first NgeDocSettings."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocManifestSource#properties",
+    "title": "NgeDocManifestSource",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- ngeDocManifestUrl string"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocMeta",
+    "title": "NgeDocMeta",
+    "content": "interface Metadata informations about a documentation site."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocMeta#properties",
+    "title": "NgeDocMeta",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- backIconUrl? string backUrl? string Optional back url (use of Angular [routerLink]) backUrlHref? string Optional back href links? object[] social links to show insides the footer logo? NgeDocIcon Icon of the documentation logo. name string Name of the documentation site. nav? \"sidebar\" \"tabs\" Where the site's top-level sections live: inside the sidebar tree repo? object root string Root url of the documentation site. (absolute url starting with /)"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocNavLink",
+    "title": "NgeDocNavLink",
+    "content": "interface A top-level navigation link shown in the theme header."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocNavLink#properties",
+    "title": "NgeDocNavLink",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- external? boolean Open in a new tab as a plain anchor instead of routing internally. href string Target url (an Angular routerLink, or an absolute url when external). icon? NgeDocIcon Optional icon. title string Text of the link."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchDocument",
+    "title": "NgeDocSearchDocument",
+    "content": "interface A unit of the search index: one document per page, or per heading when content is indexed."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchDocument#properties",
+    "title": "NgeDocSearchDocument",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- content string Text searched against: the title (default provider) or the section content (prebuilt index). heading? string Heading the chunk was extracted from, when indexing page content. slug string Absolute href of the page (with a #heading anchor for a section chunk). title string Page title."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider",
+    "title": "NgeDocSearchProvider",
+    "content": "interface Pluggable search backend. The default builds its index in memory from the manifests; PrebuiltNgeDocSearchProvider loads a build-time index instead. The contract, and therefore the UI, stays the same."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider#index",
+    "title": "NgeDocSearchProvider",
+    "heading": "`index()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider#signature",
+    "title": "NgeDocSearchProvider",
+    "heading": "Signature",
+    "content": "index(manifests: NgeDocManifest[]): Promise<void>"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider#parameters",
+    "title": "NgeDocSearchProvider",
+    "heading": "Parameters",
+    "content": "manifests (NgeDocManifest[])"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider#returns",
+    "title": "NgeDocSearchProvider",
+    "heading": "Returns",
+    "content": "Promise<void>"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider#search",
+    "title": "NgeDocSearchProvider",
+    "heading": "`search()`",
+    "content": ""
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider#signature",
+    "title": "NgeDocSearchProvider",
+    "heading": "Signature",
+    "content": "search(query: string): Promise<NgeDocSearchResult[]>"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider#parameters",
+    "title": "NgeDocSearchProvider",
+    "heading": "Parameters",
+    "content": "query (string)"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchProvider#returns",
+    "title": "NgeDocSearchProvider",
+    "heading": "Returns",
+    "content": "Promise<NgeDocSearchResult[]>"
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchResult",
+    "title": "NgeDocSearchResult",
+    "content": "interface A page returned by a NgeDocSearchProvider for a query."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSearchResult#properties",
+    "title": "NgeDocSearchResult",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- excerpt? string A short content snippet around the match, when the provider indexes content. heading? string Matched heading, when the provider indexes page content. path string[] Ancestor titles, site name first, the match excluded. slug string Absolute href to navigate to. title string Page title to display."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSeoConfig",
+    "title": "NgeDocSeoConfig",
+    "content": "interface Site-wide SEO settings used to build canonical, Open Graph and Twitter tags."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSeoConfig#properties",
+    "title": "NgeDocSeoConfig",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- image? string Default social image; relative paths resolve against url. Overridable per page via frontmatter image. url? string Absolute site url (no trailing slash), e.g. https://example.com/docs. Enables canonical and og:url."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSettings",
+    "title": "NgeDocSettings",
+    "content": "interface Documentation site config."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocSettings#properties",
+    "title": "NgeDocSettings",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- meta NgeDocMeta DynamicMeta Metadata informations about a documentation site. pages (NgeDocLink DynamicPage)[] Pages of the documentation site."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocState",
+    "title": "NgeDocState",
+    "content": "interface Representation of the documentation state."
+  },
+  {
+    "slug": "/docs/api/interfaces/NgeDocState#properties",
+    "title": "NgeDocState",
+    "heading": "Properties",
+    "content": "Name Type Description --- --- --- currLink? NgeDocLink Current active link. links NgeDocLink[] Root links of the site. meta NgeDocMeta Metadata informations about the documentation. nextLink? NgeDocLink Next link of the current link. prevLink? NgeDocLink Previous link of the current link."
+  },
+  {
+    "slug": "/docs/api/type-aliases/DynamicMeta",
+    "title": "DynamicMeta",
+    "content": "type type DynamicMeta = (injector: Injector) => NgeDocMeta Promise<NgeDocMeta>"
+  },
+  {
+    "slug": "/docs/api/type-aliases/DynamicPage",
+    "title": "DynamicPage",
+    "content": "type type DynamicPage = (injector: Injector) => NgeDocLink Promise<NgeDocLink> NgeDocLink[] Promise<NgeDocLink[]>"
+  },
+  {
+    "slug": "/docs/api/type-aliases/NgeDocColorScheme",
+    "title": "NgeDocColorScheme",
+    "content": "type Color scheme preference. auto follows the operating system setting. type NgeDocColorScheme = \"light\" \"dark\" \"auto\""
+  },
+  {
+    "slug": "/docs/api/type-aliases/NgeDocIcon",
+    "title": "NgeDocIcon",
+    "content": "type An icon reference. A single url is rendered as-is (and, for monochrome chrome icons, recolored to the current text color by the theme so it works in light and dark). A { light, dark } pair lets you provide a distinct asset per color scheme, useful for multicolor icons or logos that cannot be recolored. type NgeDocIcon = string object"
+  },
+  {
+    "slug": "/docs/api/type-aliases/NgeDocLayoutLoader",
+    "title": "NgeDocLayoutLoader",
+    "content": "type Loads the theme component that renders the documentation. A theme is a standalone component; return it directly or lazily (dynamic import()), synchronously or as a promise. This is how a theme plugs its own whole layout into the nge-doc engine. type NgeDocLayoutLoader = () => Type<unknown> Promise<Type<unknown> object>"
+  },
+  {
+    "slug": "/docs/api/type-aliases/NgeDocLinAction",
+    "title": "NgeDocLinAction",
+    "content": "type type NgeDocLinAction = NgeDocLinkAction"
+  },
+  {
+    "slug": "/docs/api/type-aliases/NgeDocLinkActionHandler",
+    "title": "NgeDocLinkActionHandler",
+    "content": "type type NgeDocLinkActionHandler = string (injector: Injector) => void Promise<void>"
+  },
+  {
+    "slug": "/docs/api/type-aliases/NgeDocRenderer",
+    "title": "NgeDocRenderer",
+    "content": "type type NgeDocRenderer = string Promise<string> () => Type<any> Promise<Type<any>>"
+  },
+  {
+    "slug": "/docs/api/type-aliases/NgeDocRenderers",
+    "title": "NgeDocRenderers",
+    "content": "type type NgeDocRenderers = unknown"
+  },
+  {
+    "slug": "/docs/api/type-aliases/StaticMeta",
+    "title": "StaticMeta",
+    "content": "type type StaticMeta = NgeDocMeta"
+  },
+  {
+    "slug": "/docs/api/type-aliases/StaticPage",
+    "title": "StaticPage",
+    "content": "type type StaticPage = NgeDocLink"
+  },
+  {
+    "slug": "/docs/api/variables/DEFAULT_NGE_DOC_LABELS",
+    "title": "DEFAULT_NGE_DOC_LABELS",
+    "content": "const Default (English) theme wording. const DEFAULTNGEDOCLABELS: NgeDocLabels"
+  },
+  {
+    "slug": "/docs/api/variables/DEFAULT_NGE_DOC_LAYOUT",
+    "title": "DEFAULT_NGE_DOC_LAYOUT",
+    "content": "const The built-in default theme, dynamic-imported so it is tree-shaken away when a consumer ships its own theme. const DEFAULTNGEDOCLAYOUT: NgeDocLayoutLoader"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_BRAND",
+    "title": "NGE_DOC_BRAND",
+    "content": "const Header brand. When absent, the default theme uses the active site's name and logo. const NGEDOCBRAND: InjectionToken<NgeDocBrand>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_DEFAULT_COLOR_SCHEME",
+    "title": "NGE_DOC_DEFAULT_COLOR_SCHEME",
+    "content": "const Default color scheme used when the user has not chosen one yet (see withDarkMode). const NGEDOCDEFAULTCOLORSCHEME: InjectionToken<NgeDocColorScheme>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_EDIT_URL",
+    "title": "NGE_DOC_EDIT_URL",
+    "content": "const Base url a page's sourcePath is appended to for the \"Edit this page\" link. const NGEDOCEDITURL: InjectionToken<string>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_LABELS",
+    "title": "NGE_DOC_LABELS",
+    "content": "const Overridden theme wording. Merged over DEFAULTNGEDOCLABELS. const NGEDOCLABELS: InjectionToken<Partial<NgeDocLabels>>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_LABELS_EN",
+    "title": "NGE_DOC_LABELS_EN",
+    "content": "const Ready-made English wording, an alias of DEFAULTNGEDOCLABELS. const NGEDOCLABELSEN: NgeDocLabels"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_LABELS_FR",
+    "title": "NGE_DOC_LABELS_FR",
+    "content": "const Ready-made French wording. Use it with withLabels(NGEDOCLABELSFR). const NGEDOCLABELSFR: NgeDocLabels"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_LAYOUT",
+    "title": "NGE_DOC_LAYOUT",
+    "content": "const Injection token holding the active theme loader. const NGEDOCLAYOUT: InjectionToken<NgeDocLayoutLoader>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_NAVBAR",
+    "title": "NGE_DOC_NAVBAR",
+    "content": "const Header navigation links. When absent, a theme may derive them from the registered sites. const NGEDOCNAVBAR: InjectionToken<NgeDocNavLink[]>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_RENDERERS",
+    "title": "NGE_DOC_RENDERERS",
+    "content": "const Custom renderers components const NGEDOCRENDERERS: InjectionToken<NgeDocRenderers>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_ROUTES",
+    "title": "NGE_DOC_ROUTES",
+    "content": "const Routes that render the documentation. Load them directly from a standalone route configuration: { path: 'docs', loadChildren: () => import('@cisstech/nge/doc').then((m) => m.NGEDOCROUTES), data: [...] } const NGEDOCROUTES: Routes"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_SEARCH_INDEX_URL",
+    "title": "NGE_DOC_SEARCH_INDEX_URL",
+    "content": "const Search index url for PrebuiltNgeDocSearchProvider, set via withSearchIndex(). const NGEDOCSEARCHINDEXURL: InjectionToken<string>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_SEARCH_PROVIDER",
+    "title": "NGE_DOC_SEARCH_PROVIDER",
+    "content": "const Override this to plug a custom search backend via withSearch(). const NGEDOCSEARCHPROVIDER: InjectionToken<NgeDocSearchProvider>"
+  },
+  {
+    "slug": "/docs/api/variables/NGE_DOC_SEO",
+    "title": "NGE_DOC_SEO",
+    "content": "const Site-wide SEO settings. const NGEDOCSEO: InjectionToken<NgeDocSeoConfig>"
+  }
+]

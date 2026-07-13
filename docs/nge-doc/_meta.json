@@ -1,0 +1,20 @@
+{
+  "getting-started": {
+    "title": "Getting started"
+  },
+  "installation": {
+    "title": "Installation"
+  },
+  "files": {
+    "title": "Docs from files"
+  },
+  "code-first": {
+    "title": "Docs from code"
+  },
+  "guides": {
+    "title": "Guides"
+  },
+  "reference": {
+    "title": "Reference"
+  }
+}
