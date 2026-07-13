@@ -1,5 +1,5 @@
-import { DATA_STACKBLITZ, NgeMarkdownCodeActionContext } from './nge-markdown-highlighter'
-import { buildStackblitzProject, stackblitzCodeActionProvider } from './nge-markdown-stackblitz'
+import { DATA_STACKBLITZ, NgeMarkdownCodeActionContext } from '@cisstech/nge/markdown'
+import { buildStackblitzProject, stackblitzCodeActionProvider } from './stackblitz'
 
 describe('buildStackblitzProject', () => {
   const base = {

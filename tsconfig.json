@@ -26,6 +26,7 @@
       "@cisstech/nge/pipes": ["projects/nge/pipes"],
       "@cisstech/nge/services": ["projects/nge/services"],
       "@cisstech/nge/markdown": ["projects/nge/markdown"],
+      "@cisstech/nge/markdown/stackblitz": ["projects/nge/markdown/stackblitz"],
       "@cisstech/nge/utils": ["projects/nge/utils"],
       "@cisstech/nge/ui/tree": ["projects/nge/ui/tree"],
       "@cisstech/nge/ui/list": ["projects/nge/ui/list"],

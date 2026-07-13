@@ -15,10 +15,10 @@ import {
   withKatex,
   withLinkAnchor,
   withShiki,
-  withStackblitz,
   withTabbedSet,
   withThemes,
 } from '@cisstech/nge/markdown'
+import { withStackblitz } from '@cisstech/nge/markdown/stackblitz'
 import { NGE_MONACO_THEMES, provideNgeMonaco } from '@cisstech/nge/monaco'
 
 import { routes } from './app.routes'
