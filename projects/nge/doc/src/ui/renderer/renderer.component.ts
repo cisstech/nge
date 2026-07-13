@@ -56,6 +56,9 @@ interface MarkdownRenderSource {
 })
 export class NgeDocRendererComponent implements OnInit, OnDestroy {
   private readonly injector = inject(Injector)
+  // Resolved eagerly: a late injector.get after an await can hit a torn-down
+  // injector during server rendering (NG0205).
+  private readonly assets = inject(NgeDocAssets)
   private readonly renderers = inject(NGE_DOC_RENDERERS)
   private readonly docService = inject(NgeDocService)
   private readonly compilerService = inject(CompilerService)
@@ -249,7 +252,7 @@ export class NgeDocRendererComponent implements OnInit, OnDestroy {
       if (!data.includes('\n')) {
         // if data does not include at least two lines then it's an url
         inputs = {
-          data: await this.injector.get(NgeDocAssets).text(data),
+          data: await this.assets.text(data),
         }
       }
 
