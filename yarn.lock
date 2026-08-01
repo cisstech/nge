@@ -622,8 +622,8 @@ __metadata:
   linkType: hard
 
 "@angular/cdk@npm:^22.0.4":
-  version: 22.0.4
-  resolution: "@angular/cdk@npm:22.0.4"
+  version: 22.1.0
+  resolution: "@angular/cdk@npm:22.1.0"
   dependencies:
     parse5: "npm:^8.0.0"
     tslib: "npm:^2.3.0"
@@ -632,7 +632,7 @@ __metadata:
     "@angular/core": ^22.0.0 || ^23.0.0
     "@angular/platform-browser": ^22.0.0 || ^23.0.0
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10c0/dbe569b8defdd0bf0502df3f1abf3a954d76b5193b6aeaadb622b21aaadf452d5b68516e845b09d36a5cf0d298e5f7cc1bf8ccdaa8b76e50c1a567390deec760
+  checksum: 10c0/b3d61f369edbe7276e608b452b8b2732fc322a66756f5be1d0efff56eed7bbb541ca2ec21eb78ecec479da4fc1a8d4438eca60b6441eabef68b7dbebdfb6a7ec
   languageName: node
   linkType: hard
 
