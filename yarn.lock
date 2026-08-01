@@ -806,19 +806,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/platform-server@npm:22.0.5":
-  version: 22.0.5
-  resolution: "@angular/platform-server@npm:22.0.5"
+"@angular/platform-server@npm:22.0.8":
+  version: 22.0.8
+  resolution: "@angular/platform-server@npm:22.0.8"
   dependencies:
     tslib: "npm:^2.3.0"
     xhr2: "npm:^0.2.0"
   peerDependencies:
-    "@angular/common": 22.0.5
-    "@angular/compiler": 22.0.5
-    "@angular/core": 22.0.5
-    "@angular/platform-browser": 22.0.5
+    "@angular/common": 22.0.8
+    "@angular/compiler": 22.0.8
+    "@angular/core": 22.0.8
+    "@angular/platform-browser": 22.0.8
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10c0/412a9201b86fb47e33b25ba80fcbc67cb4b5686bb09ec6ee52f26aa8d662334a8f44388e84c68cbd4e4371c51a6d2420eeb0898a354407ae6206332a43d635ed
+  checksum: 10c0/e62f7754b4c813bc1df2c6700799b8da6c28000d6c91575e507f335fec20c9a6d6d182ea65c1ab76abecd0d947248e414b583c0bb18a7c394d85559edeaea7bb
   languageName: node
   linkType: hard
 
@@ -2522,7 +2522,7 @@ __metadata:
     "@angular/forms": "npm:^22.0.5"
     "@angular/platform-browser": "npm:^22.0.5"
     "@angular/platform-browser-dynamic": "npm:^22.0.5"
-    "@angular/platform-server": "npm:22.0.5"
+    "@angular/platform-server": "npm:22.0.8"
     "@angular/router": "npm:^22.0.5"
     "@angular/ssr": "npm:22.0.5"
     "@commitlint/cli": "npm:^19.4.0"
