@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.4.4](https://github.com/cisstech/nge/compare/v22.4.3...v22.4.4) (2026-09-28)
+
+
+### Bug Fixes
+
+* **build:** copy icon assets the same way on macOS and Linux ([6ce0c4c](https://github.com/cisstech/nge/commit/6ce0c4c4922be8885b36e8d836dff7a37fd643a5))
+* **tree:** read shift from the event instead of tracking it ([aec7c4c](https://github.com/cisstech/nge/commit/aec7c4cdc3d495179af4fe74fb7710fc6cb211b9)), closes [cisstech/nge-ide#463](https://github.com/cisstech/nge-ide/issues/463)
+
 ### [22.4.3](https://github.com/cisstech/nge/compare/v22.4.2...v22.4.3) (2026-07-13)
 
 
