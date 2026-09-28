@@ -25,7 +25,7 @@ fi
 mkdir -p dist/nge/assets/ui/icon/icons
 mkdir -p dist/nge/assets/ui/icon/fonts
 
-cp -rf ./projects/nge/ui/icon/src/assets/ ./dist/nge/assets/ui/icon/
+cp -rf ./projects/nge/ui/icon/src/assets ./dist/nge/assets/ui/icon/
 
 # nge-markdown
 mkdir -p dist/nge/assets/markdown
