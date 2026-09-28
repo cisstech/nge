@@ -53,7 +53,6 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
   private readonly selectedNodes = new Map<string, ITreeNodeHolder<T>>()
 
   private isEmpty = false
-  private isShiftKeyPressed = false
   private activeNode?: ITreeNodeHolder<T>
   private stateBeforeSearching: ITreeState | undefined
 
@@ -468,14 +467,8 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
 
   //#region EVENTS
 
-  @HostListener('document:keyup')
-  keyup() {
-    this.isShiftKeyPressed = false
-  }
-
   @HostListener('document:keydown', ['$event'])
   keydown($event: KeyboardEvent) {
-    this.isShiftKeyPressed = $event.shiftKey
     if (this.isTreeContainsEvent($event)) {
       this.onKeyDown($event)
     }
@@ -519,14 +512,14 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
           this.navigate(element, 'down')
           break
         case 'ArrowLeft':
-          if (!this.isShiftKeyPressed) {
+          if (!event.shiftKey) {
             event.preventDefault()
             event.stopPropagation()
             this.collapse(this.activeNode, true)
           }
           break
         case 'ArrowRight':
-          if (!this.isShiftKeyPressed) {
+          if (!event.shiftKey) {
             event.preventDefault()
             event.stopPropagation()
             this.expand(this.activeNode, true)
@@ -553,7 +546,7 @@ export class TreeComponent<T> implements ITree<T>, OnInit, OnDestroy {
       return
     }
 
-    if (this.isShiftKeyPressed && this.activeNode) {
+    if (event.shiftKey && this.activeNode) {
       const domStart = this.domNode(this.activeNode)
       if (!domStart) {
         this.select(node)
