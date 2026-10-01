@@ -2526,7 +2526,7 @@ __metadata:
     "@angular/router": "npm:^22.0.5"
     "@angular/ssr": "npm:22.0.5"
     "@commitlint/cli": "npm:^19.4.0"
-    "@commitlint/config-conventional": "npm:^19.2.2"
+    "@commitlint/config-conventional": "npm:^21.2.3"
     "@eslint/js": "npm:^9.28.0"
     "@modelcontextprotocol/sdk": "npm:^1.29.0"
     "@stackblitz/sdk": "npm:^1.11.1"
@@ -2593,13 +2593,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^19.2.2":
-  version: 19.2.2
-  resolution: "@commitlint/config-conventional@npm:19.2.2"
+"@commitlint/config-conventional@npm:^21.2.3":
+  version: 21.2.3
+  resolution: "@commitlint/config-conventional@npm:21.2.3"
   dependencies:
-    "@commitlint/types": "npm:^19.0.3"
-    conventional-changelog-conventionalcommits: "npm:^7.0.2"
-  checksum: 10c0/2f2a07ee318ac42ffda488521bd84f28268a6d2ea10b332abcad6106559d8a64a765cc58ddea106fd67fce376228cb24059000a584f4986e0e8f972cedd85442
+    "@commitlint/types": "npm:^21.2.3"
+    conventional-changelog-conventionalcommits: "npm:^10.0.0"
+  checksum: 10c0/584a7b436d6f2aace31f9a35c48da213aa5eed01f7d21ca6db3800992e59c0f52894e54d2006f1c42739b8edce509387bd2cba783a5b18088db58da3b2afbf44
   languageName: node
   linkType: hard
 
@@ -2765,6 +2765,23 @@ __metadata:
     "@types/conventional-commits-parser": "npm:^5.0.0"
     chalk: "npm:^5.3.0"
   checksum: 10c0/279454409771097432cb3ecd4930b8f10e99e150b9306e931b69e4e80011a4251f326523bfaba59fcf9a9db7978c76073b7c7c07fbad6b90e045cb0fa2b70047
+  languageName: node
+  linkType: hard
+
+"@commitlint/types@npm:^21.2.3":
+  version: 21.2.3
+  resolution: "@commitlint/types@npm:21.2.3"
+  dependencies:
+    conventional-commits-parser: "npm:^7.0.0"
+    picocolors: "npm:^1.1.1"
+  checksum: 10c0/64a2dd651b6c54b0e332a77d5e39fac823cf5750f0f9d8f6f562b97143ee2b76b689537a2d2bf98e64258b5d951fb0e21bc83bcf7969ce4b084f8a588d933740
+  languageName: node
+  linkType: hard
+
+"@conventional-changelog/template@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@conventional-changelog/template@npm:1.4.0"
+  checksum: 10c0/052ac38b43f67b2572d101ced1dee2691a2ac3828cbc1041738cf1646b956ff0fb3e87258ec59f46eb2c3fcc9a68bb89f90b8dcb1e354880f2c71d8f5ef3a021
   languageName: node
   linkType: hard
 
@@ -5841,6 +5858,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@simple-libs/stream-utils@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@simple-libs/stream-utils@npm:2.0.0"
+  checksum: 10c0/27fa4a9eef3d652a80b970bee18589a618f66884cd15845a0c57d7b73f005ea4d9acda7fe580851af229d07de749419715d06dcedf33bcb1a671e7a27106fdda
+  languageName: node
+  linkType: hard
+
 "@sinclair/typebox@npm:^0.27.8":
   version: 0.27.8
   resolution: "@sinclair/typebox@npm:0.27.8"
@@ -7614,6 +7638,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"argue-cli@npm:^3.1.0":
+  version: 3.2.0
+  resolution: "argue-cli@npm:3.2.0"
+  checksum: 10c0/1b3df0c0e0a7a6199b45124aa2e664d9ec467b484cc9e9263ecf3062cc30725548fd840688ceee8bf5d67955cad8d155111e80ec6626d60b884b6c66264e9940
+  languageName: node
+  linkType: hard
+
 "aria-query@npm:5.3.2":
   version: 5.3.2
   resolution: "aria-query@npm:5.3.2"
@@ -8993,12 +9024,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"conventional-changelog-conventionalcommits@npm:^7.0.2":
-  version: 7.0.2
-  resolution: "conventional-changelog-conventionalcommits@npm:7.0.2"
+"conventional-changelog-conventionalcommits@npm:^10.0.0":
+  version: 10.4.0
+  resolution: "conventional-changelog-conventionalcommits@npm:10.4.0"
   dependencies:
-    compare-func: "npm:^2.0.0"
-  checksum: 10c0/3cb1eab35e37fc973cfb3aed0e159f54414e49b222988da1c2aa86cc8a87fe7531491bbb7657fe5fc4dc0e25f5b50e2065ba8ac71cc4c08eed9189102a2b81bd
+    "@conventional-changelog/template": "npm:^1.4.0"
+  checksum: 10c0/60d99d74e6fdba134fc4785c13f87df82b9cabd980b4390dc958a8abf75d6fe1fdad921f52fb75e02f01a376cfd194b9f506f1e7718041e522b5260b53273882
   languageName: node
   linkType: hard
 
@@ -9159,6 +9190,18 @@ __metadata:
   bin:
     conventional-commits-parser: cli.mjs
   checksum: 10c0/c9e542f4884119a96a6bf3311ff62cdee55762d8547f4c745ae3ebdc50afe4ba7691e165e34827d5cf63283cbd93ab69917afd7922423075b123d5d9a7a82ed2
+  languageName: node
+  linkType: hard
+
+"conventional-commits-parser@npm:^7.0.0":
+  version: 7.1.2
+  resolution: "conventional-commits-parser@npm:7.1.2"
+  dependencies:
+    "@simple-libs/stream-utils": "npm:^2.0.0"
+    argue-cli: "npm:^3.1.0"
+  bin:
+    conventional-commits-parser: ./dist/cli/index.js
+  checksum: 10c0/dd1478a5ef4fddd52cdd67fa4a97d1f47908a20d22287ccfa3f5e09b8298a3bcf3eb49ed117744805cc07ca31edf8835ce0913e96b1bcf7c385cf9bcefb3cf54
   languageName: node
   linkType: hard
 
