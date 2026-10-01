@@ -85,7 +85,7 @@
     "@angular/ssr": "22.0.5",
     "@commitlint/cli": "^19.4.0",
     "@commitlint/config-conventional": "^19.2.2",
-    "@eslint/js": "^9.28.0",
+    "@eslint/js": "^10.0.1",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "@stackblitz/sdk": "^1.11.1",
     "@types/jest": "^30.0.0",
