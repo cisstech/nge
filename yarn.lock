@@ -711,11 +711,11 @@ __metadata:
   linkType: hard
 
 "@angular/compiler@npm:^22.0.5":
-  version: 22.0.5
-  resolution: "@angular/compiler@npm:22.0.5"
+  version: 22.2.0
+  resolution: "@angular/compiler@npm:22.2.0"
   dependencies:
     tslib: "npm:^2.3.0"
-  checksum: 10c0/9cbac06c065bca6285d44b96c2dbef369696d2cb113be314ca70489b2f32188b3967f6f366fe6e132ad18254c9ab73d6ec03ec2c10e6c9d6baf2336a3b30af7d
+  checksum: 10c0/25e0a6932096ab6066c1ba6b5888ef247887939daab54bbe273c7e4be07a1617fc1d72aa87b56b885f8145eded9d5801e64eee8a938501d175f22065ad0f6e01
   languageName: node
   linkType: hard
 
