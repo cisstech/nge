@@ -14,22 +14,22 @@ env:
 
 jobs:
   prepare:
-      name: Prepare
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v5
-        - uses: ./.github/actions/setup
-          with:
-            node-version: ${{ env.NODE_VERSION }}
+    name: Prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ./.github/actions/setup
+        with:
+          node-version: ${{ env.NODE_VERSION }}
 
   publish:
     runs-on: ubuntu-latest
     needs: prepare
     permissions:
-      contents: write  # Write access to repository content
-      packages: write  # Write access to publish packages
-      id-token: write  # Permission to create releases
-      pull-requests: write  # Permission to create pull requests
+      contents: write # Write access to repository content
+      packages: write # Write access to publish packages
+      id-token: write # npm trusted publishing (OIDC) and provenance
+      pull-requests: write # Permission to create pull requests
     steps:
       - uses: actions/checkout@v5
         with:
@@ -54,13 +54,13 @@ jobs:
       # npm publish is the one step that is hard to undo, so it runs first.
       # If it fails, the tag / branch / GitHub release / PR below are skipped
       # and nothing points at a version that is not on npm.
+      # It authenticates through npm trusted publishing (OIDC), not a token:
+      # every published package lists cisstech/nge and publish-npm.yml as its
+      # trusted publisher on npmjs.com.
       - name: Build and publish to npm
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_PUBLIC_TOKEN }}" > ~/.npmrc
           yarn build:lib
           yarn publish:npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLIC_TOKEN }}
 
       - name: Tag, push and publish the GitHub release
         if: success()
