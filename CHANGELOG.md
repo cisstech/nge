@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [22.4.5](https://github.com/cisstech/nge/compare/v22.4.4...v22.4.5) (2026-10-29)
+
+
+### Bug Fixes
+
+* **markdown:** protect inline math from the markdown parser ([56d7ee6](https://github.com/cisstech/nge/commit/56d7ee6313ca3d5b8ec3367d6c57b42f09206e0a))
+
 ### [22.4.4](https://github.com/cisstech/nge/compare/v22.4.3...v22.4.4) (2026-09-28)
 
 
