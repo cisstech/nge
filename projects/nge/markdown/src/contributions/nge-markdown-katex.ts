@@ -71,23 +71,42 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
     // before rendering. See https://github.com/cisstech/nge/issues/335.
     const mathBlocks: string[] = []
     transformer.addMarkdownTransformer((markdown) =>
-      // The first branch matches (and preserves) fenced or inline code, so a `$$`
-      // shown as an example inside code is left untouched.
       markdown.replace(
-        /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)|(\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\])/g,
-        (match, code: string | undefined, math: string | undefined) => {
+        new RegExp(
+          [
+            // 1. code
+            /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)/.source,
+            // 2. display math
+            /(\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\])/.source,
+            // 3. inline math : \(...\) ou $...$ (règles pandoc : pas d'espace
+            //    après l'ouvrant ni avant le fermant, pas de chiffre après le fermant)
+            /(\\\([\s\S]+?\\\)|\$[^\s$](?:(?:\\.|[^$\\\n])*?(?:\\.|[^\s$\\]))?\$(?!\d))/.source,
+          ].join('|'),
+          'g'
+        ),
+        (_match, code?: string, block?: string, inline?: string) => {
           if (code != null) return code
-          const index = mathBlocks.push(math as string) - 1
-          return `\n\n<div class="nge-markdown-math" data-math="${index}"></div>\n\n`
+          if (block != null) {
+            const index = mathBlocks.push(block) - 1
+            return `\n\n<div class="nge-markdown-math" data-math="${index}"></div>\n\n`
+          }
+          const index = mathBlocks.push(inline as string) - 1
+          return `<span class="nge-markdown-math-inline" data-math="${index}"></span>`
         }
       )
     )
 
     transformer.addHtmlTransformer((element) => {
-      Array.from(element.querySelectorAll<HTMLElement>('.nge-markdown-math')).forEach((placeholder) => {
-        const holder = element.ownerDocument.createElement('div')
-        holder.textContent = mathBlocks[Number(placeholder.getAttribute('data-math'))] ?? ''
-        placeholder.parentNode?.replaceChild(holder, placeholder)
+      const doc = element.ownerDocument
+      element.querySelectorAll<HTMLElement>('.nge-markdown-math, .nge-markdown-math-inline').forEach((placeholder) => {
+        const source = mathBlocks[Number(placeholder.getAttribute('data-math'))] ?? ''
+        if (placeholder.classList.contains('nge-markdown-math-inline')) {
+          placeholder.replaceWith(doc.createTextNode(source))
+        } else {
+          const holder = doc.createElement('div')
+          holder.textContent = source
+          placeholder.replaceWith(holder)
+        }
       })
 
       // KaTeX renders in the browser; under SSR leave the math placeholders for
@@ -102,7 +121,7 @@ export class NgeMarkdownKatex implements NgeMarkdownContribution {
           element,
           this.options.options || {
             delimiters: [
-              { left: '$$', right: '$$', display: false },
+              { left: '$$', right: '$$', display: true },
               { left: '$', right: '$', display: false },
               { left: '\\(', right: '\\)', display: false },
               { left: '\\[', right: '\\]', display: false },
