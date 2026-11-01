@@ -823,16 +823,16 @@ __metadata:
   linkType: hard
 
 "@angular/router@npm:^22.0.5":
-  version: 22.0.5
-  resolution: "@angular/router@npm:22.0.5"
+  version: 22.2.3
+  resolution: "@angular/router@npm:22.2.3"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/common": 22.0.5
-    "@angular/core": 22.0.5
-    "@angular/platform-browser": 22.0.5
+    "@angular/common": 22.2.3
+    "@angular/core": 22.2.3
+    "@angular/platform-browser": 22.2.3
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10c0/4c62773f51d63736cb47c0d224ca39cce0b9c2fb663dc0c251f82ebde72b1dfb5c8e83ac18b27168f42700bcee60a9516a827aa62e121c60ac74f70c18999e81
+  checksum: 10c0/8c235ba87e8d8646b74138be858587bead58938f2baa4e9a068ef5a729669a8173f41b110daec7cf7ab1a0f59903fa5eea61149b5c7ec6c2875d20f7090d6eaf
   languageName: node
   linkType: hard
 
